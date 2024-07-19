@@ -13,13 +13,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<?> handleScheduleException(CustomException ex) {
-        ex.printStackTrace();
         return ResponseEntity.status(ex.getErrorType().getHttpStatus()).body(new ExceptionDto(ex.getErrorType()));
     }
-
+//    밸리데이션 핸들러
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleException(MethodArgumentNotValidException ex) {
-        ex.printStackTrace();
         BindingResult bindingResult = ex.getBindingResult();
         StringBuilder builder = new StringBuilder();
 
@@ -28,5 +26,7 @@ public class GlobalExceptionHandler {
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(builder.toString());
     }
+
+
 
 }
