@@ -4,6 +4,7 @@ import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.user.dto.SignupRequestDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * 유저 회원가입
@@ -22,10 +24,11 @@ public class UserService {
     public void signup(SignupRequestDto requestDto) {
         // 중복체크
         checkDuplicate(requestDto);
+        String encodedPassword = passwordEncoder.encode(requestDto.getPassword());
 
         User user = User.builder()
             .userName(requestDto.getUserName())
-            .password(requestDto.getPassword())
+            .password(encodedPassword)
             .name(requestDto.getName())
             .email(requestDto.getEmail())
             .phone(requestDto.getPhone())

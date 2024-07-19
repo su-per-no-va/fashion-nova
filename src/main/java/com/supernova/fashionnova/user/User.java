@@ -68,6 +68,8 @@ public class User extends Timestamped {
     @Column(nullable = false)
     private Long mileage;
 
+    private String refreshToken;
+
     // 주문
     @OneToMany(mappedBy = "user")
     private List<Order> orderList = new ArrayList<>();
@@ -110,6 +112,10 @@ public class User extends Timestamped {
         this.userStatus = UserStatus.MEMBER;
         this.userGrade = UserGrade.BRONZE;
         this.mileage = 0L;
+    }
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 
 }
