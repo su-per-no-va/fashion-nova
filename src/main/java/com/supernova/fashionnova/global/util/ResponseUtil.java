@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @Getter
-public class ResponseUtil<T> {
+public class ResponseUtil {
 
     public static <T> ResponseEntity<T> of(HttpStatus httpStatus, T data) {
         return  ResponseEntity.status(httpStatus)

@@ -7,8 +7,11 @@ import com.supernova.fashionnova.global.common.Timestamped;
 import com.supernova.fashionnova.order.Order;
 import com.supernova.fashionnova.question.Question;
 import com.supernova.fashionnova.review.Review;
+import com.supernova.fashionnova.user.dto.SignupRequestDto;
 import com.supernova.fashionnova.warn.Warn;
 import com.supernova.fashionnova.wish.Wish;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
@@ -19,6 +22,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Email;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -35,7 +39,7 @@ public class User extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     private String userName;
 
     private String socialId;
@@ -43,17 +47,22 @@ public class User extends Timestamped {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false,unique = true)
+    private String name;
+
     @Email
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     private String email;
 
     @Column(nullable = false)
     private String phone;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private UserGrade userGrade;
 
     @Column(nullable = false)
@@ -90,5 +99,17 @@ public class User extends Timestamped {
     // 리뷰
     @OneToMany(mappedBy = "user")
     private List<Review> reviewList = new ArrayList<>();
+
+    @Builder
+    public User(String userName, String password, String name, String email, String phone ) {
+        this.userName = userName;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.userStatus = UserStatus.MEMBER;
+        this.userGrade = UserGrade.BRONZE;
+        this.mileage = 0L;
+    }
 
 }

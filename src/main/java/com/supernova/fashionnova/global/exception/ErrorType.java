@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 public enum ErrorType {
     // USER
     DUPLICATED_USERNAME(HttpStatus.BAD_REQUEST,"중복된 ID 입니다."),
+    DUPLICATED_EMAIL(HttpStatus.BAD_REQUEST,"중복된 이름입니다."),
     INVALID_ACCOUNT_ID(HttpStatus.UNAUTHORIZED, "아이디가 일치하지 않습니다."),
     INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "비밀번호가 일치하지 않습니다."),
     NOT_FOUND_TOKEN(HttpStatus.NOT_FOUND, "토큰을 찾을 수 없습니다."),

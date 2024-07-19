@@ -3,3 +3,13 @@ GET https://examples.http-client.intellij.net/get
     ?generated-in=IntelliJ IDEA
 
 ###
+POST http://localhost:8080/users/signup
+Content-Type: application/json
+
+{
+  "userName": "winner7789",
+  "password": "Fb112233!",
+  "name": "류정근",
+  "email": "winner7789@gmail.com",
+  "phone": "010-6231-4814"
+}
