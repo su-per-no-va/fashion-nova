@@ -12,7 +12,7 @@ public class ResponseUtil {
             .body(data);
     }
 
-    public static <T> ResponseEntity<String> of(HttpStatus httpStatus,String message) {
+    public static  ResponseEntity<String> of(HttpStatus httpStatus,String message) {
         return ResponseEntity.status(httpStatus)
             .body(message);
     }
