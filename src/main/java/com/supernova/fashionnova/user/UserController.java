@@ -17,14 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
 
-    /**
+    /** 유저 회원가입
      *
      * @param requestDto
      * @return "회원가입 성공"
      */
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@Valid @RequestBody SignupRequestDto requestDto) {
-
         userService.signup(requestDto);
         return ResponseUtil.of(HttpStatus.CREATED,"회원가입 성공");
     }
