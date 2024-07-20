@@ -109,9 +109,9 @@ public class User extends Timestamped {
         this.name = name;
         this.email = email;
         this.phone = phone;
-        this.userStatus = UserStatus.MEMBER;
-        this.userGrade = UserGrade.BRONZE;
-        this.mileage = 0L;
+        this.userStatus = UserStatus.MEMBER; // 처음 생성될때는 활성화 상태
+        this.userGrade = UserGrade.BRONZE; // 처음 생성될 때는 브론즈
+        this.mileage = 0L; // 처음 생성될 때는 0
     }
 
     public void updateRefreshToken(String refreshToken) {

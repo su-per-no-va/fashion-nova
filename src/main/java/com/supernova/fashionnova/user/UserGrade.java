@@ -6,10 +6,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum UserGrade {
-    BRONZE("BRONZE"),
-    SILVER("SILVER"),
-    GOLD("GOLD"),
-    ;
+    BRONZE,
+    SILVER,
+    GOLD;
 
-    private final String userGradeName;
 }
