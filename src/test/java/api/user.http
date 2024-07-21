@@ -25,3 +25,7 @@ Content-Type: application/json
 ###로그아웃
 POST http://localhost:8080/users/logout
 Authorization: {{access_token}}
+
+###회원탈퇴
+PUT http://localhost:8080/users/withdraw
+Authorization: {{access_token}}

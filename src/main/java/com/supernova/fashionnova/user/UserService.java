@@ -37,11 +37,21 @@ public class UserService {
 
     }
 
-    /**유저 로그아웃
+    /** 유저 로그아웃
      *
      * @param user
      */
     public void logout(User user) {
+        user.updateRefreshToken("");
+        userRepository.save(user);
+    }
+
+    /** 유저 회원탈퇴
+     *
+     * @param user
+     */
+    public void withdraw(User user) {
+        user.updateStatus(UserStatus.NON_MEMBER);
         user.updateRefreshToken("");
         userRepository.save(user);
     }
@@ -56,6 +66,7 @@ public class UserService {
             throw new CustomException(ErrorType.DUPLICATED_EMAIL);
         }
     }
+
 
 
 }
