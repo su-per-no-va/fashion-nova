@@ -42,7 +42,10 @@ public class Cart {
     private List<ProductDetail> productDetailList = new ArrayList<>();
 
     // 사용자 설정 메서드
-    public void setUser(User user) {
+    public void assignUser(User user) {
+        if (this.user != null) {
+            throw new IllegalStateException("장바구니를 이미 할당받음");
+        }
         this.user = user;
     }
 

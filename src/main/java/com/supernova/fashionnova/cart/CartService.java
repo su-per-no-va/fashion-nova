@@ -25,21 +25,30 @@ public class CartService {
      * @param productDetailId 상품 상세 ID
      * @param count 상품 수량
      * @throws CustomException NOT_FOUND_USER 상품 정보를 찾을 수 없을 때
+     * @throws CustomException OUT_OF_STOCK 품절된 상품일 때
      */
     public void addCart(User user, Long productDetailId, int count) {
         Optional<ProductDetail> productDetailOptional = productDetailRepository.findById(productDetailId);
 
         if (productDetailOptional.isEmpty()) {
-            throw new CustomException(ErrorType.NOT_FOUND_PRODUCTDETAIL); // 상품디테일ID를 찾을 수 없을 때 예외
+            throw new CustomException(ErrorType.NOT_FOUND_PRODUCTDETAIL); // 상품 정보를 찾을 수 없을 때
         }
 
         ProductDetail productDetail = productDetailOptional.get();
+
+        if (productDetail.getQuantity() == 0) {
+            throw new CustomException(ErrorType.OUT_OF_STOCK); // 품절된 상품일 때
+        }
+
         Product product = productDetail.getProduct();
         Long price = product.getPrice();
 
         // 사용자의 장바구니를 가져옵니다.
-        Cart cart = cartRepository.findByUserId(user.getId()).orElse(new Cart());
-        cart.setUser(user);
+        Cart cart = cartRepository.findByUserId(user.getId()).orElseGet(() -> {
+            Cart newCart = new Cart();
+            newCart.assignUser(user);
+            return newCart;
+        });
 
         // 장바구니에 제품 상세 정보를 추가합니다.
         cart.getProductDetailList().add(productDetail);
