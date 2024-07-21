@@ -1,5 +1,5 @@
 
-###
+###회원가입
 POST http://localhost:8080/users/signup
 Content-Type: application/json
 
@@ -11,11 +11,11 @@ Content-Type: application/json
   "phone": "010-6231-4814"
 }
 
-###
+###로그인
 POST http://localhost:8080/users/login
 Content-Type: application/json
 
 {
-  "userName": "winner7789",
+  "userName": "winner77",
   "password": "Fb112233!"
 }
