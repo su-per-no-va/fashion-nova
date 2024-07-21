@@ -29,7 +29,6 @@ import org.springframework.util.StringUtils;
 @Slf4j(topic = "JwtUtil")
 public class JwtUtil {
 
-
     // 로그 설정
     public static final Logger logger = LoggerFactory.getLogger("JWT 관련 로그");
 

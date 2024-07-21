@@ -1,5 +1,11 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=IntelliJ IDEA
+### 장바구니 담기
+POST http://localhost:8080/api/carts
+Content-Type: application/json
+Authorization: {{Authorization}}
 
-###
+{
+  "productDetailsId": 1,
+  "count": 1
+}
+
+### 장바구니 조회

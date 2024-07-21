@@ -28,10 +28,10 @@ public class Cart {
     private Long id;
 
     @Column(nullable = false)
-    private int count;
+    private int count = 0;
 
     @Column(nullable = false)
-    private int totalPrice;
+    private int totalPrice = 0;
 
     @OneToOne
     @JoinColumn(name = "user_id")
@@ -41,4 +41,18 @@ public class Cart {
     @JoinColumn(name = "product_detail_id")
     private List<ProductDetail> productDetailList = new ArrayList<>();
 
+    // 사용자 설정 메서드
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    // 상품 수량 증가
+    public void incrementCount(int count) {
+        this.count += count;
+    }
+
+    // totalPrice 증가
+    public void incrementTotalPrice(Long price) {
+        this.totalPrice += price;
+    }
 }
