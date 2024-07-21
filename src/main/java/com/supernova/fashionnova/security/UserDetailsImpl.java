@@ -18,8 +18,6 @@ public class UserDetailsImpl implements UserDetails {
         return user;
     }
 
-    //무조건 상속 받아야 함
-    //권한 가져오는부분(쓸일은 없음)
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();

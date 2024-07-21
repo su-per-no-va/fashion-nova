@@ -87,7 +87,6 @@ public class JwtUtil {
     }
 
     //HttpServletRequest 에서 Cookie Value  JWT 가져오기
-    // 쿠키가 아닌 헤더로 변경해야함
     public String getTokenFromRequest(HttpServletRequest req, String headerName){
         String token = req.getHeader(headerName);
         if (token != null && !token.isEmpty()) {
