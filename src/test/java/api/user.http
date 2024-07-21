@@ -19,3 +19,9 @@ Content-Type: application/json
   "userName": "winner7789",
   "password": "Fb112233!"
 }
+
+> {% client.global.set("access_token", response.headers.valueOf("Authorization")); %}
+
+###로그아웃
+POST http://localhost:8080/users/logout
+Authorization: {{access_token}}

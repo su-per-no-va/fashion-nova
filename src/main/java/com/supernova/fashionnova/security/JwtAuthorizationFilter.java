@@ -3,12 +3,15 @@ package com.supernova.fashionnova.security;
 import static com.supernova.fashionnova.security.JwtAuthenticationFilter.jwtExceptionHandler;
 
 import com.supernova.fashionnova.global.exception.ErrorType;
+import com.supernova.fashionnova.user.User;
+import com.supernova.fashionnova.user.UserRepository;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -53,7 +56,14 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         // JWT 토큰 substring
         accessToken = jwtUtil.substringToken(accessToken);
 
+        //유저 정보 가져오기
         Claims accessTokenClaims = jwtUtil.getUserInfoFromToken(accessToken);
+
+        //RefreshToken 검증 (로그 아웃시 리프레쉬 토큰 없음)
+        String refreshToken = jwtUtil.getRefreshTokenFromRequest(accessTokenClaims.getSubject());
+        if (refreshToken.isEmpty()) {
+            jwtExceptionHandler(res,ErrorType.NOT_FOUND_REFRESH_TOKEN);
+        }
 
         // 인증처리
         try {

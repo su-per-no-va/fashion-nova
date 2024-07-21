@@ -37,6 +37,15 @@ public class UserService {
 
     }
 
+    /**유저 로그아웃
+     *
+     * @param user
+     */
+    public void logout(User user) {
+        user.updateRefreshToken("");
+        userRepository.save(user);
+    }
+
     private void checkDuplicate(SignupRequestDto requestDto) {
         // userName 중복체크
         if (userRepository.existsByUserName(requestDto.getUserName())) {
@@ -47,4 +56,6 @@ public class UserService {
             throw new CustomException(ErrorType.DUPLICATED_EMAIL);
         }
     }
+
+
 }
