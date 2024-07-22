@@ -1,6 +1,7 @@
 package com.supernova.fashionnova.cart;
 
 import com.supernova.fashionnova.cart.dto.CartRequestDto;
+import com.supernova.fashionnova.cart.dto.CartResponseDto;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.global.util.ResponseUtil;
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,21 +45,21 @@ public class CartController {
         }
         return ResponseUtil.of(HttpStatus.OK, "장바구니 담기 완료");
     }
-//
-//    /**
-//     * 장바구니 조회
-//     *
-//     * @param userDetails 인증된 사용자 정보
-//     * @return 장바구니 응답 DTO
-//     */
-//    @GetMapping
-//    public ResponseEntity<CartResponseDto> getCart(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-//
-//        CartResponseDto cartResponseDto = cartService.getCart(userDetails.getUser());
-//
-//        return ResponseUtil.of(HttpStatus.OK, cartResponseDto);
-//    }
-//
+
+    /**
+     * 장바구니 조회
+     *
+     * @param userDetails 인증된 사용자 정보
+     * @return 장바구니 응답 DTO
+     */
+    @GetMapping
+    public ResponseEntity<CartResponseDto> getCart(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        CartResponseDto cartResponseDto = cartService.getCart(userDetails.getUser());
+
+        return ResponseUtil.of(HttpStatus.OK, cartResponseDto);
+    }
+
 //    /**
 //     * 장바구니 수정
 //     *

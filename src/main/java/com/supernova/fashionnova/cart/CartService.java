@@ -1,6 +1,8 @@
 package com.supernova.fashionnova.cart;
 
+import com.supernova.fashionnova.cart.dto.CartItemDto;
 import com.supernova.fashionnova.cart.dto.CartRequestDto;
+import com.supernova.fashionnova.cart.dto.CartResponseDto;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.product.Product;
@@ -8,6 +10,7 @@ import com.supernova.fashionnova.product.ProductDetail;
 import com.supernova.fashionnova.product.ProductDetailRepository;
 import com.supernova.fashionnova.product.ProductRepository;
 import com.supernova.fashionnova.user.User;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -64,33 +67,30 @@ public class CartService {
             cartRepository.save(cart);
         }
     }
-//
-//    /**
-//     * 장바구니 조회
-//     *
-//     * @param user 사용자 정보
-//     * @return CartResponseDto
-//     */
-//    @Transactional(readOnly = true)
-//    public CartResponseDto getCart(User user) {
-//        Cart cart = cartRepository.findByUserId(user.getId()).orElseGet(() -> {
-//            Cart newCart = new Cart();
-//            newCart.assignUser(user);
-//            return newCart;
-//        });
-//
-//        List<CartItemDto> cartItemDtoList = cart.getProductDetailList().stream()
-//            .map(detail -> new CartItemDto(
-//                detail.getProduct().getProduct(),
-//                detail.getProduct().getPrice(),
-//                cart.getCount(),
-//                detail.getSize(),
-//                detail.getColor()))
-//            .toList();
-//
-//        return new CartResponseDto(cartItemDtoList, cart.getTotalPrice());
-//    }
-//
+
+    /**
+     * 장바구니 조회
+     *
+     * @param user 사용자 정보
+     * @return CartResponseDto
+     */
+    @Transactional(readOnly = true)
+    public CartResponseDto getCart(User user) {
+        List<Cart> cartList = cartRepository.findByUser(user);
+        List<CartItemDto> cartItemDtoList = cartList.stream()
+            .map(cart -> new CartItemDto(
+                cart.getProductDetail().getProduct().getProduct(),
+                cart.getProductDetail().getProduct().getPrice(),
+                cart.getCount(),
+                cart.getProductDetail().getSize(),
+                cart.getProductDetail().getColor()))
+            .toList();
+
+        int totalPrice = cartList.stream().mapToInt(Cart::getTotalPrice).sum();
+
+        return new CartResponseDto(cartItemDtoList, totalPrice);
+    }
+
 //    /**
 //     * 장바구니 수정
 //     *
