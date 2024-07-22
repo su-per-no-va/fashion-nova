@@ -6,6 +6,7 @@ import com.supernova.fashionnova.cart.dto.CartResponseDto;
 import com.supernova.fashionnova.cart.dto.CartUpdateRequestDto;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
+import com.supernova.fashionnova.security.UserDetailsImpl;
 import com.supernova.fashionnova.user.User;
 import com.supernova.fashionnova.user.UserRepository;
 import jakarta.validation.Valid;
@@ -29,8 +30,6 @@ public class CartController {
 
     private final CartService cartService;
 
-    private final UserRepository userRepository;
-
     /**
      * 장바구니에 상품 추가
      *
@@ -41,13 +40,9 @@ public class CartController {
     @PostMapping
     public ResponseEntity<String> addToCart(
         @Valid @RequestBody CartRequestDto cartRequestDto,
-        @AuthenticationPrincipal UserDetails userDetails) {
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        // userDetails에서 username을 통해 User 객체를 가져옵니다.
-        User user = userRepository.findByUserName(userDetails.getUsername())
-            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
-
-        cartService.addCart(user, cartRequestDto.getProductDetailsId(), cartRequestDto.getCount());
+        cartService.addCart(userDetails.getUser(), cartRequestDto.getProductDetailsId(), cartRequestDto.getCount());
 
         return new ResponseEntity<>("장바구니 담기 완료", HttpStatus.OK);
     }
@@ -59,13 +54,9 @@ public class CartController {
      * @return 장바구니 응답 DTO
      */
     @GetMapping
-    public ResponseEntity<CartResponseDto> getCart(@AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<CartResponseDto> getCart(@AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        // userDetails에서 username을 통해 User 객체를 가져옵니다.
-        User user = userRepository.findByUserName(userDetails.getUsername())
-            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
-
-        CartResponseDto cartResponseDto = cartService.getCart(user);
+        CartResponseDto cartResponseDto = cartService.getCart(userDetails.getUser());
 
         return new ResponseEntity<>(cartResponseDto, HttpStatus.OK);
     }
@@ -79,12 +70,9 @@ public class CartController {
     @PutMapping
     public ResponseEntity<String> updateCart(
         @Valid @RequestBody CartUpdateRequestDto cartUpdateRequestDto,
-        @AuthenticationPrincipal UserDetails userDetails) {
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        User user = userRepository.findByUserName(userDetails.getUsername())
-            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
-
-        cartService.updateCart(user, cartUpdateRequestDto);
+        cartService.updateCart(userDetails.getUser(), cartUpdateRequestDto);
 
         return new ResponseEntity<>("상품 옵션 수정 완료", HttpStatus.OK);
     }
@@ -98,23 +86,17 @@ public class CartController {
     @DeleteMapping
     public ResponseEntity<String> deleteFromCart(
         @Valid @RequestBody CartDeleteRequestDto cartDeleteRequestDto,
-        @AuthenticationPrincipal UserDetails userDetails) {
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        User user = userRepository.findByUserName(userDetails.getUsername())
-            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
-
-        cartService.deleteFromCart(user, cartDeleteRequestDto.getProductDetailId());
+        cartService.deleteFromCart(userDetails.getUser(), cartDeleteRequestDto.getProductDetailId());
 
         return new ResponseEntity<>("장바구니 상품 삭제 완료", HttpStatus.OK);
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<String> clearCart(@AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<String> clearCart(@AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        User user = userRepository.findByUserName(userDetails.getUsername())
-            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
-
-        cartService.clearCart(user);
+        cartService.clearCart(userDetails.getUser());
 
         return new ResponseEntity<>("장바구니 비우기 완료", HttpStatus.OK);
     }
