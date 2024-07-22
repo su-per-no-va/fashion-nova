@@ -3,6 +3,7 @@ package com.supernova.fashionnova.address;
 import com.supernova.fashionnova.address.dto.AddressRequestDto;
 import com.supernova.fashionnova.address.dto.AddressResponseDto;
 import com.supernova.fashionnova.user.User;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +48,7 @@ public class AddressService {
         List<Address> addresses = addressRepository.findByUser(user);
 
         return addresses.stream()
+            .sorted(Comparator.comparing(Address::isDefaultAddress).reversed())
             .map(AddressResponseDto::new)
             .collect(Collectors.toList());
     }

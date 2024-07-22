@@ -6,7 +6,6 @@ import lombok.Getter;
 @Getter
 public class AddressResponseDto {
 
-    private final Long id;
     private final String name;
     private final String recipientName;
     private final String recipientNumber;
@@ -16,7 +15,6 @@ public class AddressResponseDto {
     private final boolean defaultAddress;
 
     public AddressResponseDto (Address address) {
-        this.id = address.getId();
         this.name = address.getName();
         this.recipientName = address.getRecipientName();
         this.recipientNumber = address.getRecipientNumber();
