@@ -1,0 +1,7 @@
+### 위시리스트 찜
+PUT http://localhost:8080/wishlists/1
+Authorization: {{access_token}}
+
+### 위시리스트 조회
+GET http://localhost:8080/wishlists?page=1
+Authorization: {{access_token}}
