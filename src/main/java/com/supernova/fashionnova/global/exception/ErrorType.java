@@ -21,10 +21,7 @@ public enum ErrorType {
     // PRODUCT
     NOT_FOUND_PRODUCT(HttpStatus.NOT_FOUND, "상품을 찾을 수 없습니다."),
     OUT_OF_STOCK(HttpStatus.BAD_REQUEST, "품절된 상품입니다."),
-    CART_EMPTY(HttpStatus.BAD_REQUEST, "장바구니에 상품이 존재하지 않습니다."),
-
-    // CART
-    CART_ALREADY_ASSIGNED(HttpStatus.BAD_REQUEST, "이미 할당된 장바구니가 존재합니다.");
+    CART_EMPTY(HttpStatus.BAD_REQUEST, "장바구니에 상품이 존재하지 않습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;

@@ -1,5 +1,6 @@
 package com.supernova.fashionnova.cart;
 
+import com.supernova.fashionnova.cart.dto.CartDeleteRequestDto;
 import com.supernova.fashionnova.cart.dto.CartRequestDto;
 import com.supernova.fashionnova.cart.dto.CartResponseDto;
 import com.supernova.fashionnova.global.exception.CustomException;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -76,22 +78,22 @@ public class CartController {
 //        return ResponseUtil.of(HttpStatus.OK, "상품 옵션 수정 완료");
 //    }
 //
-//    /**
-//     * 장바구니 상품 개별 삭제
-//     *
-//     * @param cartDeleteRequestDto
-//     * @return "장바구니 상품 삭제 완료" 메시지
-//     */
-//    @DeleteMapping
-//    public ResponseEntity<String> deleteFromCart(
-//        @Valid @RequestBody CartDeleteRequestDto cartDeleteRequestDto,
-//        @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//
-//        cartService.deleteFromCart(userDetails.getUser(), cartDeleteRequestDto.getProductDetailId());
-//
-//        return ResponseUtil.of(HttpStatus.OK, "장바구니 상품 삭제 완료");
-//    }
-//
+    /**
+     * 장바구니 상품 개별 삭제
+     *
+     * @param cartDeleteRequestDto
+     * @return "장바구니 상품 삭제 완료" 메시지
+     */
+    @DeleteMapping
+    public ResponseEntity<String> deleteFromCart(
+        @Valid @RequestBody CartDeleteRequestDto cartDeleteRequestDto,
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        cartService.deleteFromCart(userDetails.getUser(), cartDeleteRequestDto.getProductDetailId());
+
+        return ResponseUtil.of(HttpStatus.OK, "장바구니 상품 삭제 완료");
+    }
+
 //    @DeleteMapping("/delete")
 //    public ResponseEntity<String> clearCart(@AuthenticationPrincipal UserDetailsImpl userDetails) {
 //

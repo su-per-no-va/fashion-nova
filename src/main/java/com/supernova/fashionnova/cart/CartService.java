@@ -134,27 +134,23 @@ public class CartService {
 //
 //    }
 //
-//    /**
-//     * 장바구니 상품 삭제
-//     *
-//     * @param user      사용자 정보
-//     * @param cartDeleteRequestDto
-//     * @throws CustomException NOT_FOUND_PRODUCT 상품 정보를 찾을 수 없을 때
-//     */
-//    @Transactional
-//    public void deleteFromCart(User user, Long productDetailId) {
-//        Cart cart = cartRepository.findByUserId(user.getId())
-//            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
-//
-//        ProductDetail productDetail = cart.getProductDetailList().stream()
-//            .filter(detail -> detail.getId().equals(productDetailId))
-//            .findFirst()
-//            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
-//
-//        cart.getProductDetailList().remove(productDetail);
-//
-//    }
-//
+    /**
+     * 장바구니 상품 삭제
+     *
+     * @param user      사용자 정보
+     * @param cartDeleteRequestDto
+     * @throws CustomException NOT_FOUND_PRODUCT 상품을 찾을 수 없을 때
+     */
+    @Transactional
+    public void deleteFromCart(User user, Long productDetailId) {
+        Cart cart = cartRepository.findByUserAndProductDetail(user,
+                productDetailRepository.findById(productDetailId)
+                    .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT)))
+            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
+
+        cartRepository.delete(cart);
+    }
+
 //    /**
 //     * 장바구니 비우기
 //     *
