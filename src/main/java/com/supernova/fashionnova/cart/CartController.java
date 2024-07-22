@@ -107,4 +107,15 @@ public class CartController {
 
         return new ResponseEntity<>("장바구니 상품 삭제 완료", HttpStatus.OK);
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> clearCart(@AuthenticationPrincipal UserDetails userDetails) {
+
+        User user = userRepository.findByUserName(userDetails.getUsername())
+            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
+
+        cartService.clearCart(user);
+
+        return new ResponseEntity<>("장바구니 비우기 완료", HttpStatus.OK);
+    }
 }

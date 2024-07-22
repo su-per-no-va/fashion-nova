@@ -29,14 +29,14 @@ public class CartService {
      * @param user 사용자 정보
      * @param productDetailId 상품 상세 ID
      * @param count 상품 수량
-     * @throws CustomException NOT_FOUND_USER 상품 정보를 찾을 수 없을 때
+     * @throws CustomException NOT_FOUND_PRODUCT 상품 정보를 찾을 수 없을 때
      * @throws CustomException OUT_OF_STOCK 품절된 상품일 때
      */
     public void addCart(User user, Long productDetailId, int count) {
         Optional<ProductDetail> productDetailOptional = productDetailRepository.findById(productDetailId);
 
         if (productDetailOptional.isEmpty()) {
-            throw new CustomException(ErrorType.NOT_FOUND_PRODUCTDETAIL); // 상품 정보를 찾을 수 없을 때
+            throw new CustomException(ErrorType.NOT_FOUND_PRODUCT); // 상품 정보를 찾을 수 없을 때
         }
 
         ProductDetail productDetail = productDetailOptional.get();
@@ -95,7 +95,7 @@ public class CartService {
      *
      * @param user      사용자 정보
      * @param cartUpdateRequestDto
-     * @throws CustomException NOT_FOUND_PRODUCTD 상품 정보를 찾을 수 없을 때
+     * @throws CustomException NOT_FOUND_PRODUCT 상품 정보를 찾을 수 없을 때
      * @throws CustomException OUT_OF_STOCK 품절된 상품일 때
      */
     @Transactional
@@ -134,6 +134,13 @@ public class CartService {
         cartRepository.save(cart);
     }
 
+    /**
+     * 장바구니 상품 삭제
+     *
+     * @param user      사용자 정보
+     * @param cartDeleteRequestDto
+     * @throws CustomException NOT_FOUND_PRODUCT 상품 정보를 찾을 수 없을 때
+     */
     @Transactional
     public void deleteFromCart(User user, Long productDetailId) {
         Cart cart = cartRepository.findByUserId(user.getId())
@@ -145,6 +152,26 @@ public class CartService {
             .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
 
         cart.getProductDetailList().remove(productDetail);
+
+        cartRepository.save(cart);
+    }
+
+    /**
+     * 장바구니 비우기
+     *
+     * @param user      사용자 정보
+     * @throws CustomException CART_EMPTY 장바구니에 상품이 존재하지 않을 때
+     */
+    @Transactional
+    public void clearCart(User user) {
+        Cart cart = cartRepository.findByUserId(user.getId())
+            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
+
+        if (cart.getProductDetailList().isEmpty()) {
+            throw new CustomException(ErrorType.CART_EMPTY);
+        }
+
+        cart.getProductDetailList().clear();
 
         cartRepository.save(cart);
     }
