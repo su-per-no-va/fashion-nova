@@ -8,6 +8,6 @@ import lombok.RequiredArgsConstructor;
 public enum UserGrade {
     BRONZE,
     SILVER,
-    GOLD;
+    GOLD
 
 }
