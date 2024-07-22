@@ -3,18 +3,22 @@ package com.supernova.fashionnova.security;
 import static com.supernova.fashionnova.security.JwtAuthenticationFilter.jwtExceptionHandler;
 
 import com.supernova.fashionnova.global.exception.ErrorType;
+import com.supernova.fashionnova.user.User;
+import com.supernova.fashionnova.user.UserRepository;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -38,8 +42,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         log.info("현재주소 : " + req.getRequestURL().toString());
         // 다음 필터로 넘길 주소
         if (req.getRequestURL().toString().equals("http://localhost:8080/users/signup")
-            || req.getRequestURL().toString().equals("http://localhost:8080/users/login")
-            || req.getRequestURL().toString().equals("http://localhost:8080/products/product")) {
+            || req.getRequestURL().toString().equals("http://localhost:8080/users/login")) {
             filterChain.doFilter(req, res);
             return;
         }
