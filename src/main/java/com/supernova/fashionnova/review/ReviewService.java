@@ -7,6 +7,7 @@ import com.supernova.fashionnova.product.Product;
 import com.supernova.fashionnova.product.ProductRepository;
 import com.supernova.fashionnova.review.dto.ReviewRequestDto;
 import com.supernova.fashionnova.user.User;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,5 +42,19 @@ public class ReviewService {
 
         Review review = new Review(user, product, reviewRequestDto.getReview(), reviewRequestDto.getRating());
         reviewRepository.save(review);
+    }
+
+    /**
+     * 상품별 리뷰 조회
+     *
+     * @param productId 상품 ID
+     * @return 상품별 리뷰 리스트
+     */
+    @Transactional(readOnly = true)
+    public List<Review> getReviewsByProductId(Long productId) {
+        Product product = productRepository.findById(productId)
+            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
+
+        return reviewRepository.findByProduct(product);
     }
 }

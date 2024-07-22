@@ -9,10 +9,10 @@ import lombok.Getter;
 public class ProductResponseDto {
 
     private final Long id;
-    private final Long price;
-    private final Long like_count;
+//    private final Long price;
+//    private final Long like_count;
     private final String product;
-    private final Long review_count;
+//    private final Long review_count;
     private final String product_status;
     private final LocalDateTime created_at;
 
@@ -20,9 +20,9 @@ public class ProductResponseDto {
     public ProductResponseDto(Product product) {
         this.id = product.getId();
         this.product = product.getProduct();
-        this.price = product.getPrice();
-        this.like_count = product.getLike_count();
-        this.review_count = product.getReview_count();
+//        this.price = product.getPrice();
+//        this.like_count = product.getLike_count();
+//        this.review_count = product.getReview_count();
         this.product_status = product.getProduct_status();
         this.created_at = product.getCreatedAt();
     }
