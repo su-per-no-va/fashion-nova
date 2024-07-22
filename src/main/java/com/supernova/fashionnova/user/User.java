@@ -39,7 +39,7 @@ public class User extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false, unique = true)
     private String userName;
 
     private String socialId;
@@ -47,11 +47,11 @@ public class User extends Timestamped {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Email
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
@@ -103,7 +103,7 @@ public class User extends Timestamped {
     private List<Review> reviewList = new ArrayList<>();
 
     @Builder
-    public User(String userName, String password, String name, String email, String phone ) {
+    public User(String userName, String password, String name, String email, String phone) {
         this.userName = userName;
         this.password = password;
         this.name = name;
