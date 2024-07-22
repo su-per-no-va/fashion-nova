@@ -4,16 +4,15 @@ import com.supernova.fashionnova.product.ProductDetail;
 import com.supernova.fashionnova.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,6 +20,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "cart")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Cart {
 
     @Id
@@ -33,20 +33,20 @@ public class Cart {
     @Column(nullable = false)
     private int totalPrice = 0;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany
-    @JoinColumn(name = "product_detail_id")
-    private List<ProductDetail> productDetailList = new ArrayList<>();
 
-    // 사용자 설정 메서드
-    public void assignUser(User user) {
-        if (this.user != null) {
-            throw new IllegalStateException("장바구니를 이미 할당받음");
-        }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_detail_id")
+    private ProductDetail productDetail;
+
+    public Cart(int count, int totalPrice, User user, ProductDetail productDetail) {
+        this.count = count;
+        this.totalPrice = totalPrice;
         this.user = user;
+        this.productDetail = productDetail;
     }
 
     public void setCount(int count) {

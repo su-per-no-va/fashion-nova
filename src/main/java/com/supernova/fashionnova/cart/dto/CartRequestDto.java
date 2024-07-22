@@ -5,7 +5,11 @@ import lombok.Getter;
 @Getter
 public class CartRequestDto {
 
-    private Long productDetailsId;
+    private Long productId;
+
+    private String size;
+
+    private String color;
 
     private int count;
 }

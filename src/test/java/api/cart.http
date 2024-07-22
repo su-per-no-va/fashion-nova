@@ -4,8 +4,10 @@ Content-Type: application/json
 Authorization: {{access_token}}
 
 {
-  "productDetailsId": 1,
-  "count": 1
+  "productId" : 1,
+  "count" : 2,
+  "size" : "s",
+  "color" : "BLACK"
 }
 
 ### 장바구니 조회
