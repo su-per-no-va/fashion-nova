@@ -40,4 +40,13 @@ public class Review extends Timestamped {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
+    public Review(User user, Product product, String review, int rating) {
+
+        this.user = user;
+        this.product = product;
+        this.review = review;
+        this.rating = rating;
+
+    }
+
 }

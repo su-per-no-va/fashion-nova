@@ -1,5 +1,11 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=IntelliJ IDEA
+### 리뷰 작성
+POST http://localhost:8080/reviews
+Content-Type: application/json
+Authorization: {{access_token}}
 
-###
+{
+  "productId" : 1,
+  "review" : "너무 예뻐요",
+  "rating" : 5,
+  "reviewImageUrl" : "URL"
+}
