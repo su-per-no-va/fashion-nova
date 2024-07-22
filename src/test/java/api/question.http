@@ -1,0 +1,14 @@
+### 문의 등록
+POST http://localhost:8080/questions
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "title": "원피스 문의",
+  "question": "너무 구려요 ㅜㅜ",
+  "type": "PRODUCT"
+}
+
+### 내 문의 조회
+GET http://localhost:8080/questions
+Authorization: {{access_token}}
