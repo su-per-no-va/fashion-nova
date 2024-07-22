@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -38,7 +39,7 @@ public class Address {
     private String recipientNumber;
 
     @Column(nullable = false)
-    private int zipCode;
+    private String zipCode;
 
     @Column(nullable = false)
     private String address;
@@ -47,5 +48,21 @@ public class Address {
 
     @Column(nullable = false)
     private boolean defaultAddress;
+
+    @Builder
+    public Address(User user, String name, String recipientName, String recipientNumber, String zipCode, String address, String detail) {
+        this.user = user;
+        this.name = name;
+        this.recipientName = recipientName;
+        this.recipientNumber = recipientNumber;
+        this.zipCode = zipCode;
+        this.address = address;
+        this.detail = detail;
+        this.defaultAddress = false;
+    }
+
+    public void updateDefaultAddress() {
+        this.defaultAddress = !this.defaultAddress;
+    }
 
 }
