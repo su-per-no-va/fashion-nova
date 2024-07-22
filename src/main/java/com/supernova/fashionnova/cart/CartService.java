@@ -1,14 +1,18 @@
 package com.supernova.fashionnova.cart;
 
+import com.supernova.fashionnova.cart.dto.CartItemDto;
+import com.supernova.fashionnova.cart.dto.CartResponseDto;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.product.Product;
 import com.supernova.fashionnova.product.ProductDetail;
 import com.supernova.fashionnova.product.ProductDetailRepository;
 import com.supernova.fashionnova.user.User;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +45,7 @@ public class CartService {
         }
 
         Product product = productDetail.getProduct();
-        Long price = product.getPrice();
+        int price = product.getPrice();
 
         // 사용자의 장바구니를 가져옵니다.
         Cart cart = cartRepository.findByUserId(user.getId()).orElseGet(() -> {
@@ -57,5 +61,31 @@ public class CartService {
 
         // 장바구니를 저장합니다.
         cartRepository.save(cart);
+    }
+
+    /**
+     * 장바구니 조회
+     *
+     * @param user 사용자 정보
+     * @return CartResponseDto
+     */
+    @Transactional(readOnly = true)
+    public CartResponseDto getCart(User user) {
+        Cart cart = cartRepository.findByUserId(user.getId()).orElseGet(() -> {
+            Cart newCart = new Cart();
+            newCart.assignUser(user);
+            return newCart;
+        });
+
+        List<CartItemDto> items = cart.getProductDetailList().stream()
+            .map(detail -> new CartItemDto(
+                detail.getProduct().getProduct(),
+                detail.getProduct().getPrice(),
+                cart.getCount(),
+                detail.getSize(),
+                detail.getColor()))
+            .toList();
+
+        return new CartResponseDto(items, cart.getTotalPrice());
     }
 }

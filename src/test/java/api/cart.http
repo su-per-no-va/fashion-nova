@@ -1,7 +1,7 @@
 ### 장바구니 담기
-POST http://localhost:8080/api/carts
+POST http://localhost:8080/carts
 Content-Type: application/json
-Authorization: {{Authorization}}
+Authorization: {{access_token}}
 
 {
   "productDetailsId": 1,
@@ -9,3 +9,5 @@ Authorization: {{Authorization}}
 }
 
 ### 장바구니 조회
+GET http://localhost:8080/carts
+Authorization: {{access_token}}

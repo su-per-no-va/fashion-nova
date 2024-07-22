@@ -55,7 +55,7 @@ public class Cart {
     }
 
     // totalPrice 증가
-    public void incrementTotalPrice(Long price) {
+    public void incrementTotalPrice(int price) {
         this.totalPrice += price;
     }
 }

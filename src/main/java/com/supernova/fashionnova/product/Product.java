@@ -1,9 +1,6 @@
 package com.supernova.fashionnova.product;
 
 import com.supernova.fashionnova.global.common.Timestamped;
-import com.supernova.fashionnova.review.Review;
-import com.supernova.fashionnova.wish.Wish;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,9 +10,6 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -30,7 +24,7 @@ public class Product extends Timestamped {
     private String product;
 
     @Column(nullable = false)
-    private Long price;
+    private int price;
 
     private String explanation;
 
@@ -38,10 +32,10 @@ public class Product extends Timestamped {
     private String classification;
 
     @Column(nullable = false)
-    private Long like_count;
+    private int like_count;
 
     @Column(nullable = false)
-    private Long review_count;
+    private int review_count;
 
     @Column(nullable = false)
     private String product_status;
