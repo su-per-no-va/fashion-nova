@@ -16,7 +16,12 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-
+    /** 조건별 상품 검색
+     * @param sorted
+     * @param category
+     * @param page
+     * @return 페이징
+     */
     public Page<ProductResponseDto> getProductList(int page, String category, String sorted) {
         Sort.Direction direction = Sort.Direction.DESC;
         Sort sort = Sort.by(direction, sorted);

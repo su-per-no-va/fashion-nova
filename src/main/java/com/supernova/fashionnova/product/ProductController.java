@@ -18,8 +18,17 @@ public class ProductController {
 
      private final ProductService productService;
 
+    /** 조건별 상품 검색
+     * @param sorted
+     * @param category
+     * @param page
+     * @return 상품 리스트
+     */
      @GetMapping("/product")
-    public Page<ProductResponseDto> getProductList(@RequestParam(value = "sort") String sorted, @RequestParam(value = "category") String category, @RequestParam(value = "page") int page) {
+    public Page<ProductResponseDto> getProductList(@RequestParam(value = "sort") String sorted,
+         @RequestParam(value = "category") String category,
+         @RequestParam(value = "page") int page) {
+
         return productService.getProductList( page - 1, category, sorted);
     }
 }
