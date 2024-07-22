@@ -6,7 +6,7 @@ Authorization: {{access_token}}
 {
   "productId" : 1,
   "count" : 1,
-  "size" : "S",
+  "size" : "M",
   "color" : "BLACK"
 }
 
@@ -20,9 +20,9 @@ Content-Type: application/json
 Authorization: {{access_token}}
 
 {
-  "productDetailId": 2,
-  "count": 3,
-  "size": "L",
+  "productDetailId": 1,
+  "count": 1,
+  "size": "M",
   "color": "BLACK"
 }
 

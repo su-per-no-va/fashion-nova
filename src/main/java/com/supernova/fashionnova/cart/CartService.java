@@ -104,7 +104,8 @@ public class CartService {
     @Transactional
     public void updateCart(User user, CartUpdateRequestDto dto) {
 
-        ProductDetail currentProductDetail = productDetailRepository.findById(dto.getProductDetailId())
+        ProductDetail currentProductDetail = productDetailRepository.findById(
+                dto.getProductDetailId())
             .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
 
         ProductDetail newProductDetail = productDetailRepository.findByProductAndSizeAndColor(
@@ -120,12 +121,24 @@ public class CartService {
         Cart cart = cartRepository.findByUserAndProductDetail(user, currentProductDetail)
             .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
 
-        // 상품 수량과 총 금액을 업데이트 하는 메서드
-        cart.updateCountPrice(dto.getCount());
+        // 새로운 상품 상세 정보가 이미 장바구니에 있는지 확인
+        Optional<Cart> existingCartOptional = cartRepository.findByUserAndProductDetail(user,
+            newProductDetail);
+        if (existingCartOptional.isPresent()) {
+            // 이미 존재하면 수량 증가
+            Cart existingCart = existingCartOptional.get();
+            existingCart.incrementCount(cart.getCount());
+            existingCart.incrementTotalPrice(cart.getTotalPrice());
+            cartRepository.save(existingCart);
 
-        // 장바구니에 담긴 product detail을 업데이트
-        cart.setProductDetail(newProductDetail);
-
+            // 기존 장바구니 항목 삭제
+            cartRepository.delete(cart);
+        } else {
+            // 존재하지 않으면 새로 추가
+            cart.setProductDetail(newProductDetail);
+            cart.updateCountPrice(dto.getCount());
+            cartRepository.save(cart);
+        }
     }
 
     /**
