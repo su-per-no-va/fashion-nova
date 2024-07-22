@@ -43,7 +43,7 @@ public class AddressService {
     public List<AddressResponseDto> getAddressList(User user) {
         List<Address> addresses = addressRepository.findByUser(user);
         return addresses.stream()
-            .map(AddressResponseDto::of)
+            .map(AddressResponseDto::new)
             .collect(Collectors.toList());
     }
 

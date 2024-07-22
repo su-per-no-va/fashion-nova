@@ -5,28 +5,25 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
 public class AddressResponseDto {
-    private Long id;
-    private String name;
-    private String recipientName;
-    private String recipientNumber;
-    private String zipCode;
-    private String address;
-    private String detail;
-    private boolean defaultAddress;
+    private final Long id;
+    private final String name;
+    private final String recipientName;
+    private final String recipientNumber;
+    private final String zipCode;
+    private final String address;
+    private final String detail;
+    private final boolean defaultAddress;
 
-    public static AddressResponseDto of(Address address) {
-        return AddressResponseDto.builder()
-            .id(address.getId())
-            .name(address.getName())
-            .recipientName(address.getRecipientName())
-            .recipientNumber(address.getRecipientNumber())
-            .zipCode(address.getZipCode())
-            .address(address.getAddress())
-            .detail(address.getDetail())
-            .defaultAddress(address.isDefaultAddress())
-            .build();
+    public AddressResponseDto (Address address) {
+        this.id = address.getId();
+        this.name = address.getName();
+        this.recipientName = address.getRecipientName();
+        this.recipientNumber = address.getRecipientNumber();
+        this.zipCode = address.getZipCode();
+        this.address = address.getAddress();
+        this.detail = address.getDetail();
+        this.defaultAddress = address.isDefaultAddress();
     }
 
 }
