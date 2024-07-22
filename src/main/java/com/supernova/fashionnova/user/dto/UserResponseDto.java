@@ -4,7 +4,6 @@ import com.supernova.fashionnova.user.User;
 import com.supernova.fashionnova.user.UserGrade;
 import com.supernova.fashionnova.user.UserStatus;
 import java.time.LocalDateTime;
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter

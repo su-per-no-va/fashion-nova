@@ -4,6 +4,7 @@ import com.supernova.fashionnova.global.util.ResponseUtil;
 import com.supernova.fashionnova.security.UserDetailsImpl;
 import com.supernova.fashionnova.user.dto.SignupRequestDto;
 import com.supernova.fashionnova.user.dto.UserResponseDto;
+import com.supernova.fashionnova.user.dto.UserUpdateRequestDto;
 import com.supernova.fashionnova.warn.dto.WarnResponseDto;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -80,7 +81,8 @@ public class UserController {
         return ResponseUtil.of(HttpStatus.OK, userResponseDto);
     }
 
-    /** 유저 경고 조회(자신만 가능)
+    /**
+     * 유저 경고 조회(자신만 가능)
      *
      * @param userDetails
      * @return
@@ -94,6 +96,19 @@ public class UserController {
         return ResponseUtil.of(HttpStatus.OK, responseDtoList);
     }
 
+    /** 유저 정보 수정(본인만 가능)
+     *
+     * @param requestDto
+     * @param userDetails
+     * @return
+     */
+    @PutMapping
+    public ResponseEntity<UserResponseDto> updateUser(
+        @Valid @RequestBody UserUpdateRequestDto requestDto,
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
+        UserResponseDto responseDto = userService.updateUser(requestDto,userDetails.getUser());
 
+        return ResponseUtil.of(HttpStatus.OK, responseDto);
+    }
 }

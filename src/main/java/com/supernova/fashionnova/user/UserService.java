@@ -4,10 +4,12 @@ import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.user.dto.SignupRequestDto;
 import com.supernova.fashionnova.user.dto.UserResponseDto;
+import com.supernova.fashionnova.user.dto.UserUpdateRequestDto;
 import com.supernova.fashionnova.warn.Warn;
 import com.supernova.fashionnova.warn.dto.WarnRepository;
 import com.supernova.fashionnova.warn.dto.WarnResponseDto;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -82,7 +84,8 @@ public class UserService {
 
     }
 
-    /** 유저 경고 조회
+    /**
+     * 유저 경고 조회
      *
      * @param user
      * @return List<WarnResponseDto>
@@ -101,6 +104,27 @@ public class UserService {
             .map(WarnResponseDto::new)
             .collect(Collectors.toList());
     }
+
+    /**
+     * 유저 정보 수정
+     *
+     * @param requestDto
+     * @param user
+     * @return UserResponseDto
+     * @throws CustomException NOT_FOUND_USER 유저를 찾을 수 없을때
+     */
+    @Transactional
+    public UserResponseDto updateUser(UserUpdateRequestDto requestDto, User user) {
+
+        User updateUser = userRepository.findByUserName(user.getUserName())
+            .orElseThrow(()-> new CustomException(ErrorType.NOT_FOUND_USER)
+            );
+
+        updateUser.updateUser(requestDto);
+
+        return new UserResponseDto(user);
+    }
+
 
     private void checkDuplicate(SignupRequestDto requestDto) {
 
