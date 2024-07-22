@@ -3,6 +3,7 @@ package com.supernova.fashionnova.cart;
 import com.supernova.fashionnova.cart.dto.CartDeleteRequestDto;
 import com.supernova.fashionnova.cart.dto.CartRequestDto;
 import com.supernova.fashionnova.cart.dto.CartResponseDto;
+import com.supernova.fashionnova.cart.dto.CartUpdateRequestDto;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.global.util.ResponseUtil;
@@ -16,6 +17,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -62,22 +64,22 @@ public class CartController {
         return ResponseUtil.of(HttpStatus.OK, cartResponseDto);
     }
 
-//    /**
-//     * 장바구니 수정
-//     *
-//     * @param dto count, size, color
-//     * @return "상품 옵션 수정 완료" 메시지
-//     */
-//    @PutMapping
-//    public ResponseEntity<String> updateCart(
-//        @Valid @RequestBody CartRequestDto dto,
-//        @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//
-//        cartService.updateCart(userDetails.getUser(), dto);
-//
-//        return ResponseUtil.of(HttpStatus.OK, "상품 옵션 수정 완료");
-//    }
-//
+    /**
+     * 장바구니 수정
+     *
+     * @param cartUpdateRequestDto
+     * @return "상품 옵션 수정 완료" 메시지
+     */
+    @PutMapping
+    public ResponseEntity<String> updateCart(
+        @Valid @RequestBody CartUpdateRequestDto dto,
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        cartService.updateCart(userDetails.getUser(), dto);
+
+        return ResponseUtil.of(HttpStatus.OK, "상품 옵션 수정 완료");
+    }
+
     /**
      * 장바구니 상품 개별 삭제
      *

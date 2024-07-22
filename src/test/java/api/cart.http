@@ -5,8 +5,8 @@ Authorization: {{access_token}}
 
 {
   "productId" : 1,
-  "count" : 2,
-  "size" : "s",
+  "count" : 1,
+  "size" : "S",
   "color" : "BLACK"
 }
 
@@ -15,15 +15,15 @@ GET http://localhost:8080/carts
 Authorization: {{access_token}}
 
 ### 장바구니 상품 옵션 수정
-PUT http://localhost:8080/cart
+PUT http://localhost:8080/carts
 Content-Type: application/json
 Authorization: {{access_token}}
 
 {
-  "productId": 1,
-  "count": 2,
-  "size": "M",
-  "color": "black"
+  "productDetailId": 2,
+  "count": 3,
+  "size": "L",
+  "color": "BLACK"
 }
 
 ### 장바구니 상품 삭제

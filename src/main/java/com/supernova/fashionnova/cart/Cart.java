@@ -59,4 +59,14 @@ public class Cart {
         this.totalPrice += price;
     }
 
+    public void updateCountPrice(int newCount) {
+        this.count = newCount;
+        this.totalPrice = newCount * this.productDetail.getProduct().getPrice();
+    }
+
+    public void setProductDetail(ProductDetail newProductDetail) {
+        this.productDetail = newProductDetail;
+        this.totalPrice = this.count * newProductDetail.getProduct().getPrice();
+    }
+
 }

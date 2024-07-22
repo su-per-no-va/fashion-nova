@@ -3,6 +3,7 @@ package com.supernova.fashionnova.cart;
 import com.supernova.fashionnova.cart.dto.CartItemDto;
 import com.supernova.fashionnova.cart.dto.CartRequestDto;
 import com.supernova.fashionnova.cart.dto.CartResponseDto;
+import com.supernova.fashionnova.cart.dto.CartUpdateRequestDto;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.product.Product;
@@ -92,49 +93,43 @@ public class CartService {
         return new CartResponseDto(cartItemDtoList, totalPrice);
     }
 
-//    /**
-//     * 장바구니 수정
-//     *
-//     * @param user 사용자 정보
-//     * @param dto
-//     * @throws CustomException NOT_FOUND_PRODUCT 상품 정보를 찾을 수 없을 때
-//     * @throws CustomException OUT_OF_STOCK 품절된 상품일 때
-//     */
-//    @Transactional
-//    public void updateCart(User user, CartRequestDto dto) {
-//        Cart cart = cartRepository.findByUserId(user.getId())
-//            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
-//
-//        ProductDetail currentProductDetail = cart.getProductDetailList().stream()
-//            .filter(detail -> detail.getProduct().getId().equals(dto.getProductId()))
-//            .findFirst()
-//            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
-//
-//        // 새로운 사이즈와 색상에 맞는 ProductDetail 찾기
-//        ProductDetail newProductDetail = productDetailRepository.findByProductAndSizeAndColor(
-//            currentProductDetail.getProduct(),
-//            dto.getSize(),
-//            dto.getColor()
-//        ).orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
-//
-//        if (newProductDetail.getQuantity() == 0) {
-//            throw new CustomException(ErrorType.OUT_OF_STOCK);
-//        }
-//
-//        // 새로운 ProductDetail로 교체
-//        cart.getProductDetailList().remove(currentProductDetail);
-//        cart.getProductDetailList().add(newProductDetail);
-//
-//        // 상품 수량이 수정된 경우 반영
-//        if (dto.getCount() != null) {
-//            int oldCount = cart.getCount();
-//            int priceDifference = (dto.getCount() - oldCount) * newProductDetail.getProduct().getPrice();
-//            cart.setCount(dto.getCount());
-//            cart.incrementTotalPrice(priceDifference);
-//        }
-//
-//    }
-//
+    /**
+     * 장바구니 수정
+     *
+     * @param user 사용자 정보
+     * @param dto 장바구니 데이터
+     * @throws CustomException NOT_FOUND_PRODUCT 상품 정보를 찾을 수 없을 때
+     * @throws CustomException OUT_OF_STOCK 품절된 상품일 때
+     */
+    @Transactional
+    public void updateCart(User user, CartUpdateRequestDto dto) {
+        // 기존의 productDetailId를 사용하지 않고, 새로운 size와 color에 맞는 productDetail을 찾기
+        ProductDetail currentProductDetail = productDetailRepository.findById(dto.getProductDetailId())
+            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
+
+        // Find the new product detail
+        ProductDetail newProductDetail = productDetailRepository.findByProductAndSizeAndColor(
+                currentProductDetail.getProduct(),
+                dto.getSize(), dto.getColor())
+            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
+
+        if (newProductDetail.getQuantity() == 0) {
+            throw new CustomException(ErrorType.OUT_OF_STOCK);
+        }
+
+        // Find current cart item
+        Cart cart = cartRepository.findByUserAndProductDetail(user, currentProductDetail)
+            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
+
+        // Update count and total price using the new method
+        cart.updateCountPrice(dto.getCount());
+
+        // Update product detail reference
+        cart.setProductDetail(newProductDetail);
+
+        cartRepository.save(cart);
+    }
+
     /**
      * 장바구니 상품 삭제
      *
