@@ -18,39 +18,47 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
+
     private final UserService userService;
 
-    /** 유저 회원가입
+    /**
+     * 유저 회원가입
      *
      * @param requestDto
      * @return "회원가입 성공"
      */
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@Valid @RequestBody SignupRequestDto requestDto) {
+
         userService.signup(requestDto);
-        return ResponseUtil.of(HttpStatus.CREATED,"회원가입 성공");
+
+        return ResponseUtil.of(HttpStatus.CREATED, "회원가입 성공");
     }
 
-    /** 유저 로그아웃
+    /**
+     * 유저 로그아웃
      *
      * @param userDetails
      * @return "로그아웃 성공"
      */
     @PostMapping("/logout")
     public ResponseEntity<String> logout(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+
         userService.logout(userDetails.getUser());
-        return ResponseUtil.of(HttpStatus.OK,"로그아웃 성공");
+
+        return ResponseUtil.of(HttpStatus.OK, "로그아웃 성공");
     }
 
     /**
-     *
      * @param userDetails
      * @return "회원탈퇴 성공"
      */
     @PutMapping("/withdraw")
     public ResponseEntity<String> withdraw(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+
         userService.withdraw(userDetails.getUser());
-        return ResponseUtil.of(HttpStatus.OK,"회원 탈퇴 성공");
+
+        return ResponseUtil.of(HttpStatus.OK, "회원 탈퇴 성공");
     }
 
 
