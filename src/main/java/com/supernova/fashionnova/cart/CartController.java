@@ -4,17 +4,13 @@ import com.supernova.fashionnova.cart.dto.CartDeleteRequestDto;
 import com.supernova.fashionnova.cart.dto.CartRequestDto;
 import com.supernova.fashionnova.cart.dto.CartResponseDto;
 import com.supernova.fashionnova.cart.dto.CartUpdateRequestDto;
-import com.supernova.fashionnova.global.exception.CustomException;
-import com.supernova.fashionnova.global.exception.ErrorType;
+import com.supernova.fashionnova.global.util.ResponseUtil;
 import com.supernova.fashionnova.security.UserDetailsImpl;
-import com.supernova.fashionnova.user.User;
-import com.supernova.fashionnova.user.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,7 +40,7 @@ public class CartController {
 
         cartService.addCart(userDetails.getUser(), cartRequestDto.getProductDetailsId(), cartRequestDto.getCount());
 
-        return new ResponseEntity<>("장바구니 담기 완료", HttpStatus.OK);
+        return ResponseUtil.of(HttpStatus.OK, "장바구니 담기 완료");
     }
 
     /**
@@ -58,7 +54,7 @@ public class CartController {
 
         CartResponseDto cartResponseDto = cartService.getCart(userDetails.getUser());
 
-        return new ResponseEntity<>(cartResponseDto, HttpStatus.OK);
+        return ResponseUtil.of(HttpStatus.OK, cartResponseDto);
     }
 
     /**
@@ -74,7 +70,7 @@ public class CartController {
 
         cartService.updateCart(userDetails.getUser(), cartUpdateRequestDto);
 
-        return new ResponseEntity<>("상품 옵션 수정 완료", HttpStatus.OK);
+        return ResponseUtil.of(HttpStatus.OK, "상품 옵션 수정 완료");
     }
 
     /**
@@ -90,7 +86,7 @@ public class CartController {
 
         cartService.deleteFromCart(userDetails.getUser(), cartDeleteRequestDto.getProductDetailId());
 
-        return new ResponseEntity<>("장바구니 상품 삭제 완료", HttpStatus.OK);
+        return ResponseUtil.of(HttpStatus.OK, "장바구니 상품 삭제 완료");
     }
 
     @DeleteMapping("/delete")
@@ -98,6 +94,6 @@ public class CartController {
 
         cartService.clearCart(userDetails.getUser());
 
-        return new ResponseEntity<>("장바구니 비우기 완료", HttpStatus.OK);
+        return ResponseUtil.of(HttpStatus.OK, "장바구니 비우기 완료");
     }
 }

@@ -10,7 +10,6 @@ import com.supernova.fashionnova.product.ProductDetail;
 import com.supernova.fashionnova.product.ProductDetailRepository;
 import com.supernova.fashionnova.user.User;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,13 +33,16 @@ public class CartService {
      */
     public void addCart(User user, Long productDetailId, int count) {
 
-        Optional<ProductDetail> productDetailOptional = productDetailRepository.findById(productDetailId);
+        ProductDetail productDetail = productDetailRepository.findById(productDetailId)
+            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
 
-        if (productDetailOptional.isEmpty()) {
-            throw new CustomException(ErrorType.NOT_FOUND_PRODUCT);
-        }
-
-            ProductDetail productDetail = productDetailOptional.get();
+//        Optional<ProductDetail> productDetailOptional = productDetailRepository.findById(productDetailId);
+//
+//        if (productDetailOptional.isEmpty()) {
+//            throw new CustomException(ErrorType.NOT_FOUND_PRODUCT);
+//        }
+//
+//            ProductDetail productDetail = productDetailOptional.get();
 
             if (productDetail.getQuantity() == 0 || !"ACTIVE".equals(productDetail.getStatus())) {
                 throw new CustomException(ErrorType.OUT_OF_STOCK);
@@ -49,7 +51,6 @@ public class CartService {
             Product product = productDetail.getProduct();
             int price = product.getPrice();
 
-            // 사용자의 장바구니를 가져옵니다.
             Cart cart = cartRepository.findByUserId(user.getId()).orElseGet(() -> {
                 Cart newCart = new Cart();
                 newCart.assignUser(user);
@@ -61,7 +62,6 @@ public class CartService {
             cart.incrementTotalPrice(price * count);
 
         }
-
 
     /**
      * 장바구니 조회

@@ -7,12 +7,4 @@ public class CartDeleteRequestDto {
 
     private Long productDetailId;
 
-    public Long getProductDetailId() {
-        return productDetailId;
-    }
-
-    public void setProductDetailId(Long productDetailId) {
-        this.productDetailId = productDetailId;
-    }
-
 }

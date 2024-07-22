@@ -7,5 +7,5 @@ public class CartRequestDto {
 
     private Long productDetailsId;
 
-    private int count = 1;
+    private int count;
 }
