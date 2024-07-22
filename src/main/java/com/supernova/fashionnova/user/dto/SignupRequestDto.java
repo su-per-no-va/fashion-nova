@@ -8,8 +8,9 @@ import org.hibernate.validator.constraints.Length;
 
 @Getter
 public class SignupRequestDto {
+
     @NotBlank(message = "ID 입력값이 없습니다.")
-    @Length(min = 4, max = 100,message = "ID는 최소 4글자, 최대 100글자입니다.")
+    @Length(min = 4, max = 100, message = "ID는 최소 4글자, 최대 100글자입니다.")
     private String userName;
 
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
@@ -22,12 +23,12 @@ public class SignupRequestDto {
     private String name;
 
     @Email(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
-    message = "이메일 형식에 맞지 않습니다.")
+        message = "이메일 형식에 맞지 않습니다.")
     @NotBlank(message = "이메일을 입력값이 없습니다.")
     private String email;
 
     @Pattern(regexp = "^010-\\d{4}-\\d{4}$",
-    message = "휴대폰 형식에 맞지 않습니다. 휴대폰 형식: 010-****-**** ")
+        message = "휴대폰 형식에 맞지 않습니다. 휴대폰 형식: 010-****-**** ")
     @NotBlank(message = "휴대폰 입력값이 없습니다.")
     private String phone;
 }
