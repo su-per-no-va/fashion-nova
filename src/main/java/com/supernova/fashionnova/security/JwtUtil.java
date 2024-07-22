@@ -18,7 +18,6 @@ import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.security.Key;
-import java.security.SignatureException;
 import java.util.Base64;
 import java.util.Date;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +32,8 @@ import org.springframework.util.StringUtils;
 @Slf4j(topic = "JwtUtil")
 @RequiredArgsConstructor
 public class JwtUtil {
+
+    private final UserRepository userRepository;
 
     // 로그 설정
     public static final Logger logger = LoggerFactory.getLogger("JWT 관련 로그");
