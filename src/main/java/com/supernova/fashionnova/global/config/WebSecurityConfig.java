@@ -22,7 +22,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 @Configuration
 @EnableWebSecurity // Spring Security 지원을 가능하게 함
@@ -85,6 +84,7 @@ public class WebSecurityConfig {
                 .permitAll() // resources 접근 허용 설정
                 .requestMatchers(HttpMethod.POST, "/users/signup").permitAll() // 회원가입 허용
                 .requestMatchers(HttpMethod.POST, "/users/login").permitAll() // 로그인 허용
+                .requestMatchers(HttpMethod.GET, "/products/**").permitAll()// 상품 검색 허용
                 .anyRequest().authenticated() // 그 외 모든 요청 인증처리
 
         );
