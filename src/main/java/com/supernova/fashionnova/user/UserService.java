@@ -4,9 +4,15 @@ import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.user.dto.SignupRequestDto;
 import com.supernova.fashionnova.user.dto.UserResponseDto;
+import com.supernova.fashionnova.warn.Warn;
+import com.supernova.fashionnova.warn.dto.WarnRepository;
+import com.supernova.fashionnova.warn.dto.WarnResponseDto;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -14,6 +20,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final WarnRepository warnRepository;
 
     /**
      * 유저 회원가입
@@ -73,6 +80,26 @@ public class UserService {
 
         return new UserResponseDto(user);
 
+    }
+
+    /** 유저 경고 조회
+     *
+     * @param user
+     * @return List<WarnResponseDto>
+     */
+    @Transactional
+    public List<WarnResponseDto> getCautionList(User user) {
+
+        // 테스트 경고 작성
+//        Warn warn1 = new Warn("님 블랙 컨슈머임", user);
+//         Warn warn2 = new Warn("님 엄청난 블랙 컨슈머임", user);
+//        warnRepository.save(warn1);
+//        warnRepository.save(warn2);
+        List<Warn> warnList = warnRepository.findByUser(user);
+
+        return warnList.stream()
+            .map(WarnResponseDto::new)
+            .collect(Collectors.toList());
     }
 
     private void checkDuplicate(SignupRequestDto requestDto) {

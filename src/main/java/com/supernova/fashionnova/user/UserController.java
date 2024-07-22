@@ -4,7 +4,9 @@ import com.supernova.fashionnova.global.util.ResponseUtil;
 import com.supernova.fashionnova.security.UserDetailsImpl;
 import com.supernova.fashionnova.user.dto.SignupRequestDto;
 import com.supernova.fashionnova.user.dto.UserResponseDto;
+import com.supernova.fashionnova.warn.dto.WarnResponseDto;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -63,7 +65,8 @@ public class UserController {
         return ResponseUtil.of(HttpStatus.OK, "회원 탈퇴 성공");
     }
 
-    /** 유저 정보 조회(자신만 가능)
+    /**
+     * 유저 정보 조회(자신만 가능)
      *
      * @param userDetails
      * @return UserResponseDto
@@ -76,5 +79,21 @@ public class UserController {
 
         return ResponseUtil.of(HttpStatus.OK, userResponseDto);
     }
+
+    /** 유저 경고 조회(자신만 가능)
+     *
+     * @param userDetails
+     * @return
+     */
+    @GetMapping("/caution")
+    public ResponseEntity<List<WarnResponseDto>> getCautionList(
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        List<WarnResponseDto> responseDtoList = userService.getCautionList(userDetails.getUser());
+
+        return ResponseUtil.of(HttpStatus.OK, responseDtoList);
+    }
+
+
 
 }

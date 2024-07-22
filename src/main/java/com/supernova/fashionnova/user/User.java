@@ -12,6 +12,7 @@ import com.supernova.fashionnova.warn.Warn;
 import com.supernova.fashionnova.wish.Wish;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
@@ -74,37 +75,6 @@ public class User extends Timestamped {
 
     private String refreshToken;
 
-    // 주문
-    @OneToMany(mappedBy = "user")
-    private List<Order> orderList = new ArrayList<>();
-
-    // 위시리스트
-    @OneToMany(mappedBy = "user")
-    private List<Wish> wishList = new ArrayList<>();
-
-    // 쿠폰
-    @OneToMany(mappedBy = "user")
-    private List<Coupon> couponList = new ArrayList<>();
-
-    // 배송지
-    @OneToMany(mappedBy = "user")
-    private List<Address> addressList = new ArrayList<>();
-
-    // 경고
-    @OneToMany(mappedBy = "user")
-    private List<Warn> warnList = new ArrayList<>();
-
-    // 문의
-    @OneToMany(mappedBy = "user")
-    private List<Question> questionList = new ArrayList<>();
-
-    // 장바구니
-    @OneToOne(mappedBy = "user")
-    private Cart cart;
-
-    // 리뷰
-    @OneToMany(mappedBy = "user")
-    private List<Review> reviewList = new ArrayList<>();
 
     @Builder
     public User(String userName, String password, String name, String email, String phone) {
