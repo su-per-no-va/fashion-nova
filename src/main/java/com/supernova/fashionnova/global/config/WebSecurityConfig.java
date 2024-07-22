@@ -83,8 +83,8 @@ public class WebSecurityConfig {
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
                 .permitAll() // resources 접근 허용 설정
                 .requestMatchers(HttpMethod.POST, "/users/signup").permitAll() // 회원가입 허용
-                .requestMatchers(HttpMethod.POST, "/users/login").permitAll() //
-                .requestMatchers(HttpMethod.GET, "/products/**").permitAll()// 로그인 허용
+                .requestMatchers(HttpMethod.POST, "/users/login").permitAll() // 로그인 허용
+                .requestMatchers(HttpMethod.GET, "/products/**").permitAll()// 상품 검색 허용
                 .anyRequest().authenticated() // 그 외 모든 요청 인증처리
 
         );
