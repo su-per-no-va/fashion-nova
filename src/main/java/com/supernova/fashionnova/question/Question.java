@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -40,5 +41,14 @@ public class Question extends Timestamped {
 
     @Column(nullable = false)
     private QuestionStatus status;
+
+    @Builder
+    public Question(User user, String title, String question, QuestionType type) {
+        this.user = user;
+        this.title = title;
+        this.question = question;
+        this.type = type;
+        this.status = QuestionStatus.BEFORE;
+    }
 
 }

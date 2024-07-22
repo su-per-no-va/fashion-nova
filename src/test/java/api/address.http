@@ -1,0 +1,22 @@
+### 배송지 추가
+POST http://localhost:8080/addresses
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "name" : "집",
+  "recipientName" : "남현",
+  "recipientNumber" : "010-0000-1111",
+  "zipCode" : "12345",
+  "address" : "사랑시 고백구 행복동",
+  "detail" : "A동 101호"
+}
+
+### 배송지 조회
+GET http://localhost:8080/addresses
+Authorization: {{access_token}}
+
+### 기본 배송지 설정
+@addressId = 2
+PUT http://localhost:8080/addresses/{{addressId}}
+Authorization: {{access_token}}
