@@ -29,3 +29,7 @@ Authorization: {{access_token}}
 ###회원탈퇴
 PUT http://localhost:8080/users/withdraw
 Authorization: {{access_token}}
+
+###유저정보조회(자신만 가능)
+GET localhost:8080/users
+Authorization: {{access_token}}

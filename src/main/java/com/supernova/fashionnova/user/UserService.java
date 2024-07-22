@@ -3,6 +3,7 @@ package com.supernova.fashionnova.user;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.user.dto.SignupRequestDto;
+import com.supernova.fashionnova.user.dto.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,26 +38,45 @@ public class UserService {
 
     }
 
-    /** 유저 로그아웃
+    /**
+     * 유저 로그아웃
      *
      * @param user
      */
     public void logout(User user) {
+
         user.updateRefreshToken("");
         userRepository.save(user);
+
     }
 
-    /** 유저 회원탈퇴
+    /**
+     * 유저 회원탈퇴
      *
      * @param user
      */
     public void withdraw(User user) {
+
         user.updateStatus(UserStatus.NON_MEMBER);
         user.updateRefreshToken("");
         userRepository.save(user);
+
+    }
+
+    /**
+     * 유저 정보 조회(자신만 가능)
+     *
+     * @param user
+     * @return UserResponseDto
+     */
+    public UserResponseDto getUser(User user) {
+
+        return new UserResponseDto(user);
+
     }
 
     private void checkDuplicate(SignupRequestDto requestDto) {
+
         // userName 중복체크
         if (userRepository.existsByUserName(requestDto.getUserName())) {
             throw new CustomException(ErrorType.DUPLICATED_USERNAME);
@@ -65,8 +85,8 @@ public class UserService {
         if (userRepository.existsByEmail(requestDto.getEmail())) {
             throw new CustomException(ErrorType.DUPLICATED_EMAIL);
         }
-    }
 
+    }
 
 
 }

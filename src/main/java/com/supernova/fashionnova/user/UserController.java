@@ -3,11 +3,13 @@ package com.supernova.fashionnova.user;
 import com.supernova.fashionnova.global.util.ResponseUtil;
 import com.supernova.fashionnova.security.UserDetailsImpl;
 import com.supernova.fashionnova.user.dto.SignupRequestDto;
+import com.supernova.fashionnova.user.dto.UserResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -61,5 +63,18 @@ public class UserController {
         return ResponseUtil.of(HttpStatus.OK, "회원 탈퇴 성공");
     }
 
+    /** 유저 정보 조회(자신만 가능)
+     *
+     * @param userDetails
+     * @return UserResponseDto
+     */
+    @GetMapping
+    public ResponseEntity<UserResponseDto> getUser(
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        UserResponseDto userResponseDto = userService.getUser(userDetails.getUser());
+
+        return ResponseUtil.of(HttpStatus.OK, userResponseDto);
+    }
 
 }
