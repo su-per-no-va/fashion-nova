@@ -1,5 +1,6 @@
 package com.supernova.fashionnova.review;
 
+import com.supernova.fashionnova.global.util.ResponseUtil;
 import com.supernova.fashionnova.review.dto.ReviewRequestDto;
 import com.supernova.fashionnova.security.UserDetailsImpl;
 import jakarta.validation.Valid;
@@ -32,6 +33,6 @@ public class ReviewController {
 
         reviewService.addReview(userDetails.getUser(), reviewRequestDto);
 
-        return new ResponseEntity<>("리뷰 등록 완료", HttpStatus.OK);
+        return ResponseUtil.of(HttpStatus.OK, "리뷰 등록 완료");
     }
 }
