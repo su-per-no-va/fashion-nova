@@ -3,23 +3,17 @@ package com.supernova.fashionnova.product.dto;
 
 import com.supernova.fashionnova.product.Product;
 import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class ProductResponseDto {
-    private Long id;
-    private String product;
-    private Long price;
-    private Long like_count;
-    private Long review_count;
-    private String product_status;
-    private LocalDateTime created_at;
+    private final Long id;
+    private final Long price;
+    private final Long like_count;
+    private final String product;
+    private final Long review_count;
+    private final String product_status;
+    private final LocalDateTime created_at;
 
 
     public ProductResponseDto(Product product){
