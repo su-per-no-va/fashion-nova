@@ -103,11 +103,10 @@ public class CartService {
      */
     @Transactional
     public void updateCart(User user, CartUpdateRequestDto dto) {
-        // 기존의 productDetailId를 사용하지 않고, 새로운 size와 color에 맞는 productDetail을 찾기
+
         ProductDetail currentProductDetail = productDetailRepository.findById(dto.getProductDetailId())
             .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
 
-        // Find the new product detail
         ProductDetail newProductDetail = productDetailRepository.findByProductAndSizeAndColor(
                 currentProductDetail.getProduct(),
                 dto.getSize(), dto.getColor())
@@ -117,17 +116,16 @@ public class CartService {
             throw new CustomException(ErrorType.OUT_OF_STOCK);
         }
 
-        // Find current cart item
+        // 현재 장바구니 조회
         Cart cart = cartRepository.findByUserAndProductDetail(user, currentProductDetail)
             .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
 
-        // Update count and total price using the new method
+        // 상품 수량과 총 금액을 업데이트 하는 메서드
         cart.updateCountPrice(dto.getCount());
 
-        // Update product detail reference
+        // 장바구니에 담긴 product detail을 업데이트
         cart.setProductDetail(newProductDetail);
 
-        cartRepository.save(cart);
     }
 
     /**
