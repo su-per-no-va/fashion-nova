@@ -11,3 +11,24 @@ Authorization: {{access_token}}
 ### 장바구니 조회
 GET http://localhost:8080/carts
 Authorization: {{access_token}}
+
+### 장바구니 상품 옵션 수정
+PUT http://localhost:8080/cart
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "productId": 1,
+  "count": 2,
+  "size": "M",
+  "color": "black"
+}
+
+### 장바구니 상품 삭제
+DELETE http://localhost:8080/carts
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "productDetailId": 1
+}

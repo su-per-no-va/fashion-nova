@@ -18,6 +18,7 @@ public enum ErrorType {
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다."),
 
     NOT_FOUND_PRODUCTDETAIL(HttpStatus.NOT_FOUND, "상품을 찾을 수 없습니다."),
+    NOT_FOUND_PRODUCT(HttpStatus.NOT_FOUND, "상품을 찾을 수 없습니다."),
     OUT_OF_STOCK(HttpStatus.BAD_REQUEST, "품절된 상품입니다.");
 
     private final HttpStatus httpStatus;

@@ -2,6 +2,7 @@ package com.supernova.fashionnova.cart;
 
 import com.supernova.fashionnova.cart.dto.CartItemDto;
 import com.supernova.fashionnova.cart.dto.CartResponseDto;
+import com.supernova.fashionnova.cart.dto.CartUpdateRequestDto;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.product.Product;
@@ -87,5 +88,64 @@ public class CartService {
             .toList();
 
         return new CartResponseDto(items, cart.getTotalPrice());
+    }
+
+    /**
+     * 장바구니 수정
+     *
+     * @param user      사용자 정보
+     * @param cartUpdateRequestDto
+     * @throws CustomException NOT_FOUND_PRODUCTD 상품 정보를 찾을 수 없을 때
+     * @throws CustomException OUT_OF_STOCK 품절된 상품일 때
+     */
+    @Transactional
+    public void updateCart(User user, CartUpdateRequestDto cartUpdateRequestDto) {
+        Cart cart = cartRepository.findByUserId(user.getId())
+            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
+
+        ProductDetail currentProductDetail = cart.getProductDetailList().stream()
+            .filter(detail -> detail.getProduct().getId().equals(cartUpdateRequestDto.getProductId()))
+            .findFirst()
+            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
+
+        // 새로운 사이즈와 색상에 맞는 ProductDetail 찾기
+        ProductDetail newProductDetail = productDetailRepository.findByProductAndSizeAndColor(
+            currentProductDetail.getProduct(),
+            cartUpdateRequestDto.getSize(),
+            cartUpdateRequestDto.getColor()
+        ).orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
+
+        if (newProductDetail.getQuantity() == 0) {
+            throw new CustomException(ErrorType.OUT_OF_STOCK);
+        }
+
+        // 새로운 ProductDetail로 교체
+        cart.getProductDetailList().remove(currentProductDetail);
+        cart.getProductDetailList().add(newProductDetail);
+
+        // 상품 수량이 수정된 경우 반영
+        if (cartUpdateRequestDto.getCount() != null) {
+            int oldCount = cart.getCount();
+            int priceDifference = (cartUpdateRequestDto.getCount() - oldCount) * newProductDetail.getProduct().getPrice();
+            cart.setCount(cartUpdateRequestDto.getCount());
+            cart.incrementTotalPrice(priceDifference);
+        }
+
+        cartRepository.save(cart);
+    }
+
+    @Transactional
+    public void deleteFromCart(User user, Long productDetailId) {
+        Cart cart = cartRepository.findByUserId(user.getId())
+            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
+
+        ProductDetail productDetail = cart.getProductDetailList().stream()
+            .filter(detail -> detail.getId().equals(productDetailId))
+            .findFirst()
+            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
+
+        cart.getProductDetailList().remove(productDetail);
+
+        cartRepository.save(cart);
     }
 }

@@ -49,6 +49,10 @@ public class Cart {
         this.user = user;
     }
 
+    public void setCount(int count) {
+        this.count = count;
+    }
+
     // 상품 수량 증가
     public void incrementCount(int count) {
         this.count += count;
@@ -58,4 +62,6 @@ public class Cart {
     public void incrementTotalPrice(int price) {
         this.totalPrice += price;
     }
+
+
 }
