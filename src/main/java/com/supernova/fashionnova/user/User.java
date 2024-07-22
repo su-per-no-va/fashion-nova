@@ -118,4 +118,8 @@ public class User extends Timestamped {
         this.refreshToken = refreshToken;
     }
 
+    public void updateStatus(UserStatus status) {
+        this.userStatus = status;
+    }
+
 }
