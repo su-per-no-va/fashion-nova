@@ -7,6 +7,7 @@ import lombok.Getter;
 
 @Getter
 public class ProductResponseDto {
+
     private final Long id;
     private final Long price;
     private final Long like_count;
@@ -16,7 +17,7 @@ public class ProductResponseDto {
     private final LocalDateTime created_at;
 
 
-    public ProductResponseDto(Product product){
+    public ProductResponseDto(Product product) {
         this.id = product.getId();
         this.product = product.getProduct();
         this.price = product.getPrice();
