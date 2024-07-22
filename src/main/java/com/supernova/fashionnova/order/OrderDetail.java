@@ -5,14 +5,13 @@ import com.supernova.fashionnova.product.ProductDetail;
 import com.supernova.fashionnova.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,8 +46,8 @@ public class OrderDetail {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @OneToMany
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="product_detail_id")
-    private List<ProductDetail> productDetail;
+    private ProductDetail productDetail;
 
 }

@@ -15,6 +15,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleScheduleException(CustomException ex) {
         return ResponseEntity.status(ex.getErrorType().getHttpStatus()).body(new ExceptionDto(ex.getErrorType()));
     }
+
 //    밸리데이션 핸들러
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleException(MethodArgumentNotValidException ex) {

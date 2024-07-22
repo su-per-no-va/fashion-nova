@@ -94,10 +94,6 @@ public class User extends Timestamped {
     @OneToMany(mappedBy = "user")
     private List<Question> questionList = new ArrayList<>();
 
-    // 장바구니
-    @OneToOne(mappedBy = "user")
-    private Cart cart;
-
     // 리뷰
     @OneToMany(mappedBy = "user")
     private List<Review> reviewList = new ArrayList<>();
