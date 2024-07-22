@@ -76,6 +76,7 @@ public class CartService {
      */
     @Transactional(readOnly = true)
     public CartResponseDto getCart(User user) {
+
         List<Cart> cartList = cartRepository.findByUser(user);
         List<CartItemDto> cartItemDtoList = cartList.stream()
             .map(cart -> new CartItemDto(
@@ -151,22 +152,22 @@ public class CartService {
         cartRepository.delete(cart);
     }
 
-//    /**
-//     * 장바구니 비우기
-//     *
-//     * @param user      사용자 정보
-//     * @throws CustomException CART_EMPTY 장바구니에 상품이 존재하지 않을 때
-//     */
-//    @Transactional
-//    public void clearCart(User user) {
-//        Cart cart = cartRepository.findByUserId(user.getId())
-//            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
-//
-//        if (cart.getProductDetailList().isEmpty()) {
-//            throw new CustomException(ErrorType.CART_EMPTY);
-//        }
-//
-//        cart.getProductDetailList().clear();
-//
-//    }
+    /**
+     * 장바구니 비우기
+     *
+     * @param user      사용자 정보
+     * @throws CustomException CART_EMPTY 장바구니에 상품이 존재하지 않을 때
+     */
+    @Transactional
+    public void clearCart(User user) {
+
+        List<Cart> cartList = cartRepository.findByUser(user);
+
+        if (cartList.isEmpty()) {
+            throw new CustomException(ErrorType.CART_EMPTY);
+        }
+
+        cartRepository.deleteAllInBatch(cartList);
+
+    }
 }

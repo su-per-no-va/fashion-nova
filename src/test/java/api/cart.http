@@ -36,5 +36,5 @@ Authorization: {{access_token}}
 }
 
 ### 장바구니 비우기
-DELETE http://localhost:8080/api/carts/delete
+DELETE http://localhost:8080/carts/delete
 Authorization: {{access_token}}
