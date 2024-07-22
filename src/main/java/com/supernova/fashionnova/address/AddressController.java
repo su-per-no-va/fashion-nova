@@ -32,8 +32,12 @@ public class AddressController {
      * @return "배송지 추가 성공"
      */
     @PostMapping
-    public ResponseEntity<String> addAddress(@AuthenticationPrincipal UserDetailsImpl userDetails, @Valid @RequestBody AddressRequestDto requestDto) {
+    public ResponseEntity<String> addAddress(
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        @Valid @RequestBody AddressRequestDto requestDto) {
+
         addressService.addAddress(userDetails.getUser(), requestDto);
+
         return ResponseUtil.of(HttpStatus.CREATED,"배송지 추가 성공");
     }
 
@@ -44,7 +48,9 @@ public class AddressController {
      */
     @GetMapping
     public ResponseEntity<List<AddressResponseDto>> getAddressList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+
         List<AddressResponseDto> responseDto = addressService.getAddressList(userDetails.getUser());
+
         return ResponseUtil.of(HttpStatus.OK, responseDto);
     }
 
@@ -55,8 +61,12 @@ public class AddressController {
      * @return "기본 배송지 설정 성공"
      */
     @PutMapping("/{addressId}")
-    public ResponseEntity<String> updateDefaultAddress(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long addressId) {
+    public ResponseEntity<String> updateDefaultAddress(
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        @PathVariable Long addressId) {
+
         addressService.updateDefaultAddress(userDetails.getUser(), addressId);
+
         return ResponseUtil.of(HttpStatus.OK,"기본 배송지 설정 성공");
     }
 }

@@ -22,6 +22,7 @@ public class AddressService {
      * @param requestDto
      */
     public void addAddress(User user, AddressRequestDto requestDto) {
+
         Address address = Address.builder()
             .user(user)
             .name(requestDto.getName())
@@ -41,7 +42,9 @@ public class AddressService {
      * @param user
      */
     public List<AddressResponseDto> getAddressList(User user) {
+
         List<Address> addresses = addressRepository.findByUser(user);
+
         return addresses.stream()
             .map(AddressResponseDto::new)
             .collect(Collectors.toList());
@@ -55,6 +58,7 @@ public class AddressService {
      */
     @Transactional
     public void updateDefaultAddress(User user, Long addressId) {
+
         List<Address> addressList = addressRepository.findByUser(user);
 
         for (Address address : addressList) {

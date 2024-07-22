@@ -1,11 +1,11 @@
 package com.supernova.fashionnova.address.dto;
 
 import com.supernova.fashionnova.address.Address;
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 public class AddressResponseDto {
+
     private final Long id;
     private final String name;
     private final String recipientName;
