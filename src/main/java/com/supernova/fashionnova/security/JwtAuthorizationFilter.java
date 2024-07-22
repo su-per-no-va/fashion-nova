@@ -63,6 +63,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         String refreshToken = jwtUtil.getRefreshTokenFromRequest(accessTokenClaims.getSubject());
         if (refreshToken.isEmpty()) {
             jwtExceptionHandler(res,ErrorType.NOT_FOUND_REFRESH_TOKEN);
+            return;
         }
 
         // 인증처리
