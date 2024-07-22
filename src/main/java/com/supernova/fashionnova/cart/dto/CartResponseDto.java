@@ -6,12 +6,12 @@ import lombok.Getter;
 @Getter
 public class CartResponseDto {
 
-    private final List<CartItemDto> items;
+    private final List<CartItemDto> cartItemDtoList;
 
     private final int totalPrice;
 
-    public CartResponseDto(List<CartItemDto> items, int totalPrice) {
-        this.items = items;
+    public CartResponseDto(List<CartItemDto> cartItemDtoList, int totalPrice) {
+        this.cartItemDtoList = cartItemDtoList;
         this.totalPrice = totalPrice;
     }
 }

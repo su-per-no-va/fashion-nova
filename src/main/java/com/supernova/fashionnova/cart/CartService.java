@@ -33,36 +33,35 @@ public class CartService {
      * @throws CustomException OUT_OF_STOCK 품절된 상품일 때
      */
     public void addCart(User user, Long productDetailId, int count) {
+
         Optional<ProductDetail> productDetailOptional = productDetailRepository.findById(productDetailId);
 
         if (productDetailOptional.isEmpty()) {
-            throw new CustomException(ErrorType.NOT_FOUND_PRODUCT); // 상품 정보를 찾을 수 없을 때
+            throw new CustomException(ErrorType.NOT_FOUND_PRODUCT);
         }
 
-        ProductDetail productDetail = productDetailOptional.get();
+            ProductDetail productDetail = productDetailOptional.get();
 
-        if (productDetail.getQuantity() == 0) {
-            throw new CustomException(ErrorType.OUT_OF_STOCK); // 품절된 상품일 때
+            if (productDetail.getQuantity() == 0 || !"ACTIVE".equals(productDetail.getStatus())) {
+                throw new CustomException(ErrorType.OUT_OF_STOCK);
+            }
+
+            Product product = productDetail.getProduct();
+            int price = product.getPrice();
+
+            // 사용자의 장바구니를 가져옵니다.
+            Cart cart = cartRepository.findByUserId(user.getId()).orElseGet(() -> {
+                Cart newCart = new Cart();
+                newCart.assignUser(user);
+                return newCart;
+            });
+
+            cart.getProductDetailList().add(productDetail);
+            cart.incrementCount(count);
+            cart.incrementTotalPrice(price * count);
+
         }
 
-        Product product = productDetail.getProduct();
-        int price = product.getPrice();
-
-        // 사용자의 장바구니를 가져옵니다.
-        Cart cart = cartRepository.findByUserId(user.getId()).orElseGet(() -> {
-            Cart newCart = new Cart();
-            newCart.assignUser(user);
-            return newCart;
-        });
-
-        // 장바구니에 제품 상세 정보를 추가합니다.
-        cart.getProductDetailList().add(productDetail);
-        cart.incrementCount(count);
-        cart.incrementTotalPrice(price * count);
-
-        // 장바구니를 저장합니다.
-        cartRepository.save(cart);
-    }
 
     /**
      * 장바구니 조회
@@ -78,7 +77,7 @@ public class CartService {
             return newCart;
         });
 
-        List<CartItemDto> items = cart.getProductDetailList().stream()
+        List<CartItemDto> cartItemDtoList = cart.getProductDetailList().stream()
             .map(detail -> new CartItemDto(
                 detail.getProduct().getProduct(),
                 detail.getProduct().getPrice(),
@@ -87,13 +86,13 @@ public class CartService {
                 detail.getColor()))
             .toList();
 
-        return new CartResponseDto(items, cart.getTotalPrice());
+        return new CartResponseDto(cartItemDtoList, cart.getTotalPrice());
     }
 
     /**
      * 장바구니 수정
      *
-     * @param user      사용자 정보
+     * @param user 사용자 정보
      * @param cartUpdateRequestDto
      * @throws CustomException NOT_FOUND_PRODUCT 상품 정보를 찾을 수 없을 때
      * @throws CustomException OUT_OF_STOCK 품절된 상품일 때
@@ -131,7 +130,6 @@ public class CartService {
             cart.incrementTotalPrice(priceDifference);
         }
 
-        cartRepository.save(cart);
     }
 
     /**
@@ -153,7 +151,6 @@ public class CartService {
 
         cart.getProductDetailList().remove(productDetail);
 
-        cartRepository.save(cart);
     }
 
     /**
@@ -173,6 +170,5 @@ public class CartService {
 
         cart.getProductDetailList().clear();
 
-        cartRepository.save(cart);
     }
 }
