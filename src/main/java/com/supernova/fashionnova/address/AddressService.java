@@ -40,6 +40,7 @@ public class AddressService {
      * 배송지 조회
      *
      * @param user
+     * @return List<AddressResponseDto>
      */
     public List<AddressResponseDto> getAddressList(User user) {
 

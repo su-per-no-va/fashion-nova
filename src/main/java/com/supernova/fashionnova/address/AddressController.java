@@ -32,8 +32,7 @@ public class AddressController {
      * @return "배송지 추가 성공"
      */
     @PostMapping
-    public ResponseEntity<String> addAddress(
-        @AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<String> addAddress(@AuthenticationPrincipal UserDetailsImpl userDetails,
         @Valid @RequestBody AddressRequestDto requestDto) {
 
         addressService.addAddress(userDetails.getUser(), requestDto);
@@ -61,8 +60,7 @@ public class AddressController {
      * @return "기본 배송지 설정 성공"
      */
     @PutMapping("/{addressId}")
-    public ResponseEntity<String> updateDefaultAddress(
-        @AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<String> updateDefaultAddress(@AuthenticationPrincipal UserDetailsImpl userDetails,
         @PathVariable Long addressId) {
 
         addressService.updateDefaultAddress(userDetails.getUser(), addressId);
