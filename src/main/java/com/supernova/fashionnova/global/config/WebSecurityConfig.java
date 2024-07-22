@@ -41,7 +41,9 @@ public class WebSecurityConfig {
     private final UserDetailsServiceImpl userDetailsService;
     private final AuthenticationConfiguration authenticationConfiguration;
     private final UserService userService;
-    public WebSecurityConfig(JwtUtil jwtUtil, UserDetailsServiceImpl userDetailsService, AuthenticationConfiguration authenticationConfiguration, @Lazy UserService userService) {
+
+    public WebSecurityConfig(JwtUtil jwtUtil, UserDetailsServiceImpl userDetailsService,
+        AuthenticationConfiguration authenticationConfiguration, @Lazy UserService userService) {
         this.jwtUtil = jwtUtil;
         this.userDetailsService = userDetailsService;
         this.authenticationConfiguration = authenticationConfiguration;
@@ -49,14 +51,15 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)
+        throws Exception {
         return configuration.getAuthenticationManager();
     }
 
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil,userService);
+        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil, userService);
         filter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
         return filter;
     }
@@ -66,11 +69,6 @@ public class WebSecurityConfig {
         return new JwtAuthorizationFilter(jwtUtil, userDetailsService);
     }
 
-//    @Bean
-
-//    public LogoutFilter logoutFilter(){
-//        return new LogoutFilter(jwtUtil,userService);
-//    }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
@@ -83,19 +81,18 @@ public class WebSecurityConfig {
         );
         http.authorizeHttpRequests((authorizeHttpRequests) ->
             authorizeHttpRequests
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
-                .requestMatchers(HttpMethod.POST,"/users/signup").permitAll() // 회원가입 허용
-                .requestMatchers(HttpMethod.POST,"/users/login").permitAll() // 로그인 허용
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+                .permitAll() // resources 접근 허용 설정
+                .requestMatchers(HttpMethod.POST, "/users/signup").permitAll() // 회원가입 허용
+                .requestMatchers(HttpMethod.POST, "/users/login").permitAll() // 로그인 허용
                 .anyRequest().authenticated() // 그 외 모든 요청 인증처리
 
         );
-
 
         // 필터관리 (필터 작동 순서 지정)
 //        http.addFilterBefore(logoutFilter(), JwtAuthenticationFilter.class);
         http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
         http.addFilterBefore(jwtAuthenticationFilter(), JwtAuthorizationFilter.class);
-
 
         return http.build();
     }
