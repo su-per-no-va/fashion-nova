@@ -13,18 +13,28 @@ public class CouponService {
 
     private final CouponRepository couponRepository;
 
+    /** 보유 쿠폰 조회
+     *
+     * @param user
+     * @return List<CouponResponseDto>
+     */
     public List<CouponResponseDto> getCouponList(User user) {
 
-        List<Coupon> coupons = couponRepository.findByUserAndIsCouponUsed(user, false);
+        List<Coupon> coupons = couponRepository.findByUserAndStatus(user, CouponStatus.ACTIVE);
 
         return coupons.stream()
             .map(CouponResponseDto::new)
             .collect(Collectors.toList());
     }
 
+    /** 쿠폰 내역 조회
+     *
+     * @param user
+     * @return List<CouponResponseDto>
+     */
     public List<CouponResponseDto> getUsedCouponList(User user) {
 
-        List<Coupon> coupons = couponRepository.findByUserAndIsCouponUsed(user, true);
+        List<Coupon> coupons = couponRepository.findByUserAndStatus(user, CouponStatus.INACTIVE);
 
         return coupons.stream()
             .map(CouponResponseDto::new)
