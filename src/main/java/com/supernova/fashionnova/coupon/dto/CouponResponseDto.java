@@ -2,15 +2,7 @@ package com.supernova.fashionnova.coupon.dto;
 
 import com.supernova.fashionnova.coupon.Coupon;
 import com.supernova.fashionnova.coupon.CouponType;
-import com.supernova.fashionnova.user.User;
-import jakarta.persistence.Column;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import java.util.Date;
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter
