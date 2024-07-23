@@ -1,10 +1,11 @@
 package com.supernova.fashionnova.product;
 
 
-import java.util.List;
+import com.supernova.fashionnova.product.dto.ProductResponseDto;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 
 public interface ProductRepositoryQuery {
-   List<Product> findProductByOrdered(String sort, String category, String size, String color, Pageable pageable);
+   Page<ProductResponseDto> findProductByOrdered(String sort, String category, String size, String color, Pageable pageable);
 }

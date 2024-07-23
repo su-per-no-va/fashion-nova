@@ -1,11 +1,8 @@
 package com.supernova.fashionnova.product;
 
 import com.supernova.fashionnova.product.dto.ProductResponseDto;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -27,8 +24,6 @@ public class ProductService {
         Sort.Direction direction = Sort.Direction.DESC;
         Sort sort = Sort.by(direction, sorted);
         Pageable pageable = PageRequest.of(page, 10, sort);
-        List<Product> products = productRepository.findProductByOrdered(sorted, category, size, color, pageable);
-        return new PageImpl<>(products.stream().map(ProductResponseDto::new).collect(
-            Collectors.toList()));
+        return productRepository.findProductByOrdered(sorted, category, size, color, pageable);
     }
 }
