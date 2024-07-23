@@ -3,9 +3,9 @@ package com.supernova.fashionnova.cart.dto;
 import lombok.Getter;
 
 @Getter
-public class CartRequestDto {
+public class CartUpdateRequestDto {
 
-    private Long productId;
+    private Long productDetailId;
 
     private int count;
 
