@@ -3,8 +3,12 @@ package com.supernova.fashionnova.product;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.supernova.fashionnova.product.dto.ProductResponseDto;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -15,14 +19,24 @@ public class ProductRepositoryQueryImpl implements ProductRepositoryQuery {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<Product> findProductByOrdered(String sort, String category, Pageable pageable){
+    public Page<ProductResponseDto> findProductByOrdered(String sort, String category, String size, String color, Pageable pageable){
         QProduct product = QProduct.product1;
+        QProductDetail productDetail = QProductDetail.productDetail;
         OrderSpecifier<?> orderSpecifier;
         BooleanBuilder builder = new BooleanBuilder();
+
+        builder.and(product.product_status.eq("ACTIVE"));
 
         if(category != null && !category.trim().isEmpty()) {
             builder.and(product.category.eq(category));
         }
+        if(size != null && !size.trim().isEmpty()) {
+            builder.and(productDetail.size.eq(size));
+        }
+        if(color != null && !color.trim().isEmpty()) {
+            builder.and(productDetail.color.eq(color));
+        }
+
         switch (sort){
             case "high_price" :
                 orderSpecifier = product.price.desc();
@@ -39,14 +53,21 @@ public class ProductRepositoryQueryImpl implements ProductRepositoryQuery {
         default:
                orderSpecifier = product.price.desc();
         }
-        return queryFactory
+        List<Product> products = queryFactory
             .selectFrom(product)
+            .leftJoin(product.productDetails, productDetail)
+            .fetchJoin()
             .where(builder)
             .orderBy(orderSpecifier)
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
             .fetch();
+        Long count = queryFactory
+            .select(product.count())
+            .from(product)
+            .leftJoin(product.productDetails, productDetail)
+            .where(builder)
+            .fetchOne();
+        return new PageImpl<>(products.stream().map(ProductResponseDto::new).collect(Collectors.toList()), pageable, count);
     };
-
-
 }
