@@ -46,6 +46,6 @@ public class Coupon extends Timestamped {
     private CouponType type;
 
     @Column(nullable = false)
-    private boolean isCouponUsed;
+    private CouponStatus status;
 
 }

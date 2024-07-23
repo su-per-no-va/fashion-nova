@@ -45,6 +45,7 @@ public class WishService {
      *
      * @param user
      * @param page
+     * @return Page<ProductResponseDto>
      */
     public Page<ProductResponseDto> getWishProductList(User user, int page) {
         Pageable pageable = PageRequest.of(page, 10);
@@ -61,7 +62,7 @@ public class WishService {
     /** 위시리스트 삭제
      *
      * @param user
-     * @param productId
+     * @param wishId
      * @throws CustomException NOT_FOUND_WISH 위시리스트를 찾지 못할 때
      * @throws CustomException INVALID_WISH 자신의 위시리스트가 아닐 때
      */
