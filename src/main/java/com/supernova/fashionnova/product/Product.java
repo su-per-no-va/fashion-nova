@@ -32,6 +32,9 @@ public class Product extends Timestamped {
     private String classification;
 
     @Column(nullable = false)
+    private String category;
+
+    @Column(nullable = false)
     private int like_count;
 
     @Column(nullable = false)

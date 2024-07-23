@@ -59,7 +59,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         //RefreshToken 검증 (로그 아웃시 리프레쉬 토큰 없음)
         String refreshToken = jwtUtil.getRefreshTokenFromRequest(accessTokenClaims.getSubject());
         if (refreshToken.isEmpty()) {
-            jwtExceptionHandler(res,ErrorType.NOT_FOUND_REFRESH_TOKEN);
+            jwtExceptionHandler(res, ErrorType.NOT_FOUND_REFRESH_TOKEN);
             return;
         }
 
@@ -97,11 +97,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             jwtExceptionHandler(response, ErrorType.NOT_FOUND_TOKEN);
             return;
         }
+        //공백 제거
+        accessToken = accessToken.replaceAll("\\s", "");
+        //
         // Access 토큰 유효성 검사
-        try {
-            jwtUtil.validateToken(accessToken);
-        } catch (Exception e) {
-            log.error("Access Token Error");
-        }
+        jwtUtil.validateToken(accessToken);
+
     }
 }
