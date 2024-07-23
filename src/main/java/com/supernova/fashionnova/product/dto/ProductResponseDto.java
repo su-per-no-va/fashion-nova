@@ -9,10 +9,10 @@ import lombok.Getter;
 public class ProductResponseDto {
 
     private final Long id;
-//    private final Long price;
-//    private final Long like_count;
+    private final int price;
+    private final int like_count;
     private final String product;
-//    private final Long review_count;
+    private final int review_count;
     private final String product_status;
     private final LocalDateTime created_at;
 

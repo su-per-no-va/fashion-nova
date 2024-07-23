@@ -11,10 +11,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @Table(name = "warn")
+@NoArgsConstructor
 public class Warn extends Timestamped {
 
     @Id
@@ -28,5 +30,8 @@ public class Warn extends Timestamped {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-
+    public Warn(String detail, User user) {
+        this.detail = detail;
+        this.user = user;
+    }
 }
