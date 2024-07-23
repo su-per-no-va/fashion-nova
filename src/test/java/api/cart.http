@@ -1,5 +1,40 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=IntelliJ IDEA
+### 장바구니 담기
+POST http://localhost:8080/carts
+Content-Type: application/json
+Authorization: {{access_token}}
 
-###
+{
+  "productId" : 1,
+  "count" : 1,
+  "size" : "M",
+  "color" : "BLACK"
+}
+
+### 장바구니 조회
+GET http://localhost:8080/carts
+Authorization: {{access_token}}
+
+### 장바구니 상품 옵션 수정
+PUT http://localhost:8080/carts
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "productDetailId": 1,
+  "count": 1,
+  "size": "M",
+  "color": "BLACK"
+}
+
+### 장바구니 상품 삭제
+DELETE http://localhost:8080/carts
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "productDetailId": 1
+}
+
+### 장바구니 비우기
+DELETE http://localhost:8080/carts/delete
+Authorization: {{access_token}}

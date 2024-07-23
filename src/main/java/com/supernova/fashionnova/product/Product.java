@@ -24,7 +24,7 @@ public class Product extends Timestamped {
     private String product;
 
     @Column(nullable = false)
-    private Long price;
+    private int price;
 
     private String explanation;
 
@@ -35,10 +35,10 @@ public class Product extends Timestamped {
     private String category;
 
     @Column(nullable = false)
-    private Long like_count;
+    private int like_count;
 
     @Column(nullable = false)
-    private Long review_count;
+    private int review_count;
 
     @Column(nullable = false)
     private String product_status;
