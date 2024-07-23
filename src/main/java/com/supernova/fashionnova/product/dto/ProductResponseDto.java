@@ -20,9 +20,9 @@ public class ProductResponseDto {
     public ProductResponseDto(Product product) {
         this.id = product.getId();
         this.product = product.getProduct();
-//        this.price = product.getPrice();
-//        this.like_count = product.getLike_count();
-//        this.review_count = product.getReview_count();
+        this.price = product.getPrice();
+        this.like_count = product.getLike_count();
+        this.review_count = product.getReview_count();
         this.product_status = product.getProduct_status();
         this.created_at = product.getCreatedAt();
     }

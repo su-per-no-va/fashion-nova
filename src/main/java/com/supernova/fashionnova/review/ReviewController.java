@@ -55,4 +55,20 @@ public class ReviewController {
 
         return ResponseUtil.of(HttpStatus.OK, reviewResponseDtoList);
     }
+
+    /**
+     * 사용자별 리뷰 조회
+     *
+     * @param userDetails 로그인된 사용자 정보
+     * @return 사용자별 리뷰 리스트
+     */
+    @GetMapping
+    public ResponseEntity<List<ReviewResponseDto>> getMyReviews(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        List<Review> reviews = reviewService.getReviewsByUser(userDetails.getUser());
+        List<ReviewResponseDto> reviewResponseDtoList = reviews.stream()
+            .map(ReviewResponseDto::new)
+            .toList();
+
+        return ResponseUtil.of(HttpStatus.OK, reviewResponseDtoList);
+    }
 }

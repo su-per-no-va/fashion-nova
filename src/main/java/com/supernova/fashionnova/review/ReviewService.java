@@ -57,4 +57,15 @@ public class ReviewService {
 
         return reviewRepository.findByProduct(product);
     }
+
+    /**
+     * 사용자별 리뷰 조회
+     *
+     * @param user 사용자 정보
+     * @return 사용자별 리뷰 리스트
+     */
+    @Transactional(readOnly = true)
+    public List<Review> getReviewsByUser(User user) {
+        return reviewRepository.findByUser(user);
+    }
 }
