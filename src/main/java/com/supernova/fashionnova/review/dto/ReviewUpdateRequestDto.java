@@ -11,6 +11,6 @@ public class ReviewUpdateRequestDto {
 
     private int rating;
 
-    private String reviewImageUrl;
+//    private String reviewImageUrl;
 
 }

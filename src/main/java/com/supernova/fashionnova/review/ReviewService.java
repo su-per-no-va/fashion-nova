@@ -84,21 +84,21 @@ public class ReviewService {
 
         review.update(requestDto.getReview(), requestDto.getRating());
 
-        Optional<ReviewImage> existingImage = reviewImageRepository.findByReview(review);
-        if (requestDto.getReviewImageUrl() != null) {
-            if (existingImage.isPresent()) {
-                ReviewImage reviewImage = existingImage.get();
-                ReviewImage updatedReviewImage = new ReviewImage(reviewImage.getId(), reviewImage.getReview(), requestDto.getReviewImageUrl());
-                reviewImageRepository.save(updatedReviewImage);
-            } else {
-                ReviewImage reviewImage = new ReviewImage(null, review, requestDto.getReviewImageUrl());
-                review.addReviewImage(reviewImage);
-                reviewImageRepository.save(reviewImage);
-            }
-        } else {
-
-            existingImage.ifPresent(reviewImageRepository::delete);
-        }
+//        Optional<ReviewImage> existingImage = reviewImageRepository.findByReview(review);
+//        if (requestDto.getReviewImageUrl() != null) {
+//            if (existingImage.isPresent()) {
+//                ReviewImage reviewImage = existingImage.get();
+//                ReviewImage updatedReviewImage = new ReviewImage(reviewImage.getId(), reviewImage.getReview(), requestDto.getReviewImageUrl());
+//                reviewImageRepository.save(updatedReviewImage);
+//            } else {
+//                ReviewImage reviewImage = new ReviewImage(null, review, requestDto.getReviewImageUrl());
+//                review.addReviewImage(reviewImage);
+//                reviewImageRepository.save(reviewImage);
+//            }
+//        } else {
+//
+//            existingImage.ifPresent(reviewImageRepository::delete);
+//        }
     }
 
     /**
