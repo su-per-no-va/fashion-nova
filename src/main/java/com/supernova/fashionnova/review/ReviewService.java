@@ -37,13 +37,9 @@ public class ReviewService {
     @Transactional
     public void addReview(User user, ReviewRequestDto reviewRequestDto) {
         // 주문 내역 확인
-        boolean hasOrdered = ordersRepository.existsByUserIdAndProductId(user.getId(), reviewRequestDto.getProductId());
-        if (!hasOrdered) {
-            throw new CustomException(ErrorType.NOT_ORDERED_PRODUCT);
-        }
+        existsOrder(user.getId(), reviewRequestDto.getProductId());
 
-        Product product = productRepository.findById(reviewRequestDto.getProductId())
-            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
+        Product product = getProduct(reviewRequestDto.getProductId());
 
         Review review = new Review(user, product, reviewRequestDto.getReview(), reviewRequestDto.getRating());
         reviewRepository.save(review);
@@ -59,8 +55,7 @@ public class ReviewService {
      */
     @Transactional(readOnly = true)
     public Page<Review> getReviewsByProductId(Long productId, Pageable pageable) {
-        Product product = productRepository.findById(productId)
-            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
+        Product product = getProduct(productId);
 
         return reviewRepository.findByProduct(product, pageable);
     }
@@ -85,8 +80,7 @@ public class ReviewService {
      */
     @Transactional
     public void updateReview(User user, ReviewUpdateRequestDto requestDto) {
-        Review review = reviewRepository.findByIdAndUser(requestDto.getReviewId(), user)
-            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_REVIEW));
+        Review review = getReview(user, requestDto.getReviewId());
 
         review.update(requestDto.getReview(), requestDto.getRating());
 
@@ -116,9 +110,27 @@ public class ReviewService {
      */
     @Transactional
     public void deleteReview(User user, Long reviewId) {
-        Review review = reviewRepository.findByIdAndUser(reviewId, user)
-            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_REVIEW));
+        Review review = getReview(user, reviewId);
         reviewRepository.delete(review);
     }
 
+    // 제품 조회 메서드
+    private Product getProduct(Long productId) {
+        return productRepository.findById(productId)
+            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
+    }
+
+    // 리뷰 조회 메서드
+    private Review getReview(User user, Long reviewId) {
+        return reviewRepository.findByIdAndUser(reviewId, user)
+            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_REVIEW));
+    }
+
+    // 사용자 주문 내역 확인 메서드
+    private void existsOrder(Long userId, Long productId) {
+        boolean hasOrdered = ordersRepository.existsByUserIdAndProductId(userId, productId);
+        if (!hasOrdered) {
+            throw new CustomException(ErrorType.NOT_ORDERED_PRODUCT);
+        }
+    }
 }
