@@ -6,5 +6,5 @@ import org.springframework.data.domain.Pageable;
 
 
 public interface ProductRepositoryQuery {
-   List<Product> findProductByOrdered(String sort, String category, Pageable pageable);
+   List<Product> findProductByOrdered(String sort, String category, String size, String color, Pageable pageable);
 }

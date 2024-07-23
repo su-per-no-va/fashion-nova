@@ -21,3 +21,10 @@ GET http://localhost:8080/products/product?
     category=&
     page=1
 
+### 리뷰 많은 순 & 카테고리 SHOES & SIZE SMALL & COLOR BLACK
+GET http://localhost:8080/products/product?
+    sort=high_price&
+    category=SHOES&
+    size=SMALL&
+    color=BLACK&
+    page=1

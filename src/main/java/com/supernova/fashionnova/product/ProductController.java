@@ -27,8 +27,10 @@ public class ProductController {
      @GetMapping("/product")
     public Page<ProductResponseDto> getProductList(@RequestParam(value = "sort") String sorted,
          @RequestParam(value = "category") String category,
+         @RequestParam(value = "size") String size,
+         @RequestParam(value = "color") String color,
          @RequestParam(value = "page") int page) {
 
-        return productService.getProductList( page - 1, category, sorted);
+        return productService.getProductList( page - 1, category, size, color, sorted);
     }
 }

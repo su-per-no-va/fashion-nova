@@ -6,7 +6,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,9 +32,6 @@ public class Product extends Timestamped {
     private String explanation;
 
     @Column(nullable = false)
-    private String classification;
-
-    @Column(nullable = false)
     private String category;
 
     @Column(nullable = false)
@@ -43,7 +43,8 @@ public class Product extends Timestamped {
     @Column(nullable = false)
     private String product_status;
 
-
+    @OneToMany(mappedBy = "product")
+    private List<ProductDetail> productDetails = new ArrayList<>();
 /*
     @OneToMany(mappedBy = "product")
     private List<Wish> wishList = new ArrayList<>();
