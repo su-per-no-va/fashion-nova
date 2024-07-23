@@ -54,6 +54,7 @@ public class ReviewService {
      * @param productId 상품 ID
      * @return 상품별 리뷰 리스트
      * @throws CustomException NOT_FOUND_PRODUCT 상품을 찾을 수 없습니다.
+     * @return List<ReviewResponseDto>
      */
     @Transactional(readOnly = true)
     public List<Review> getReviewsByProductId(Long productId) {
@@ -64,10 +65,10 @@ public class ReviewService {
     }
 
     /**
-     * 사용자별 리뷰 조회
+     * 내가 작성한 리뷰 조회
      *
      * @param user 사용자 정보
-     * @return 사용자별 리뷰 리스트
+     * @return List<MyReviewResponseDto>
      */
     @Transactional(readOnly = true)
     public List<Review> getReviewsByUser(User user) {
