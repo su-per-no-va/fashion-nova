@@ -8,7 +8,6 @@ import com.supernova.fashionnova.product.ProductRepository;
 import com.supernova.fashionnova.review.dto.ReviewRequestDto;
 import com.supernova.fashionnova.review.dto.ReviewUpdateRequestDto;
 import com.supernova.fashionnova.user.User;
-import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -103,7 +102,7 @@ public class ReviewService {
                 reviewImageRepository.save(reviewImage);
             }
         } else {
-            // If no image URL is provided in the request, we can decide whether to remove existing images or leave them as is.
+
             existingImage.ifPresent(reviewImageRepository::delete);
         }
     }

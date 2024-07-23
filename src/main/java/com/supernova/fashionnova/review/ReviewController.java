@@ -8,7 +8,6 @@ import com.supernova.fashionnova.review.dto.ReviewResponseDto;
 import com.supernova.fashionnova.review.dto.ReviewUpdateRequestDto;
 import com.supernova.fashionnova.security.UserDetailsImpl;
 import jakarta.validation.Valid;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
