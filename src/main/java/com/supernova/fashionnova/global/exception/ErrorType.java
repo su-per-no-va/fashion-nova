@@ -27,7 +27,10 @@ public enum ErrorType {
     NOT_ORDERED_PRODUCT(HttpStatus.BAD_REQUEST, "구매하지 않은 상품입니다."),
 
     // CART
-    CART_EMPTY(HttpStatus.BAD_REQUEST, "장바구니에 상품이 존재하지 않습니다.");
+    CART_EMPTY(HttpStatus.BAD_REQUEST, "장바구니에 상품이 존재하지 않습니다."),
+
+    // REVIEW
+    NOT_FOUND_REVIEW(HttpStatus.BAD_REQUEST, "리뷰가 존재하지 않습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;

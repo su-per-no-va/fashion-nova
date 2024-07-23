@@ -11,4 +11,29 @@ Authorization: {{access_token}}
 }
 
 ### 상품별 리뷰 전체 조회
-GET http://localhost:8080/reviews/2
+GET http://localhost:8080/reviews/1
+
+### 내가 작성한 리뷰 조회
+GET http://localhost:8080/reviews
+Authorization: {{access_token}}
+
+### 리뷰 수정
+PUT http://localhost:8080/reviews
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "reviewId" : 1,
+  "review" : "너무 별로에요",
+  "rating" : 3,
+  "reviewImageUrl" : "URL"
+}
+
+### 리뷰 삭제
+DELETE http://localhost:8080/reviews
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "reviewId" : 1
+}

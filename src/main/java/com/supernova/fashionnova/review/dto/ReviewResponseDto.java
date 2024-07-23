@@ -7,8 +7,11 @@ import lombok.Getter;
 public class ReviewResponseDto {
 
     private final Long id;
+
     private final String review;
+
     private final int rating;
+
     private final String username;
 
     public ReviewResponseDto(Review review) {

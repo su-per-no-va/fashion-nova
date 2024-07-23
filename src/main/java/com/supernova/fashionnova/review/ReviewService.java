@@ -5,6 +5,7 @@ import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.order.OrdersRepository;
 import com.supernova.fashionnova.product.Product;
 import com.supernova.fashionnova.product.ProductRepository;
+import com.supernova.fashionnova.review.dto.ReviewDeleteRequestDto;
 import com.supernova.fashionnova.review.dto.ReviewRequestDto;
 import com.supernova.fashionnova.user.User;
 import java.util.List;
@@ -49,6 +50,7 @@ public class ReviewService {
      *
      * @param productId 상품 ID
      * @return 상품별 리뷰 리스트
+     * @throws CustomException NOT_FOUND_PRODUCT 상품을 찾을 수 없습니다.
      */
     @Transactional(readOnly = true)
     public List<Review> getReviewsByProductId(Long productId) {
@@ -68,4 +70,48 @@ public class ReviewService {
     public List<Review> getReviewsByUser(User user) {
         return reviewRepository.findByUser(user);
     }
+
+    /**
+     * 리뷰 수정
+     *
+     * @param user 사용자 정보
+     * @param requestDto 리뷰 수정 요청 DTO
+     * 익셉션주석 추가
+     */
+//    @Transactional
+//    public void updateReview(User user, ReviewUpdateRequestDto requestDto) {
+//        Review review = reviewRepository.findByIdAndUser(requestDto.getReviewId(), user)
+//            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_REVIEW));
+//
+//        review.update(requestDto.getReview(), requestDto.getRating());
+//
+//        if (requestDto.getReviewImageUrl() != null) {
+//            Optional<ReviewImage> existingImage = reviewImageRepository.findByReview(review);
+//            if (existingImage.isPresent()) {
+//                ReviewImage reviewImage = existingImage.get();
+//                reviewImage.setReviewImageUrl(requestDto.getReviewImageUrl());
+//            } else {
+//                ReviewImage reviewImage = new ReviewImage();
+//                reviewImage.setReview(review);
+//                reviewImage.setReviewImageUrl(requestDto.getReviewImageUrl());
+//                review.addReviewImage(reviewImage);
+//                reviewImageRepository.save(reviewImage);
+//            }
+//        }
+//    }
+
+    /**
+     * 리뷰 삭제
+     *
+     * @param user 사용자 정보
+     * @param requestDto 리뷰 삭제 요청 DTO
+     * @throws CustomException NOT_FOUND_REVIEW 리뷰가 존재하지 않습니다.
+     */
+    @Transactional
+    public void deleteReview(User user, Long reviewId) {
+        Review review = reviewRepository.findByIdAndUser(reviewId, user)
+            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_REVIEW));
+        reviewRepository.delete(review);
+    }
+
 }
