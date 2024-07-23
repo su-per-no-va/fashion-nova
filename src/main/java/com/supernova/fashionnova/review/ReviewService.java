@@ -11,6 +11,8 @@ import com.supernova.fashionnova.user.User;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,19 +51,19 @@ public class ReviewService {
     }
 
     /**
-     * 상품별 리뷰 조회
+     * 상품별 리뷰 전체 조회
      *
      * @param productId 상품 ID
      * @return 상품별 리뷰 리스트
-     * @throws CustomException NOT_FOUND_PRODUCT 상품을 찾을 수 없습니다.
      * @return List<ReviewResponseDto>
+     * @throws CustomException NOT_FOUND_PRODUCT 상품을 찾을 수 없습니다.
      */
     @Transactional(readOnly = true)
-    public List<Review> getReviewsByProductId(Long productId) {
+    public Page<Review> getReviewsByProductId(Long productId, Pageable pageable) {
         Product product = productRepository.findById(productId)
             .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
 
-        return reviewRepository.findByProduct(product);
+        return reviewRepository.findByProduct(product, pageable);
     }
 
     /**
@@ -71,8 +73,8 @@ public class ReviewService {
      * @return List<MyReviewResponseDto>
      */
     @Transactional(readOnly = true)
-    public List<Review> getReviewsByUser(User user) {
-        return reviewRepository.findByUser(user);
+    public Page<Review> getReviewsByUser(User user, Pageable pageable) {
+        return reviewRepository.findByUser(user, pageable);
     }
 
     /**

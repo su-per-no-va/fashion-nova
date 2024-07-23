@@ -10,6 +10,9 @@ import com.supernova.fashionnova.security.UserDetailsImpl;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -52,13 +56,14 @@ public class ReviewController {
      * @return List<ReviewResponseDto>
      */
     @GetMapping("/{productId}")
-    public ResponseEntity<List<ReviewResponseDto>> getReviewsByProductId(@PathVariable Long productId) {
-        List<Review> reviews = reviewService.getReviewsByProductId(productId);
-        List<ReviewResponseDto> reviewResponseDtoList = reviews.stream()
-            .map(ReviewResponseDto::new)
-            .toList();
+    public ResponseEntity<Page<ReviewResponseDto>> getReviewsByProductId(
+        @PathVariable Long productId,
+        @RequestParam(defaultValue = "0") int page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        Page<Review> reviews = reviewService.getReviewsByProductId(productId, pageable);
+        Page<ReviewResponseDto> reviewResponseDtoPage = reviews.map(ReviewResponseDto::new);
 
-        return ResponseUtil.of(HttpStatus.OK, reviewResponseDtoList);
+        return ResponseUtil.of(HttpStatus.OK, reviewResponseDtoPage);
     }
 
     /**
@@ -68,13 +73,14 @@ public class ReviewController {
      * @return List<MyReviewResponseDto>
      */
     @GetMapping
-    public ResponseEntity<List<MyReviewResponseDto>> getMyReviews(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        List<Review> reviews = reviewService.getReviewsByUser(userDetails.getUser());
-        List<MyReviewResponseDto> myReviewResponseDtoList = reviews.stream()
-            .map(MyReviewResponseDto::new)
-            .toList();
+    public ResponseEntity<Page<MyReviewResponseDto>> getMyReviews(
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        @RequestParam(defaultValue = "0") int page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        Page<Review> reviews = reviewService.getReviewsByUser(userDetails.getUser(), pageable);
+        Page<MyReviewResponseDto> myReviewResponseDtoPage = reviews.map(MyReviewResponseDto::new);
 
-        return ResponseUtil.of(HttpStatus.OK, myReviewResponseDtoList);
+        return ResponseUtil.of(HttpStatus.OK, myReviewResponseDtoPage);
     }
 
     /**
