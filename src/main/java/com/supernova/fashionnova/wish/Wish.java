@@ -2,7 +2,6 @@ package com.supernova.fashionnova.wish;
 
 import com.supernova.fashionnova.product.Product;
 import com.supernova.fashionnova.user.User;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -34,18 +33,10 @@ public class Wish {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @Column(nullable = false)
-    private boolean isWish;
-
     @Builder
     public Wish(User user, Product product) {
         this.user = user;
         this.product = product;
-        this.isWish = false;
-    }
-
-    public void updateWish() {
-        this.isWish = !this.isWish;
     }
 
 }
