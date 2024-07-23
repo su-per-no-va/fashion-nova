@@ -1,0 +1,7 @@
+### 보유 쿠폰 조회
+GET http://localhost:8080/coupons
+Authorization: {{access_token}}
+
+### 쿠폰 내역 조회
+GET http://localhost:8080/coupons/used
+Authorization: {{access_token}}
