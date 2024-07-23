@@ -23,7 +23,7 @@ Content-Type: application/json
 Authorization: {{access_token}}
 
 {
-  "reviewId" : 1,
+  "reviewId" : 2,
   "review" : "너무 별로에요",
   "rating" : 3,
   "reviewImageUrl" : "URL"

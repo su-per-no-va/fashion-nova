@@ -5,10 +5,11 @@ import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.order.OrdersRepository;
 import com.supernova.fashionnova.product.Product;
 import com.supernova.fashionnova.product.ProductRepository;
-import com.supernova.fashionnova.review.dto.ReviewDeleteRequestDto;
 import com.supernova.fashionnova.review.dto.ReviewRequestDto;
+import com.supernova.fashionnova.review.dto.ReviewUpdateRequestDto;
 import com.supernova.fashionnova.user.User;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,8 @@ public class ReviewService {
     private final ProductRepository productRepository;
 
     private final OrdersRepository ordersRepository;
+
+    private final ReviewImageRepository reviewImageRepository;
 
     /**
      * 리뷰 등록
@@ -76,29 +79,31 @@ public class ReviewService {
      *
      * @param user 사용자 정보
      * @param requestDto 리뷰 수정 요청 DTO
-     * 익셉션주석 추가
+     * @throws CustomException NOT_FOUND_REVIEW 리뷰가 존재하지 않습니다.
      */
-//    @Transactional
-//    public void updateReview(User user, ReviewUpdateRequestDto requestDto) {
-//        Review review = reviewRepository.findByIdAndUser(requestDto.getReviewId(), user)
-//            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_REVIEW));
-//
-//        review.update(requestDto.getReview(), requestDto.getRating());
-//
-//        if (requestDto.getReviewImageUrl() != null) {
-//            Optional<ReviewImage> existingImage = reviewImageRepository.findByReview(review);
-//            if (existingImage.isPresent()) {
-//                ReviewImage reviewImage = existingImage.get();
-//                reviewImage.setReviewImageUrl(requestDto.getReviewImageUrl());
-//            } else {
-//                ReviewImage reviewImage = new ReviewImage();
-//                reviewImage.setReview(review);
-//                reviewImage.setReviewImageUrl(requestDto.getReviewImageUrl());
-//                review.addReviewImage(reviewImage);
-//                reviewImageRepository.save(reviewImage);
-//            }
-//        }
-//    }
+    @Transactional
+    public void updateReview(User user, ReviewUpdateRequestDto requestDto) {
+        Review review = reviewRepository.findByIdAndUser(requestDto.getReviewId(), user)
+            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_REVIEW));
+
+        review.update(requestDto.getReview(), requestDto.getRating());
+
+        Optional<ReviewImage> existingImage = reviewImageRepository.findByReview(review);
+        if (requestDto.getReviewImageUrl() != null) {
+            if (existingImage.isPresent()) {
+                ReviewImage reviewImage = existingImage.get();
+                ReviewImage updatedReviewImage = new ReviewImage(reviewImage.getId(), reviewImage.getReview(), requestDto.getReviewImageUrl());
+                reviewImageRepository.save(updatedReviewImage);
+            } else {
+                ReviewImage reviewImage = new ReviewImage(null, review, requestDto.getReviewImageUrl());
+                review.addReviewImage(reviewImage);
+                reviewImageRepository.save(reviewImage);
+            }
+        } else {
+            // If no image URL is provided in the request, we can decide whether to remove existing images or leave them as is.
+            existingImage.ifPresent(reviewImageRepository::delete);
+        }
+    }
 
     /**
      * 리뷰 삭제

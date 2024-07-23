@@ -5,6 +5,7 @@ import com.supernova.fashionnova.review.dto.MyReviewResponseDto;
 import com.supernova.fashionnova.review.dto.ReviewDeleteRequestDto;
 import com.supernova.fashionnova.review.dto.ReviewRequestDto;
 import com.supernova.fashionnova.review.dto.ReviewResponseDto;
+import com.supernova.fashionnova.review.dto.ReviewUpdateRequestDto;
 import com.supernova.fashionnova.security.UserDetailsImpl;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -82,15 +84,15 @@ public class ReviewController {
      * @param dto 리뷰 수정 요청 DTO
      * @return 수정된 리뷰 정보
      */
-//    @PutMapping
-//    public ResponseEntity<String> updateReview(
-//        @AuthenticationPrincipal UserDetailsImpl userDetails,
-//        @RequestBody ReviewUpdateRequestDto dto) {
-//
-//        reviewService.updateReview(userDetails.getUser(), dto);
-//
-//        return ResponseUtil.of(HttpStatus.OK, "리뷰 수정 완료");
-//    }
+    @PutMapping
+    public ResponseEntity<String> updateReview(
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        @RequestBody ReviewUpdateRequestDto reviewUpdateRequestDto) {
+
+        reviewService.updateReview(userDetails.getUser(), reviewUpdateRequestDto);
+
+        return ResponseUtil.of(HttpStatus.OK, "리뷰 수정 완료");
+    }
 
     /**
      * 사용자별 리뷰 삭제
