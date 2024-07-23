@@ -3,14 +3,14 @@ package com.supernova.fashionnova.review.dto;
 import lombok.Getter;
 
 @Getter
-public class ReviewRequestDto {
+public class ReviewUpdateRequestDto {
 
-    private Long productId;
+    private Long reviewId;
 
     private String review;
 
     private int rating;
 
-    private String reviewImageUrl;
+//    private String reviewImageUrl;
 
 }

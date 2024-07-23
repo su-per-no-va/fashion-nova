@@ -4,6 +4,7 @@ import com.supernova.fashionnova.global.common.Timestamped;
 import com.supernova.fashionnova.product.Product;
 import com.supernova.fashionnova.user.User;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,7 +12,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,5 +43,28 @@ public class Review extends Timestamped {
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
+
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReviewImage> reviewImageList = new ArrayList<>();
+
+    public Review(User user, Product product, String review, int rating) {
+        this.user = user;
+        this.product = product;
+        this.review = review;
+        this.rating = rating;
+    }
+
+    public void update(String review, int rating) {
+        this.review = review;
+        this.rating = rating;
+    }
+
+    public void addReviewImage(ReviewImage reviewImage) {
+        reviewImageList.add(reviewImage);
+    }
+
+    public void removeReviewImage(ReviewImage reviewImage) {
+        reviewImageList.remove(reviewImage);
+    }
 
 }

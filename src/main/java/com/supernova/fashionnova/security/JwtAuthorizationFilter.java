@@ -39,7 +39,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         // 다음 필터로 넘길 주소
         if (req.getRequestURL().toString().equals("http://localhost:8080/users/signup")
             || req.getRequestURL().toString().equals("http://localhost:8080/users/login")
-            || req.getRequestURL().toString().equals("http://localhost:8080/products/product")) {
+            || req.getRequestURL().toString().equals("http://localhost:8080/products/product")
+            || req.getRequestURL().toString().matches("http://localhost:8080/reviews/\\d+")) {
             filterChain.doFilter(req, res);
             return;
         }
