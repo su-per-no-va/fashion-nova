@@ -8,12 +8,14 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.supernova.fashionnova.review.dto.ReviewRequestDto;
+import com.supernova.fashionnova.review.dto.ReviewUpdateRequestDto;
 import com.supernova.fashionnova.security.UserDetailsImpl;
 import com.supernova.fashionnova.user.User;
 import java.util.Collections;
@@ -133,7 +135,24 @@ class ReviewControllerTest {
     }
 
     @Test
-    void updateReview() {
+    @DisplayName("리뷰 수정 성공 테스트")
+    void updateReviewSuccess() throws Exception {
+        // given
+        ReviewUpdateRequestDto requestDto = new ReviewUpdateRequestDto(1L, "수정된 리뷰", 4);
+
+        doNothing().when(reviewService).updateReview(any(User.class), any(ReviewUpdateRequestDto.class));
+
+        // when
+        ResultActions result = mockMvc.perform(put(baseUrl)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(requestDto))
+            .with(csrf())
+            .principal(() -> userDetails.getUsername()));
+
+        // then
+        result.andExpect(status().isOk())
+            .andExpect(content().string("리뷰 수정 완료"));
+        verify(reviewService).updateReview(any(User.class), any(ReviewUpdateRequestDto.class));
     }
 
     @Test
