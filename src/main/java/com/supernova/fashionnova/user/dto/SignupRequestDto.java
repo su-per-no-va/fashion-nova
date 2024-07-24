@@ -3,10 +3,12 @@ package com.supernova.fashionnova.user.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.Builder;
 import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
 
 @Getter
+@Builder
 public class SignupRequestDto {
 
     @NotBlank(message = "ID 입력값이 없습니다.")
@@ -31,4 +33,13 @@ public class SignupRequestDto {
         message = "휴대폰 형식에 맞지 않습니다. 휴대폰 형식: 010-****-**** ")
     @NotBlank(message = "휴대폰 입력값이 없습니다.")
     private String phone;
+
+    public SignupRequestDto(String userName, String password, String name, String email,
+        String phone) {
+        this.userName = userName;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+    }
 }

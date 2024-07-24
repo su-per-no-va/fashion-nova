@@ -75,9 +75,9 @@ public class User extends Timestamped {
         this.mileage = 0L; // 처음 생성될 때는 0
     }
 
-    public void updateUser(UserUpdateRequestDto requestDto) {
+    public void updateUser(UserUpdateRequestDto requestDto,String encodedPassword) {
         this.userName = requestDto.getUserName();
-        this.password = requestDto.getPassword();
+        this.password = encodedPassword;
         this.name = requestDto.getName();
         this.email = requestDto.getEmail();
         this.phone = requestDto.getPhone();
