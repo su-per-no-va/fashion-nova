@@ -36,8 +36,10 @@ class CartServiceTest {
 
     @Mock
     private CartRepository cartRepository;
+
     @Mock
     private ProductDetailRepository productDetailRepository;
+
     @Mock
     private ProductRepository productRepository;
 
@@ -63,8 +65,7 @@ class CartServiceTest {
             ProductDetail productDetail = mock(ProductDetail.class);
 
             given(productRepository.findById(anyLong())).willReturn(Optional.of(product));
-            given(productDetailRepository.findByProductAndSizeAndColor(any(Product.class),
-                anyString(), anyString())).willReturn(Optional.of(productDetail));
+            given(productDetailRepository.findByProductAndSizeAndColor(any(Product.class), anyString(), anyString())).willReturn(Optional.of(productDetail));
             given(productDetail.getQuantity()).willReturn(10L);
             given(productDetail.getStatus()).willReturn("ACTIVE");
 
@@ -109,8 +110,7 @@ class CartServiceTest {
             ProductDetail productDetail = mock(ProductDetail.class);
 
             given(productRepository.findById(anyLong())).willReturn(Optional.of(product));
-            given(productDetailRepository.findByProductAndSizeAndColor(any(Product.class),
-                anyString(), anyString())).willReturn(Optional.of(productDetail));
+            given(productDetailRepository.findByProductAndSizeAndColor(any(Product.class), anyString(), anyString())).willReturn(Optional.of(productDetail));
             given(productDetail.getQuantity()).willReturn(0L);
 
             // when / then
@@ -152,5 +152,92 @@ class CartServiceTest {
             assertThat(cartResponseDto.getTotalPrice()).isEqualTo(100);
 
         }
+    }
+
+    @Nested
+    class UpdateCartTest {
+
+        @Test
+        @DisplayName("장바구니 수정 성공 테스트")
+        void UpdateCartTest1() {
+            // given
+            User user = mock(User.class);
+            CartUpdateRequestDto requestDto = new CartUpdateRequestDto(
+                1L,
+                2,
+                "L",
+                "BLACK");
+
+            Product product = mock(Product.class);
+            ProductDetail currentProductDetail = mock(ProductDetail.class);
+            ProductDetail newProductDetail = mock(ProductDetail.class);
+            Cart cart = new Cart(1, 100, user, currentProductDetail);
+
+            given(currentProductDetail.getProduct()).willReturn(product);
+            given(newProductDetail.getProduct()).willReturn(product);
+            given(product.getPrice()).willReturn(5000); // 상품의 가격 설정
+
+            given(currentProductDetail.getProduct()).willReturn(product);
+            given(productDetailRepository.findById(anyLong())).willReturn(Optional.of(currentProductDetail));
+            given(productDetailRepository.findByProductAndSizeAndColor(any(Product.class), anyString(), anyString())).willReturn(Optional.of(newProductDetail));
+            given(newProductDetail.getQuantity()).willReturn(10L);
+            given(cartRepository.findByUserAndProductDetail(any(User.class), eq(currentProductDetail))).willReturn(Optional.of(cart));
+            given(cartRepository.findByUserAndProductDetail(any(User.class), eq(newProductDetail))).willReturn(Optional.empty());
+
+            // when
+            assertDoesNotThrow(() -> cartService.updateCart(user, requestDto));
+
+            // then
+            verify(cartRepository).save(any(Cart.class));
+        }
+
+        @Test
+        @DisplayName("장바구니 수정 실패 테스트 - 상품 정보 없음")
+        void UpdateCartTest2() {
+            // given
+            User user = mock(User.class);
+            CartUpdateRequestDto requestDto = new CartUpdateRequestDto(
+                1L,
+                2,
+                "L",
+                "BLACK");
+
+            given(productDetailRepository.findById(anyLong())).willReturn(Optional.empty());
+
+            // when / then
+            assertThrows(CustomException.class, () -> cartService.updateCart(user, requestDto));
+        }
+
+        @Test
+        @DisplayName("장바구니 수정 실패 테스트 - 품절된 상품")
+        void UpdateCartTest3() {
+            // given
+            User user = mock(User.class);
+            CartUpdateRequestDto requestDto = new CartUpdateRequestDto(
+                1L,
+                2,
+                "L",
+                "blue");
+
+            Product product = mock(Product.class);
+            ProductDetail currentProductDetail = mock(ProductDetail.class);
+            ProductDetail newProductDetail = mock(ProductDetail.class);
+
+            given(currentProductDetail.getProduct()).willReturn(product);
+            given(productDetailRepository.findById(anyLong())).willReturn(Optional.of(currentProductDetail));
+            given(productDetailRepository.findByProductAndSizeAndColor(any(Product.class), anyString(), anyString())).willReturn(Optional.of(newProductDetail));
+            given(newProductDetail.getQuantity()).willReturn(0L);
+
+            // when / then
+            assertThrows(CustomException.class, () -> cartService.updateCart(user, requestDto));
+        }
+    }
+
+    @Test
+    void deleteFromCartTest() {
+    }
+
+    @Test
+    void clearCartTest() {
     }
 }
