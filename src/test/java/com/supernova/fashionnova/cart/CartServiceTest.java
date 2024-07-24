@@ -233,8 +233,55 @@ class CartServiceTest {
         }
     }
 
-    @Test
-    void deleteFromCartTest() {
+    @Nested
+    class deleteFromCartTest {
+
+        @Test
+        @DisplayName("장바구니 상품 삭제 성공 테스트")
+        void deleteFromCartTest1() {
+            // given
+            User user = mock(User.class);
+            Long productDetailId = 1L;
+            ProductDetail productDetail = mock(ProductDetail.class);
+            Cart cart = new Cart(1, 100, user, productDetail);
+
+            given(productDetailRepository.findById(anyLong())).willReturn(Optional.of(productDetail));
+            given(cartRepository.findByUserAndProductDetail(any(User.class), any(ProductDetail.class))).willReturn(Optional.of(cart));
+
+            // when
+            assertDoesNotThrow(() -> cartService.deleteFromCart(user, productDetailId));
+
+            // then
+            verify(cartRepository).delete(any(Cart.class));
+        }
+
+        @Test
+        @DisplayName("장바구니 상품 삭제 실패 테스트 - 상품 정보 없음")
+        void DeleteFromCartTest2() {
+            // given
+            User user = mock(User.class);
+            Long productDetailId = 1L;
+
+            given(productDetailRepository.findById(anyLong())).willReturn(Optional.empty());
+
+            // when / then
+            assertThrows(CustomException.class, () -> cartService.deleteFromCart(user, productDetailId));
+        }
+
+        @Test
+        @DisplayName("장바구니 상품 삭제 실패 테스트 - 장바구니에 해당 상품 없음")
+        void DeleteFromCartTest3() {
+            // given
+            User user = mock(User.class);
+            Long productDetailId = 1L;
+            ProductDetail productDetail = mock(ProductDetail.class);
+
+            given(productDetailRepository.findById(anyLong())).willReturn(Optional.of(productDetail));
+            given(cartRepository.findByUserAndProductDetail(any(User.class), any(ProductDetail.class))).willReturn(Optional.empty());
+
+            // when / then
+            assertThrows(CustomException.class, () -> cartService.deleteFromCart(user, productDetailId));
+        }
     }
 
     @Test
