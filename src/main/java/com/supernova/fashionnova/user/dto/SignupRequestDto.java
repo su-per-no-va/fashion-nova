@@ -15,7 +15,7 @@ public class SignupRequestDto {
     @Length(min = 4, max = 100, message = "ID는 최소 4글자, 최대 100글자입니다.")
     private String userName;
 
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@#$!%*?&^]{8,}$",
         message = "비밀번호는 영문, 숫자, 특수문자 포함 8자리 이상이어야 합니다.")
     @NotBlank(message = "비밀번호의 입력 값이 없습니다.")
     @Length(min = 8, max = 100, message = "비밀번호는 최소 8글자, 최대 100글자 입니다.")
