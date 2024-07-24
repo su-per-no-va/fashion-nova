@@ -66,7 +66,7 @@ public class ReviewController {
     }
 
     /**
-     * 사용자별 리뷰 조회
+     * 내가 작성한 리뷰 조회
      *
      * @param userDetails 로그인된 사용자 정보
      * @return List<MyReviewResponseDto>

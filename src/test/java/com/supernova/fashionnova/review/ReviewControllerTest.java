@@ -1,18 +1,22 @@
 package com.supernova.fashionnova.review;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.supernova.fashionnova.review.dto.ReviewRequestDto;
 import com.supernova.fashionnova.security.UserDetailsImpl;
 import com.supernova.fashionnova.user.User;
+import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,6 +24,10 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -85,11 +93,43 @@ class ReviewControllerTest {
     }
 
     @Test
-    void getReviewsByProductId() {
+    @DisplayName("상품별 리뷰 전체 조회 테스트")
+    void getReviewsByProductId() throws Exception {
+        // given
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Review> reviews = new PageImpl<>(Collections.emptyList(), pageable, 0);
+        given(reviewService.getReviewsByProductId(anyLong(), any(Pageable.class))).willReturn(reviews);
+
+        // when
+        ResultActions result = mockMvc.perform(get(baseUrl + "/{productId}", 1L)
+            .param("page", "0")
+            .with(csrf())
+            .principal(() -> userDetails.getUsername()));
+
+        // then
+        result.andExpect(status().isOk())
+            .andExpect(jsonPath("$.content").isEmpty());
+        verify(reviewService).getReviewsByProductId(anyLong(), any(Pageable.class));
     }
 
     @Test
-    void getMyReviews() {
+    @DisplayName("내가 작성한 리뷰 조회 테스트")
+    void getMyReviews() throws Exception {
+        // given
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Review> reviews = new PageImpl<>(Collections.emptyList(), pageable, 0);
+        given(reviewService.getReviewsByUser(any(User.class), any(Pageable.class))).willReturn(reviews);
+
+        // when
+        ResultActions result = mockMvc.perform(get(baseUrl)
+            .param("page", "0")
+            .with(csrf())
+            .principal(() -> userDetails.getUsername()));
+
+        // then
+        result.andExpect(status().isOk())
+            .andExpect(jsonPath("$.content").isEmpty());
+        verify(reviewService).getReviewsByUser(any(User.class), any(Pageable.class));
     }
 
     @Test
