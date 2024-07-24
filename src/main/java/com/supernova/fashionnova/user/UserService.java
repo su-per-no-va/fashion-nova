@@ -120,7 +120,8 @@ public class UserService {
             .orElseThrow(()-> new CustomException(ErrorType.NOT_FOUND_USER)
             );
 
-        updateUser.updateUser(requestDto);
+        String encodedPassword = passwordEncoder.encode(requestDto.getPassword());
+        updateUser.updateUser(requestDto,encodedPassword);
 
         return new UserResponseDto(user);
     }
