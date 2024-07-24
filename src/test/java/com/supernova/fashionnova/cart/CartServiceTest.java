@@ -23,6 +23,7 @@ import com.supernova.fashionnova.product.ProductRepository;
 import com.supernova.fashionnova.user.User;
 import java.util.List;
 import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -46,6 +47,18 @@ class CartServiceTest {
     @InjectMocks
     private CartService cartService;
 
+    private User user;
+    @BeforeEach
+    void setUp() {
+        this.user = User.builder()
+            .userName("testUser1234")
+            .name("테스트유저")
+            .password("test1234!#")
+            .email("test@gmail.com")
+            .phone("010-1234-5678")
+            .build();
+    }
+
     @Nested
     class AddCartTest {
 
@@ -53,7 +66,6 @@ class CartServiceTest {
         @DisplayName("장바구니 상품 추가 성공 테스트")
         void AddCartTest1() {
             // given
-            User user = mock(User.class);
             CartRequestDto requestDto = new CartRequestDto(
                 1L,
                 2,
@@ -80,7 +92,6 @@ class CartServiceTest {
         @DisplayName("장바구니 상품 추가 실패 테스트 - 상품 정보 없음")
         void AddCartTest2() {
             // given
-            User user = mock(User.class);
             CartRequestDto requestDto = new CartRequestDto(
                 1L,
                 2,
@@ -98,7 +109,6 @@ class CartServiceTest {
         @DisplayName("장바구니 추가 실패 테스트 - 품절된 상품")
         void AddCartTest3() {
             // given
-            User user = mock(User.class);
             CartRequestDto requestDto = new CartRequestDto(
                 1L,
                 2,
@@ -125,7 +135,6 @@ class CartServiceTest {
         @DisplayName("장바구니 조회 테스트")
         void GetCartTest1() {
             // given
-            User user = mock(User.class);
             ProductDetail productDetail = mock(ProductDetail.class);
             Product product = mock(Product.class);
             Cart cart = new Cart(
@@ -161,7 +170,6 @@ class CartServiceTest {
         @DisplayName("장바구니 수정 성공 테스트")
         void UpdateCartTest1() {
             // given
-            User user = mock(User.class);
             CartUpdateRequestDto requestDto = new CartUpdateRequestDto(
                 1L,
                 2,
@@ -195,7 +203,6 @@ class CartServiceTest {
         @DisplayName("장바구니 수정 실패 테스트 - 상품 정보 없음")
         void UpdateCartTest2() {
             // given
-            User user = mock(User.class);
             CartUpdateRequestDto requestDto = new CartUpdateRequestDto(
                 1L,
                 2,
@@ -212,7 +219,6 @@ class CartServiceTest {
         @DisplayName("장바구니 수정 실패 테스트 - 품절된 상품")
         void UpdateCartTest3() {
             // given
-            User user = mock(User.class);
             CartUpdateRequestDto requestDto = new CartUpdateRequestDto(
                 1L,
                 2,
@@ -240,7 +246,6 @@ class CartServiceTest {
         @DisplayName("장바구니 상품 삭제 성공 테스트")
         void deleteFromCartTest1() {
             // given
-            User user = mock(User.class);
             Long productDetailId = 1L;
             ProductDetail productDetail = mock(ProductDetail.class);
             Cart cart = new Cart(1, 100, user, productDetail);
@@ -259,7 +264,6 @@ class CartServiceTest {
         @DisplayName("장바구니 상품 삭제 실패 테스트 - 상품 정보 없음")
         void DeleteFromCartTest2() {
             // given
-            User user = mock(User.class);
             Long productDetailId = 1L;
 
             given(productDetailRepository.findById(anyLong())).willReturn(Optional.empty());
@@ -272,7 +276,6 @@ class CartServiceTest {
         @DisplayName("장바구니 상품 삭제 실패 테스트 - 장바구니에 해당 상품 없음")
         void DeleteFromCartTest3() {
             // given
-            User user = mock(User.class);
             Long productDetailId = 1L;
             ProductDetail productDetail = mock(ProductDetail.class);
 
@@ -291,13 +294,11 @@ class CartServiceTest {
         @DisplayName("장바구니 비우기 성공 테스트")
         void ClearCartTest1() {
             // given
-            User user = mock(User.class); // mock User 객체 생성
             ProductDetail productDetail = mock(ProductDetail.class);
             Cart cart1 = new Cart(1, 100, user, productDetail);
             Cart cart2 = new Cart(2, 200, user, productDetail);
             List<Cart> cartList = List.of(cart1, cart2); // mock Cart 리스트 생성
 
-            // given
             given(cartRepository.findByUser(any(User.class))).willReturn(cartList);
 
             // when
@@ -310,9 +311,6 @@ class CartServiceTest {
         @Test
         @DisplayName("장바구니 비우기 실패 테스트 - 장바구니가 이미 비어 있음")
         void ClearCartTest2() {
-            // given
-            User user = mock(User.class);
-
             // given
             given(cartRepository.findByUser(any(User.class))).willReturn(List.of());
 
