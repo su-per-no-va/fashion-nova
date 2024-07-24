@@ -60,8 +60,17 @@ public class Product extends Timestamped {
 
 */
 
-
-
+    public Product(String product, int price, String explanation, String classification,
+        String category, int like_count, int review_count, String product_status) {
+        this.product = product;
+        this.price = price;
+        this.explanation = explanation;
+        this.classification = classification;
+        this.category = category;
+        this.like_count = like_count;
+        this.review_count = review_count;
+        this.product_status = product_status;
+    }
 }
 
 
