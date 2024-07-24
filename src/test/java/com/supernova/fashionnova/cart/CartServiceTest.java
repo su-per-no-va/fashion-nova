@@ -284,7 +284,40 @@ class CartServiceTest {
         }
     }
 
-    @Test
-    void clearCartTest() {
+    @Nested
+    class ClearCartTest {
+
+        @Test
+        @DisplayName("장바구니 비우기 성공 테스트")
+        void ClearCartTest1() {
+            // given
+            User user = mock(User.class); // mock User 객체 생성
+            ProductDetail productDetail = mock(ProductDetail.class);
+            Cart cart1 = new Cart(1, 100, user, productDetail);
+            Cart cart2 = new Cart(2, 200, user, productDetail);
+            List<Cart> cartList = List.of(cart1, cart2); // mock Cart 리스트 생성
+
+            // given
+            given(cartRepository.findByUser(any(User.class))).willReturn(cartList);
+
+            // when
+            assertDoesNotThrow(() -> cartService.clearCart(user));
+
+            // then
+            verify(cartRepository).deleteAllInBatch(cartList);
+        }
+
+        @Test
+        @DisplayName("장바구니 비우기 실패 테스트 - 장바구니가 이미 비어 있음")
+        void ClearCartTest2() {
+            // given
+            User user = mock(User.class);
+
+            // given
+            given(cartRepository.findByUser(any(User.class))).willReturn(List.of());
+
+            // when / then
+            assertThrows(CustomException.class, () -> cartService.clearCart(user));
+        }
     }
 }
