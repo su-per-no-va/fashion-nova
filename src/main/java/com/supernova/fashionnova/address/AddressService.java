@@ -3,7 +3,6 @@ package com.supernova.fashionnova.address;
 import com.supernova.fashionnova.address.dto.AddressRequestDto;
 import com.supernova.fashionnova.address.dto.AddressResponseDto;
 import com.supernova.fashionnova.user.User;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +34,7 @@ public class AddressService {
             .build();
 
         addressRepository.save(address);
+
     }
 
     /**
@@ -45,12 +45,12 @@ public class AddressService {
      */
     public List<AddressResponseDto> getAddressList(User user) {
 
-        List<Address> addresses = addressRepository.findByUser(user);
+        List<Address> addresses = addressRepository.findByUserOrderByDefaultAddressDesc(user);
 
         return addresses.stream()
-            .sorted(Comparator.comparing(Address::isDefaultAddress).reversed())
             .map(AddressResponseDto::new)
             .collect(Collectors.toList());
+
     }
 
     /**
@@ -62,16 +62,8 @@ public class AddressService {
     @Transactional
     public void updateDefaultAddress(User user, Long addressId) {
 
-        List<Address> addressList = addressRepository.findByUser(user);
+        addressRepository.updateDefaultAddress(user.getId(), addressId);
 
-        for (Address address : addressList) {
-            if (address.isDefaultAddress()) {
-                address.updateDefaultAddress();
-            }
-            if (address.getId().equals(addressId)) {
-                address.updateDefaultAddress();
-            }
-        }
     }
 
 }
