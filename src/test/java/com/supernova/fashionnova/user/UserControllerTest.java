@@ -3,14 +3,18 @@ package com.supernova.fashionnova.user;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.supernova.fashionnova.global.util.ResponseUtil;
 import com.supernova.fashionnova.security.UserDetailsImpl;
+import com.supernova.fashionnova.user.dto.SignupRequestDto;
 import com.supernova.fashionnova.user.dto.UserResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -46,19 +50,14 @@ class UserControllerTest {
   void setUp() {
     // 테스트 전에 매번 실행되는 설정 메서드입니다.
 
-    // UserDetailsImpl 클래스의 목 객체를 만듭니다.
+    // Given a mock UserDetailsImpl
     UserDetailsImpl userDetails = Mockito.mock(UserDetailsImpl.class);
-
-    // userDetails.getUsername()이 호출되면 "user"를 반환하도록 설정합니다.
     given(userDetails.getUsername()).willReturn("user");
-
-    // userDetails.getUser()가 호출되면 새로운 User 객체를 반환하도록 설정합니다.
     given(userDetails.getUser()).willReturn(new User());
 
-    // 보안 컨텍스트를 설정합니다.
+    // Set the security context
     SecurityContextHolder.setContext(new SecurityContextImpl());
     SecurityContextHolder.getContext().setAuthentication(
-        // UsernamePasswordAuthenticationToken으로 인증 객체를 만듭니다.
         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities()));
   }
 
@@ -69,17 +68,9 @@ class UserControllerTest {
 
     // UserResponseDto 클래스의 목 객체를 만듭니다.
     UserResponseDto userResponseDto = Mockito.mock(UserResponseDto.class);
-
-    // userResponseDto.getUserName()이 호출되면 "usernmame"을 반환하도록 설정합니다.
     given(userResponseDto.getUserName()).willReturn("usernmame");
-
-    // userResponseDto.getName()이 호출되면 "name"을 반환하도록 설정합니다.
     given(userResponseDto.getName()).willReturn("name");
-
-    // userResponseDto.getEmail()이 호출되면 "email"을 반환하도록 설정합니다.
     given(userResponseDto.getEmail()).willReturn("email");
-
-    // service.getUser()가 호출되면 userResponseDto를 반환하도록 설정합니다.
     when(service.getUser(any())).thenReturn(userResponseDto);
 
     // MockMvc를 사용하여 HTTP GET 요청을 보내고 기대하는 응답을 검증합니다.
@@ -92,4 +83,51 @@ class UserControllerTest {
             jsonPath("$.email").exists()  // 응답 JSON에 email 필드가 존재하는지 확인합니다.
         );
   }
+
+  @Test
+  @DisplayName("회원가입 테스트")
+  void signup() throws Exception {
+    // given - 테스트를 위한 준비 단계
+    SignupRequestDto requestDto = SignupRequestDto.builder()
+        .userName("testUser")
+        .password("Test1234!@#$")
+        .name("테스트 유저")
+        .email("test@naver.com")
+        .phone("010-1234-5678")
+        .build();
+
+    // UserService의 signup 메서드를 모킹하여 아무 동작도 하지 않도록 설정합니다.
+    doNothing().when(service).signup(any(SignupRequestDto.class));
+
+    // when - 실제로 테스트할 동작을 지정합니다.
+    mockMvc.perform(post(baseUrl + "/signup") )
+            .content(objectMapper.writeValueAsString(requestDto))  // 회원가입 엔드포인트로 POST 요청을 보냅니다.
+            .contentType(MediaType.APPLICATION_JSON)  // 요청 본문의 콘텐츠 타입을 JSON으로 설정합니다.
+             // 요청 본문에 SignupRequestDto 객체를 JSON 형식으로 포함시킵니다.
+            .accept(MediaType.APPLICATION_JSON))  // 응답의 콘텐츠 타입을 JSON으로 설정합니다.
+        .andExpect(status().isCreated())  // 응답 상태 코드가 201 Created인지 확인합니다.
+        .andExpect(content().string("회원가입 성공"));  // 응답 본문이 "회원가입 성공"인지 확인합니다.
+  }
+
+  @Test
+  @DisplayName("로그아웃 테스트")
+  void logout() {
+  }
+
+  @Test
+  @DisplayName("회원탈퇴 테스트")
+  void withdraw() {
+  }
+
+  @Test
+  @DisplayName("유저 경고 조회")
+  void getCautionList() {
+  }
+
+  @Test
+  @DisplayName("유저 정보 조회")
+  void updateUser() {
+  }
+
+
 }
