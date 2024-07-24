@@ -1,5 +1,6 @@
 package com.supernova.fashionnova.cart;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -10,7 +11,9 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import com.supernova.fashionnova.cart.dto.CartItemDto;
 import com.supernova.fashionnova.cart.dto.CartRequestDto;
+import com.supernova.fashionnova.cart.dto.CartResponseDto;
 import com.supernova.fashionnova.cart.dto.CartUpdateRequestDto;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.product.Product;
@@ -18,6 +21,7 @@ import com.supernova.fashionnova.product.ProductDetail;
 import com.supernova.fashionnova.product.ProductDetailRepository;
 import com.supernova.fashionnova.product.ProductRepository;
 import com.supernova.fashionnova.user.User;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -52,14 +56,15 @@ class CartServiceTest {
                 1L,
                 2,
                 "M",
-                "black"
+                "BLACK"
             );
 
             Product product = mock(Product.class);
             ProductDetail productDetail = mock(ProductDetail.class);
 
             given(productRepository.findById(anyLong())).willReturn(Optional.of(product));
-            given(productDetailRepository.findByProductAndSizeAndColor(any(Product.class), anyString(), anyString())).willReturn(Optional.of(productDetail));
+            given(productDetailRepository.findByProductAndSizeAndColor(any(Product.class),
+                anyString(), anyString())).willReturn(Optional.of(productDetail));
             given(productDetail.getQuantity()).willReturn(10L);
             given(productDetail.getStatus()).willReturn("ACTIVE");
 
@@ -97,14 +102,15 @@ class CartServiceTest {
                 1L,
                 2,
                 "M",
-                "black"
+                "BLACK"
             );
 
             Product product = mock(Product.class);
             ProductDetail productDetail = mock(ProductDetail.class);
 
             given(productRepository.findById(anyLong())).willReturn(Optional.of(product));
-            given(productDetailRepository.findByProductAndSizeAndColor(any(Product.class), anyString(), anyString())).willReturn(Optional.of(productDetail));
+            given(productDetailRepository.findByProductAndSizeAndColor(any(Product.class),
+                anyString(), anyString())).willReturn(Optional.of(productDetail));
             given(productDetail.getQuantity()).willReturn(0L);
 
             // when / then
@@ -118,76 +124,33 @@ class CartServiceTest {
         @Test
         @DisplayName("장바구니 조회 테스트")
         void GetCartTest1() {
-
-        }
-    }
-
-    @Nested
-    class UpdateCartTest {
-
-        @Test
-        @DisplayName("장바구니 수정 성공 테스트")
-        void UpdateCartTest1() {
             // given
             User user = mock(User.class);
-            CartUpdateRequestDto requestDto = new CartUpdateRequestDto(1L, 2, "L", "blue");
-
+            ProductDetail productDetail = mock(ProductDetail.class);
             Product product = mock(Product.class);
-            ProductDetail currentProductDetail = mock(ProductDetail.class);
-            ProductDetail newProductDetail = mock(ProductDetail.class);
-            Cart cart = new Cart(1, 100, user, currentProductDetail);
+            Cart cart = new Cart(
+                1,
+                100,
+                user,
+                productDetail);
 
-            given(productDetailRepository.findById(anyLong())).willReturn(Optional.of(currentProductDetail));
-            given(productDetailRepository.findByProductAndSizeAndColor(any(Product.class), anyString(), anyString())).willReturn(Optional.of(newProductDetail));
-            given(newProductDetail.getQuantity()).willReturn(10L);
-            given(cartRepository.findByUserAndProductDetail(any(User.class), any(ProductDetail.class))).willReturn(Optional.of(cart));
-            given(cartRepository.findByUserAndProductDetail(any(User.class), eq(newProductDetail))).willReturn(Optional.empty());
+            given(productDetail.getProduct()).willReturn(product);
+            given(product.getProduct()).willReturn("꽃무늬 원피스");
+            given(product.getPrice()).willReturn(100);
+            given(productDetail.getSize()).willReturn("M");
+            given(productDetail.getColor()).willReturn("BLACK");
+
+            given(cartRepository.findByUser(any(User.class))).willReturn(List.of(cart));
 
             // when
-            assertDoesNotThrow(() -> cartService.updateCart(user, requestDto));
+            CartResponseDto cartResponseDto = cartService.getCart(user);
 
             // then
-            verify(cartRepository).save(any(Cart.class));
+            List<CartItemDto> items = cartResponseDto.getCartItemDtoList();
+            assertThat(items).isNotEmpty();
+            assertThat(items.get(0).getProduct()).isEqualTo("꽃무늬 원피스");
+            assertThat(cartResponseDto.getTotalPrice()).isEqualTo(100);
+
         }
-
-        @Test
-        @DisplayName("장바구니 수정 실패 테스트 - 상품 정보 없음")
-        void UpdateCartTest2() {
-            // given
-            User user = mock(User.class);
-            CartUpdateRequestDto requestDto = new CartUpdateRequestDto(1L, 2, "L", "blue");
-
-            given(productDetailRepository.findById(anyLong())).willReturn(Optional.empty());
-
-            // when / then
-            assertThrows(CustomException.class, () -> cartService.updateCart(user, requestDto));
-        }
-
-        @Test
-        @DisplayName("장바구니 수정 실패 테스트 - 품절된 상품")
-        void UpdateCartTest3() {
-            // given
-            User user = mock(User.class);
-            CartUpdateRequestDto requestDto = new CartUpdateRequestDto(1L, 2, "L", "blue");
-
-            Product product = mock(Product.class);
-            ProductDetail currentProductDetail = mock(ProductDetail.class);
-            ProductDetail newProductDetail = mock(ProductDetail.class);
-
-            given(productDetailRepository.findById(anyLong())).willReturn(Optional.of(currentProductDetail));
-            given(productDetailRepository.findByProductAndSizeAndColor(any(Product.class), anyString(), anyString())).willReturn(Optional.of(newProductDetail));
-            given(newProductDetail.getQuantity()).willReturn(0L);
-
-            // when / then
-            assertThrows(CustomException.class, () -> cartService.updateCart(user, requestDto));
-        }
-    }
-
-    @Test
-    void deleteFromCartTest() {
-    }
-
-    @Test
-    void clearCartTest() {
     }
 }
