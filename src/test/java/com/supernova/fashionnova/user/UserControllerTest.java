@@ -5,8 +5,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.post;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -90,7 +91,7 @@ class UserControllerTest {
     // given - 테스트를 위한 준비 단계
     SignupRequestDto requestDto = SignupRequestDto.builder()
         .userName("testUser")
-        .password("Test1234!@#$")
+        .password("Tset12345!@")
         .name("테스트 유저")
         .email("test@naver.com")
         .phone("010-1234-5678")
@@ -100,18 +101,27 @@ class UserControllerTest {
     doNothing().when(service).signup(any(SignupRequestDto.class));
 
     // when - 실제로 테스트할 동작을 지정합니다.
-    mockMvc.perform(post(baseUrl + "/signup") )
+    mockMvc.perform(post(baseUrl + "/signup")
+            .with(csrf())
             .content(objectMapper.writeValueAsString(requestDto))  // 회원가입 엔드포인트로 POST 요청을 보냅니다.
-            .contentType(MediaType.APPLICATION_JSON)  // 요청 본문의 콘텐츠 타입을 JSON으로 설정합니다.
-             // 요청 본문에 SignupRequestDto 객체를 JSON 형식으로 포함시킵니다.
-            .accept(MediaType.APPLICATION_JSON))  // 응답의 콘텐츠 타입을 JSON으로 설정합니다.
+            .contentType(MediaType.APPLICATION_JSON))  // 요청 본문의 콘텐츠 타입을 JSON으로 설정합니다.
         .andExpect(status().isCreated())  // 응답 상태 코드가 201 Created인지 확인합니다.
         .andExpect(content().string("회원가입 성공"));  // 응답 본문이 "회원가입 성공"인지 확인합니다.
   }
 
   @Test
   @DisplayName("로그아웃 테스트")
-  void logout() {
+  void logout() throws Exception{
+    User user = new User();
+    doNothing().when(service).logout(user);
+
+    mockMvc.perform(post(baseUrl + "/logout").with(csrf()))
+        .andExpectAll(
+            status().isOk(),
+            content().contentType("text/plain;charset=UTF-8"),
+            content().string("로그아웃 성공")
+
+        );
   }
 
   @Test
