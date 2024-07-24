@@ -30,12 +30,14 @@ class AddressServiceTest {
     @Test
     void addAddressTest() {
         // given
-        AddressRequestDto requestDto = new AddressRequestDto("집",
-            "남현",
-            "010-0000-1111",
-            "12345",
-            "사랑시 고백구 행복동",
-            "A동 101호");
+        AddressRequestDto requestDto = AddressRequestDto.builder()
+            .name("집")
+            .recipientName("남현")
+            .recipientNumber("010-0000-1111")
+            .zipCode("12345")
+            .address("사랑시 고백구 행복동")
+            .detail("A동 101호")
+            .build();
 
         User user = Mockito.mock(User.class);
 
@@ -78,4 +80,5 @@ class AddressServiceTest {
         // then
         verify(addressRepository, times(1)).updateDefaultAddress(user.getId(), addressId);
     }
+
 }

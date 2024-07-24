@@ -2,9 +2,11 @@ package com.supernova.fashionnova.address.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 public class AddressRequestDto {
 
     @NotBlank(message = "배송지명 입력값이 없습니다.")
@@ -26,14 +28,5 @@ public class AddressRequestDto {
     private String address;
 
     private String detail;
-
-    public AddressRequestDto(String name, String recipientName, String recipientNumber, String zipCode, String address, String detail) {
-        this.name = name;
-        this.recipientName = recipientName;
-        this.recipientNumber = recipientNumber;
-        this.zipCode = zipCode;
-        this.address = address;
-        this.detail = detail;
-    }
 
 }

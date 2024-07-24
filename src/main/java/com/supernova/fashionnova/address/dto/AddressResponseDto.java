@@ -12,7 +12,7 @@ public class AddressResponseDto {
     private final String zipCode;
     private final String address;
     private final String detail;
-    private final boolean defaultAddress;
+    private final Boolean defaultAddress;
 
     public AddressResponseDto (Address address) {
         this.name = address.getName();
