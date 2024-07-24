@@ -217,7 +217,7 @@ class CartServiceTest {
                 1L,
                 2,
                 "L",
-                "blue");
+                "BLACK");
 
             Product product = mock(Product.class);
             ProductDetail currentProductDetail = mock(ProductDetail.class);
