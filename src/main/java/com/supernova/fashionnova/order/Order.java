@@ -50,4 +50,5 @@ public class Order extends Timestamped {
 
     @Enumerated(value = EnumType.STRING)
     private OrderStatus orderStatus;
+
 }
