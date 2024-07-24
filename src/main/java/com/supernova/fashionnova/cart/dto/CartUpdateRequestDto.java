@@ -1,10 +1,8 @@
 package com.supernova.fashionnova.cart.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 public class CartUpdateRequestDto {
 
     private Long productDetailId;
@@ -14,5 +12,12 @@ public class CartUpdateRequestDto {
     private String size;
 
     private String color;
+
+    public CartUpdateRequestDto(Long productDetailId, int count, String size, String color) {
+        this.productDetailId = productDetailId;
+        this.count = count;
+        this.size = size;
+        this.color = color;
+    }
 
 }
