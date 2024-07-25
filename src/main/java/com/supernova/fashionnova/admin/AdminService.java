@@ -2,6 +2,8 @@ package com.supernova.fashionnova.admin;
 
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
+import com.supernova.fashionnova.review.Review;
+import com.supernova.fashionnova.review.ReviewRepository;
 import com.supernova.fashionnova.user.User;
 import com.supernova.fashionnova.user.UserRepository;
 import com.supernova.fashionnova.user.dto.UserResponseDto;
@@ -25,6 +27,8 @@ public class AdminService {
     private final UserRepository userRepository;
 
     private final WarnRepository warnRepository;
+
+    private final ReviewRepository reviewRepository;
 
     private static final int PAGE_SIZE = 30;
 
@@ -71,5 +75,22 @@ public class AdminService {
             .orElseThrow(()-> new CustomException(ErrorType.NOT_FOUND_WARN));
 
         warnRepository.delete(warn);
+    }
+
+    /**
+     * 작성자별 리뷰 조회
+     *
+     * @param userId
+     * @param pageable
+     * @return Page<Review>
+     */
+    @Transactional(readOnly = true)
+    public Page<Review> getReviewsByUserId(Long userId, Pageable pageable) {
+
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
+
+        return reviewRepository.findByUser(user, pageable);
+
     }
 }
