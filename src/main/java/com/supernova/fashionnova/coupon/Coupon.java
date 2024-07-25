@@ -4,6 +4,8 @@ import com.supernova.fashionnova.global.common.Timestamped;
 import com.supernova.fashionnova.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -43,9 +45,23 @@ public class Coupon extends Timestamped {
     private String sale;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private CouponType type;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private CouponStatus status;
+
+    public Coupon(User user, String name, String sale, CouponType type) {
+        this.user = user;
+        this.name = name;
+        this.sale = sale;
+        this.type = type;
+        this.status = CouponStatus.ACTIVE;
+    }
+
+    public void useCoupon() {
+        this.status = CouponStatus.INACTIVE;
+    }
 
 }

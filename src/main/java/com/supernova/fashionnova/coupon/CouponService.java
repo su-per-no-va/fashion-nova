@@ -20,11 +20,8 @@ public class CouponService {
      */
     public List<CouponResponseDto> getCouponList(User user) {
 
-        List<Coupon> coupons = couponRepository.findByUserAndStatus(user, CouponStatus.ACTIVE);
+        return getCouponListByStatus(user, CouponStatus.ACTIVE);
 
-        return coupons.stream()
-            .map(CouponResponseDto::new)
-            .collect(Collectors.toList());
     }
 
     /** 쿠폰 내역 조회
@@ -34,11 +31,18 @@ public class CouponService {
      */
     public List<CouponResponseDto> getUsedCouponList(User user) {
 
-        List<Coupon> coupons = couponRepository.findByUserAndStatus(user, CouponStatus.INACTIVE);
+        return getCouponListByStatus(user, CouponStatus.INACTIVE);
+
+    }
+
+    private List<CouponResponseDto> getCouponListByStatus(User user, CouponStatus status) {
+
+        List<Coupon> coupons = couponRepository.findByUserAndStatus(user, status);
 
         return coupons.stream()
             .map(CouponResponseDto::new)
             .collect(Collectors.toList());
+
     }
 
 }
