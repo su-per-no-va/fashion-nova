@@ -72,6 +72,7 @@ class AddressControllerTest {
     void addAddressTest() throws Exception {
 
         // given
+        User user = userDetails.getUser();
         AddressRequestDto requestDto = AddressRequestDto.builder()
             .name("집")
             .recipientName("남현")
@@ -80,19 +81,23 @@ class AddressControllerTest {
             .address("사랑시 고백구 행복동")
             .detail("A동 101호")
             .build();
-        doNothing().when(addressService).addAddress(any(User.class), any(AddressRequestDto.class));
+        doNothing().when(addressService).addAddress(eq(user), any(AddressRequestDto.class));
 
         // when * then
-        mockMvc.perform(post(baseUrl).with(csrf())
-                .content(objectMapper.writeValueAsString(requestDto))
-                .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isCreated())
-            .andExpect(content().string("배송지 추가 성공"));
+        mockMvc.perform(post(baseUrl)
+                .with(csrf())
+            .content(objectMapper.writeValueAsString(requestDto))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpectAll(
+                status().isCreated(),
+                content().string("배송지 추가 성공")
+            );
 
     }
 
     @Test
     void getAddressListTest() throws Exception {
+
         // given
         User user = userDetails.getUser();
         List<AddressResponseDto> responseDtoList = Arrays.asList(
@@ -106,7 +111,8 @@ class AddressControllerTest {
         when(addressService.getAddressList(user)).thenReturn(responseDtoList);
 
         // then
-        mockMvc.perform(get(baseUrl).with(csrf()))
+        mockMvc.perform(get(baseUrl)
+                .with(csrf()))
             .andExpectAll(
                 status().isOk(),
                 content().contentType(MediaType.APPLICATION_JSON),
@@ -126,23 +132,25 @@ class AddressControllerTest {
                 jsonPath("$[1].detail").value("B동 102호"),
                 jsonPath("$[1].defaultAddress").value(false)
             );
+
     }
 
     @Test
     void updateDefaultAddressTest() throws Exception {
 
         // given
+        User user = userDetails.getUser();
         Long addressId = 1L;
-        doNothing().when(addressService).updateDefaultAddress(any(User.class), eq(addressId));
+        doNothing().when(addressService).updateDefaultAddress(eq(user), eq(addressId));
 
         // when * then
         mockMvc.perform(put(baseUrl + "/" + addressId)
                 .with(csrf()))
-                .andExpectAll(
-                    status().isOk(),
-                    content().contentType("text/plain;charset=UTF-8"),
-                    content().string("기본 배송지 설정 성공")
-                );
+            .andExpectAll(
+                status().isOk(),
+                content().contentType("text/plain;charset=UTF-8"),
+                content().string("기본 배송지 설정 성공")
+            );
 
     }
 

@@ -29,6 +29,7 @@ class AddressServiceTest {
 
     @Test
     void addAddressTest() {
+
         // given
         AddressRequestDto requestDto = AddressRequestDto.builder()
             .name("집")
@@ -43,13 +44,14 @@ class AddressServiceTest {
 
         // when
 
-
         // then
         assertDoesNotThrow(() -> addressService.addAddress(user, requestDto));
+
     }
 
     @Test
     void getAddressListTest() {
+
         // given
         User user = Mockito.mock(User.class);
         Address address = Mockito.mock(Address.class);
@@ -66,10 +68,12 @@ class AddressServiceTest {
 
         AddressResponseDto addressResponseDto = result.get(0);
         assertEquals("집", addressResponseDto.getName());
+
     }
 
     @Test
     void updateDefaultAddressTest() {
+
         // given
         User user = Mockito.mock(User.class);
         Long addressId = 1L;
@@ -79,6 +83,7 @@ class AddressServiceTest {
 
         // then
         verify(addressRepository, times(1)).updateDefaultAddress(user.getId(), addressId);
+
     }
 
 }
