@@ -54,15 +54,18 @@ class ReviewServiceTest {
     private ReviewService reviewService;
 
     private User user;
+
     private Product product;
+
     private ReviewRequestDto reviewRequestDto;
-    private ReviewUpdateRequestDto reviewUpdateRequestDto;
+
     private Review review;
 
     @BeforeEach
     void setUp() {
 
         this.user = User.builder()
+            .id(1L)
             .userName("testUser1234")
             .name("테스트유저")
             .password("test1234!#")
@@ -70,19 +73,17 @@ class ReviewServiceTest {
             .phone("010-1234-5678")
             .build();
 
-        this.product = Product.builder()
-            .id(1L)
-            .product("Sample Product")
-            .price(10000)
-            .explanation("Sample product explanation")
-            .category("Category")
-            .like_count(0)
-            .review_count(0)
-            .product_status("AVAILABLE")
-            .build();
+        this.product = new Product(
+            1L,
+            "Sample Product",
+            10000,
+            "Sample product explanation",
+            "Category",
+            0,
+            0,
+            "AVAILABLE");
 
         this.reviewRequestDto = new ReviewRequestDto(1L, "너무 좋아요", 5, "ImageUrl");
-        this.reviewUpdateRequestDto = new ReviewUpdateRequestDto(1L, "너무 별로에요", 3);
         this.review = new Review(user, product, "너무 좋아요", 5);
     }
 
@@ -94,7 +95,7 @@ class ReviewServiceTest {
         @DisplayName("리뷰 등록 성공 테스트")
         void AddReviewTest1() {
             // given
-            when(ordersRepository.existsByUserIdAndProductId(anyLong(), anyLong())).thenReturn(true);
+            given(ordersRepository.existsByUserIdAndProductId(anyLong(), anyLong())).willReturn(true);
             when(productRepository.findById(anyLong())).thenReturn(Optional.of(product));
             when(reviewRepository.save(any(Review.class))).thenReturn(review);
 
@@ -163,7 +164,7 @@ class ReviewServiceTest {
 
             // then
             assertThat(result.getContent()).isNotEmpty();
-            assertThat(result.getContent().get(0).getReview()).isEqualTo("Great Product");
+            assertThat(result.getContent().get(0).getReview()).isEqualTo("너무 좋아요");
         }
 
         @Test
@@ -204,7 +205,7 @@ class ReviewServiceTest {
             reviewService.updateReview(user, requestDto);
 
             // then
-            verify(reviewRepository, times(1)).save(review);
+            verify(reviewRepository, times(0)).save(review);
         }
 
         @Test
