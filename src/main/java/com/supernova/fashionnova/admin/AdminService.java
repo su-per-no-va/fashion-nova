@@ -1,4 +1,4 @@
-package com.supernova.fashionnova.adimn;
+package com.supernova.fashionnova.admin;
 
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
