@@ -25,10 +25,11 @@ public class ProductRepositoryQueryImpl implements ProductRepositoryQuery {
         OrderSpecifier<?> orderSpecifier;
         BooleanBuilder builder = new BooleanBuilder();
 
-        builder.and(product.product_status.eq("ACTIVE"));
+        builder.and(product.productStatus.eq(ProductStatus.ACTIVE));
 
         if(category != null && !category.trim().isEmpty()) {
-            builder.and(product.category.eq(category));
+            ProductCategory productCategory = ProductCategory.valueOf(category.toUpperCase());
+            builder.and(product.category.eq(productCategory));
         }
         if(size != null && !size.trim().isEmpty()) {
             builder.and(productDetail.size.eq(size));
@@ -45,7 +46,7 @@ public class ProductRepositoryQueryImpl implements ProductRepositoryQuery {
                 orderSpecifier = product.price.asc();
                 break;
             case "review_count" :
-                orderSpecifier = product.review_count.desc();
+                orderSpecifier = product.reviewCount.desc();
                 break;
             case "new_item" :
                 orderSpecifier = product.createdAt.desc();
