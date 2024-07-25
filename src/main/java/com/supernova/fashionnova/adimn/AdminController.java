@@ -2,11 +2,15 @@ package com.supernova.fashionnova.adimn;
 
 import com.supernova.fashionnova.global.util.ResponseUtil;
 import com.supernova.fashionnova.user.dto.UserResponseDto;
+import com.supernova.fashionnova.warn.dto.WarnRequestDto;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +36,17 @@ public class AdminController {
         return ResponseUtil.of(HttpStatus.OK, responseDtoList);
     }
 
+    /** 유저 조회 등록
+     *
+     * @param requestDto
+     * @return "회원 경고 등록 완성"
+     */
+    @PostMapping("/caution")
+    public ResponseEntity<String> createCaution(@RequestBody WarnRequestDto requestDto) {
 
+        adminService.createCaution(requestDto);
 
+        return ResponseUtil.of(HttpStatus.OK,"회원 경고 등록 완성");
+    }
 
 }

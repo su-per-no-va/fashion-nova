@@ -1,8 +1,13 @@
 package com.supernova.fashionnova.adimn;
 
+import com.supernova.fashionnova.global.exception.CustomException;
+import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.user.User;
 import com.supernova.fashionnova.user.UserRepository;
 import com.supernova.fashionnova.user.dto.UserResponseDto;
+import com.supernova.fashionnova.warn.Warn;
+import com.supernova.fashionnova.warn.dto.WarnRepository;
+import com.supernova.fashionnova.warn.dto.WarnRequestDto;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +21,8 @@ import org.springframework.stereotype.Service;
 public class AdminService {
 
     private final UserRepository userRepository;
+
+    private final WarnRepository warnRepository;
 
     private static final int PAGE_SIZE = 30;
 
@@ -34,4 +41,20 @@ public class AdminService {
             .map(UserResponseDto::new)
             .collect(Collectors.toList());
     }
+
+    /** 유저 경고 등록
+     *
+     * @param requestDto
+     * @throws CustomException NOT_FOUND_USER 유저Id로 유저를 찾을 수 없을 때
+     */
+    public void createCaution(WarnRequestDto requestDto) {
+
+        User user = userRepository.findById(requestDto.getUserId())
+            .orElseThrow(()-> new CustomException(ErrorType.NOT_FOUND_USER));
+
+        Warn warn = new Warn(requestDto.getDetail(),user);
+        warnRepository.save(warn);
+    }
+
+
 }
