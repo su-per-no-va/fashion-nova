@@ -43,7 +43,7 @@ public class AdminController {
      * @param requestDto
      * @return "회원 경고 등록 완성"
      */
-    @PostMapping("/caution")
+    @PostMapping("/cautions")
     public ResponseEntity<String> createCaution(@RequestBody WarnRequestDto requestDto) {
 
         adminService.createCaution(requestDto);
@@ -56,7 +56,7 @@ public class AdminController {
      * @param requestDto
      * @return "회원 경고 삭제 완료"
      */
-    @DeleteMapping("/caution")
+    @DeleteMapping("/cautions")
     public ResponseEntity<String> deleteCaution(@RequestBody WarnDeleteRequestDto requestDto) {
 
         adminService.deleteCaution(requestDto);
