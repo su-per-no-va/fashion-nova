@@ -4,6 +4,7 @@ import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.review.Review;
 import com.supernova.fashionnova.review.ReviewRepository;
+import com.supernova.fashionnova.review.dto.ReviewResponseDto;
 import com.supernova.fashionnova.user.User;
 import com.supernova.fashionnova.user.UserRepository;
 import com.supernova.fashionnova.user.dto.UserResponseDto;
@@ -81,16 +82,22 @@ public class AdminService {
      * 작성자별 리뷰 조회
      *
      * @param userId
-     * @param pageable
+     * @param page
      * @return Page<Review>
+     * @throws CustomException NOT_FOUND_USER 유저ID가 존재하지 않을 때
      */
     @Transactional(readOnly = true)
-    public Page<Review> getReviewsByUserId(Long userId, Pageable pageable) {
+    public List<ReviewResponseDto> getReviewsByUserId(Long userId, int page) {
 
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
 
-        return reviewRepository.findByUser(user, pageable);
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
 
+        Page<Review> reviewPage = reviewRepository.findByUser(user, pageable);
+
+        return reviewPage.stream()
+            .map(ReviewResponseDto::new)
+            .collect(Collectors.toList());
     }
 }

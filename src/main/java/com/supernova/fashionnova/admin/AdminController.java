@@ -1,16 +1,12 @@
 package com.supernova.fashionnova.admin;
 
 import com.supernova.fashionnova.global.util.ResponseUtil;
-import com.supernova.fashionnova.review.Review;
 import com.supernova.fashionnova.review.dto.ReviewResponseDto;
 import com.supernova.fashionnova.user.dto.UserResponseDto;
 import com.supernova.fashionnova.warn.dto.WarnDeleteRequestDto;
 import com.supernova.fashionnova.warn.dto.WarnRequestDto;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -80,13 +76,12 @@ public class AdminController {
      * @return List<MyReviewResponseDto>
      */
     @GetMapping("/reviews/{userId}")
-    public ResponseEntity<Page<ReviewResponseDto>> getReviewsByUserId(
+    public ResponseEntity<List<ReviewResponseDto>> getReviewsByUserId(
         @PathVariable Long userId,
         @RequestParam(defaultValue = "0") int page) {
-        Pageable pageable = PageRequest.of(page, 10);
-        Page<Review> reviews = adminService.getReviewsByUserId(userId, pageable);
-        Page<ReviewResponseDto> reviewResponseDtoPage = reviews.map(ReviewResponseDto::new);
 
-        return ResponseUtil.of(HttpStatus.OK, reviewResponseDtoPage);
+        List<ReviewResponseDto> reviews = adminService.getReviewsByUserId(userId, page);
+
+        return ResponseUtil.of(HttpStatus.OK, reviews);
     }
 }

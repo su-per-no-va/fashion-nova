@@ -19,10 +19,10 @@ Content-Type: application/json
 Authorization: {{access_token}}
 
 {
-  "warnId": 2
+  "warnId": 1
 }
 
 ### 리뷰 작성자별 조회 (admin)
-@userId = 1
-GET http://localhost:8080/admin/reviews/{{userId}}?page=1
+@userId = 2
+GET http://localhost:8080/admin/reviews/{{userId}}?page=0
 Authorization: {{access_token}}
