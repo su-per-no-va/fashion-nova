@@ -69,7 +69,7 @@ public class User extends Timestamped {
         this.name = name;
         this.email = email;
         this.phone = phone;
-        this.userRole = UserRole.ROLE_USER; // 기본적으로 USER로 권한 설정
+        this.userRole = UserRole.USER; // 기본적으로 USER로 권한 설정
         this.userStatus = UserStatus.MEMBER; // 처음 생성될때는 활성화 상태
         this.userGrade = UserGrade.BRONZE; // 처음 생성될 때는 브론즈
         this.mileage = 0L; // 처음 생성될 때는 0
