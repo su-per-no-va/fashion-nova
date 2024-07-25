@@ -1,5 +1,6 @@
 package com.supernova.fashionnova.address;
 
+import com.supernova.fashionnova.address.dto.AddressDefaultRequestDto;
 import com.supernova.fashionnova.address.dto.AddressRequestDto;
 import com.supernova.fashionnova.address.dto.AddressResponseDto;
 import com.supernova.fashionnova.global.util.ResponseUtil;
@@ -11,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -56,15 +56,16 @@ public class AddressController {
     /** 기본 배송지 설정
      *
      * @param userDetails
-     * @param addressId
+     * @param requestDto
      * @return "기본 배송지 설정 성공"
      */
-    @PutMapping("/{addressId}")
+    @PutMapping
     public ResponseEntity<String> updateDefaultAddress(@AuthenticationPrincipal UserDetailsImpl userDetails,
-        @PathVariable Long addressId) {
+        @RequestBody AddressDefaultRequestDto requestDto) {
 
-        addressService.updateDefaultAddress(userDetails.getUser(), addressId);
+        addressService.updateDefaultAddress(userDetails.getUser(), requestDto.getAddressId());
 
         return ResponseUtil.of(HttpStatus.OK,"기본 배송지 설정 성공");
     }
+
 }

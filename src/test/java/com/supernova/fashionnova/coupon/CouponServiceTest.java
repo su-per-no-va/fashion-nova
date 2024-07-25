@@ -1,0 +1,72 @@
+package com.supernova.fashionnova.coupon;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.BDDMockito.given;
+
+import com.supernova.fashionnova.coupon.dto.CouponResponseDto;
+import com.supernova.fashionnova.user.User;
+import java.util.List;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+@ExtendWith(MockitoExtension.class)
+class CouponServiceTest {
+
+    @Mock
+    private CouponRepository couponRepository;
+
+    @InjectMocks
+    private CouponService couponService;
+
+    @Test
+    void getCouponListTest() {
+
+        // given
+        User user = Mockito.mock(User.class);
+        Coupon coupon = Mockito.mock(Coupon.class);
+
+        given(coupon.getName()).willReturn("웰컴쿠폰");
+
+        given(couponRepository.findByUserAndStatus(user, CouponStatus.ACTIVE)).willReturn(List.of(coupon));
+
+        // when
+        List<CouponResponseDto> result = couponService.getCouponList(user);
+
+        // then
+        assertNotNull(result);
+        assertEquals(1, result.size());
+
+        CouponResponseDto couponResponseDto = result.get(0);
+        assertEquals("웰컴쿠폰", couponResponseDto.getName());
+
+    }
+
+    @Test
+    void getUsedCouponListTest() {
+
+        // given
+        User user = Mockito.mock(User.class);
+        Coupon coupon = Mockito.mock(Coupon.class);
+
+        given(coupon.getName()).willReturn("웰컴쿠폰");
+
+        given(couponRepository.findByUserAndStatus(user, CouponStatus.INACTIVE)).willReturn(List.of(coupon));
+
+        // when
+        List<CouponResponseDto> result = couponService.getUsedCouponList(user);
+
+        // then
+        assertNotNull(result);
+        assertEquals(1, result.size());
+
+        CouponResponseDto couponResponseDto = result.get(0);
+        assertEquals("웰컴쿠폰", couponResponseDto.getName());
+
+    }
+
+}

@@ -1,13 +1,21 @@
 ### 위시리스트 추가
-@productId = 1
-POST http://localhost:8080/wishlists/{{productId}}
+POST http://localhost:8080/wishlists
+Content-Type: application/json
 Authorization: {{access_token}}
+
+{
+  "productId" : 1
+}
 
 ### 위시리스트 조회
 GET http://localhost:8080/wishlists?page=1
 Authorization: {{access_token}}
 
 ### 위시리스트 삭제
-@wishId = 1
-DELETE http://localhost:8080/wishlists/{{wishId}}
+DELETE http://localhost:8080/wishlists
+Content-Type: application/json
 Authorization: {{access_token}}
+
+{
+  "wishId" : 1
+}
