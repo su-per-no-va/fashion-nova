@@ -1,6 +1,13 @@
 package com.supernova.fashionnova.wish;
 
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.supernova.fashionnova.security.UserDetailsImpl;
@@ -53,44 +60,49 @@ class WishControllerTest {
     }
 
     @Test
-    void addWish() {
+    void addWishTest() throws Exception {
+
+        // given
+        User user = userDetails.getUser();
+        Long productId = 1L;
+        doNothing().when(wishService).addWish(eq(user), eq(productId));
+
+        // when * then
+        mockMvc.perform(post(baseUrl + "/" + productId)
+                .with(csrf()))
+            .andExpectAll(
+                status().isOk(),
+                content().string("위시리스트 추가")
+            );
+
+    }
+
+    @Test
+    void getWishProductListTest() throws Exception {
 
         // given
 
 
-        // when
-
-
-        // then
+        // when * then
 
 
     }
 
     @Test
-    void getWishProductList() {
+    void deleteWishTest() throws Exception {
 
         // given
+        User user = userDetails.getUser();
+        Long wishId = 1L;
+        doNothing().when(wishService).deleteWish(eq(user), eq(wishId));
 
-
-        // when
-
-
-        // then
-
-
-    }
-
-    @Test
-    void deleteWish() {
-
-        // given
-
-
-        // when
-
-
-        // then
-
+        // when * then
+        mockMvc.perform(delete(baseUrl + "/" + wishId)
+                .with(csrf()))
+            .andExpectAll(
+                status().isOk(),
+                content().string("위시리스트 삭제")
+            );
 
     }
 
