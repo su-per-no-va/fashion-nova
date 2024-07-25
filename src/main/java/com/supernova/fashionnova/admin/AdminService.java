@@ -93,7 +93,6 @@ public class AdminService {
             .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
 
         Pageable pageable = PageRequest.of(page, PAGE_SIZE);
-
         Page<Review> reviewPage = reviewRepository.findByUser(user, pageable);
 
         return reviewPage.stream()
