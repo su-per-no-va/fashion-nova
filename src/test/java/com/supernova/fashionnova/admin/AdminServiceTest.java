@@ -8,6 +8,9 @@ import static org.mockito.BDDMockito.given;
 
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
+import com.supernova.fashionnova.product.Product;
+import com.supernova.fashionnova.product.ProductCategory;
+import com.supernova.fashionnova.product.ProductStatus;
 import com.supernova.fashionnova.review.Review;
 import com.supernova.fashionnova.review.ReviewRepository;
 import com.supernova.fashionnova.review.dto.ReviewResponseDto;
@@ -41,25 +44,40 @@ class AdminServiceTest {
     private AdminService adminService;
 
     private User user;
+
+    private Product product;
+
     private Review review;
 
     @BeforeEach
     void setUp() {
-        user = new User(
-            "testUser",
-            "test1234",
-            "테스트유저",
-            "test@gmail.com",
-            "010-1234-5678");
 
-        review = new Review(
+        this.user = User.builder()
+            .userName("testUser1234")
+            .name("테스트유저")
+            .password("test1234!#")
+            .email("test@gmail.com")
+            .phone("010-1234-5678")
+            .build();
+
+        this.product = new Product(
+            "꽃무늬 원피스",
+            10000,
+            "겁나 멋진 원피스",
+            ProductCategory.TOP,
+            ProductStatus.ACTIVE
+        );
+
+        this.review = new Review(
             user,
-            1,
-            "리뷰내용",
+            product,
+            "너무 좋아요",
             5);
+
     }
+
     @Nested
-    @DisplayName("리뷰 등록 테스트")
+    @DisplayName("작성자별 리뷰 조회 테스트")
     class getReviewsByUserId {
 
         @Test
