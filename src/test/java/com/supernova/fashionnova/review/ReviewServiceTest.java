@@ -53,6 +53,7 @@ class ReviewServiceTest {
 
     @Mock
     private ReviewImageRepository reviewImageRepository;
+
     @InjectMocks
     private ReviewService reviewService;
 
@@ -61,6 +62,8 @@ class ReviewServiceTest {
     private Product product;
 
     private ReviewRequestDto reviewRequestDto;
+
+    private ReviewUpdateRequestDto reviewUpdateRequestDto;
 
     private Review review;
 
@@ -96,6 +99,12 @@ class ReviewServiceTest {
             product,
             "너무 좋아요",
             5);
+
+        this.reviewUpdateRequestDto = new ReviewUpdateRequestDto(
+            1L,
+            "너무 별로에요",
+            3
+        );
     }
 
     @Nested
@@ -123,34 +132,22 @@ class ReviewServiceTest {
         @DisplayName("리뷰 등록 실패 테스트 - 주문 내역 없음")
         void AddReviewTest2() {
             // given
-            ReviewRequestDto requestDto = new ReviewRequestDto(
-                1L,
-                "너무 좋아요",
-                5,
-                "ImageUrl");
             given(ordersRepository.existsByUserIdAndProductId(anyLong(), anyLong())).willReturn(false);
 
             // when / then
-            assertThrows(CustomException.class, () -> reviewService.addReview(user, requestDto));
+            assertThrows(CustomException.class, () -> reviewService.addReview(user, reviewRequestDto));
         }
 
         @Test
         @DisplayName("리뷰 등록 실패 테스트 - 상품 정보 없음")
         void AddReviewTest3() {
             // given
-            ReviewRequestDto requestDto = new ReviewRequestDto(
-                1L,
-                "너무 예뻐요",
-                5,
-                "imageUrl"
-            );
-
             given(ordersRepository.existsByUserIdAndProductId(anyLong(), anyLong())).willReturn(true);
             given(productRepository.findById(anyLong())).willReturn(Optional.empty());
 
             // when / then
             CustomException exception = assertThrows(
-                CustomException.class, () -> reviewService.addReview(user, requestDto));
+                CustomException.class, () -> reviewService.addReview(user, reviewRequestDto));
             assertThat(exception.getErrorType()).isEqualTo(ErrorType.NOT_FOUND_PRODUCT);
         }
     }
@@ -164,11 +161,10 @@ class ReviewServiceTest {
         void GetReviewsByUserTest1() {
             // given
             Pageable pageable = PageRequest.of(0, 10);
-            Review review = new Review(user, product, "너무 좋아요", 5);
-            Page<Review> reviews = new PageImpl<>(List.of(review));
+            Page<Review> reviewPage = new PageImpl<>(List.of(review));
 
             lenient().when(productRepository.findById(anyLong())).thenReturn(Optional.of(product));
-            lenient().when(reviewRepository.findByProduct(any(Product.class), any(Pageable.class))).thenReturn(reviews);
+            lenient().when(reviewRepository.findByProduct(any(Product.class), any(Pageable.class))).thenReturn(reviewPage);
 
             // when
             Page<Review> result = reviewService.getReviewsByProductId(1L, pageable);
@@ -183,15 +179,15 @@ class ReviewServiceTest {
         void getReviewsByProductIdTest() {
             // given
             Pageable pageable = mock(Pageable.class);
-            Page<Review> reviews = new PageImpl<>(List.of(mock(Review.class)));
+            Page<Review> reviewPage = new PageImpl<>(List.of(mock(Review.class)));
 
-            when(reviewRepository.findByUser(any(User.class), any(Pageable.class))).thenReturn(reviews);
+            when(reviewRepository.findByUser(any(User.class), any(Pageable.class))).thenReturn(reviewPage);
 
             // when
             Page<Review> result = reviewService.getReviewsByUser(user, pageable);
 
             // then
-            assertThat(result).isEqualTo(reviews);
+            assertThat(result).isEqualTo(reviewPage);
         }
     }
 
@@ -203,17 +199,10 @@ class ReviewServiceTest {
         @DisplayName("리뷰 수정 성공 테스트")
         void UpdateReviewTest1() {
             // given
-            ReviewUpdateRequestDto requestDto = new ReviewUpdateRequestDto(
-                1L,
-                "너무 별로에요",
-                3
-            );
-
-            Review review = new Review(user, product, "너무 좋아요", 5);
             lenient().when(reviewRepository.findByIdAndUser(anyLong(), any(User.class))).thenReturn(Optional.of(review));
 
             // when
-            reviewService.updateReview(user, requestDto);
+            reviewService.updateReview(user, reviewUpdateRequestDto);
 
             // then
             verify(reviewRepository, times(0)).save(review);
@@ -223,16 +212,10 @@ class ReviewServiceTest {
         @DisplayName("리뷰 수정 실패 테스트 - 리뷰 없음")
         void UpdateReviewTest2() {
             // given
-            ReviewUpdateRequestDto requestDto = new ReviewUpdateRequestDto(
-                1L,
-                "너무 별로에요",
-                3
-            );
-
             lenient().when(reviewRepository.findByIdAndUser(anyLong(), any(User.class))).thenReturn(Optional.empty());
 
             // when / then
-            assertThrows(CustomException.class, () -> reviewService.updateReview(user, requestDto));
+            assertThrows(CustomException.class, () -> reviewService.updateReview(user, reviewUpdateRequestDto));
         }
     }
 
@@ -245,7 +228,6 @@ class ReviewServiceTest {
         @DisplayName("리뷰 삭제 성공 테스트")
         void DeleteReviewTest1() {
             // given
-            Review review = new Review();
             given(reviewRepository.findByIdAndUser(anyLong(), any(User.class))).willReturn(
                 Optional.of(review));
             doNothing().when(reviewRepository).delete(any(Review.class));
