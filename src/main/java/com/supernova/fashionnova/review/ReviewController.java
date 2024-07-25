@@ -100,7 +100,7 @@ public class ReviewController {
     }
 
     /**
-     * 사용자별 리뷰 삭제
+     * 리뷰 삭제
      *
      * @param userDetails 로그인된 사용자 정보
      * @param dto 리뷰 삭제 요청 DTO

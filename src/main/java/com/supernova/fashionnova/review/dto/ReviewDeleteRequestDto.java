@@ -1,8 +1,11 @@
 package com.supernova.fashionnova.review.dto;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReviewDeleteRequestDto {
 
     private Long reviewId;

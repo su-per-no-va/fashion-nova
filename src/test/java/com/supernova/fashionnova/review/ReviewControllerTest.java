@@ -6,14 +6,17 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.supernova.fashionnova.review.dto.ReviewDeleteRequestDto;
 import com.supernova.fashionnova.review.dto.ReviewRequestDto;
 import com.supernova.fashionnova.review.dto.ReviewUpdateRequestDto;
 import com.supernova.fashionnova.security.UserDetailsImpl;
@@ -156,6 +159,24 @@ class ReviewControllerTest {
     }
 
     @Test
-    void deleteReview() {
+    @DisplayName("리뷰 삭제 성공 테스트")
+    void deleteReviewSuccess() throws Exception {
+        // given
+        ReviewDeleteRequestDto requestDto = new ReviewDeleteRequestDto(1L);
+
+        doNothing().when(reviewService).deleteReview(any(User.class), anyLong());
+
+        // when
+        ResultActions result = mockMvc.perform(delete(baseUrl)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(requestDto))
+                .with(csrf())
+                .principal(() -> userDetails.getUsername()))
+            .andDo(print()); // 요청 및 응답 내용을 출력하여 디버깅에 도움을 줍니다.
+
+        // then
+        result.andExpect(status().isOk())
+            .andExpect(content().string("리뷰 삭제 완료"));
+        verify(reviewService).deleteReview(any(User.class), anyLong());
     }
 }
