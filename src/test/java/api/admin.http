@@ -1,0 +1,6 @@
+
+Content-Type: application/json
+
+###
+GET http://localhost:8080/admin/users
+Authorization: {{access_token}}
