@@ -17,6 +17,10 @@ GET http://localhost:8080/addresses
 Authorization: {{access_token}}
 
 ### 기본 배송지 설정
-@addressId = 2
-PUT http://localhost:8080/addresses/{{addressId}}
+PUT http://localhost:8080/addresses
+Content-Type: application/json
 Authorization: {{access_token}}
+
+{
+  "addressId" : 1
+}

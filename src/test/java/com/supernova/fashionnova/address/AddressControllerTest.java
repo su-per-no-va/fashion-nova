@@ -1,6 +1,5 @@
 package com.supernova.fashionnova.address;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
@@ -14,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.supernova.fashionnova.address.dto.AddressDefaultRequestDto;
 import com.supernova.fashionnova.address.dto.AddressRequestDto;
 import com.supernova.fashionnova.address.dto.AddressResponseDto;
 import com.supernova.fashionnova.security.UserDetailsImpl;
@@ -81,7 +81,7 @@ class AddressControllerTest {
             .address("사랑시 고백구 행복동")
             .detail("A동 101호")
             .build();
-        doNothing().when(addressService).addAddress(eq(user), any(AddressRequestDto.class));
+        doNothing().when(addressService).addAddress(eq(user), eq(requestDto));
 
         // when * then
         mockMvc.perform(post(baseUrl)
@@ -140,12 +140,14 @@ class AddressControllerTest {
 
         // given
         User user = userDetails.getUser();
-        Long addressId = 1L;
-        doNothing().when(addressService).updateDefaultAddress(eq(user), eq(addressId));
+        AddressDefaultRequestDto requestDto = new AddressDefaultRequestDto(1L);
+        doNothing().when(addressService).updateDefaultAddress(eq(user), eq(requestDto.getAddressId()));
 
         // when * then
-        mockMvc.perform(put(baseUrl + "/" + addressId)
-                .with(csrf()))
+        mockMvc.perform(put(baseUrl)
+                .with(csrf())
+            .content(objectMapper.writeValueAsString(requestDto))
+            .contentType(MediaType.APPLICATION_JSON))
             .andExpectAll(
                 status().isOk(),
                 content().contentType("text/plain;charset=UTF-8"),
