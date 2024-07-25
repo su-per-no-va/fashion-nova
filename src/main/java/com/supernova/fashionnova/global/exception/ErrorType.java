@@ -37,8 +37,13 @@ public enum ErrorType {
     NOT_FOUND_REVIEW(HttpStatus.BAD_REQUEST, "리뷰가 존재하지 않습니다."),
 
     // WARN
-    NOT_FOUND_WARN(HttpStatus.NOT_FOUND, "경고를 찾을 수 없습니다.");
+    NOT_FOUND_WARN(HttpStatus.NOT_FOUND, "경고를 찾을 수 없습니다."),
 
+    // QUESTION
+    NOT_FOUND_QUESTION(HttpStatus.NOT_FOUND,"문의를 찾을 수 없습니다."),
+
+    // UPLOAD
+    UPLOAD_REVIEW(HttpStatus.INTERNAL_SERVER_ERROR,"리뷰 사진 등록중 실패");
     private final HttpStatus httpStatus;
     private final String message;
 }
