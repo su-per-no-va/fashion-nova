@@ -17,7 +17,9 @@ import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.order.OrdersRepository;
 import com.supernova.fashionnova.product.Product;
+import com.supernova.fashionnova.product.ProductCategory;
 import com.supernova.fashionnova.product.ProductRepository;
+import com.supernova.fashionnova.product.ProductStatus;
 import com.supernova.fashionnova.review.dto.ReviewRequestDto;
 import com.supernova.fashionnova.review.dto.ReviewUpdateRequestDto;
 import com.supernova.fashionnova.user.User;
@@ -35,6 +37,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
 class ReviewServiceTest {
@@ -65,7 +68,6 @@ class ReviewServiceTest {
     void setUp() {
 
         this.user = User.builder()
-            .id(1L)
             .userName("testUser1234")
             .name("테스트유저")
             .password("test1234!#")
@@ -73,18 +75,27 @@ class ReviewServiceTest {
             .phone("010-1234-5678")
             .build();
 
-        this.product = new Product(
-            1L,
-            "Sample Product",
-            10000,
-            "Sample product explanation",
-            "Category",
-            0,
-            0,
-            "AVAILABLE");
+        ReflectionTestUtils.setField(user, "id", 1L);
 
-        this.reviewRequestDto = new ReviewRequestDto(1L, "너무 좋아요", 5, "ImageUrl");
-        this.review = new Review(user, product, "너무 좋아요", 5);
+        this.product = new Product(
+            "꽃무늬 원피스",
+            10000,
+            "겁나 멋진 원피스",
+            ProductCategory.TOP,
+            ProductStatus.ACTIVE
+        );
+
+        this.reviewRequestDto = new ReviewRequestDto(
+            1L,
+            "너무 좋아요",
+            5,
+            "ImageUrl");
+
+        this.review = new Review(
+            user,
+            product,
+            "너무 좋아요",
+            5);
     }
 
     @Nested
