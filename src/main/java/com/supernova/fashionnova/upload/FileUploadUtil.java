@@ -19,14 +19,17 @@ import com.supernova.fashionnova.review.ReviewRepository;
 import com.supernova.fashionnova.warn.Warn;
 import com.supernova.fashionnova.warn.dto.WarnRepository;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class FileUploadUtil {
 
@@ -44,14 +47,18 @@ public class FileUploadUtil {
 
     private final QuestionRepository questionRepository;
 
-    private String random = UUID.randomUUID().toString().substring(0, 10);
+    private String random = UUID.randomUUID().toString().substring(0, 10)+"sexyJungGeon";
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
 
     @Transactional
-    public void uploadReviewImage(MultipartFile file, ImageType type, Long typeId) {
+    public void uploadImage(MultipartFile file, ImageType type, Long typeId) {
+        // nullCheck
+        if(file.isEmpty()){
+            return;
+        }
 
         String originalFilename = file.getOriginalFilename(); // 원본 파일 명
         String s3FileName = random + originalFilename; // 변경된 파일 명 (같은 이름의 파일 방지)
@@ -92,9 +99,42 @@ public class FileUploadUtil {
 
                QuestionImage questionImage = new QuestionImage(question, reviewImageURL);
                questionImageRepository.save(questionImage);
-               나 류정근인데 나 바보맞다 ㅋㅋㅋㅋㅋㅋ
-           }//야 나 류정근인데 가슴털많다 나
-       }
-//
+           }
+         }
+    }
+
+    public List<String> downloadImage(ImageType type, Long typeId) {
+        List<String> imageUrls = new ArrayList<>();
+
+        switch (type) {
+            case REVIEW -> {
+                Review review = reviewRepository.findById(typeId).orElseThrow(()
+                   -> new CustomException(ErrorType.NOT_FOUND_REVIEW)
+                );
+                List<ReviewImage> reviewImages = reviewImageRepository.findAllByReview(review);
+                for (ReviewImage reviewImage : reviewImages) {
+                    imageUrls.add(reviewImage.getReviewImageUrl());
+                }
+            }
+            case PRODUCT -> {
+                Product product = productRepository.findById(typeId).orElseThrow(()
+                    -> new CustomException(ErrorType.NOT_FOUND_REVIEW)
+                );
+                List<ProductImage> productImages = productImageRepository.findAllByProduct(product);
+                for (ProductImage productImage : productImages) {
+                    imageUrls.add(productImage.getProductImageUrl());
+                }
+            }
+            case QUESTION -> {
+                Question question = questionRepository.findById(typeId).orElseThrow(()
+                    -> new CustomException(ErrorType.NOT_FOUND_REVIEW)
+                );
+                List<QuestionImage> questionImages = questionImageRepository.findAllByQuestion(question);
+                for (QuestionImage questionImage : questionImages) {
+                    imageUrls.add(questionImage.getQuestionImageUrl());
+                }
+            }
+        }
+        return imageUrls;
     }
 }

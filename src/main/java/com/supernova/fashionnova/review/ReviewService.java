@@ -7,14 +7,18 @@ import com.supernova.fashionnova.product.Product;
 import com.supernova.fashionnova.product.ProductRepository;
 import com.supernova.fashionnova.review.dto.ReviewRequestDto;
 import com.supernova.fashionnova.review.dto.ReviewUpdateRequestDto;
+import com.supernova.fashionnova.upload.FileUploadUtil;
+import com.supernova.fashionnova.upload.ImageType;
 import com.supernova.fashionnova.user.User;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
@@ -27,21 +31,28 @@ public class ReviewService {
 
     private final ReviewImageRepository reviewImageRepository;
 
+    private final FileUploadUtil fileUploadUtil;
+
     /**
      * 리뷰 등록
      *
      * @param reviewRequestDto
+     * @param file
      * @throws CustomException NOT_ORDERED_PRODUCT 구매하지 않은 상품입니다.
      * @throws CustomException NOT_FOUND_PRODUCT 상품을 찾을 수 없습니다.
      */
     @Transactional
-    public void addReview(User user, ReviewRequestDto reviewRequestDto) {
+    public void addReview(User user, ReviewRequestDto reviewRequestDto, MultipartFile file) {
         // 주문 내역 확인
         existsOrder(user.getId(), reviewRequestDto.getProductId());
 
         Product product = getProduct(reviewRequestDto.getProductId());
 
         Review review = new Review(user, product, reviewRequestDto.getReview(), reviewRequestDto.getRating());
+        log.info("1");
+        //파일 업로드
+        fileUploadUtil.uploadImage(file, ImageType.REVIEW,review.getId());
+
         reviewRepository.save(review);
     }
 

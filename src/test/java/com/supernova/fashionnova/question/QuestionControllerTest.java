@@ -76,7 +76,7 @@ class QuestionControllerTest {
             .question("테스트 문의 내용")
             .type("PRODUCT")
             .build();
-        doNothing().when(service).addQuestion(any(User.class), any(QuestionRequestDto.class));
+        doNothing().when(service).addQuestion(any(User.class), any(QuestionRequestDto.class),null);
 
         //when * then
         mockMvc.perform(post(baseUrl).with(csrf())

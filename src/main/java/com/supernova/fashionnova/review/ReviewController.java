@@ -9,6 +9,7 @@ import com.supernova.fashionnova.review.dto.ReviewUpdateRequestDto;
 import com.supernova.fashionnova.security.UserDetailsImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,8 +24,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/reviews")
@@ -41,12 +45,14 @@ public class ReviewController {
     @PostMapping
     public ResponseEntity<String> addReview(
         @Valid @RequestBody ReviewRequestDto reviewRequestDto,
-        @AuthenticationPrincipal UserDetailsImpl userDetails) {
-
-        reviewService.addReview(userDetails.getUser(), reviewRequestDto);
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        @RequestPart(name = "file") MultipartFile file) {
+        log.info("addReview");
+        reviewService.addReview(userDetails.getUser(), reviewRequestDto,file);
 
         return ResponseUtil.of(HttpStatus.OK, "리뷰 등록 완료");
     }
+
 
     /**
      * 상품별 리뷰 전체 조회

@@ -16,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.multipart.MultipartFile;
 
 @ExtendWith(MockitoExtension.class)
 class QuestionServiceTest {
@@ -51,7 +52,7 @@ class QuestionServiceTest {
             .build();
 
         //when * then
-        assertDoesNotThrow(()-> questionService.addQuestion(user,questionRequestDto));
+        assertDoesNotThrow(()-> questionService.addQuestion(user,questionRequestDto, null));
 
     }
 
