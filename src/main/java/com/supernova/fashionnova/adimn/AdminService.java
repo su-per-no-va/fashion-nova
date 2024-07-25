@@ -6,6 +6,7 @@ import com.supernova.fashionnova.user.User;
 import com.supernova.fashionnova.user.UserRepository;
 import com.supernova.fashionnova.user.dto.UserResponseDto;
 import com.supernova.fashionnova.warn.Warn;
+import com.supernova.fashionnova.warn.dto.WarnDeleteRequestDto;
 import com.supernova.fashionnova.warn.dto.WarnRepository;
 import com.supernova.fashionnova.warn.dto.WarnRequestDto;
 import java.util.List;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +34,7 @@ public class AdminService {
      * @return List<UserResponseDto>
      * 사이즈는 30으로 고정해놨음
      */
+    @Transactional(readOnly = true)
     public List<UserResponseDto> getAllUsers(int page) {
 
         Pageable pageable = PageRequest.of(page, PAGE_SIZE);
@@ -56,5 +59,17 @@ public class AdminService {
         warnRepository.save(warn);
     }
 
+    /** 유저 경고 삭제
+     *
+     * @param requestDto
+     * @throws CustomException NOT_FOUND_WARN 경고ID로 경고를 찾을 수 없을 때
+     */
+    @Transactional
+    public void deleteCaution(WarnDeleteRequestDto requestDto) {
 
+        Warn warn = warnRepository.findById(requestDto.getWarnId())
+            .orElseThrow(()-> new CustomException(ErrorType.NOT_FOUND_WARN));
+
+        warnRepository.delete(warn);
+    }
 }

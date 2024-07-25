@@ -15,3 +15,12 @@ Authorization: {{access_token}}
   "userId": 1,
   "detail": "당신 블랙 컨슈머야2"
 }
+
+### 회원 경고 삭제(admin)
+DELETE http://localhost:8080/admin/caution
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "warnId": 2
+}

@@ -34,7 +34,10 @@ public enum ErrorType {
     CART_EMPTY(HttpStatus.BAD_REQUEST, "장바구니에 상품이 존재하지 않습니다."),
 
     // REVIEW
-    NOT_FOUND_REVIEW(HttpStatus.BAD_REQUEST, "리뷰가 존재하지 않습니다.");
+    NOT_FOUND_REVIEW(HttpStatus.BAD_REQUEST, "리뷰가 존재하지 않습니다."),
+
+    // WARN
+    NOT_FOUND_WARN(HttpStatus.NOT_FOUND, "경고를 찾을 수 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;
