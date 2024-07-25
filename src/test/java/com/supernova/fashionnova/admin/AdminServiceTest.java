@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -55,32 +56,37 @@ class AdminServiceTest {
             "리뷰내용",
             5);
     }
+    @Nested
+    @DisplayName("리뷰 등록 테스트")
+    class getReviewsByUserId {
 
-    @Test
-    @DisplayName("작성자별 리뷰 조회 - 성공")
-    void getReviewsByUserId() {
-        // given
-        given(userRepository.findById(anyLong())).willReturn(Optional.of(user));
-        Page<Review> reviewPage = new PageImpl<>(Collections.singletonList(review));
-        given(reviewRepository.findByUser(any(User.class), any(Pageable.class))).willReturn(reviewPage);
+        @Test
+        @DisplayName("작성자별 리뷰 조회 성공 테스트")
+        void getReviewsByUserId1() {
+            // given
+            given(userRepository.findById(anyLong())).willReturn(Optional.of(user));
+            Page<Review> reviewPage = new PageImpl<>(Collections.singletonList(review));
+            given(reviewRepository.findByUser(any(User.class), any(Pageable.class))).willReturn(
+                reviewPage);
 
-        // when
-        List<ReviewResponseDto> reviews = adminService.getReviewsByUserId(1L, 0);
+            // when
+            List<ReviewResponseDto> reviews = adminService.getReviewsByUserId(1L, 0);
 
-        // then
-        assertThat(reviews).isNotEmpty();
-        assertThat(reviews.get(0).getReview()).isEqualTo(review.getReview());
+            // then
+            assertThat(reviews).isNotEmpty();
+            assertThat(reviews.get(0).getReview()).isEqualTo(review.getReview());
+        }
+
+        @Test
+        @DisplayName("작성자별 리뷰 조회 실패 테스트 - 유저 없음")
+        void getReviewsByUserId2() {
+            // given
+            given(userRepository.findById(anyLong())).willReturn(Optional.empty());
+
+            // when / then
+            CustomException exception = assertThrows(CustomException.class,
+                () -> adminService.getReviewsByUserId(1L, 0));
+            assertThat(exception.getErrorType()).isEqualTo(ErrorType.NOT_FOUND_USER);
+        }
     }
-
-    @Test
-    @DisplayName("작성자별 리뷰 조회 - 실패 (유저 없음)")
-    void getReviewsByUserId_Fail_UserNotFound() {
-        // given
-        given(userRepository.findById(anyLong())).willReturn(Optional.empty());
-
-        // when / then
-        CustomException exception = assertThrows(CustomException.class, () -> adminService.getReviewsByUserId(1L, 0));
-        assertThat(exception.getErrorType()).isEqualTo(ErrorType.NOT_FOUND_USER);
-    }
-
 }
