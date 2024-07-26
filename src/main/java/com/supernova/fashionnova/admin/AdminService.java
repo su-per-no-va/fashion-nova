@@ -5,6 +5,11 @@ import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.review.Review;
 import com.supernova.fashionnova.review.ReviewRepository;
 import com.supernova.fashionnova.review.dto.ReviewResponseDto;
+import com.supernova.fashionnova.product.Product;
+import com.supernova.fashionnova.product.ProductDetail;
+import com.supernova.fashionnova.product.ProductDetailRepository;
+import com.supernova.fashionnova.product.ProductRepository;
+import com.supernova.fashionnova.product.dto.ProductRequestDto;
 import com.supernova.fashionnova.user.User;
 import com.supernova.fashionnova.user.UserRepository;
 import com.supernova.fashionnova.user.dto.UserResponseDto;
@@ -32,6 +37,8 @@ public class AdminService {
     private final ReviewRepository reviewRepository;
 
     private static final int PAGE_SIZE = 30;
+    private final ProductRepository productRepository;
+    private final ProductDetailRepository productDetailRepository;
 
     /** 유저 전체조회
      *
@@ -98,5 +105,30 @@ public class AdminService {
         return reviewPage.stream()
             .map(ReviewResponseDto::new)
             .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void createProduct(ProductRequestDto requestDto) {
+
+        Product product = Product.builder()
+            .product(requestDto.getProduct())
+            .price(requestDto.getPrice())
+            .explanation(requestDto.getExplanation())
+            .category(requestDto.getCategory())
+            .productStatus(requestDto.getProductStatus())
+            .build();
+        List<ProductDetail> productDetailList = (requestDto.getProductDetailList().stream()
+            .map(productDetailRequestDto -> {
+                return ProductDetail.builder()
+                    .size(productDetailRequestDto.getSize())
+                    .color(productDetailRequestDto.getColor())
+                    .quantity(productDetailRequestDto.getQuantity())
+                    .product(product)
+                    .build();
+            })
+            .collect(Collectors.toList()));
+        product.addDetail(productDetailList);
+        productRepository.save(product);
+        /*productDetailRepository.saveAll(product.getProductDetailList());*/
     }
 }

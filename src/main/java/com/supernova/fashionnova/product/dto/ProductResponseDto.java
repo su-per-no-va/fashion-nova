@@ -26,7 +26,7 @@ public class ProductResponseDto {
         this.productStatus = product.getProductStatus();
         this.likeCount = product.getLikeCount();
         this.reviewCount = product.getReviewCount();
-        this.productDetails = product.getProductDetails().stream()
+        this.productDetails = product.getProductDetailList().stream()
             .map(ProductDetailResponseDto::new)
             .toList();
         this.created_at = product.getCreatedAt();

@@ -56,7 +56,7 @@ public class ProductRepositoryQueryImpl implements ProductRepositoryQuery {
         }
         List<Product> products = queryFactory
             .selectFrom(product)
-            .leftJoin(product.productDetails, productDetail)
+            .leftJoin(product.productDetailList, productDetail)
             .fetchJoin()
             .where(builder)
             .orderBy(orderSpecifier)
@@ -66,7 +66,7 @@ public class ProductRepositoryQueryImpl implements ProductRepositoryQuery {
         Long count = queryFactory
             .select(product.count())
             .from(product)
-            .leftJoin(product.productDetails, productDetail)
+            .leftJoin(product.productDetailList, productDetail)
             .where(builder)
             .fetchOne();
         return new PageImpl<>(products.stream().map(ProductResponseDto::new).collect(Collectors.toList()), pageable, count);

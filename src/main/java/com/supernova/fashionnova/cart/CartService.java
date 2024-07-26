@@ -49,7 +49,7 @@ public class CartService {
 
 
         // 상품 재고 확인
-        if (productDetail.getQuantity() == 0 || !"ACTIVE".equals(productDetail.getStatus())) {
+        if (productDetail.getQuantity() == 0 || !"ACTIVE".equals(productDetail.getStatus().toString())) {
             throw new CustomException(ErrorType.OUT_OF_STOCK);
         }
 

@@ -2,6 +2,7 @@ package com.supernova.fashionnova.admin;
 
 import com.supernova.fashionnova.global.util.ResponseUtil;
 import com.supernova.fashionnova.review.dto.ReviewResponseDto;
+import com.supernova.fashionnova.product.dto.ProductRequestDto;
 import com.supernova.fashionnova.user.dto.UserResponseDto;
 import com.supernova.fashionnova.warn.dto.WarnDeleteRequestDto;
 import com.supernova.fashionnova.warn.dto.WarnRequestDto;
@@ -66,6 +67,14 @@ public class AdminController {
         adminService.deleteCaution(requestDto);
 
         return ResponseUtil.of(HttpStatus.OK, "회원 경고 삭제 완료");
+    }
+
+    @PostMapping("/products")
+    public ResponseEntity<String> createProduct(@RequestBody ProductRequestDto requestDto) {
+
+        adminService.createProduct(requestDto);
+
+        return ResponseUtil.of(HttpStatus.OK,"상품 등록 성공");
     }
 
     /**
