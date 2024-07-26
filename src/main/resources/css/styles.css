@@ -1,0 +1,89 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8f8f8;
+  padding: 10px 20px;
+}
+
+header h1 {
+  margin: 0;
+  color: #ff1493;
+}
+
+header nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+}
+
+header nav ul li {
+  margin-right: 15px;
+}
+
+header nav ul li a {
+  text-decoration: none;
+  color: #000;
+}
+
+header input[type="text"] {
+  padding: 5px;
+}
+
+.coupon-banner {
+  background-color: #d3f8d3;
+  text-align: center;
+  padding: 20px;
+  position: relative;
+}
+
+.coupon-banner h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.coupon-banner p {
+  margin: 5px 0;
+  font-size: 18px;
+}
+
+.coupon-banner span {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.ranking {
+  text-align: center;
+  padding: 20px;
+}
+
+.ranking .products {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.ranking .product {
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  width: 200px;
+}
+
+.ranking .product img {
+  max-width: 100%;
+  height: auto;
+}
+
+#loadMore {
+  padding: 10px 20px;
+  margin-top: 20px;
+  cursor: pointer;
+}
