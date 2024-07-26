@@ -20,6 +20,7 @@ import com.supernova.fashionnova.product.Product;
 import com.supernova.fashionnova.product.ProductDetail;
 import com.supernova.fashionnova.product.ProductDetailRepository;
 import com.supernova.fashionnova.product.ProductRepository;
+import com.supernova.fashionnova.product.ProductStatus;
 import com.supernova.fashionnova.user.User;
 import java.util.List;
 import java.util.Optional;
@@ -79,7 +80,7 @@ class CartServiceTest {
             given(productRepository.findById(anyLong())).willReturn(Optional.of(product));
             given(productDetailRepository.findByProductAndSizeAndColor(any(Product.class), anyString(), anyString())).willReturn(Optional.of(productDetail));
             given(productDetail.getQuantity()).willReturn(10L);
-            given(productDetail.getStatus()).willReturn("ACTIVE");
+            given(productDetail.getStatus()).willReturn(ProductStatus.ACTIVE);
 
             // when
             assertDoesNotThrow(() -> cartService.addCart(user, requestDto));
