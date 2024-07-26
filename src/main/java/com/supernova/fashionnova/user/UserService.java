@@ -9,7 +9,6 @@ import com.supernova.fashionnova.warn.Warn;
 import com.supernova.fashionnova.warn.dto.WarnRepository;
 import com.supernova.fashionnova.warn.dto.WarnResponseDto;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -59,7 +59,7 @@ class WishServiceTest {
     }
 
     @Test
-    void getWishProductListTest() {
+    void getWishProductPageTest() {
 
         // given
         User user = Mockito.mock(User.class);
@@ -71,7 +71,7 @@ class WishServiceTest {
             .willReturn(new PageImpl<>(Collections.singletonList(wish)));
 
         // when
-        Page<ProductResponseDto> result = wishService.getWishProductList(user, page);
+        Page<ProductResponseDto> result = wishService.getWishProductPage(user, page);
 
         // then
         assertNotNull(result);

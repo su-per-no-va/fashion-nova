@@ -47,10 +47,10 @@ public class WishController {
      * @return Page<ProductResponseDto>
      */
     @GetMapping
-    public ResponseEntity<Page<ProductResponseDto>> getWishProductList(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<Page<ProductResponseDto>> getWishProductPage(@AuthenticationPrincipal UserDetailsImpl userDetails,
         @RequestParam int page) {
 
-        Page<ProductResponseDto> responseDto = wishService.getWishProductList(userDetails.getUser(), page - 1);
+        Page<ProductResponseDto> responseDto = wishService.getWishProductPage(userDetails.getUser(), page - 1);
 
         return ResponseUtil.of(HttpStatus.OK, responseDto);
     }

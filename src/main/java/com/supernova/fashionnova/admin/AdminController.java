@@ -2,16 +2,14 @@ package com.supernova.fashionnova.admin;
 
 import com.supernova.fashionnova.answer.dto.AnswerRequestDto;
 import com.supernova.fashionnova.global.util.ResponseUtil;
-import com.supernova.fashionnova.question.Question;
 import com.supernova.fashionnova.question.QuestionRepository;
 import com.supernova.fashionnova.question.dto.QuestionResponseDto;
-import com.supernova.fashionnova.user.User;
 import com.supernova.fashionnova.user.dto.UserResponseDto;
 import com.supernova.fashionnova.warn.dto.WarnDeleteRequestDto;
 import com.supernova.fashionnova.warn.dto.WarnRequestDto;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -81,6 +79,19 @@ public class AdminController {
         adminService.addAnswer(requestDto);
 
         return ResponseUtil.of(HttpStatus.OK,"Q&A 답변 등록 완성");
+    }
+
+    /** Q&A 문의 전체 조회
+     *
+     * @param page
+     * @return responseDto
+     */
+    @GetMapping
+    public ResponseEntity<Page<QuestionResponseDto>> getQuestionPage(@RequestParam int page) {
+
+        Page<QuestionResponseDto> responseDto = adminService.getQuestionPage(page - 1);
+
+        return ResponseUtil.of(HttpStatus.OK, responseDto);
     }
 
 }

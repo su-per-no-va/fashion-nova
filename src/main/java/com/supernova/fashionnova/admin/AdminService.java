@@ -100,4 +100,18 @@ public class AdminService {
 
     }
 
+    /**
+     * Q&A 문의 전체 조회
+     *
+     * @param page
+     * @return Page<QuestionResponseDto>
+     */
+    public Page<QuestionResponseDto> getQuestionPage(int page) {
+
+        Pageable pageable = PageRequest.of(page, 10);
+
+        return questionRepository.findAll(pageable).map(QuestionResponseDto::new);
+
+    }
+
 }

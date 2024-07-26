@@ -27,7 +27,7 @@ public class WishService {
     /** 위시리스트 추가
      *
      * @param user
-     * @param productId
+     * @param requestDto
      * @throws CustomException NOT_FOUND_PRODUCT 상품을 찾지 못할 때
      */
     public void addWish(User user, WishRequestDto requestDto) {
@@ -49,7 +49,7 @@ public class WishService {
      * @param page
      * @return Page<ProductResponseDto>
      */
-    public Page<ProductResponseDto> getWishProductList(User user, int page) {
+    public Page<ProductResponseDto> getWishProductPage(User user, int page) {
 
         Pageable pageable = PageRequest.of(page, 10);
 
@@ -60,12 +60,13 @@ public class WishService {
             .collect(Collectors.toList());
 
         return new PageImpl<>(productResponseDtoList, pageable, wishPage.getTotalElements());
+
     }
 
     /** 위시리스트 삭제
      *
      * @param user
-     * @param wishId
+     * @param requestDto
      * @throws CustomException NOT_FOUND_WISH 위시리스트를 찾지 못할 때
      * @throws CustomException INVALID_WISH 자신의 위시리스트가 아닐 때
      */
