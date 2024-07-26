@@ -91,4 +91,8 @@ public class User extends Timestamped {
         this.userStatus = status;
     }
 
+    // 사용자 권한을 ADMIN으로 변경할 수 있는 메서드
+    public void updateRole(UserRole userRole) {
+        this.userRole = userRole;
+    }
 }
