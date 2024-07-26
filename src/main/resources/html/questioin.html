@@ -3,44 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>문의 페이지</title>
-  <link rel="stylesheet" href="/css/question.css">
+  <title>기갈 쇼핑몰 문의</title>
+  <link rel="stylesheet" href="/css/question.csse">
 </head>
 <body>
 <header>
-  <h1>기깔 쇼핑몰</h1>
+  <h1>기갈 쇼핑몰</h1>
   <button class="mypage-btn">마이페이지</button>
 </header>
 <main>
   <form id="inquiry-form">
     <div class="form-group">
       <label for="inquiry-type">문의유형</label>
-      <select id="inquiry-type" name="inquiry-type">
-        <option value="" selected>문의유형 (드롭다운)</option>
-        <option value="refund">환불</option>
+      <select id="inquiry-type">
+        <option value="">문의유형 (드롭다운)</option>
+        <option value="return">환불</option>
         <option value="coupon">쿠폰/이벤트/혜택</option>
         <option value="delivery">배송</option>
         <option value="order">주문/결제</option>
-        <option value="etc">기타</option>
+        <option value="others">기타</option>
       </select>
     </div>
     <div class="form-group">
       <label for="inquiry-content">문의내용</label>
-      <textarea id="inquiry-content" name="inquiry-content" rows="10"></textarea>
+      <textarea id="inquiry-content" rows="10"></textarea>
     </div>
-    <div class="form-group file-upload-group">
-      <label>파일첨부</label>
-      <div class="file-upload">
-        <input type="file" id="file-upload" name="files[]" multiple>
-        <span class="file-upload-text">파일 첨부는 최대 4장까지 가능하며, 5MB 이하의 GIF, JPG, JPEG, PNG, PDF형태로 업로드 해주세요.</span>
-      </div>
+    <div class="form-group file-upload">
+      <label for="file-upload" class="file-upload-label">파일첨부</label>
+      <input type="file" id="file-upload" multiple>
+      <p class="file-upload-text">파일 첨부는 최대 4장까지 가능하며, 5MB 이하의 GIF, JPG, JPEG, PNG, PDF 형탤로 업로드 해주세요.</p>
     </div>
-    <div class="form-group buttons">
+    <div class="buttons">
       <button type="button" class="cancel-btn">취소하기</button>
       <button type="submit" class="submit-btn">등록하기</button>
     </div>
   </form>
 </main>
-<script src="/js/question.js"></script>
+<script src="scripts.js"></script>
 </body>
 </html>
