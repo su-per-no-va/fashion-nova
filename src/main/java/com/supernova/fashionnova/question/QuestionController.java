@@ -5,8 +5,8 @@ import com.supernova.fashionnova.question.dto.QuestionRequestDto;
 import com.supernova.fashionnova.question.dto.QuestionResponseDto;
 import com.supernova.fashionnova.security.UserDetailsImpl;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -46,10 +46,10 @@ public class QuestionController {
      * @return responseDto
      */
     @GetMapping
-    public ResponseEntity<Page<QuestionResponseDto>> getUserQuestionPage(@AuthenticationPrincipal UserDetailsImpl userDetails,
-        @RequestParam int page) {
+    public ResponseEntity<List<QuestionResponseDto>> getUserQuestionList(@AuthenticationPrincipal UserDetailsImpl userDetails,
+        @RequestParam(defaultValue = "0") int page) {
 
-        Page<QuestionResponseDto> responseDto = questionService.getUserQuestionPage(userDetails.getUser(), page - 1);
+        List<QuestionResponseDto> responseDto = questionService.getUserQuestionList(userDetails.getUser(), page);
 
         return ResponseUtil.of(HttpStatus.OK, responseDto);
     }

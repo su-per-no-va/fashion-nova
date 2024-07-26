@@ -5,8 +5,8 @@ import com.supernova.fashionnova.product.dto.ProductResponseDto;
 import com.supernova.fashionnova.security.UserDetailsImpl;
 import com.supernova.fashionnova.wish.dto.WishDeleteRequestDto;
 import com.supernova.fashionnova.wish.dto.WishRequestDto;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -37,20 +37,20 @@ public class WishController {
 
         wishService.addWish(userDetails.getUser(), requestDto);
 
-        return ResponseUtil.of(HttpStatus.OK,"위시리스트 추가");
+        return ResponseUtil.of(HttpStatus.CREATED,"위시리스트 추가");
     }
 
     /** 위시리스트 조회
      *
      * @param userDetails
      * @param page
-     * @return Page<ProductResponseDto>
+     * @return List<ProductResponseDto>
      */
     @GetMapping
-    public ResponseEntity<Page<ProductResponseDto>> getWishProductPage(@AuthenticationPrincipal UserDetailsImpl userDetails,
-        @RequestParam int page) {
+    public ResponseEntity<List<ProductResponseDto>> getWishProductList(@AuthenticationPrincipal UserDetailsImpl userDetails,
+        @RequestParam(defaultValue = "0") int page) {
 
-        Page<ProductResponseDto> responseDto = wishService.getWishProductPage(userDetails.getUser(), page - 1);
+        List<ProductResponseDto> responseDto = wishService.getWishProductList(userDetails.getUser(), page);
 
         return ResponseUtil.of(HttpStatus.OK, responseDto);
     }

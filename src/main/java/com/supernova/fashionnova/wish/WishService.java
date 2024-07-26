@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -47,19 +46,16 @@ public class WishService {
      *
      * @param user
      * @param page
-     * @return Page<ProductResponseDto>
+     * @return List<ProductResponseDto>
      */
-    public Page<ProductResponseDto> getWishProductPage(User user, int page) {
+    public List<ProductResponseDto> getWishProductList(User user, int page) {
 
         Pageable pageable = PageRequest.of(page, 10);
-
         Page<Wish> wishPage = wishRepository.findByUser(user, pageable);
 
-        List<ProductResponseDto> productResponseDtoList = wishPage.getContent().stream()
+        return wishPage.getContent().stream()
             .map(wish -> new ProductResponseDto(wish.getProduct()))
             .collect(Collectors.toList());
-
-        return new PageImpl<>(productResponseDtoList, pageable, wishPage.getTotalElements());
 
     }
 

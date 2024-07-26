@@ -5,16 +5,16 @@ import com.supernova.fashionnova.answer.AnswerRepository;
 import com.supernova.fashionnova.answer.dto.AnswerRequestDto;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
+import com.supernova.fashionnova.product.Product;
+import com.supernova.fashionnova.product.ProductDetail;
+import com.supernova.fashionnova.product.ProductRepository;
+import com.supernova.fashionnova.product.dto.ProductRequestDto;
 import com.supernova.fashionnova.question.Question;
 import com.supernova.fashionnova.question.QuestionRepository;
 import com.supernova.fashionnova.question.dto.QuestionResponseDto;
 import com.supernova.fashionnova.review.Review;
 import com.supernova.fashionnova.review.ReviewRepository;
 import com.supernova.fashionnova.review.dto.ReviewResponseDto;
-import com.supernova.fashionnova.product.Product;
-import com.supernova.fashionnova.product.ProductDetail;
-import com.supernova.fashionnova.product.ProductRepository;
-import com.supernova.fashionnova.product.dto.ProductRequestDto;
 import com.supernova.fashionnova.user.User;
 import com.supernova.fashionnova.user.UserRepository;
 import com.supernova.fashionnova.user.dto.UserResponseDto;
@@ -51,7 +51,7 @@ public class AdminService {
      * 사이즈는 30으로 고정해놨음
      */
     @Transactional(readOnly = true)
-    public List<UserResponseDto> getAllUsers(int page) {
+    public List<UserResponseDto> getAllUserList(int page) {
 
         Pageable pageable = PageRequest.of(page, PAGE_SIZE);
         Page<User> userPage = userRepository.findAll(pageable);
@@ -66,7 +66,7 @@ public class AdminService {
      * @param requestDto
      * @throws CustomException NOT_FOUND_USER 유저Id로 유저를 찾을 수 없을 때
      */
-    public void createCaution(WarnRequestDto requestDto) {
+    public void addCaution(WarnRequestDto requestDto) {
 
         User user = userRepository.findById(requestDto.getUserId())
             .orElseThrow(()-> new CustomException(ErrorType.NOT_FOUND_USER));
@@ -94,11 +94,11 @@ public class AdminService {
      *
      * @param userId
      * @param page
-     * @return Page<Review>
+     * @return List<ReviewResponseDto>
      * @throws CustomException NOT_FOUND_USER 유저ID가 존재하지 않을 때
      */
     @Transactional(readOnly = true)
-    public List<ReviewResponseDto> getReviewsByUserId(Long userId, int page) {
+    public List<ReviewResponseDto> getReviewListByUserId(Long userId, int page) {
 
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
@@ -112,7 +112,7 @@ public class AdminService {
     }
 
     @Transactional
-    public void createProduct(ProductRequestDto requestDto) {
+    public void addProduct(ProductRequestDto requestDto) {
 
         Product product = Product.builder()
             .product(requestDto.getProduct())
@@ -136,7 +136,8 @@ public class AdminService {
         /*productDetailRepository.saveAll(product.getProductDetailList());*/
     }
 
-    /** Q&A 답변 등록
+    /**
+     * Q&A 답변 등록
      *
      * @param requestDto
      * @throws CustomException NOT_FOUND_QUESTION 문의Id로 문의를 찾을 수 없을 때
@@ -159,13 +160,16 @@ public class AdminService {
      * Q&A 문의 전체 조회
      *
      * @param page
-     * @return Page<QuestionResponseDto>
+     * @return List<QuestionResponseDto>
      */
-    public Page<QuestionResponseDto> getQuestionPage(int page) {
+    public List<QuestionResponseDto> getQuestionList(int page) {
 
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+        Page<Question> questionPage = questionRepository.findAll(pageable);
 
-        return questionRepository.findAll(pageable).map(QuestionResponseDto::new);
+        return questionPage.stream()
+            .map(QuestionResponseDto::new)
+            .collect(Collectors.toList());
 
     }
 

@@ -3,6 +3,8 @@ package com.supernova.fashionnova.question;
 import com.supernova.fashionnova.question.dto.QuestionRequestDto;
 import com.supernova.fashionnova.question.dto.QuestionResponseDto;
 import com.supernova.fashionnova.user.User;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,13 +40,16 @@ public class QuestionService {
      *
      * @param user
      * @param page
-     * @return Page<QuestionResponseDto>
+     * @return List<QuestionResponseDto>
      */
-    public Page<QuestionResponseDto> getUserQuestionPage(User user, int page) {
+    public List<QuestionResponseDto> getUserQuestionList(User user, int page) {
 
         Pageable pageable = PageRequest.of(page, 10);
+        Page<Question> questionPage = questionRepository.findByUser(user, pageable);
 
-        return questionRepository.findByUser(user, pageable).map(QuestionResponseDto::new);
+        return questionPage.stream()
+            .map(QuestionResponseDto::new)
+            .collect(Collectors.toList());
 
     }
 
