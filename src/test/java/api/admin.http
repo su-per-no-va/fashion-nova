@@ -1,12 +1,9 @@
-
-
-
-### 회원 전체 조회(Admin)
+### 회원 전체 조회 (admin)
 GET http://localhost:8080/admin/users
 Content-Type: application/json
 Authorization: {{access_token}}
 
-### 회원 경고 등록(admin)
+### 회원 경고 등록 (admin)
 POST http://localhost:8080/admin/cautions
 Content-Type: application/json
 Authorization: {{access_token}}
@@ -16,11 +13,16 @@ Authorization: {{access_token}}
   "detail": "당신 블랙 컨슈머야2"
 }
 
-### 회원 경고 삭제(admin)
+### 회원 경고 삭제 (admin)
 DELETE http://localhost:8080/admin/cautions
 Content-Type: application/json
 Authorization: {{access_token}}
 
 {
-  "warnId": 2
+  "warnId": 1
 }
+
+### 리뷰 작성자별 조회 (admin)
+@userId = 2
+GET http://localhost:8080/admin/reviews/{{userId}}?page=0
+Authorization: {{access_token}}
