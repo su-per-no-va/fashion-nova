@@ -1,7 +1,13 @@
 package com.supernova.fashionnova.admin;
 
+import com.supernova.fashionnova.answer.Answer;
+import com.supernova.fashionnova.answer.AnswerRepository;
+import com.supernova.fashionnova.answer.dto.AnswerRequestDto;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
+import com.supernova.fashionnova.question.Question;
+import com.supernova.fashionnova.question.QuestionRepository;
+import com.supernova.fashionnova.question.dto.QuestionResponseDto;
 import com.supernova.fashionnova.user.User;
 import com.supernova.fashionnova.user.UserRepository;
 import com.supernova.fashionnova.user.dto.UserResponseDto;
@@ -27,6 +33,8 @@ public class AdminService {
     private final WarnRepository warnRepository;
 
     private static final int PAGE_SIZE = 30;
+    private final QuestionRepository questionRepository;
+    private final AnswerRepository answerRepository;
 
     /** 유저 전체조회
      *
@@ -72,4 +80,24 @@ public class AdminService {
 
         warnRepository.delete(warn);
     }
+
+    /** Q&A 답변 등록
+     *
+     * @param requestDto
+     * @throws CustomException NOT_FOUND_QUESTION 문의Id로 문의를 찾을 수 없을 때
+     */
+    public void addAnswer(AnswerRequestDto requestDto) {
+
+        Question question = questionRepository.findById(requestDto.getQuestionId())
+            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_QUESTION));
+
+        Answer answer = Answer.builder()
+            .question(question)
+            .answer(requestDto.getAnswer())
+            .build();
+
+        answerRepository.save(answer);
+
+    }
+
 }

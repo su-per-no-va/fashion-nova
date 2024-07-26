@@ -35,7 +35,7 @@ public class WishController {
     public ResponseEntity<String> addWish(@AuthenticationPrincipal UserDetailsImpl userDetails,
         @RequestBody WishRequestDto requestDto) {
 
-        wishService.addWish(userDetails.getUser(), requestDto.getProductId());
+        wishService.addWish(userDetails.getUser(), requestDto);
 
         return ResponseUtil.of(HttpStatus.OK,"위시리스트 추가");
     }
@@ -65,7 +65,7 @@ public class WishController {
     public ResponseEntity<String> deleteWish(@AuthenticationPrincipal UserDetailsImpl userDetails,
         @RequestBody WishDeleteRequestDto requestDto) {
 
-        wishService.deleteWish(userDetails.getUser(), requestDto.getWishId());
+        wishService.deleteWish(userDetails.getUser(), requestDto);
 
         return ResponseUtil.of(HttpStatus.OK,"위시리스트 삭제");
     }

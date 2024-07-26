@@ -1,10 +1,16 @@
 package com.supernova.fashionnova.admin;
 
+import com.supernova.fashionnova.answer.dto.AnswerRequestDto;
 import com.supernova.fashionnova.global.util.ResponseUtil;
+import com.supernova.fashionnova.question.Question;
+import com.supernova.fashionnova.question.QuestionRepository;
+import com.supernova.fashionnova.question.dto.QuestionResponseDto;
+import com.supernova.fashionnova.user.User;
 import com.supernova.fashionnova.user.dto.UserResponseDto;
 import com.supernova.fashionnova.warn.dto.WarnDeleteRequestDto;
 import com.supernova.fashionnova.warn.dto.WarnRequestDto;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminController {
 
     private final AdminService adminService;
+    private final QuestionRepository questionRepository;
 
     /** 유저 전체조회
      *
@@ -62,4 +69,18 @@ public class AdminController {
 
         return ResponseUtil.of(HttpStatus.OK,"회원 경고 삭제 완료");
     }
+
+    /** Q&A 답변 등록
+     *
+     * @param requestDto
+     * @return "Q&A 답변 등록 완성"
+     */
+    @PostMapping("/answers")
+    public ResponseEntity<String> addAnswer(@RequestBody AnswerRequestDto requestDto) {
+
+        adminService.addAnswer(requestDto);
+
+        return ResponseUtil.of(HttpStatus.OK,"Q&A 답변 등록 완성");
+    }
+
 }

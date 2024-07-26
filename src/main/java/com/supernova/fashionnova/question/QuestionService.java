@@ -40,9 +40,9 @@ public class QuestionService {
      */
     public List<QuestionResponseDto> getUserQuestionList(User user) {
 
-        List<Question> addresses = questionRepository.findByUser(user);
+        List<Question> questionList = questionRepository.findByUser(user);
 
-        return addresses.stream()
+        return questionList.stream()
             .map(QuestionResponseDto::new)
             .collect(Collectors.toList());
     }

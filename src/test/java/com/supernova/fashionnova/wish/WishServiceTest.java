@@ -14,6 +14,8 @@ import com.supernova.fashionnova.product.ProductRepository;
 import com.supernova.fashionnova.product.ProductStatus;
 import com.supernova.fashionnova.product.dto.ProductResponseDto;
 import com.supernova.fashionnova.user.User;
+import com.supernova.fashionnova.wish.dto.WishDeleteRequestDto;
+import com.supernova.fashionnova.wish.dto.WishRequestDto;
 import java.util.Collections;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -43,13 +45,13 @@ class WishServiceTest {
 
         // given
         User user = Mockito.mock(User.class);
-        Long productId = 1L;
+        WishRequestDto requestDto = new WishRequestDto(1L);
 
         Product product = Mockito.mock(Product.class);
-        given(productRepository.findById(productId)).willReturn(Optional.of(product));
+        given(productRepository.findById(requestDto.getProductId())).willReturn(Optional.of(product));
 
         // when
-        assertDoesNotThrow(() -> wishService.addWish(user, productId));
+        assertDoesNotThrow(() -> wishService.addWish(user, requestDto));
 
         // then
         verify(wishRepository, times(1)).save(any(Wish.class));
@@ -82,14 +84,14 @@ class WishServiceTest {
 
         // given
         User user = Mockito.mock(User.class);
-        Long wishId = 1L;
+        WishDeleteRequestDto requestDto = new WishDeleteRequestDto(1L);
 
         Wish wish = Mockito.mock(Wish.class);
         given(wish.getUser()).willReturn(user);
-        given(wishRepository.findById(wishId)).willReturn(Optional.of(wish));
+        given(wishRepository.findById(requestDto.getWishId())).willReturn(Optional.of(wish));
 
         // when
-        assertDoesNotThrow(() -> wishService.deleteWish(user, wishId));
+        assertDoesNotThrow(() -> wishService.deleteWish(user, requestDto));
 
         // then
         verify(wishRepository, times(1)).delete(any(Wish.class));
