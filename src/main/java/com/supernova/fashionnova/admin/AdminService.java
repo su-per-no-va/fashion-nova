@@ -2,14 +2,15 @@ package com.supernova.fashionnova.admin;
 
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
-import com.supernova.fashionnova.review.Review;
-import com.supernova.fashionnova.review.ReviewRepository;
-import com.supernova.fashionnova.review.dto.ReviewResponseDto;
 import com.supernova.fashionnova.product.Product;
 import com.supernova.fashionnova.product.ProductDetail;
 import com.supernova.fashionnova.product.ProductDetailRepository;
 import com.supernova.fashionnova.product.ProductRepository;
+import com.supernova.fashionnova.product.dto.ProductDetailRequestDto;
 import com.supernova.fashionnova.product.dto.ProductRequestDto;
+import com.supernova.fashionnova.review.Review;
+import com.supernova.fashionnova.review.ReviewRepository;
+import com.supernova.fashionnova.review.dto.ReviewResponseDto;
 import com.supernova.fashionnova.user.User;
 import com.supernova.fashionnova.user.UserRepository;
 import com.supernova.fashionnova.user.dto.UserResponseDto;
@@ -127,8 +128,55 @@ public class AdminService {
                     .build();
             })
             .collect(Collectors.toList()));
-        product.addDetail(productDetailList);
+        product.addDetailList(productDetailList);
         productRepository.save(product);
         /*productDetailRepository.saveAll(product.getProductDetailList());*/
     }
+
+    @Transactional
+    public void addProductDetails(Long productId, List<ProductDetailRequestDto> productDetailRequestDto) {
+
+        Product product = productRepository.findById(productId)
+            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
+
+        for (ProductDetailRequestDto detailDto : productDetailRequestDto) {
+            ProductDetail productDetail = ProductDetail.builder()
+                .size(detailDto.getSize())
+                .color(detailDto.getColor())
+                .quantity(detailDto.getQuantity())
+                .product(product)
+                .build();
+
+            product.addDetail(productDetail);
+        }
+
+        productRepository.save(product);
+    }
+
+    @Transactional
+    public void updateProduct(Long productId, ProductRequestDto requestDto) {
+        Product existingProduct = productRepository.findById(productId)
+            .orElseThrow(
+                () -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
+
+        List<ProductDetailRequestDto> newProductDetails = requestDto.getProductDetailList();
+
+        List<ProductDetail> productDetailList = existingProduct.getProductDetailList();
+        for(ProductDetailRequestDto productDetailRequestDto : newProductDetails) {
+            ProductDetail productDetail = productDetailList.stream().filter(p -> p.getId().equals(productDetailRequestDto.getProductDetailId())).findFirst().orElse(null);
+            if (productDetail != null) {
+                productDetail.updateDetail(productDetailRequestDto.getSize(), productDetailRequestDto.getColor(), productDetailRequestDto.getQuantity(), productDetailRequestDto.getStatus());
+            }
+        }
+
+        existingProduct.updateProduct(
+            requestDto.getProduct(),
+            requestDto.getPrice(),
+            requestDto.getExplanation(),
+            requestDto.getCategory(),
+            requestDto.getProductStatus()
+        );
+        productRepository.save(existingProduct);
+    }
+
 }

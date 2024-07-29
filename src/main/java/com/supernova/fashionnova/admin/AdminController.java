@@ -1,8 +1,9 @@
 package com.supernova.fashionnova.admin;
 
 import com.supernova.fashionnova.global.util.ResponseUtil;
-import com.supernova.fashionnova.review.dto.ReviewResponseDto;
+import com.supernova.fashionnova.product.dto.ProductDetailRequestDto;
 import com.supernova.fashionnova.product.dto.ProductRequestDto;
+import com.supernova.fashionnova.review.dto.ReviewResponseDto;
 import com.supernova.fashionnova.user.dto.UserResponseDto;
 import com.supernova.fashionnova.warn.dto.WarnDeleteRequestDto;
 import com.supernova.fashionnova.warn.dto.WarnRequestDto;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -75,6 +77,26 @@ public class AdminController {
         adminService.createProduct(requestDto);
 
         return ResponseUtil.of(HttpStatus.OK,"상품 등록 성공");
+    }
+
+    @PostMapping("/{productId}/details")
+    public ResponseEntity<String> addProductDetails(
+        @PathVariable Long productId,
+        @RequestBody List<ProductDetailRequestDto> productDetailRequestDto) {
+
+        adminService.addProductDetails(productId, productDetailRequestDto);
+
+        return ResponseUtil.of(HttpStatus.OK, "상품 디테일 추가 성공");
+    }
+
+    @PutMapping("/products/{productId}")
+    public ResponseEntity<String> updateProduct(
+        @PathVariable Long productId,
+        @RequestBody ProductRequestDto requestDto) {
+
+        adminService.updateProduct(productId, requestDto);
+
+        return ResponseUtil.of(HttpStatus.OK, "상품 수정 성공");
     }
 
     /**

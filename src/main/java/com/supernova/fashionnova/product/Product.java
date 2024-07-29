@@ -1,6 +1,8 @@
 package com.supernova.fashionnova.product;
 
 import com.supernova.fashionnova.global.common.Timestamped;
+import com.supernova.fashionnova.global.exception.CustomException;
+import com.supernova.fashionnova.global.exception.ErrorType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -49,7 +51,7 @@ public class Product extends Timestamped {
     @Column(nullable = false)
     private int reviewCount;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductDetail> productDetailList = new ArrayList<>();
 
 /*
@@ -67,9 +69,21 @@ public class Product extends Timestamped {
     private List<ProductDetail> productDetail = new ArrayList<>();
 
 */
-    public void addDetail(List<ProductDetail> detail) {
+    public void addDetail(ProductDetail detail) {
+        ProductDetail productDetail = productDetailList.stream()
+            .filter(p -> p.getColor().equals(detail.getColor()) && p.getSize().equals(detail.getSize())).findFirst().orElse(null);
+        if(productDetail == null) {
+            productDetailList.add(detail);
+        }else{
+            throw new CustomException(ErrorType.DUPLICATED_DETAIL);
+        }
+
+    }
+
+    public void addDetailList(List<ProductDetail> detail) {
         productDetailList.addAll(detail);
     }
+
 
     @Builder
     public Product(String product, int price, String explanation, ProductCategory category, ProductStatus productStatus) {
@@ -82,4 +96,25 @@ public class Product extends Timestamped {
         this.reviewCount = 0;
     }
 
+    public void updateProductDetails(List<ProductDetail> newDetails) {
+        for (ProductDetail newDetail : newDetails) {
+            ProductDetail existingDetail = productDetailList.stream()
+                .filter(detail -> detail.getId().equals(newDetail.getId()))
+                .findFirst()
+                .orElse(null);
+
+            if (existingDetail != null) {
+                existingDetail.updateDetail(newDetail.getSize(), newDetail.getColor(), newDetail.getQuantity(), newDetail.getStatus());
+            }
+        }
+
+    }
+
+    public void updateProduct(String product, int price, String explanation, ProductCategory category, ProductStatus productStatus) {
+        this.product = product;
+        this.price = price;
+        this.explanation = explanation;
+        this.category = category;
+        this.productStatus = productStatus;
+    }
 }
