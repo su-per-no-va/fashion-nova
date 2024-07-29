@@ -3,7 +3,6 @@ package com.supernova.fashionnova.review;
 import com.supernova.fashionnova.global.common.Timestamped;
 import com.supernova.fashionnova.product.Product;
 import com.supernova.fashionnova.user.User;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
