@@ -24,7 +24,7 @@ public class ProductResponseDto {
         this.product = product.getProduct();
         this.price = product.getPrice();
         this.productStatus = product.getProductStatus();
-        this.likeCount = product.getLikeCount();
+        this.likeCount = product.getWishCount();
         this.reviewCount = product.getReviewCount();
         this.productDetails = product.getProductDetailList().stream()
             .map(ProductDetailResponseDto::new)

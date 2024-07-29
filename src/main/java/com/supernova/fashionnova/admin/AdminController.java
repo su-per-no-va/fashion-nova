@@ -1,6 +1,7 @@
 package com.supernova.fashionnova.admin;
 
 import com.supernova.fashionnova.answer.dto.AnswerRequestDto;
+import com.supernova.fashionnova.coupon.dto.CouponRequestDto;
 import com.supernova.fashionnova.global.util.ResponseUtil;
 import com.supernova.fashionnova.product.dto.ProductRequestDto;
 import com.supernova.fashionnova.question.dto.QuestionResponseDto;
@@ -8,6 +9,7 @@ import com.supernova.fashionnova.review.dto.ReviewResponseDto;
 import com.supernova.fashionnova.user.dto.UserResponseDto;
 import com.supernova.fashionnova.warn.dto.WarnDeleteRequestDto;
 import com.supernova.fashionnova.warn.dto.WarnRequestDto;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -122,6 +124,20 @@ public class AdminController {
         List<QuestionResponseDto> responseDto = adminService.getQuestionList(page);
 
         return ResponseUtil.of(HttpStatus.OK, responseDto);
+    }
+
+    /**
+     * 쿠폰 지급
+     *
+     * @param requestDto
+     * @return "쿠폰 지급 성공"
+     */
+    @PostMapping("/coupons")
+    public ResponseEntity<String> addAddress(@Valid @RequestBody CouponRequestDto requestDto) {
+
+        adminService.addCoupon(requestDto);
+
+        return ResponseUtil.of(HttpStatus.CREATED,"쿠폰 지급 성공");
     }
 
 }

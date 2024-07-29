@@ -26,7 +26,8 @@ public class QuestionController {
 
     private final QuestionService questionService;
 
-    /** 문의 등록
+    /**
+     * 문의 등록
      *
      * @param userDetails
      * @param requestDto

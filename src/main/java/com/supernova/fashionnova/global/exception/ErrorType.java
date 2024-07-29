@@ -24,6 +24,7 @@ public enum ErrorType {
     // WISH
     NOT_FOUND_WISH(HttpStatus.NOT_FOUND, "위시리시트를 찾을 수 없습니다."),
     INVALID_WISH(HttpStatus.UNAUTHORIZED, "유저의 위시리스트가 아닙니다."),
+    BAD_REQUEST_WISH_EXISTS(HttpStatus.BAD_REQUEST, "이미 존재하는 위시입니다."),
 
     // QUESTION
     NOT_FOUND_QUESTION(HttpStatus.NOT_FOUND, "문의를 찾을 수 없습니다."),

@@ -55,6 +55,9 @@ public class ReviewService {
 
         reviewRepository.save(review);
 
+
+        product.increaseReview();
+
         //파일 업로드
         fileUploadUtil.uploadImage(images, ImageType.REVIEW, review.getId());
 
@@ -141,6 +144,7 @@ public class ReviewService {
     public void deleteReview(User user, Long reviewId) {
         Review review = getReview(user, reviewId);
         reviewRepository.delete(review);
+        review.getProduct().decreaseReview();
     }
 
     // 제품 조회 메서드

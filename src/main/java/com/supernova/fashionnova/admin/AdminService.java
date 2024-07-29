@@ -3,6 +3,10 @@ package com.supernova.fashionnova.admin;
 import com.supernova.fashionnova.answer.Answer;
 import com.supernova.fashionnova.answer.AnswerRepository;
 import com.supernova.fashionnova.answer.dto.AnswerRequestDto;
+import com.supernova.fashionnova.coupon.Coupon;
+import com.supernova.fashionnova.coupon.CouponRepository;
+import com.supernova.fashionnova.coupon.CouponType;
+import com.supernova.fashionnova.coupon.dto.CouponRequestDto;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.product.Product;
@@ -45,11 +49,13 @@ public class AdminService {
     private final WarnRepository warnRepository;
     private final ReviewRepository reviewRepository;
     private final ProductRepository productRepository;
-    private final QuestionRepository questionRepository;
+    private final CouponRepository couponRepository;
     private final AnswerRepository answerRepository;
+    private final QuestionRepository questionRepository;
     private final FileUploadUtil fileUploadUtil;
 
-    /** 유저 전체조회
+    /**
+     * 유저 전체조회
      *
      * @param page
      * @return List<UserResponseDto>
@@ -66,7 +72,8 @@ public class AdminService {
             .collect(Collectors.toList());
     }
 
-    /** 유저 경고 등록
+    /**
+     * 유저 경고 등록
      *
      * @param requestDto
      * @throws CustomException NOT_FOUND_USER 유저Id로 유저를 찾을 수 없을 때
@@ -80,7 +87,8 @@ public class AdminService {
         warnRepository.save(warn);
     }
 
-    /** 유저 경고 삭제
+    /**
+     * 유저 경고 삭제
      *
      * @param requestDto
      * @throws CustomException NOT_FOUND_WARN 경고ID로 경고를 찾을 수 없을 때
@@ -189,6 +197,29 @@ public class AdminService {
         return questionPage.stream()
             .map(QuestionResponseDto::new)
             .collect(Collectors.toList());
+
+    }
+
+    /**
+     * 쿠폰 지급
+     *
+     * @param requestDto
+     * @throws CustomException NOT_FOUND_USER 유저ID가 존재하지 않을 때
+     */
+    public void addCoupon(CouponRequestDto requestDto) {
+
+        User user = userRepository.findById(requestDto.getUserId())
+            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
+
+        Coupon coupon = Coupon.builder()
+            .user(user)
+            .name(requestDto.getName())
+            .period(requestDto.getPeriod())
+            .sale(requestDto.getSale())
+            .type(CouponType.valueOf(requestDto.getType()))
+            .build();
+
+        couponRepository.save(coupon);
 
     }
 
