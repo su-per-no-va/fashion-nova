@@ -25,7 +25,6 @@ body::before {
   right: 0;
   bottom: 0;
   left: 0;
-  background: url("https://lwi.nexon.com/maplestory/common/media/artwork/artwork_111.jpg") no-repeat center;
   filter: brightness(0.5);;
   background-color: rgba(0, 0, 0, .6);
 }
