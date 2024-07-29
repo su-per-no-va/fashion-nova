@@ -17,7 +17,7 @@ public class ProductResponseDto {
     private final int likeCount;
     private final int reviewCount;
     private final List<ProductDetailResponseDto> productDetails;
-    private final LocalDateTime created_at;
+    private final LocalDateTime createdAt;
 
     public ProductResponseDto(Product product) {
         this.id = product.getId();
@@ -29,7 +29,7 @@ public class ProductResponseDto {
         this.productDetails = product.getProductDetailList().stream()
             .map(ProductDetailResponseDto::new)
             .toList();
-        this.created_at = product.getCreatedAt();
+        this.createdAt = product.getCreatedAt();
     }
 
 }

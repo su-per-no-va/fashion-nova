@@ -26,6 +26,9 @@ public enum ErrorType {
     INVALID_WISH(HttpStatus.UNAUTHORIZED, "유저의 위시리스트가 아닙니다."),
     BAD_REQUEST_WISH_EXISTS(HttpStatus.BAD_REQUEST, "이미 존재하는 위시입니다."),
 
+    // QUESTION
+    NOT_FOUND_QUESTION(HttpStatus.NOT_FOUND, "문의를 찾을 수 없습니다."),
+
     // PRODUCT
     NOT_FOUND_PRODUCT(HttpStatus.NOT_FOUND, "상품을 찾을 수 없습니다."),
     OUT_OF_STOCK(HttpStatus.BAD_REQUEST, "품절된 상품입니다."),

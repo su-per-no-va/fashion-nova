@@ -94,7 +94,7 @@ class AdminControllerTest {
         // given
         List<ReviewResponseDto> reviews = Collections.singletonList(new ReviewResponseDto(review));
 
-        when(adminService.getReviewsByUserId(anyLong(), anyInt())).thenReturn(reviews);
+        when(adminService.getReviewListByUserId(anyLong(), anyInt())).thenReturn(reviews);
 
         // when
         ResultActions result = mockMvc.perform(get(baseUrl + "/reviews/{userId}", user.getId())
@@ -113,7 +113,7 @@ class AdminControllerTest {
         @WithMockUser(roles = "ADMIN")
         void getReviewsByUserId2 () throws Exception {
         // given
-        when(adminService.getReviewsByUserId(anyLong(), anyInt())).thenThrow(
+        when(adminService.getReviewListByUserId(anyLong(), anyInt())).thenThrow(
             new CustomException(ErrorType.NOT_FOUND_USER));
 
         // when

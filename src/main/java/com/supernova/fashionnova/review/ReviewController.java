@@ -45,7 +45,7 @@ public class ReviewController {
 
         reviewService.addReview(userDetails.getUser(), reviewRequestDto);
 
-        return ResponseUtil.of(HttpStatus.OK, "리뷰 등록 완료");
+        return ResponseUtil.of(HttpStatus.CREATED, "리뷰 등록 완료");
     }
 
     /**
