@@ -47,7 +47,7 @@ public class FileUploadUtil {
 
     private final QuestionRepository questionRepository;
 
-    private String random = UUID.randomUUID().toString().substring(0, 10)+"sexyJungGeon";
+    private String random = UUID.randomUUID().toString().substring(0, 10);
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;

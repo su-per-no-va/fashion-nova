@@ -50,10 +50,12 @@ public class ReviewService {
 
         Review review = new Review(user, product, reviewRequestDto.getReview(), reviewRequestDto.getRating());
         log.info("1");
+
+        reviewRepository.save(review);
+
         //파일 업로드
         fileUploadUtil.uploadImage(file, ImageType.REVIEW,review.getId());
 
-        reviewRepository.save(review);
     }
 
     /**

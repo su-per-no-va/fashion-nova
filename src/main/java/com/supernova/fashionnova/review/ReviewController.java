@@ -44,9 +44,9 @@ public class ReviewController {
      */
     @PostMapping
     public ResponseEntity<String> addReview(
-        @Valid @RequestBody ReviewRequestDto reviewRequestDto,
-        @AuthenticationPrincipal UserDetailsImpl userDetails,
-        @RequestPart(name = "file") MultipartFile file) {
+        @Valid @RequestPart(value = "request") ReviewRequestDto reviewRequestDto,
+        @RequestPart (value = "image") MultipartFile file,
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
         log.info("addReview");
         reviewService.addReview(userDetails.getUser(), reviewRequestDto,file);
 
