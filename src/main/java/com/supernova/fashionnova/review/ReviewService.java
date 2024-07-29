@@ -81,7 +81,7 @@ public class ReviewService {
         List<Long> reviewIds = reviews.stream().map(Review::getId).toList();
 
         // 리뷰 이미지 다운로드
-        Map<Long, List<String>> reviewImages = fileUploadUtil.downloadImageBytes(ImageType.REVIEW, reviewIds);
+        Map<Long, List<String>> reviewImages = fileUploadUtil.downloadImages(ImageType.REVIEW, reviewIds);
 
         // ReviewResponseDto 객체 생성 및 설정
         List<ReviewResponseDto> reviewResponseDtos = new ArrayList<>();

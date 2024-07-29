@@ -1,6 +1,8 @@
 package com.supernova.fashionnova.admin;
 
 import com.supernova.fashionnova.global.util.ResponseUtil;
+import com.supernova.fashionnova.review.dto.ReviewResponseDto;
+import com.supernova.fashionnova.product.dto.ProductRequestDto;
 import com.supernova.fashionnova.user.dto.UserResponseDto;
 import com.supernova.fashionnova.warn.dto.WarnDeleteRequestDto;
 import com.supernova.fashionnova.warn.dto.WarnRequestDto;
@@ -10,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +26,8 @@ public class AdminController {
 
     private final AdminService adminService;
 
-    /** 유저 전체조회
+    /**
+     * 유저 전체조회
      *
      * @param page
      * @return size는 30으로 고정했음
@@ -37,7 +41,8 @@ public class AdminController {
         return ResponseUtil.of(HttpStatus.OK, responseDtoList);
     }
 
-    /** 유저 조회 등록
+    /**
+     * 유저 조회 등록
      *
      * @param requestDto
      * @return "회원 경고 등록 완성"
@@ -47,10 +52,11 @@ public class AdminController {
 
         adminService.createCaution(requestDto);
 
-        return ResponseUtil.of(HttpStatus.OK,"회원 경고 등록 완성");
+        return ResponseUtil.of(HttpStatus.OK, "회원 경고 등록 완성");
     }
 
-    /** 유저 경고 삭제
+    /**
+     * 유저 경고 삭제
      *
      * @param requestDto
      * @return "회원 경고 삭제 완료"
@@ -60,6 +66,31 @@ public class AdminController {
 
         adminService.deleteCaution(requestDto);
 
-        return ResponseUtil.of(HttpStatus.OK,"회원 경고 삭제 완료");
+        return ResponseUtil.of(HttpStatus.OK, "회원 경고 삭제 완료");
+    }
+
+    @PostMapping("/products")
+    public ResponseEntity<String> createProduct(@RequestBody ProductRequestDto requestDto) {
+
+        adminService.createProduct(requestDto);
+
+        return ResponseUtil.of(HttpStatus.OK,"상품 등록 성공");
+    }
+
+    /**
+     * 작성자별 리뷰 조회
+     *
+     * @param userId
+     * @param page
+     * @return List<MyReviewResponseDto>
+     */
+    @GetMapping("/reviews/{userId}")
+    public ResponseEntity<List<ReviewResponseDto>> getReviewsByUserId(
+        @PathVariable Long userId,
+        @RequestParam(defaultValue = "0") int page) {
+
+        List<ReviewResponseDto> reviews = adminService.getReviewsByUserId(userId, page);
+
+        return ResponseUtil.of(HttpStatus.OK, reviews);
     }
 }

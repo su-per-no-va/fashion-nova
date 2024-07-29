@@ -2,6 +2,7 @@ package com.supernova.fashionnova.product.dto;
 
 
 import com.supernova.fashionnova.product.Product;
+import com.supernova.fashionnova.product.ProductStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
@@ -10,25 +11,25 @@ import lombok.Getter;
 public class ProductResponseDto {
 
     private final Long id;
-    private final int price;
-    private final int like_count;
     private final String product;
-    private final int review_count;
+    private final int price;
+    private final ProductStatus productStatus;
+    private final int likeCount;
+    private final int reviewCount;
     private final List<ProductDetailResponseDto> productDetails;
-    private final String product_status;
     private final LocalDateTime created_at;
-
 
     public ProductResponseDto(Product product) {
         this.id = product.getId();
         this.product = product.getProduct();
         this.price = product.getPrice();
-        this.like_count = product.getLike_count();
-        this.review_count = product.getReview_count();
-        this.product_status = product.getProduct_status();
-        this.created_at = product.getCreatedAt();
-        this.productDetails = product.getProductDetails().stream()
+        this.productStatus = product.getProductStatus();
+        this.likeCount = product.getLikeCount();
+        this.reviewCount = product.getReviewCount();
+        this.productDetails = product.getProductDetailList().stream()
             .map(ProductDetailResponseDto::new)
             .toList();
+        this.created_at = product.getCreatedAt();
     }
+
 }

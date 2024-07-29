@@ -118,7 +118,7 @@ public class FileUploadUtil {
         }
     }
 
-    public Map<Long, List<String>> downloadImageBytes(ImageType type, List<Long> typeIds) {
+    public Map<Long, List<String>> downloadImages(ImageType type, List<Long> typeIds) {
         Map<Long, List<String>> imagesMap = new HashMap<>();
 
         for (Long id : typeIds) {
