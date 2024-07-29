@@ -96,7 +96,8 @@ public class UserController {
         return ResponseUtil.of(HttpStatus.OK, responseDtoList);
     }
 
-    /** 유저 정보 수정(본인만 가능)
+    /**
+     * 유저 정보 수정(본인만 가능)
      *
      * @param requestDto
      * @param userDetails

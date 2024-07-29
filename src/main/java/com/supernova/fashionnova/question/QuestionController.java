@@ -23,7 +23,8 @@ public class QuestionController {
 
     private final QuestionService questionService;
 
-    /** 문의 등록
+    /**
+     * 문의 등록
      *
      * @param userDetails
      * @param requestDto
@@ -38,7 +39,8 @@ public class QuestionController {
         return ResponseUtil.of(HttpStatus.CREATED,"문의 등록 성공");
     }
 
-    /** 내 문의 조회
+    /**
+     * 내 문의 조회
      *
      * @param userDetails
      * @return responseDto

@@ -14,7 +14,8 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    /** 조건별 상품 검색
+    /**
+     * 조건별 상품 검색
      * @param sorted
      * @param category
      * @param page

@@ -25,7 +25,8 @@ public class WishController {
 
     private final WishService wishService;
 
-    /** 위시리스트 추가
+    /**
+     * 위시리스트 추가
      *
      * @param userDetails
      * @param requestDto
@@ -40,7 +41,8 @@ public class WishController {
         return ResponseUtil.of(HttpStatus.OK,"위시리스트 추가");
     }
 
-    /** 위시리스트 조회
+    /**
+     * 위시리스트 조회
      *
      * @param userDetails
      * @param page
@@ -55,7 +57,8 @@ public class WishController {
         return ResponseUtil.of(HttpStatus.OK, responseDto);
     }
 
-    /** 위시리스트 삭제
+    /**
+     * 위시리스트 삭제
      *
      * @param userDetails
      * @param requestDto

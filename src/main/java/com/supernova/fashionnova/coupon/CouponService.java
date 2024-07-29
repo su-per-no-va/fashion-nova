@@ -13,7 +13,8 @@ public class CouponService {
 
     private final CouponRepository couponRepository;
 
-    /** 보유 쿠폰 조회
+    /**
+     * 보유 쿠폰 조회
      *
      * @param user
      * @return List<CouponResponseDto>
@@ -24,7 +25,8 @@ public class CouponService {
 
     }
 
-    /** 쿠폰 내역 조회
+    /**
+     * 쿠폰 내역 조회
      *
      * @param user
      * @return List<CouponResponseDto>

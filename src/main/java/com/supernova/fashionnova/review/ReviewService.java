@@ -42,6 +42,8 @@ public class ReviewService {
 
         Review review = new Review(user, product, reviewRequestDto.getReview(), reviewRequestDto.getRating());
         reviewRepository.save(review);
+
+        product.increaseReview();
     }
 
     /**
@@ -111,6 +113,7 @@ public class ReviewService {
     public void deleteReview(User user, Long reviewId) {
         Review review = getReview(user, reviewId);
         reviewRepository.delete(review);
+        review.getProduct().decreaseReview();
     }
 
     // 제품 조회 메서드

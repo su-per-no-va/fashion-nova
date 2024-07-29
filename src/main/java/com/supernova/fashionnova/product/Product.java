@@ -44,7 +44,7 @@ public class Product extends Timestamped {
     private ProductStatus productStatus;
 
     @Column(nullable = false)
-    private int likeCount;
+    private int wishCount;
 
     @Column(nullable = false)
     private int reviewCount;
@@ -78,8 +78,24 @@ public class Product extends Timestamped {
         this.explanation = explanation;
         this.category = category;
         this.productStatus = productStatus;
-        this.likeCount = 0;
+        this.wishCount = 0;
         this.reviewCount = 0;
+    }
+
+    public void increaseWish() {
+        wishCount++;
+    }
+
+    public void decreaseWish() {
+        wishCount--;
+    }
+
+    public void increaseReview() {
+        reviewCount++;
+    }
+
+    public void decreaseReview() {
+        reviewCount++;
     }
 
 }

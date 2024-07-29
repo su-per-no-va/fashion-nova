@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,15 +23,19 @@ public class WishService {
     private final ProductRepository productRepository;
     private final WishRepository wishRepository;
 
-    /** 위시리스트 추가
+    /**
+     * 위시리스트 추가
      *
      * @param user
      * @param productId
      * @throws CustomException NOT_FOUND_PRODUCT 상품을 찾지 못할 때
      */
+    @Transactional
     public void addWish(User user, Long productId) {
 
         Product product = getProduct(productId);
+
+        existsWish(user, product);
 
         Wish wish = Wish.builder()
             .user(user)
@@ -39,15 +44,19 @@ public class WishService {
 
         wishRepository.save(wish);
 
+        product.increaseWish();
+
     }
 
-    /** 위시리스트 조회
+    /**
+     * 위시리스트 조회
      *
      * @param user
      * @param page
      * @return Page<ProductResponseDto>
      */
     public Page<ProductResponseDto> getWishProductList(User user, int page) {
+
         Pageable pageable = PageRequest.of(page, 10);
 
         Page<Wish> wishPage = wishRepository.findByUser(user, pageable);
@@ -57,9 +66,11 @@ public class WishService {
             .collect(Collectors.toList());
 
         return new PageImpl<>(productResponseDtoList, pageable, wishPage.getTotalElements());
+
     }
 
-    /** 위시리스트 삭제
+    /**
+     * 위시리스트 삭제
      *
      * @param user
      * @param wishId
@@ -72,6 +83,9 @@ public class WishService {
         validateUser(user, wish);
 
         wishRepository.delete(wish);
+
+        wish.getProduct().decreaseWish();
+
     }
 
     private Product getProduct(Long productId) {
@@ -87,8 +101,15 @@ public class WishService {
     }
 
     private void validateUser(User user, Wish wish) {
-        if (!wish.getUser().equals(user)) {
+        if (wish.getUser().equals(user)) {
             throw new CustomException(ErrorType.INVALID_WISH);
+        }
+    }
+
+    private void existsWish(User user, Product product) {
+        boolean existsWish = wishRepository.existsByUserAndProduct(user, product);
+        if (existsWish) {
+            throw new CustomException(ErrorType.BAD_REQUEST_WISH_EXISTS);
         }
     }
 
