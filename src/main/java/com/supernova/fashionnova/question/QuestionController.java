@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,11 +35,12 @@ public class QuestionController {
      */
     @PostMapping
     public ResponseEntity<String> addQuestion(@AuthenticationPrincipal UserDetailsImpl userDetails,
-        @Valid @RequestBody QuestionRequestDto requestDto) {
+        @Valid @RequestPart(value = "request") QuestionRequestDto requestDto,
+        @RequestPart(value = "image") List<MultipartFile> file) {
 
-        questionService.addQuestion(userDetails.getUser(), requestDto);
+        questionService.addQuestion(userDetails.getUser(), requestDto, file);
 
-        return ResponseUtil.of(HttpStatus.CREATED,"문의 등록 성공");
+        return ResponseUtil.of(HttpStatus.CREATED, "문의 등록 성공");
     }
 
     /**
@@ -48,10 +51,12 @@ public class QuestionController {
      * @return responseDto
      */
     @GetMapping
-    public ResponseEntity<List<QuestionResponseDto>> getUserQuestionList(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<List<QuestionResponseDto>> getUserQuestionList(
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
         @RequestParam(defaultValue = "0") int page) {
 
-        List<QuestionResponseDto> responseDto = questionService.getUserQuestionList(userDetails.getUser(), page);
+        List<QuestionResponseDto> responseDto = questionService.getUserQuestionList(
+            userDetails.getUser(), page);
 
         return ResponseUtil.of(HttpStatus.OK, responseDto);
     }

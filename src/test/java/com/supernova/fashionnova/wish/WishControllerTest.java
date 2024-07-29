@@ -104,7 +104,7 @@ class WishControllerTest {
         Page<Product> productPage = new PageImpl<>(products);
         Page<ProductResponseDto> responseDto = productPage.map(ProductResponseDto::new);
 
-        when(wishService.getWishProductPage(user, 0)).thenReturn(responseDto);
+        when(wishService.getWishProductList(user, 0)).thenReturn(responseDto.getContent());
 
         // when * then
         mockMvc.perform(get(baseUrl).param("page", String.valueOf(page))

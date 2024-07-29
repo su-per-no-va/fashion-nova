@@ -92,7 +92,7 @@ class AdminControllerTest {
         @WithMockUser(roles = "ADMIN")
         void getReviewsByUserId1 () throws Exception {
         // given
-        List<ReviewResponseDto> reviews = Collections.singletonList(new ReviewResponseDto(review));
+        List<ReviewResponseDto> reviews = Collections.singletonList(new ReviewResponseDto(review,null));
 
         when(adminService.getReviewListByUserId(anyLong(), anyInt())).thenReturn(reviews);
 

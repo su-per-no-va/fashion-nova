@@ -28,8 +28,7 @@ public class ReviewImage {
     @JoinColumn(name = "review_id", nullable = false)
     private Review review;
 
-    public ReviewImage(Long id, Review review, String reviewImageUrl) {
-        this.id = id;
+    public ReviewImage( Review review, String reviewImageUrl) {
         this.review = review;
         this.reviewImageUrl = reviewImageUrl;
     }

@@ -28,4 +28,8 @@ public class QuestionImage {
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;
 
+    public QuestionImage(Question question, String questionImageUrl) {
+        this.question = question;
+        this.questionImageUrl = questionImageUrl;
+    }
 }

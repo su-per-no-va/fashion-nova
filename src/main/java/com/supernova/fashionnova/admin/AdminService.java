@@ -19,6 +19,8 @@ import com.supernova.fashionnova.question.dto.QuestionResponseDto;
 import com.supernova.fashionnova.review.Review;
 import com.supernova.fashionnova.review.ReviewRepository;
 import com.supernova.fashionnova.review.dto.ReviewResponseDto;
+import com.supernova.fashionnova.upload.FileUploadUtil;
+import com.supernova.fashionnova.upload.ImageType;
 import com.supernova.fashionnova.user.User;
 import com.supernova.fashionnova.user.UserRepository;
 import com.supernova.fashionnova.user.dto.UserResponseDto;
@@ -26,7 +28,9 @@ import com.supernova.fashionnova.warn.Warn;
 import com.supernova.fashionnova.warn.dto.WarnDeleteRequestDto;
 import com.supernova.fashionnova.warn.dto.WarnRepository;
 import com.supernova.fashionnova.warn.dto.WarnRequestDto;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -48,6 +52,7 @@ public class AdminService {
     private final CouponRepository couponRepository;
     private final AnswerRepository answerRepository;
     private final QuestionRepository questionRepository;
+    private final FileUploadUtil fileUploadUtil;
 
     /**
      * 유저 전체조회
@@ -113,10 +118,24 @@ public class AdminService {
 
         Pageable pageable = PageRequest.of(page, PAGE_SIZE);
         Page<Review> reviewPage = reviewRepository.findByUser(user, pageable);
+        List<Review> reviews = reviewPage.getContent();
 
-        return reviewPage.stream()
-            .map(ReviewResponseDto::new)
-            .collect(Collectors.toList());
+        // 리뷰 ID 리스트 생성
+        List<Long> reviewIds = reviews.stream().map(Review::getId).toList();
+
+        // 리뷰 이미지 다운로드
+        Map<Long, List<String>> reviewImages = fileUploadUtil.downloadImages(ImageType.REVIEW, reviewIds);
+
+
+        // ReviewResponseDto 객체 생성 및 설정
+        List<ReviewResponseDto> reviewResponseDtos = new ArrayList<>();
+        for (Review review : reviews) {
+            ReviewResponseDto dto = new ReviewResponseDto(review, reviewImages.get(review.getId())); // byte[] 리스트 설정
+            reviewResponseDtos.add(dto);
+        }
+
+
+        return reviewResponseDtos;
     }
 
     @Transactional

@@ -17,6 +17,7 @@ import com.supernova.fashionnova.user.User;
 import com.supernova.fashionnova.wish.dto.WishDeleteRequestDto;
 import com.supernova.fashionnova.wish.dto.WishRequestDto;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -71,11 +72,11 @@ class WishServiceTest {
             .willReturn(new PageImpl<>(Collections.singletonList(wish)));
 
         // when
-        Page<ProductResponseDto> result = wishService.getWishProductPage(user, page);
+        List<ProductResponseDto> result = wishService.getWishProductList(user, page);
 
         // then
         assertNotNull(result);
-        assertEquals(1, result.getNumberOfElements());
+        assertEquals(1, result.size());
 
     }
 
