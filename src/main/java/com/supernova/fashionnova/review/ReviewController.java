@@ -8,6 +8,7 @@ import com.supernova.fashionnova.review.dto.ReviewResponseDto;
 import com.supernova.fashionnova.review.dto.ReviewUpdateRequestDto;
 import com.supernova.fashionnova.security.UserDetailsImpl;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -45,10 +46,10 @@ public class ReviewController {
     @PostMapping
     public ResponseEntity<String> addReview(
         @Valid @RequestPart(value = "request") ReviewRequestDto reviewRequestDto,
-        @RequestPart (value = "image") MultipartFile file,
+        @RequestPart(value = "image") MultipartFile file,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
         log.info("addReview");
-        reviewService.addReview(userDetails.getUser(), reviewRequestDto,file);
+        reviewService.addReview(userDetails.getUser(), reviewRequestDto, file);
 
         return ResponseUtil.of(HttpStatus.OK, "리뷰 등록 완료");
     }
@@ -61,14 +62,15 @@ public class ReviewController {
      * @return List<ReviewResponseDto>
      */
     @GetMapping("/{productId}")
-    public ResponseEntity<Page<ReviewResponseDto>> getReviewsByProductId(
+    public ResponseEntity<List<ReviewResponseDto>> getReviewsByProductId(
         @PathVariable Long productId,
         @RequestParam(defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page, 10);
-        Page<Review> reviews = reviewService.getReviewsByProductId(productId, pageable);
-        Page<ReviewResponseDto> reviewResponseDtoPage = reviews.map(ReviewResponseDto::new);
+        List<ReviewResponseDto> reviewResponseList = reviewService.getReviewsByProductId(productId,
+            pageable);
+//        Page<ReviewResponseDto> reviewResponseDtoPage = reviews.map(ReviewResponseDto::new);
 
-        return ResponseUtil.of(HttpStatus.OK, reviewResponseDtoPage);
+        return ResponseUtil.of(HttpStatus.OK, reviewResponseList);
     }
 
     /**
@@ -92,7 +94,7 @@ public class ReviewController {
      * 리뷰 수정
      *
      * @param userDetails 로그인된 사용자 정보
-     * @param dto 리뷰 수정 요청 DTO
+     * @param dto         리뷰 수정 요청 DTO
      * @return 리뷰 수정 완료
      */
     @PutMapping
@@ -109,7 +111,7 @@ public class ReviewController {
      * 사용자별 리뷰 삭제
      *
      * @param userDetails 로그인된 사용자 정보
-     * @param dto 리뷰 삭제 요청 DTO
+     * @param dto         리뷰 삭제 요청 DTO
      * @return 리뷰 삭제 완료
      */
     @DeleteMapping

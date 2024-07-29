@@ -16,16 +16,19 @@ import com.supernova.fashionnova.review.Review;
 import com.supernova.fashionnova.review.ReviewImage;
 import com.supernova.fashionnova.review.ReviewImageRepository;
 import com.supernova.fashionnova.review.ReviewRepository;
-import com.supernova.fashionnova.warn.Warn;
-import com.supernova.fashionnova.warn.dto.WarnRepository;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.net.URL;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -56,7 +59,7 @@ public class FileUploadUtil {
     @Transactional
     public void uploadImage(MultipartFile file, ImageType type, Long typeId) {
         // nullCheck
-        if(file.isEmpty()){
+        if (file.isEmpty()) {
             return;
         }
 
@@ -76,65 +79,75 @@ public class FileUploadUtil {
             throw new CustomException(ErrorType.UPLOAD_REVIEW);
         }
 
-       switch (type){
-           case REVIEW -> {
-               Review review = reviewRepository.findById(typeId).orElseThrow(() ->
-                   new CustomException(ErrorType.NOT_FOUND_REVIEW));
-
-               ReviewImage reviewImage = new ReviewImage(review, reviewImageURL);
-               reviewImageRepository.save(reviewImage);
-           }
-
-           case PRODUCT -> {
-               Product product = productRepository.findById(typeId).orElseThrow(() ->
-                   new CustomException(ErrorType.NOT_FOUND_PRODUCT));
-
-               ProductImage productImage = new ProductImage(product, reviewImageURL);
-               productImageRepository.save(productImage);
-           }
-
-           case QUESTION -> {
-               Question question = questionRepository.findById(typeId).orElseThrow(() ->
-                   new CustomException(ErrorType.NOT_FOUND_QUESTION));
-
-               QuestionImage questionImage = new QuestionImage(question, reviewImageURL);
-               questionImageRepository.save(questionImage);
-           }
-         }
-    }
-
-    public List<String> downloadImage(ImageType type, Long typeId) {
-        List<String> imageUrls = new ArrayList<>();
-
         switch (type) {
             case REVIEW -> {
-                Review review = reviewRepository.findById(typeId).orElseThrow(()
-                   -> new CustomException(ErrorType.NOT_FOUND_REVIEW)
-                );
-                List<ReviewImage> reviewImages = reviewImageRepository.findAllByReview(review);
-                for (ReviewImage reviewImage : reviewImages) {
-                    imageUrls.add(reviewImage.getReviewImageUrl());
-                }
+                Review review = reviewRepository.findById(typeId).orElseThrow(() ->
+                    new CustomException(ErrorType.NOT_FOUND_REVIEW));
+
+                ReviewImage reviewImage = new ReviewImage(review, reviewImageURL);
+                reviewImageRepository.save(reviewImage);
             }
+
             case PRODUCT -> {
-                Product product = productRepository.findById(typeId).orElseThrow(()
-                    -> new CustomException(ErrorType.NOT_FOUND_REVIEW)
-                );
-                List<ProductImage> productImages = productImageRepository.findAllByProduct(product);
-                for (ProductImage productImage : productImages) {
-                    imageUrls.add(productImage.getProductImageUrl());
-                }
+                Product product = productRepository.findById(typeId).orElseThrow(() ->
+                    new CustomException(ErrorType.NOT_FOUND_PRODUCT));
+
+                ProductImage productImage = new ProductImage(product, reviewImageURL);
+                productImageRepository.save(productImage);
             }
+
             case QUESTION -> {
-                Question question = questionRepository.findById(typeId).orElseThrow(()
-                    -> new CustomException(ErrorType.NOT_FOUND_REVIEW)
-                );
-                List<QuestionImage> questionImages = questionImageRepository.findAllByQuestion(question);
-                for (QuestionImage questionImage : questionImages) {
-                    imageUrls.add(questionImage.getQuestionImageUrl());
-                }
+                Question question = questionRepository.findById(typeId).orElseThrow(() ->
+                    new CustomException(ErrorType.NOT_FOUND_QUESTION));
+
+                QuestionImage questionImage = new QuestionImage(question, reviewImageURL);
+                questionImageRepository.save(questionImage);
             }
         }
-        return imageUrls;
     }
+
+    public Map<Long, List<String>> downloadImageBytes(ImageType type, List<Long> typeIds) {
+        Map<Long, List<String>> imagesMap = new HashMap<>();
+
+        for (Long id : typeIds) {
+            List<String> imageUrls = new ArrayList<>();
+            switch (type) {
+                case REVIEW -> {
+                    List<ReviewImage> reviewImages = reviewImageRepository.findAllByReviewId(id);
+                    for (ReviewImage reviewImage : reviewImages) {
+                        URL url = amazonS3Client.getUrl("fashion-s3",reviewImage.getReviewImageUrl());
+                        imageUrls.add(url.toString());
+                    }
+                }
+                case PRODUCT -> {
+                    Product product = productRepository.findById(id).orElseThrow(
+                        () -> new CustomException(ErrorType.NOT_FOUND_PRODUCT)
+                    );
+                    List<ProductImage> productImages = productImageRepository.findAllByProduct(
+                        product);
+                    for (ProductImage productImage : productImages) {
+                        URL url = amazonS3Client.getUrl("fashion-s3",productImage.getProductImageUrl());
+                        imageUrls.add(url.toString());
+                    }
+                }
+                case QUESTION -> {
+                    Question question = questionRepository.findById(id).orElseThrow(
+                        () -> new CustomException(ErrorType.NOT_FOUND_QUESTION)
+                    );
+                    List<QuestionImage> questionImages = questionImageRepository.findAllByQuestion(
+                        question);
+                    for (QuestionImage questionImage : questionImages) {
+                        imageUrls.add(questionImage.getQuestionImageUrl());
+                    }
+                }
+            }
+
+
+            imagesMap.put(id,imageUrls);
+        }
+
+        return imagesMap;
+    }
+
+
 }

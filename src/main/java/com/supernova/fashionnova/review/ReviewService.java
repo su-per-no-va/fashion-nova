@@ -6,10 +6,15 @@ import com.supernova.fashionnova.order.OrdersRepository;
 import com.supernova.fashionnova.product.Product;
 import com.supernova.fashionnova.product.ProductRepository;
 import com.supernova.fashionnova.review.dto.ReviewRequestDto;
+import com.supernova.fashionnova.review.dto.ReviewResponseDto;
 import com.supernova.fashionnova.review.dto.ReviewUpdateRequestDto;
 import com.supernova.fashionnova.upload.FileUploadUtil;
 import com.supernova.fashionnova.upload.ImageType;
 import com.supernova.fashionnova.user.User;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -48,13 +53,14 @@ public class ReviewService {
 
         Product product = getProduct(reviewRequestDto.getProductId());
 
-        Review review = new Review(user, product, reviewRequestDto.getReview(), reviewRequestDto.getRating());
+        Review review = new Review(user, product, reviewRequestDto.getReview(),
+            reviewRequestDto.getRating());
         log.info("1");
 
         reviewRepository.save(review);
 
         //파일 업로드
-        fileUploadUtil.uploadImage(file, ImageType.REVIEW,review.getId());
+        fileUploadUtil.uploadImage(file, ImageType.REVIEW, review.getId());
 
     }
 
@@ -67,10 +73,24 @@ public class ReviewService {
      * @throws CustomException NOT_FOUND_PRODUCT 상품을 찾을 수 없습니다.
      */
     @Transactional(readOnly = true)
-    public Page<Review> getReviewsByProductId(Long productId, Pageable pageable) {
+    public List<ReviewResponseDto> getReviewsByProductId(Long productId, Pageable pageable) {
         Product product = getProduct(productId);
+        List<Review> reviews = reviewRepository.findByProduct(product, pageable);
 
-        return reviewRepository.findByProduct(product, pageable);
+        // 리뷰 ID 리스트 생성
+        List<Long> reviewIds = reviews.stream().map(Review::getId).toList();
+
+        // 리뷰 이미지 다운로드
+        Map<Long, List<String>> reviewImages = fileUploadUtil.downloadImageBytes(ImageType.REVIEW, reviewIds);
+
+        // ReviewResponseDto 객체 생성 및 설정
+        List<ReviewResponseDto> reviewResponseDtos = new ArrayList<>();
+        for (Review review : reviews) {
+            ReviewResponseDto dto = new ReviewResponseDto(review, reviewImages.get(review.getId())); // byte[] 리스트 설정
+            reviewResponseDtos.add(dto);
+        }
+
+        return reviewResponseDtos;
     }
 
     /**
@@ -87,7 +107,7 @@ public class ReviewService {
     /**
      * 리뷰 수정
      *
-     * @param user 사용자 정보
+     * @param user       사용자 정보
      * @param requestDto 리뷰 수정 요청 DTO
      * @throws CustomException NOT_FOUND_REVIEW 리뷰가 존재하지 않습니다.
      */
@@ -117,7 +137,7 @@ public class ReviewService {
     /**
      * 리뷰 삭제
      *
-     * @param user 사용자 정보
+     * @param user       사용자 정보
      * @param requestDto 리뷰 삭제 요청 DTO
      * @throws CustomException NOT_FOUND_REVIEW 리뷰가 존재하지 않습니다.
      */
