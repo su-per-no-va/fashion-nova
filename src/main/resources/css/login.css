@@ -25,7 +25,9 @@ body::before {
   right: 0;
   bottom: 0;
   left: 0;
-  filter: brightness(0.5);;
+  background: url("https://thumb.mtstarnews.com/21/2021/05/2021051214334475300_1.jpg") no-repeat center;
+  background-size: cover;
+  filter: brightness(0.5);
   background-color: rgba(0, 0, 0, .6);
 }
 

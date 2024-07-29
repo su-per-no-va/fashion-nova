@@ -20,7 +20,8 @@
 
       $.each($('.int-area > input'), function (index, item) {
         if (isValid) {
-          if ($(item).val() == "") {
+          var value = $(item).val();
+          if (value === "" || (index === 0 && value.length < 4)) {
             $(item).next('label').addClass('warning');
             setTimeout(function () {
               $('label').removeClass('warning');
