@@ -55,7 +55,7 @@ class QuestionServiceTest {
             .build();
 
         //when * then
-        assertDoesNotThrow(()-> questionService.addQuestion(user,questionRequestDto));
+        assertDoesNotThrow(()-> questionService.addQuestion(user,questionRequestDto,null));
 
     }
 
@@ -84,20 +84,20 @@ class QuestionServiceTest {
         given(questionRepository.findByUser(user, pageable)).willReturn(questionPage);
 
         // when
-        Page<QuestionResponseDto> savedQuestionPage = questionService.getUserQuestionPage(user, 1);
+        List<QuestionResponseDto> savedQuestionPage = questionService.getUserQuestionList(user, 1);
 
 
         // then
         assertThat(savedQuestionPage).isNotNull();
         assertThat(savedQuestionPage).hasSize(2);
 
-        QuestionResponseDto responseDto1 = savedQuestionPage.getContent().get(0);
+        QuestionResponseDto responseDto1 = savedQuestionPage.get(0);
         assertThat(responseDto1.getTitle()).isEqualTo("문의1");
         assertThat(responseDto1.getQuestion()).isEqualTo("문의 내용1");
         assertThat(responseDto1.getType()).isEqualTo(QuestionType.PRODUCT);
         assertThat(responseDto1.getStatus()).isEqualTo(QuestionStatus.BEFORE);
 
-        QuestionResponseDto responseDto2 = savedQuestionPage.getContent().get(1);
+        QuestionResponseDto responseDto2 = savedQuestionPage.get(1);
         assertThat(responseDto2.getTitle()).isEqualTo("문의2");
         assertThat(responseDto2.getType()).isEqualTo(QuestionType.DELIVERY);
         assertThat(responseDto2.getStatus()).isEqualTo(QuestionStatus.BEFORE);

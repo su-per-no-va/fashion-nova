@@ -77,7 +77,7 @@ class QuestionControllerTest {
             .question("테스트 문의 내용")
             .type("PRODUCT")
             .build();
-        doNothing().when(service).addQuestion(any(User.class), any(QuestionRequestDto.class));
+        doNothing().when(service).addQuestion(any(User.class), any(QuestionRequestDto.class),null);
 
         //when * then
         mockMvc.perform(post(baseUrl).with(csrf())
@@ -104,7 +104,7 @@ class QuestionControllerTest {
         Page<QuestionResponseDto> responseDtoPage = new PageImpl<>(responseDtoList);
 
         //when
-        when(service.getUserQuestionPage(user, page)).thenReturn(responseDtoPage);
+        when(service.getUserQuestionList(user, page)).thenReturn(responseDtoPage.getContent());
 
         //then
         mockMvc.perform(get(baseUrl).with(csrf()))
