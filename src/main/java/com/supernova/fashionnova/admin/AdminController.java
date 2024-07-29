@@ -37,10 +37,10 @@ public class AdminController {
      * @return size는 30으로 고정했음
      */
     @GetMapping("/users")
-    public ResponseEntity<List<UserResponseDto>> getAllUsers(
+    public ResponseEntity<List<UserResponseDto>> getAllUserList(
         @RequestParam(defaultValue = "0") int page) {
 
-        List<UserResponseDto> responseDtoList = adminService.getAllUsers(page);
+        List<UserResponseDto> responseDtoList = adminService.getAllUserList(page);
 
         return ResponseUtil.of(HttpStatus.OK, responseDtoList);
     }
@@ -52,11 +52,11 @@ public class AdminController {
      * @return "회원 경고 등록 완성"
      */
     @PostMapping("/cautions")
-    public ResponseEntity<String> createCaution(@RequestBody WarnRequestDto requestDto) {
+    public ResponseEntity<String> addCaution(@RequestBody WarnRequestDto requestDto) {
 
-        adminService.createCaution(requestDto);
+        adminService.addCaution(requestDto);
 
-        return ResponseUtil.of(HttpStatus.OK, "회원 경고 등록 완성");
+        return ResponseUtil.of(HttpStatus.CREATED, "회원 경고 등록 완성");
     }
 
     /**
@@ -81,11 +81,11 @@ public class AdminController {
      * @return List<MyReviewResponseDto>
      */
     @GetMapping("/reviews/{userId}")
-    public ResponseEntity<List<ReviewResponseDto>> getReviewsByUserId(
+    public ResponseEntity<List<ReviewResponseDto>> getReviewListByUserId(
         @PathVariable Long userId,
         @RequestParam(defaultValue = "0") int page) {
 
-        List<ReviewResponseDto> reviews = adminService.getReviewsByUserId(userId, page);
+        List<ReviewResponseDto> reviews = adminService.getReviewListByUserId(userId, page);
 
         return ResponseUtil.of(HttpStatus.OK, reviews);
     }

@@ -57,7 +57,7 @@ public class AdminService {
      * 사이즈는 30으로 고정해놨음
      */
     @Transactional(readOnly = true)
-    public List<UserResponseDto> getAllUsers(int page) {
+    public List<UserResponseDto> getAllUserList(int page) {
 
         Pageable pageable = PageRequest.of(page, PAGE_SIZE);
         Page<User> userPage = userRepository.findAll(pageable);
@@ -73,7 +73,7 @@ public class AdminService {
      * @param requestDto
      * @throws CustomException NOT_FOUND_USER 유저Id로 유저를 찾을 수 없을 때
      */
-    public void createCaution(WarnRequestDto requestDto) {
+    public void addCaution(WarnRequestDto requestDto) {
 
         User user = userRepository.findById(requestDto.getUserId())
             .orElseThrow(()-> new CustomException(ErrorType.NOT_FOUND_USER));
@@ -102,11 +102,11 @@ public class AdminService {
      *
      * @param userId
      * @param page
-     * @return Page<Review>
+     * @return List<Review>
      * @throws CustomException NOT_FOUND_USER 유저ID가 존재하지 않을 때
      */
     @Transactional(readOnly = true)
-    public List<ReviewResponseDto> getReviewsByUserId(Long userId, int page) {
+    public List<ReviewResponseDto> getReviewListByUserId(Long userId, int page) {
 
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
