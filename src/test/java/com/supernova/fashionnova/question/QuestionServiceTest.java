@@ -16,7 +16,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @ExtendWith(MockitoExtension.class)
 class QuestionServiceTest {
@@ -43,7 +46,7 @@ class QuestionServiceTest {
 
     @Test
     @DisplayName("문의 생성 테스트")
-    void addQuestion() {
+    void addQuestionTest() {
         //given
        QuestionRequestDto questionRequestDto = QuestionRequestDto.builder()
             .title("테스트 문의")
@@ -52,13 +55,13 @@ class QuestionServiceTest {
             .build();
 
         //when * then
-        assertDoesNotThrow(()-> questionService.addQuestion(user,questionRequestDto, null));
+        assertDoesNotThrow(()-> questionService.addQuestion(user,questionRequestDto,null));
 
     }
 
     @Test
     @DisplayName("내 문의 조회 테스트")
-    void getUserQuestionList() {
+    void getUserQuestionPageTest() {
         //given
         Question question1 = Question.builder()
             .user(user)
@@ -75,23 +78,26 @@ class QuestionServiceTest {
             .build();
 
         List<Question> questionList = List.of(question1, question2);
-        given(questionRepository.findByUser(user)).willReturn(questionList);
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Question> questionPage = new PageImpl<>(questionList);
+
+        given(questionRepository.findByUser(user, pageable)).willReturn(questionPage);
 
         // when
-        List<QuestionResponseDto> savedQuestionList = questionService.getUserQuestionList(user);
+        List<QuestionResponseDto> savedQuestionPage = questionService.getUserQuestionList(user, 1);
 
 
         // then
-        assertThat(savedQuestionList).isNotNull();
-        assertThat(savedQuestionList).hasSize(2);
+        assertThat(savedQuestionPage).isNotNull();
+        assertThat(savedQuestionPage).hasSize(2);
 
-        QuestionResponseDto responseDto1 = savedQuestionList.get(0);
+        QuestionResponseDto responseDto1 = savedQuestionPage.get(0);
         assertThat(responseDto1.getTitle()).isEqualTo("문의1");
         assertThat(responseDto1.getQuestion()).isEqualTo("문의 내용1");
         assertThat(responseDto1.getType()).isEqualTo(QuestionType.PRODUCT);
         assertThat(responseDto1.getStatus()).isEqualTo(QuestionStatus.BEFORE);
 
-        QuestionResponseDto responseDto2 = savedQuestionList.get(1);
+        QuestionResponseDto responseDto2 = savedQuestionPage.get(1);
         assertThat(responseDto2.getTitle()).isEqualTo("문의2");
         assertThat(responseDto2.getType()).isEqualTo(QuestionType.DELIVERY);
         assertThat(responseDto2.getStatus()).isEqualTo(QuestionStatus.BEFORE);

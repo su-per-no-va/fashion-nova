@@ -8,6 +8,9 @@ import com.supernova.fashionnova.user.User;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,15 +47,19 @@ public class QuestionService {
      * 내 문의 조회
      *
      * @param user
+     * @param page
      * @return List<QuestionResponseDto>
      */
-    public List<QuestionResponseDto> getUserQuestionList(User user) {
+    public List<QuestionResponseDto> getUserQuestionList(User user, int page) {
 
-        List<Question> addresses = questionRepository.findByUser(user);
+        Pageable pageable = PageRequest.of(page, 10);
+        Page<Question> questionPage = questionRepository.findByUser(user, pageable);
 
-        return addresses.stream()
+
+        return questionPage.stream()
             .map(QuestionResponseDto::new)
             .collect(Collectors.toList());
+
     }
 
 }

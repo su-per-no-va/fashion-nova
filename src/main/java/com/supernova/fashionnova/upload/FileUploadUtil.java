@@ -112,6 +112,7 @@ public class FileUploadUtil {
                 for (String imageUrl : imageUrls) {
                     QuestionImage questionImage = new QuestionImage(question, imageUrl);
                     questionImageRepository.save(questionImage);
+                    question.getQuestionImageUrls().add(questionImage);
                 }
 
             }

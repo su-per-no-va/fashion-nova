@@ -26,3 +26,17 @@ Authorization: {{access_token}}
 @userId = 2
 GET http://localhost:8080/admin/reviews/{{userId}}?page=0
 Authorization: {{access_token}}
+
+### 답변 등록
+POST http://localhost:8080/admin/answers
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "questionId": 1,
+  "answer": "돌아가~"
+}
+
+### 문의 전체 조회
+GET http://localhost:8080/admin/answers?page=0
+Authorization: {{access_token}}

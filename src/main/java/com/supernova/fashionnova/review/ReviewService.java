@@ -11,7 +11,6 @@ import com.supernova.fashionnova.review.dto.ReviewUpdateRequestDto;
 import com.supernova.fashionnova.upload.FileUploadUtil;
 import com.supernova.fashionnova.upload.ImageType;
 import com.supernova.fashionnova.user.User;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,15 +33,13 @@ public class ReviewService {
 
     private final OrdersRepository ordersRepository;
 
-    private final ReviewImageRepository reviewImageRepository;
-
     private final FileUploadUtil fileUploadUtil;
 
     /**
      * 리뷰 등록
      *
      * @param reviewRequestDto
-     * @param file
+     * @param images
      * @throws CustomException NOT_ORDERED_PRODUCT 구매하지 않은 상품입니다.
      * @throws CustomException NOT_FOUND_PRODUCT 상품을 찾을 수 없습니다.
      */
@@ -55,7 +52,6 @@ public class ReviewService {
 
         Review review = new Review(user, product, reviewRequestDto.getReview(),
             reviewRequestDto.getRating());
-        log.info("1");
 
         reviewRepository.save(review);
 
@@ -138,7 +134,7 @@ public class ReviewService {
      * 리뷰 삭제
      *
      * @param user       사용자 정보
-     * @param requestDto 리뷰 삭제 요청 DTO
+     * @param reviewId 리뷰 삭제 요청 DTO
      * @throws CustomException NOT_FOUND_REVIEW 리뷰가 존재하지 않습니다.
      */
     @Transactional

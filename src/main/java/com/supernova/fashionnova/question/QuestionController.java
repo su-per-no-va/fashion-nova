@@ -26,8 +26,7 @@ public class QuestionController {
 
     private final QuestionService questionService;
 
-    /**
-     * 문의 등록
+    /** 문의 등록
      *
      * @param userDetails
      * @param requestDto
@@ -47,14 +46,16 @@ public class QuestionController {
      * 내 문의 조회
      *
      * @param userDetails
+     * @param page
      * @return responseDto
      */
     @GetMapping
-    public ResponseEntity<List<QuestionResponseDto>> getAddressList(
-        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<List<QuestionResponseDto>> getUserQuestionList(
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        @RequestParam(defaultValue = "0") int page) {
 
         List<QuestionResponseDto> responseDto = questionService.getUserQuestionList(
-            userDetails.getUser());
+            userDetails.getUser(), page);
 
         return ResponseUtil.of(HttpStatus.OK, responseDto);
     }

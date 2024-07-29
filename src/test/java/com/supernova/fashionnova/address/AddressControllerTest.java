@@ -141,7 +141,7 @@ class AddressControllerTest {
         // given
         User user = userDetails.getUser();
         AddressDefaultRequestDto requestDto = new AddressDefaultRequestDto(1L);
-        doNothing().when(addressService).updateDefaultAddress(eq(user), eq(requestDto.getAddressId()));
+        doNothing().when(addressService).updateDefaultAddress(eq(user), eq(requestDto));
 
         // when * then
         mockMvc.perform(put(baseUrl)
