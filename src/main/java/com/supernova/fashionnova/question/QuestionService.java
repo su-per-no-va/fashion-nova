@@ -33,9 +33,11 @@ public class QuestionService {
             .type(QuestionType.valueOf(requestDto.getType()))
             .build();
 
-        fileUploadUtil.uploadImage(file, ImageType.QUESTION,question.getId());
 
         questionRepository.save(question);
+
+        fileUploadUtil.uploadImage(file, ImageType.QUESTION,question.getId());
+
     }
 
     /**
