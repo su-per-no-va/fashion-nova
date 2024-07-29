@@ -24,6 +24,7 @@ import com.supernova.fashionnova.product.ProductStatus;
 import com.supernova.fashionnova.review.dto.ReviewRequestDto;
 import com.supernova.fashionnova.review.dto.ReviewResponseDto;
 import com.supernova.fashionnova.review.dto.ReviewUpdateRequestDto;
+import com.supernova.fashionnova.upload.FileUploadUtil;
 import com.supernova.fashionnova.user.User;
 import java.util.List;
 import java.util.Optional;
@@ -52,6 +53,9 @@ class ReviewServiceTest {
 
     @Mock
     private OrdersRepository ordersRepository;
+
+    @Mock
+    private FileUploadUtil fileUploadUtil;
 
     @Mock
     private ReviewImageRepository reviewImageRepository;
