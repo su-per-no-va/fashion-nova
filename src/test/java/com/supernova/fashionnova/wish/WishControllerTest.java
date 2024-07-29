@@ -77,7 +77,7 @@ class WishControllerTest {
         // given
         User user = userDetails.getUser();
         WishRequestDto requestDto = new WishRequestDto(1L);
-        doNothing().when(wishService).addWish(eq(user), eq(requestDto.getProductId()));
+        doNothing().when(wishService).addWish(eq(user), eq(requestDto));
 
         // when * then
         mockMvc.perform(post(baseUrl)
@@ -104,7 +104,7 @@ class WishControllerTest {
         Page<Product> productPage = new PageImpl<>(products);
         Page<ProductResponseDto> responseDto = productPage.map(ProductResponseDto::new);
 
-        when(wishService.getWishProductList(user, 0)).thenReturn(responseDto);
+        when(wishService.getWishProductList(user, 0)).thenReturn(responseDto.getContent());
 
         // when * then
         mockMvc.perform(get(baseUrl).param("page", String.valueOf(page))
@@ -122,7 +122,7 @@ class WishControllerTest {
         // given
         User user = userDetails.getUser();
         WishDeleteRequestDto requestDto = new WishDeleteRequestDto(1L);
-        doNothing().when(wishService).deleteWish(eq(user), eq(requestDto.getWishId()));
+        doNothing().when(wishService).deleteWish(eq(user), eq(requestDto));
 
         // when * then
         mockMvc.perform(delete(baseUrl)

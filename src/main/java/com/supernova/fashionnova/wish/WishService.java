@@ -6,11 +6,12 @@ import com.supernova.fashionnova.product.Product;
 import com.supernova.fashionnova.product.ProductRepository;
 import com.supernova.fashionnova.product.dto.ProductResponseDto;
 import com.supernova.fashionnova.user.User;
+import com.supernova.fashionnova.wish.dto.WishDeleteRequestDto;
+import com.supernova.fashionnova.wish.dto.WishRequestDto;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,12 +26,12 @@ public class WishService {
     /** 위시리스트 추가
      *
      * @param user
-     * @param productId
+     * @param requestDto
      * @throws CustomException NOT_FOUND_PRODUCT 상품을 찾지 못할 때
      */
-    public void addWish(User user, Long productId) {
+    public void addWish(User user, WishRequestDto requestDto) {
 
-        Product product = getProduct(productId);
+        Product product = getProduct(requestDto.getProductId());
 
         Wish wish = Wish.builder()
             .user(user)
@@ -45,33 +46,33 @@ public class WishService {
      *
      * @param user
      * @param page
-     * @return Page<ProductResponseDto>
+     * @return List<ProductResponseDto>
      */
-    public Page<ProductResponseDto> getWishProductList(User user, int page) {
-        Pageable pageable = PageRequest.of(page, 10);
+    public List<ProductResponseDto> getWishProductList(User user, int page) {
 
+        Pageable pageable = PageRequest.of(page, 10);
         Page<Wish> wishPage = wishRepository.findByUser(user, pageable);
 
-        List<ProductResponseDto> productResponseDtoList = wishPage.getContent().stream()
+        return wishPage.getContent().stream()
             .map(wish -> new ProductResponseDto(wish.getProduct()))
             .collect(Collectors.toList());
 
-        return new PageImpl<>(productResponseDtoList, pageable, wishPage.getTotalElements());
     }
 
     /** 위시리스트 삭제
      *
      * @param user
-     * @param wishId
+     * @param requestDto
      * @throws CustomException NOT_FOUND_WISH 위시리스트를 찾지 못할 때
      * @throws CustomException INVALID_WISH 자신의 위시리스트가 아닐 때
      */
-    public void deleteWish(User user, Long wishId) {
+    public void deleteWish(User user, WishDeleteRequestDto requestDto) {
 
-        Wish wish = getWish(wishId);
+        Wish wish = getWish(requestDto.getWishId());
         validateUser(user, wish);
 
         wishRepository.delete(wish);
+
     }
 
     private Product getProduct(Long productId) {

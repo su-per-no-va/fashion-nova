@@ -7,6 +7,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import com.supernova.fashionnova.address.dto.AddressDefaultRequestDto;
 import com.supernova.fashionnova.address.dto.AddressRequestDto;
 import com.supernova.fashionnova.address.dto.AddressResponseDto;
 import com.supernova.fashionnova.user.User;
@@ -76,13 +77,13 @@ class AddressServiceTest {
 
         // given
         User user = Mockito.mock(User.class);
-        Long addressId = 1L;
+        AddressDefaultRequestDto requestDto = new AddressDefaultRequestDto(1L);
 
         // when
-        addressService.updateDefaultAddress(user, addressId);
+        addressService.updateDefaultAddress(user, requestDto);
 
         // then
-        verify(addressRepository, times(1)).updateDefaultAddress(user.getId(), addressId);
+        verify(addressRepository, times(1)).updateDefaultAddress(user.getId(), requestDto.getAddressId());
 
     }
 

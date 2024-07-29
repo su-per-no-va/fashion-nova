@@ -63,7 +63,7 @@ public class AddressController {
     public ResponseEntity<String> updateDefaultAddress(@AuthenticationPrincipal UserDetailsImpl userDetails,
         @RequestBody AddressDefaultRequestDto requestDto) {
 
-        addressService.updateDefaultAddress(userDetails.getUser(), requestDto.getAddressId());
+        addressService.updateDefaultAddress(userDetails.getUser(), requestDto);
 
         return ResponseUtil.of(HttpStatus.OK,"기본 배송지 설정 성공");
     }
