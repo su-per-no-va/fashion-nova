@@ -26,7 +26,8 @@ public class QuestionController {
 
     private final QuestionService questionService;
 
-    /** 문의 등록
+    /**
+     * 문의 등록
      *
      * @param userDetails
      * @param requestDto
@@ -34,22 +35,26 @@ public class QuestionController {
      */
     @PostMapping
     public ResponseEntity<String> addQuestion(@AuthenticationPrincipal UserDetailsImpl userDetails,
-        @Valid @RequestPart(value = "request") QuestionRequestDto requestDto, @RequestPart(value = "image") MultipartFile file) {
+        @Valid @RequestPart(value = "request") QuestionRequestDto requestDto,
+        @RequestPart(value = "image") List<MultipartFile> file) {
 
-        questionService.addQuestion(userDetails.getUser(), requestDto,file);
+        questionService.addQuestion(userDetails.getUser(), requestDto, file);
 
-        return ResponseUtil.of(HttpStatus.CREATED,"문의 등록 성공");
+        return ResponseUtil.of(HttpStatus.CREATED, "문의 등록 성공");
     }
 
-    /** 내 문의 조회
+    /**
+     * 내 문의 조회
      *
      * @param userDetails
      * @return responseDto
      */
     @GetMapping
-    public ResponseEntity<List<QuestionResponseDto>> getAddressList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<List<QuestionResponseDto>> getAddressList(
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        List<QuestionResponseDto> responseDto = questionService.getUserQuestionList(userDetails.getUser());
+        List<QuestionResponseDto> responseDto = questionService.getUserQuestionList(
+            userDetails.getUser());
 
         return ResponseUtil.of(HttpStatus.OK, responseDto);
     }

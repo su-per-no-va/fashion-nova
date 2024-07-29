@@ -57,51 +57,63 @@ public class FileUploadUtil {
 
 
     @Transactional
-    public void uploadImage(MultipartFile file, ImageType type, Long typeId) {
+    public void uploadImage(List<MultipartFile> files, ImageType type, Long typeId) {
         // nullCheck
-        if (file.isEmpty()) {
+        if (files.isEmpty()) {
             return;
         }
 
-        String originalFilename = file.getOriginalFilename(); // 원본 파일 명
-        String s3FileName = random + originalFilename; // 변경된 파일 명 (같은 이름의 파일 방지)
+        ArrayList<String> imageUrls = new ArrayList<>();
 
-        ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setContentType(file.getContentType());
-        metadata.setContentLength(file.getSize());
+        for (MultipartFile file : files) {
+            String originalFilename = file.getOriginalFilename(); // 원본 파일 명
+            String s3FileName = random + originalFilename; // 변경된 파일 명 (같은 이름의 파일 방지)
 
-        String reviewImageURL;
-        try {
-            amazonS3Client.putObject(bucket, s3FileName, file.getInputStream(), metadata); // 파일 업로드
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentType(file.getContentType());
+            metadata.setContentLength(file.getSize());
 
-            reviewImageURL = amazonS3Client.getUrl(bucket, s3FileName).toString();
-        } catch (IOException e) {
-            throw new CustomException(ErrorType.UPLOAD_REVIEW);
+            try {
+                amazonS3Client.putObject(bucket, s3FileName, file.getInputStream(), metadata); // 파일 업로드
+
+                imageUrls.add(amazonS3Client.getUrl(bucket, s3FileName).toString());
+
+            } catch (IOException e) {
+                throw new CustomException(ErrorType.UPLOAD_REVIEW);
+            }
         }
+
 
         switch (type) {
             case REVIEW -> {
                 Review review = reviewRepository.findById(typeId).orElseThrow(() ->
                     new CustomException(ErrorType.NOT_FOUND_REVIEW));
 
-                ReviewImage reviewImage = new ReviewImage(review, reviewImageURL);
-                reviewImageRepository.save(reviewImage);
+                for (String imageUrl : imageUrls) {
+                    ReviewImage reviewImage = new ReviewImage(review, imageUrl);
+                    reviewImageRepository.save(reviewImage);
+                }
+
             }
 
             case PRODUCT -> {
                 Product product = productRepository.findById(typeId).orElseThrow(() ->
                     new CustomException(ErrorType.NOT_FOUND_PRODUCT));
 
-                ProductImage productImage = new ProductImage(product, reviewImageURL);
-                productImageRepository.save(productImage);
+                for (String imageUrl : imageUrls) {
+                    ProductImage productImage = new ProductImage(product, imageUrl);
+                    productImageRepository.save(productImage);
+                }
             }
 
             case QUESTION -> {
                 Question question = questionRepository.findById(typeId).orElseThrow(() ->
                     new CustomException(ErrorType.NOT_FOUND_QUESTION));
+                for (String imageUrl : imageUrls) {
+                    QuestionImage questionImage = new QuestionImage(question, imageUrl);
+                    questionImageRepository.save(questionImage);
+                }
 
-                QuestionImage questionImage = new QuestionImage(question, reviewImageURL);
-                questionImageRepository.save(questionImage);
             }
         }
     }

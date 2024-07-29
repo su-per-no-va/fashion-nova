@@ -46,10 +46,10 @@ public class ReviewController {
     @PostMapping
     public ResponseEntity<String> addReview(
         @Valid @RequestPart(value = "request") ReviewRequestDto reviewRequestDto,
-        @RequestPart(value = "image") MultipartFile file,
+        @RequestPart(value = "image",required = false) List<MultipartFile> images,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
         log.info("addReview");
-        reviewService.addReview(userDetails.getUser(), reviewRequestDto, file);
+        reviewService.addReview(userDetails.getUser(), reviewRequestDto, images);
 
         return ResponseUtil.of(HttpStatus.OK, "리뷰 등록 완료");
     }

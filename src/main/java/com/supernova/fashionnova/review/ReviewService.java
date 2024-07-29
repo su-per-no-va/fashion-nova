@@ -47,7 +47,7 @@ public class ReviewService {
      * @throws CustomException NOT_FOUND_PRODUCT 상품을 찾을 수 없습니다.
      */
     @Transactional
-    public void addReview(User user, ReviewRequestDto reviewRequestDto, MultipartFile file) {
+    public void addReview(User user, ReviewRequestDto reviewRequestDto, List<MultipartFile> images) {
         // 주문 내역 확인
         existsOrder(user.getId(), reviewRequestDto.getProductId());
 
@@ -60,7 +60,7 @@ public class ReviewService {
         reviewRepository.save(review);
 
         //파일 업로드
-        fileUploadUtil.uploadImage(file, ImageType.REVIEW, review.getId());
+        fileUploadUtil.uploadImage(images, ImageType.REVIEW, review.getId());
 
     }
 

@@ -24,7 +24,7 @@ public class QuestionService {
      * @param user
      * @param requestDto
      */
-    public void addQuestion(User user, QuestionRequestDto requestDto, MultipartFile file) {
+    public void addQuestion(User user, QuestionRequestDto requestDto, List<MultipartFile> files) {
 
         Question question = Question.builder()
             .user(user)
@@ -36,7 +36,7 @@ public class QuestionService {
 
         questionRepository.save(question);
 
-        fileUploadUtil.uploadImage(file, ImageType.QUESTION,question.getId());
+        fileUploadUtil.uploadImage(files, ImageType.QUESTION,question.getId());
 
     }
 
