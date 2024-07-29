@@ -102,7 +102,7 @@ public class AdminService {
      *
      * @param userId
      * @param page
-     * @return List<Review>
+     * @return List<ReviewResponseDto>
      * @throws CustomException NOT_FOUND_USER 유저ID가 존재하지 않을 때
      */
     @Transactional(readOnly = true)
