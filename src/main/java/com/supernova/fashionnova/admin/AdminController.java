@@ -1,11 +1,11 @@
 package com.supernova.fashionnova.admin;
 
-import com.supernova.fashionnova.address.dto.AddressRequestDto;
+import com.supernova.fashionnova.answer.dto.AnswerRequestDto;
 import com.supernova.fashionnova.coupon.dto.CouponRequestDto;
 import com.supernova.fashionnova.global.util.ResponseUtil;
-import com.supernova.fashionnova.review.dto.ReviewResponseDto;
 import com.supernova.fashionnova.product.dto.ProductRequestDto;
-import com.supernova.fashionnova.security.UserDetailsImpl;
+import com.supernova.fashionnova.question.dto.QuestionResponseDto;
+import com.supernova.fashionnova.review.dto.ReviewResponseDto;
 import com.supernova.fashionnova.user.dto.UserResponseDto;
 import com.supernova.fashionnova.warn.dto.WarnDeleteRequestDto;
 import com.supernova.fashionnova.warn.dto.WarnRequestDto;
@@ -14,7 +14,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -74,14 +73,6 @@ public class AdminController {
         return ResponseUtil.of(HttpStatus.OK, "회원 경고 삭제 완료");
     }
 
-    @PostMapping("/products")
-    public ResponseEntity<String> createProduct(@RequestBody ProductRequestDto requestDto) {
-
-        adminService.createProduct(requestDto);
-
-        return ResponseUtil.of(HttpStatus.OK,"상품 등록 성공");
-    }
-
     /**
      * 작성자별 리뷰 조회
      *
@@ -99,6 +90,42 @@ public class AdminController {
         return ResponseUtil.of(HttpStatus.OK, reviews);
     }
 
+    @PostMapping("/products")
+    public ResponseEntity<String> addProduct(@RequestBody ProductRequestDto requestDto) {
+
+        adminService.addProduct(requestDto);
+
+        return ResponseUtil.of(HttpStatus.CREATED,"상품 등록 성공");
+    }
+
+    /**
+     * Q&A 답변 등록
+     *
+     * @param requestDto
+     * @return "Q&A 답변 등록 완성"
+     */
+    @PostMapping("/answers")
+    public ResponseEntity<String> addAnswer(@RequestBody AnswerRequestDto requestDto) {
+
+        adminService.addAnswer(requestDto);
+
+        return ResponseUtil.of(HttpStatus.OK,"Q&A 답변 등록 완성");
+    }
+
+    /**
+     * Q&A 문의 전체 조회
+     *
+     * @param page
+     * @return responseDto
+     */
+    @GetMapping("/answers")
+    public ResponseEntity<List<QuestionResponseDto>> getQuestionList(@RequestParam(defaultValue = "0") int page) {
+
+        List<QuestionResponseDto> responseDto = adminService.getQuestionList(page);
+
+        return ResponseUtil.of(HttpStatus.OK, responseDto);
+    }
+
     /**
      * 쿠폰 지급
      *
@@ -112,6 +139,5 @@ public class AdminController {
 
         return ResponseUtil.of(HttpStatus.CREATED,"쿠폰 지급 성공");
     }
-
 
 }
