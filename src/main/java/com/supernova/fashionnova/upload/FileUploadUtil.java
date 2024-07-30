@@ -55,10 +55,6 @@ public class FileUploadUtil {
 
     @Transactional
     public void uploadImage(List<MultipartFile> files, ImageType type, Long typeId) {
-        // nullCheck
-        if (files.isEmpty()) {
-            return;
-        }
 
         ArrayList<String> imageUrls = new ArrayList<>();
 

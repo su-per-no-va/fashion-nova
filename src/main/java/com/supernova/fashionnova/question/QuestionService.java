@@ -1,5 +1,6 @@
 package com.supernova.fashionnova.question;
 
+import com.amazonaws.util.CollectionUtils;
 import com.supernova.fashionnova.question.dto.QuestionRequestDto;
 import com.supernova.fashionnova.question.dto.QuestionResponseDto;
 import com.supernova.fashionnova.upload.FileUploadUtil;
@@ -21,6 +22,7 @@ public class QuestionService {
     private final QuestionRepository questionRepository;
 
     private final FileUploadUtil fileUploadUtil;
+
     /**
      * 문의 등록
      *
@@ -36,10 +38,11 @@ public class QuestionService {
             .type(QuestionType.valueOf(requestDto.getType()))
             .build();
 
-
         questionRepository.save(question);
-
-        fileUploadUtil.uploadImage(files, ImageType.QUESTION,question.getId());
+        //파일 업로드
+        if (!CollectionUtils.isNullOrEmpty(files)) {
+            fileUploadUtil.uploadImage(files, ImageType.QUESTION, question.getId());
+        }
 
     }
 
@@ -54,7 +57,6 @@ public class QuestionService {
 
         Pageable pageable = PageRequest.of(page, 10);
         Page<Question> questionPage = questionRepository.findByUser(user, pageable);
-
 
         return questionPage.stream()
             .map(QuestionResponseDto::new)

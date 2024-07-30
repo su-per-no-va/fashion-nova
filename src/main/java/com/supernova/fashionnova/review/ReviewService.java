@@ -1,5 +1,6 @@
 package com.supernova.fashionnova.review;
 
+import com.amazonaws.util.CollectionUtils;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.order.OrdersRepository;
@@ -59,7 +60,9 @@ public class ReviewService {
         product.increaseReview();
 
         //파일 업로드
-        fileUploadUtil.uploadImage(images, ImageType.REVIEW, review.getId());
+        if (!CollectionUtils.isNullOrEmpty(images)) {
+            fileUploadUtil.uploadImage(images, ImageType.REVIEW, review.getId());
+        }
 
     }
 
