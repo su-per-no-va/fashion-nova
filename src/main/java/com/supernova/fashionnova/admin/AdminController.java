@@ -133,7 +133,7 @@ public class AdminController {
      * @return "쿠폰 지급 성공"
      */
     @PostMapping("/coupons")
-    public ResponseEntity<String> addAddress(@Valid @RequestBody CouponRequestDto requestDto) {
+    public ResponseEntity<String> addCoupon(@Valid @RequestBody CouponRequestDto requestDto) {
 
         adminService.addCoupon(requestDto);
 
