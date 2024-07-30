@@ -67,7 +67,8 @@ public class FileUploadUtil {
             metadata.setContentLength(file.getSize());
 
             try {
-                amazonS3Client.putObject(bucket, s3FileName, file.getInputStream(), metadata); // 파일 업로드
+                amazonS3Client.putObject(bucket, s3FileName, file.getInputStream(),
+                    metadata); // 파일 업로드
 
                 imageUrls.add(amazonS3Client.getUrl(bucket, s3FileName).toString());
 
@@ -75,7 +76,6 @@ public class FileUploadUtil {
                 throw new CustomException(ErrorType.UPLOAD_REVIEW);
             }
         }
-
 
         switch (type) {
             case REVIEW -> {
@@ -121,7 +121,7 @@ public class FileUploadUtil {
                 case REVIEW -> {
                     List<ReviewImage> reviewImages = reviewImageRepository.findAllByReviewId(id);
                     for (ReviewImage reviewImage : reviewImages) {
-                    imageUrls.add(reviewImage.getReviewImageUrl());
+                        imageUrls.add(reviewImage.getReviewImageUrl());
                     }
                 }
                 case PRODUCT -> {
@@ -146,11 +146,42 @@ public class FileUploadUtil {
                 }
             }
 
-
-            imagesMap.put(id,imageUrls);
+            imagesMap.put(id, imageUrls);
         }
 
         return imagesMap;
+    }
+
+    public void deleteImages(ImageType type, Long typeId) {
+
+        switch (type) {
+            case REVIEW -> {
+                List<ReviewImage> reviewImages = reviewImageRepository.findAllByReviewId(typeId);
+
+                // 리뷰이미지에서 리뷰아이디로 삭제
+                reviewImageRepository.deleteAllByReviewId(typeId);
+                //s3 버킷에서 찾아서 삭제
+                for (ReviewImage reviewImage : reviewImages) {
+                    amazonS3Client.deleteObject(bucket,reviewImage.getReviewImageUrl());
+                }
+            }
+
+            case PRODUCT -> {
+            List<ProductImage> productImages = productImageRepository.findAllByProductId(typeId);
+
+                // 상품이미지에서 상품아이디로 삭제
+                productImageRepository.deleteAllByProductId(typeId);
+                //s3 버킷에서 찾아서 삭제
+                for (ProductImage productImage : productImages) {
+                    amazonS3Client.deleteObject(bucket,productImage.getProductImageUrl());
+                }
+            }
+
+            case QUESTION -> {
+
+            }
+        }
+
     }
 
 
