@@ -5,6 +5,40 @@ body {
 }
 
 header {
+  background-color: #000;
+  color: #fff;
+  padding: 10px 20px;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.icons-left {
+  display: flex;
+  align-items: center;
+}
+
+.icons-left a img {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+}
+
+.user-menu a {
+  margin-left: 15px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.main-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -12,29 +46,40 @@ header {
   padding: 10px 20px;
 }
 
-header h1 {
+.main-header h1 {
   margin: 0;
   color: #ff1493;
 }
 
-header nav ul {
+.main-header nav ul {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
 }
 
-header nav ul li {
+.main-header nav ul li {
   margin-right: 15px;
 }
 
-header nav ul li a {
+.main-header nav ul li a {
   text-decoration: none;
   color: #000;
 }
 
-header input[type="text"] {
+.search-container {
+  display: flex;
+  align-items: center;
+}
+
+.search-container input[type="text"] {
   padding: 5px;
+  margin-right: 10px;
+}
+
+.search-container a img {
+  width: 20px;
+  height: 20px;
 }
 
 .coupon-banner {
@@ -86,4 +131,18 @@ header input[type="text"] {
   padding: 10px 20px;
   margin-top: 20px;
   cursor: pointer;
+}
+
+footer {
+  background-color: #f8f8f8;
+  text-align: center;
+  padding: 20px;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+}
+
+footer p {
+  margin: 0;
+  color: #666;
 }

@@ -4,10 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>기깔 쇼핑몰</title>
-  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/index.css">
 </head>
 <body>
 <header>
+  <div class="header-top">
+    <div class="icons-right">
+      <a href="#"><img src="icon1.png" alt="icon1"></a>
+      <a href="#"><img src="icon2.png" alt="icon2"></a>
+    </div>
+    <div class="user-menu">
+      <a href="#">마이페이지</a>
+      <a href="#">로그인</a>
+    </div>
+  </div>
+</header>
+<div class="main-header">
   <h1>기깔 쇼핑몰</h1>
   <nav>
     <ul>
@@ -17,8 +29,11 @@
       <li><a href="#">패션잡화</a></li>
     </ul>
   </nav>
-  <input type="text" placeholder="검색어를 입력하세요">
-</header>
+  <div class="search-container">
+    <input type="text" placeholder="검색어를 입력하세요">
+    <a href="#"><img src="icon3.png" alt="icon3"></a>
+  </div>
+</div>
 <section class="coupon-banner">
   <h2>쇼핑몰 리뉴얼 이벤트</h2>
   <p>무조건 반값!</p>
@@ -56,6 +71,9 @@
   </div>
   <button id="loadMore">더보기</button>
 </section>
-<script src="/js/scripts.js"></script>
+<footer>
+  <p>© 2024 기깔 쇼핑몰. 이 쇼핑몰은 상업적으로 이용되지 않습니다.</p>
+</footer>
+<script src="/js/index.js"></script>
 </body>
 </html>
