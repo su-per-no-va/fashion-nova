@@ -56,7 +56,7 @@ public class FileUploadUtil {
     @Transactional
     public void uploadImage(List<MultipartFile> files, ImageType type, Long typeId) {
 
-        HashMap<String,String> imageUrls = new HashMap<>();
+        HashMap<String, String> imageUrls = new HashMap<>();
         for (MultipartFile file : files) {
             String originalFilename = file.getOriginalFilename(); // 원본 파일 명
             String s3FileName = random + originalFilename; // 변경된 파일 명 (같은 이름의 파일 방지)
@@ -70,7 +70,7 @@ public class FileUploadUtil {
                 amazonS3Client.putObject(bucket, s3FileName, file.getInputStream(),
                     metadata);
 
-                imageUrls.put(s3FileName,amazonS3Client.getUrl(bucket, s3FileName).toString());
+                imageUrls.put(s3FileName, amazonS3Client.getUrl(bucket, s3FileName).toString());
 
             } catch (IOException e) {
                 throw new CustomException(ErrorType.UPLOAD_REVIEW);
@@ -83,11 +83,10 @@ public class FileUploadUtil {
                     new CustomException(ErrorType.NOT_FOUND_REVIEW));
 
                 for (Map.Entry<String, String> entry : imageUrls.entrySet()) {
-                    ReviewImage reviewImage = new ReviewImage(review, entry.getKey(), entry.getValue());
+                    ReviewImage reviewImage = new ReviewImage(review, entry.getKey(),
+                        entry.getValue());
                     reviewImageRepository.save(reviewImage);
                 }
-
-
 
             }
 
@@ -96,7 +95,8 @@ public class FileUploadUtil {
                     new CustomException(ErrorType.NOT_FOUND_PRODUCT));
 
                 for (Map.Entry<String, String> entry : imageUrls.entrySet()) {
-                    ProductImage productImage = new ProductImage(product, entry.getKey(),entry.getValue());
+                    ProductImage productImage = new ProductImage(product, entry.getKey(),
+                        entry.getValue());
                     productImageRepository.save(productImage);
                 }
             }
@@ -105,7 +105,8 @@ public class FileUploadUtil {
                 Question question = questionRepository.findById(typeId).orElseThrow(() ->
                     new CustomException(ErrorType.NOT_FOUND_QUESTION));
                 for (Map.Entry<String, String> entry : imageUrls.entrySet()) {
-                    QuestionImage questionImage = new QuestionImage(question, entry.getKey(),entry.getValue());
+                    QuestionImage questionImage = new QuestionImage(question, entry.getKey(),
+                        entry.getValue());
                     questionImageRepository.save(questionImage);
                     question.getQuestionImageUrls().add(questionImage);
                 }
@@ -123,7 +124,10 @@ public class FileUploadUtil {
                 case REVIEW -> {
                     List<ReviewImage> reviewImages = reviewImageRepository.findAllByReviewId(id);
                     for (ReviewImage reviewImage : reviewImages) {
-                        imageUrls.add(reviewImage.getReviewImageUrl());
+                        //s3에서 이미지 찾아오기
+                        String url = amazonS3Client.getResourceUrl(bucket,
+                            reviewImage.getFileName());
+                        imageUrls.add(url);
                     }
                 }
                 case PRODUCT -> {
@@ -133,7 +137,9 @@ public class FileUploadUtil {
                     List<ProductImage> productImages = productImageRepository.findAllByProduct(
                         product);
                     for (ProductImage productImage : productImages) {
-                        imageUrls.add(productImage.getProductImageUrl());
+                        //s3에서 이미지 찾아오기
+                        String url = amazonS3Client.getResourceUrl(bucket, productImage.getFileName());
+                        imageUrls.add(url);
                     }
                 }
                 case QUESTION -> {
@@ -143,7 +149,9 @@ public class FileUploadUtil {
                     List<QuestionImage> questionImages = questionImageRepository.findAllByQuestion(
                         question);
                     for (QuestionImage questionImage : questionImages) {
-                        imageUrls.add(questionImage.getQuestionImageUrl());
+                        //s3에서 이미지 찾아오기
+                        String url = amazonS3Client.getResourceUrl(bucket, questionImage.getFileName());
+                        imageUrls.add(url);
                     }
                 }
             }
@@ -160,27 +168,34 @@ public class FileUploadUtil {
             case REVIEW -> {
                 List<ReviewImage> reviewImages = reviewImageRepository.findAllByReviewId(typeId);
 
-                // 리뷰이미지에서 리뷰아이디로 삭제
-                reviewImageRepository.deleteAllByReviewId(typeId);
                 //s3 버킷에서 찾아서 삭제
                 for (ReviewImage reviewImage : reviewImages) {
-                    amazonS3Client.deleteObject(bucket,reviewImage.getReviewImageUrl());
+                    amazonS3Client.deleteObject(bucket, reviewImage.getFileName());
                 }
             }
 
             case PRODUCT -> {
-            List<ProductImage> productImages = productImageRepository.findAllByProductId(typeId);
+                List<ProductImage> productImages = productImageRepository.findAllByProductId(
+                    typeId);
 
                 // 상품이미지에서 상품아이디로 삭제
                 productImageRepository.deleteAllByProductId(typeId);
                 //s3 버킷에서 찾아서 삭제
                 for (ProductImage productImage : productImages) {
-                    amazonS3Client.deleteObject(bucket,productImage.getProductImageUrl());
+                    amazonS3Client.deleteObject(bucket, productImage.getFileName());
                 }
             }
 
             case QUESTION -> {
+                List<QuestionImage> questionImages = questionImageRepository.findAllByQuestionId(
+                    typeId);
 
+                // 상품이미지에서 상품아이디로 삭제
+                questionImageRepository.deleteAllByQuestionId(typeId);
+                //s3 버킷에서 찾아서 삭제
+                for (QuestionImage questionImage : questionImages) {
+                    amazonS3Client.deleteObject(bucket, questionImage.getFileName());
+                }
             }
         }
 

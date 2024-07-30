@@ -146,6 +146,9 @@ public class ReviewService {
     @Transactional
     public void deleteReview(User user, Long reviewId) {
         Review review = getReview(user, reviewId);
+        //s3에서 찾아서 삭제
+        fileUploadUtil.deleteImages(ImageType.REVIEW,reviewId);
+
         reviewRepository.delete(review);
         review.getProduct().decreaseReview();
     }

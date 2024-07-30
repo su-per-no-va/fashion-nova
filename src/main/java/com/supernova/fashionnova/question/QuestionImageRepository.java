@@ -7,4 +7,7 @@ public interface QuestionImageRepository extends JpaRepository<QuestionImage,Lon
 
     List<QuestionImage> findAllByQuestion(Question question);
 
+    List<QuestionImage> findAllByQuestionId(Long questionId);
+
+    void deleteAllByQuestionId(Long questionId);
 }
