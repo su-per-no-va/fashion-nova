@@ -139,6 +139,12 @@ public class AdminService {
         return reviewResponseDtos;
     }
 
+    /**
+     * 상품등록
+     *
+     * @param requestDto
+     * @return List<ProductDetail>
+     */
     @Transactional
     public void addProduct(ProductRequestDto requestDto) {
 
@@ -164,6 +170,12 @@ public class AdminService {
         /*productDetailRepository.saveAll(product.getProductDetailList());*/
     }
 
+    /**
+     * 상품 디테일 추가
+     *
+     * @param productDetailRequestDto
+     * @throws CustomException NOT_FOUND_PRODUCT 상품 정보가 존재하지 않을 때
+     */
     @Transactional
     public void addProductDetails(Long productId, List<ProductDetailRequestDto> productDetailRequestDto) {
 
@@ -184,6 +196,12 @@ public class AdminService {
         productRepository.save(product);
     }
 
+    /**
+     * 상품 수정
+     *
+     * @param requestDto
+     * @throws CustomException NOT_FOUND_PRODUCT 상품 정보가 존재하지 않을 때
+     */
     @Transactional
     public void updateProduct(ProductRequestDto requestDto) {
         Product existingProduct = productRepository.findById(requestDto.getProductId())
