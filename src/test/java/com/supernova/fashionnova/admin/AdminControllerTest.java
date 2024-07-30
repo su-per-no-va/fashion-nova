@@ -8,6 +8,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -19,6 +20,7 @@ import com.supernova.fashionnova.answer.dto.AnswerRequestDto;
 import com.supernova.fashionnova.coupon.dto.CouponRequestDto;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
+import com.supernova.fashionnova.mileage.dto.MileageRequestDto;
 import com.supernova.fashionnova.product.Product;
 import com.supernova.fashionnova.product.ProductCategory;
 import com.supernova.fashionnova.product.ProductStatus;
@@ -202,6 +204,45 @@ class AdminControllerTest {
         result.andExpect(status().isCreated())
             .andExpect(content().string("쿠폰 지급 성공"));
         verify(adminService).addCoupon(any(CouponRequestDto.class));
+    }
+
+    @Test
+    @DisplayName("마일리지 지급 테스트")
+    @WithMockUser(roles = "ADMIN")
+    void addMileageTest() throws Exception {
+        // given
+        MileageRequestDto requestDto = new MileageRequestDto(1L, 1000);
+
+        doNothing().when(adminService).addMileage(any(MileageRequestDto.class));
+
+        // when
+        ResultActions result = mockMvc.perform(post(baseUrl + "/mileages")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(requestDto))
+            .with(csrf()));
+
+        // then
+        result.andExpect(status().isCreated())
+            .andExpect(content().string("마일리지 지급 성공"));
+        verify(adminService).addMileage(any(MileageRequestDto.class));
+    }
+
+    @Test
+    @DisplayName("마일리지 초기화 테스트")
+    @WithMockUser(roles = "ADMIN")
+    void deleteMileageTest() throws Exception {
+        // given
+        doNothing().when(adminService).deleteMileage();
+
+        // when
+        ResultActions result = mockMvc.perform(delete(baseUrl + "/mileages")
+            .contentType(MediaType.APPLICATION_JSON)
+            .with(csrf()));
+
+        // then
+        result.andExpect(status().isOk())
+            .andExpect(content().string("마일리지 초기화 성공"));
+        verify(adminService).deleteMileage();
     }
 
 }

@@ -3,6 +3,7 @@ package com.supernova.fashionnova.admin;
 import com.supernova.fashionnova.answer.dto.AnswerRequestDto;
 import com.supernova.fashionnova.coupon.dto.CouponRequestDto;
 import com.supernova.fashionnova.global.util.ResponseUtil;
+import com.supernova.fashionnova.mileage.dto.MileageRequestDto;
 import com.supernova.fashionnova.product.dto.ProductDetailCreateDto;
 import com.supernova.fashionnova.product.dto.ProductRequestDto;
 import com.supernova.fashionnova.question.dto.QuestionResponseDto;
@@ -176,6 +177,33 @@ public class AdminController {
         adminService.addCoupon(requestDto);
 
         return ResponseUtil.of(HttpStatus.CREATED,"쿠폰 지급 성공");
+    }
+
+    /**
+     * 마일리지 지급
+     *
+     * @param requestDto
+     * @return "마일리지 지급 성공"
+     */
+    @PostMapping("/mileages")
+    public ResponseEntity<String> addMileage(@Valid @RequestBody MileageRequestDto requestDto) {
+
+        adminService.addMileage(requestDto);
+
+        return ResponseUtil.of(HttpStatus.CREATED,"마일리지 지급 성공");
+    }
+
+    /**
+     * 마일리지 초기화
+     *
+     * @return "마일리지 지급 성공"
+     */
+    @DeleteMapping("/mileages")
+    public ResponseEntity<String> deleteMileage() {
+
+        adminService.deleteMileage();
+
+        return ResponseUtil.of(HttpStatus.OK,"마일리지 초기화 성공");
     }
 
 }

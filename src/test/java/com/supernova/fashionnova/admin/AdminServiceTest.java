@@ -15,6 +15,9 @@ import com.supernova.fashionnova.coupon.CouponRepository;
 import com.supernova.fashionnova.coupon.dto.CouponRequestDto;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
+import com.supernova.fashionnova.mileage.Mileage;
+import com.supernova.fashionnova.mileage.MileageRepository;
+import com.supernova.fashionnova.mileage.dto.MileageRequestDto;
 import com.supernova.fashionnova.product.Product;
 import com.supernova.fashionnova.product.ProductCategory;
 import com.supernova.fashionnova.product.ProductStatus;
@@ -60,6 +63,9 @@ class AdminServiceTest {
 
     @Mock
     private CouponRepository couponRepository;
+
+    @Mock
+    private MileageRepository mileageRepository;
 
     @InjectMocks
     private AdminService adminService;
@@ -183,6 +189,32 @@ class AdminServiceTest {
 
         // then
         verify(couponRepository).save(any(Coupon.class));
+    }
+
+    @Test
+    @DisplayName("마일리지 지급 테스트")
+    public void addMileageTest() {
+        // given
+        MileageRequestDto requestDto = new MileageRequestDto(1L, 1000);
+        User mockUser = Mockito.mock(User.class);
+
+        given(userRepository.findById(any(Long.class))).willReturn(Optional.of(mockUser));
+
+        // when
+        adminService.addMileage(requestDto);
+
+        // then
+        verify(mileageRepository).save(any(Mileage.class));
+    }
+
+    @Test
+    @DisplayName("마일리지 초기화 테스트")
+    public void deleteMileageTest() {
+        // when
+        adminService.deleteMileage();
+
+        // then
+        verify(mileageRepository).deleteAll();
     }
 
 }
