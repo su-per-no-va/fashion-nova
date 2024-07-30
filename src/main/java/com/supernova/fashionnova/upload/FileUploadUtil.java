@@ -16,16 +16,13 @@ import com.supernova.fashionnova.review.Review;
 import com.supernova.fashionnova.review.ReviewImage;
 import com.supernova.fashionnova.review.ReviewImageRepository;
 import com.supernova.fashionnova.review.ReviewRepository;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.net.URL;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -128,25 +125,23 @@ public class FileUploadUtil {
                 case REVIEW -> {
                     List<ReviewImage> reviewImages = reviewImageRepository.findAllByReviewId(id);
                     for (ReviewImage reviewImage : reviewImages) {
-                        URL url = amazonS3Client.getUrl("fashion-s3",reviewImage.getReviewImageUrl());
-                        imageUrls.add(url.toString());
+                    imageUrls.add(reviewImage.getReviewImageUrl());
                     }
                 }
                 case PRODUCT -> {
                     Product product = productRepository.findById(id).orElseThrow(
-                        () -> new CustomException(ErrorType.NOT_FOUND_PRODUCT)
-                    );
+                        () -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
+
                     List<ProductImage> productImages = productImageRepository.findAllByProduct(
                         product);
                     for (ProductImage productImage : productImages) {
-                        URL url = amazonS3Client.getUrl("fashion-s3",productImage.getProductImageUrl());
-                        imageUrls.add(url.toString());
+                        imageUrls.add(productImage.getProductImageUrl());
                     }
                 }
                 case QUESTION -> {
                     Question question = questionRepository.findById(id).orElseThrow(
-                        () -> new CustomException(ErrorType.NOT_FOUND_QUESTION)
-                    );
+                        () -> new CustomException(ErrorType.NOT_FOUND_QUESTION));
+
                     List<QuestionImage> questionImages = questionImageRepository.findAllByQuestion(
                         question);
                     for (QuestionImage questionImage : questionImages) {
