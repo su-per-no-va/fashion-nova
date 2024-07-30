@@ -56,8 +56,7 @@ public class FileUploadUtil {
     @Transactional
     public void uploadImage(List<MultipartFile> files, ImageType type, Long typeId) {
 
-        ArrayList<String> imageUrls = new ArrayList<>();
-
+        HashMap<String,String> imageUrls = new HashMap<>();
         for (MultipartFile file : files) {
             String originalFilename = file.getOriginalFilename(); // 원본 파일 명
             String s3FileName = random + originalFilename; // 변경된 파일 명 (같은 이름의 파일 방지)
@@ -67,10 +66,11 @@ public class FileUploadUtil {
             metadata.setContentLength(file.getSize());
 
             try {
+                // 파일 업로드
                 amazonS3Client.putObject(bucket, s3FileName, file.getInputStream(),
-                    metadata); // 파일 업로드
+                    metadata);
 
-                imageUrls.add(amazonS3Client.getUrl(bucket, s3FileName).toString());
+                imageUrls.put(s3FileName,amazonS3Client.getUrl(bucket, s3FileName).toString());
 
             } catch (IOException e) {
                 throw new CustomException(ErrorType.UPLOAD_REVIEW);
@@ -82,10 +82,12 @@ public class FileUploadUtil {
                 Review review = reviewRepository.findById(typeId).orElseThrow(() ->
                     new CustomException(ErrorType.NOT_FOUND_REVIEW));
 
-                for (String imageUrl : imageUrls) {
-                    ReviewImage reviewImage = new ReviewImage(review, imageUrl);
+                for (Map.Entry<String, String> entry : imageUrls.entrySet()) {
+                    ReviewImage reviewImage = new ReviewImage(review, entry.getKey(), entry.getValue());
                     reviewImageRepository.save(reviewImage);
                 }
+
+
 
             }
 
@@ -93,8 +95,8 @@ public class FileUploadUtil {
                 Product product = productRepository.findById(typeId).orElseThrow(() ->
                     new CustomException(ErrorType.NOT_FOUND_PRODUCT));
 
-                for (String imageUrl : imageUrls) {
-                    ProductImage productImage = new ProductImage(product, imageUrl);
+                for (Map.Entry<String, String> entry : imageUrls.entrySet()) {
+                    ProductImage productImage = new ProductImage(product, entry.getKey(),entry.getValue());
                     productImageRepository.save(productImage);
                 }
             }
@@ -102,8 +104,8 @@ public class FileUploadUtil {
             case QUESTION -> {
                 Question question = questionRepository.findById(typeId).orElseThrow(() ->
                     new CustomException(ErrorType.NOT_FOUND_QUESTION));
-                for (String imageUrl : imageUrls) {
-                    QuestionImage questionImage = new QuestionImage(question, imageUrl);
+                for (Map.Entry<String, String> entry : imageUrls.entrySet()) {
+                    QuestionImage questionImage = new QuestionImage(question, entry.getKey(),entry.getValue());
                     questionImageRepository.save(questionImage);
                     question.getQuestionImageUrls().add(questionImage);
                 }

@@ -22,14 +22,17 @@ public class QuestionImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String fileName;
+
     private String questionImageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;
 
-    public QuestionImage(Question question, String questionImageUrl) {
+    public QuestionImage(Question question, String fileName ,String questionImageUrl) {
         this.question = question;
         this.questionImageUrl = questionImageUrl;
+        this.fileName =fileName;
     }
 }

@@ -18,15 +18,18 @@ public class ProductImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String fileName;
+
     private String productImageUrl;
 
     @ManyToOne
     @JoinColumn(name = "product_id",nullable = false)
     private Product product;
 
-    public ProductImage(Product product, String productImageUrl) {
+    public ProductImage(Product product, String fileName ,String productImageUrl) {
         this.product = product;
         this.productImageUrl = productImageUrl;
+        this.fileName = fileName;
     }
 
 }
