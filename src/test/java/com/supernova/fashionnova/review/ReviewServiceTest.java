@@ -21,7 +21,9 @@ import com.supernova.fashionnova.product.ProductCategory;
 import com.supernova.fashionnova.product.ProductRepository;
 import com.supernova.fashionnova.product.ProductStatus;
 import com.supernova.fashionnova.review.dto.ReviewRequestDto;
+import com.supernova.fashionnova.review.dto.ReviewResponseDto;
 import com.supernova.fashionnova.review.dto.ReviewUpdateRequestDto;
+import com.supernova.fashionnova.upload.FileUploadUtil;
 import com.supernova.fashionnova.user.User;
 import java.util.List;
 import java.util.Optional;
@@ -50,6 +52,9 @@ class ReviewServiceTest {
 
     @Mock
     private OrdersRepository ordersRepository;
+
+    @Mock
+    private FileUploadUtil fileUploadUtil;
 
     @Mock
     private ReviewImageRepository reviewImageRepository;
@@ -82,7 +87,7 @@ class ReviewServiceTest {
 
         this.product = new Product(
             "꽃무늬 원피스",
-            10000,
+            10000L,
             "겁나 멋진 원피스",
             ProductCategory.TOP,
             ProductStatus.ACTIVE
@@ -120,7 +125,7 @@ class ReviewServiceTest {
             when(reviewRepository.save(any(Review.class))).thenReturn(review);
 
             // when
-            reviewService.addReview(user, reviewRequestDto);
+            reviewService.addReview(user, reviewRequestDto,null);
 
             // then
             verify(ordersRepository).existsByUserIdAndProductId(anyLong(), anyLong());
@@ -135,7 +140,7 @@ class ReviewServiceTest {
             given(ordersRepository.existsByUserIdAndProductId(anyLong(), anyLong())).willReturn(false);
 
             // when / then
-            assertThrows(CustomException.class, () -> reviewService.addReview(user, reviewRequestDto));
+            assertThrows(CustomException.class, () -> reviewService.addReview(user, reviewRequestDto,null));
         }
 
         @Test
@@ -147,7 +152,7 @@ class ReviewServiceTest {
 
             // when / then
             CustomException exception = assertThrows(
-                CustomException.class, () -> reviewService.addReview(user, reviewRequestDto));
+                CustomException.class, () -> reviewService.addReview(user, reviewRequestDto,null));
             assertThat(exception.getErrorType()).isEqualTo(ErrorType.NOT_FOUND_PRODUCT);
         }
     }
@@ -161,17 +166,17 @@ class ReviewServiceTest {
         void GetReviewsByUserTest1() {
             // given
             Pageable pageable = PageRequest.of(0, 10);
-            Page<Review> reviewPage = new PageImpl<>(List.of(review));
+            List<Review> reviewPage = List.of(review);
 
             lenient().when(productRepository.findById(anyLong())).thenReturn(Optional.of(product));
             lenient().when(reviewRepository.findByProduct(any(Product.class), any(Pageable.class))).thenReturn(reviewPage);
 
             // when
-            Page<Review> result = reviewService.getReviewsByProductId(1L, pageable);
+            List<ReviewResponseDto> result = reviewService.getReviewsByProductId(1L, pageable);
 
             // then
-            assertThat(result.getContent()).isNotEmpty();
-            assertThat(result.getContent().get(0).getReview()).isEqualTo("너무 좋아요");
+            assertThat(result.get(0).getReview()).isNotEmpty();
+            assertThat(result.get(0).getReview()).isEqualTo("너무 좋아요");
         }
 
         @Test

@@ -8,7 +8,9 @@ import com.supernova.fashionnova.review.dto.ReviewResponseDto;
 import com.supernova.fashionnova.review.dto.ReviewUpdateRequestDto;
 import com.supernova.fashionnova.security.UserDetailsImpl;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,8 +25,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/reviews")
@@ -40,13 +45,15 @@ public class ReviewController {
      */
     @PostMapping
     public ResponseEntity<String> addReview(
-        @Valid @RequestBody ReviewRequestDto reviewRequestDto,
+        @Valid @RequestPart(value = "request") ReviewRequestDto reviewRequestDto,
+        @RequestPart(value = "image",required = false) List<MultipartFile> images,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        log.info("addReview");
+        reviewService.addReview(userDetails.getUser(), reviewRequestDto, images);
 
-        reviewService.addReview(userDetails.getUser(), reviewRequestDto);
-
-        return ResponseUtil.of(HttpStatus.OK, "리뷰 등록 완료");
+        return ResponseUtil.of(HttpStatus.CREATED, "리뷰 등록 완료");
     }
+
 
     /**
      * 상품별 리뷰 전체 조회
@@ -55,14 +62,15 @@ public class ReviewController {
      * @return List<ReviewResponseDto>
      */
     @GetMapping("/{productId}")
-    public ResponseEntity<Page<ReviewResponseDto>> getReviewsByProductId(
+    public ResponseEntity<List<ReviewResponseDto>> getReviewsByProductId(
         @PathVariable Long productId,
         @RequestParam(defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page, 10);
-        Page<Review> reviews = reviewService.getReviewsByProductId(productId, pageable);
-        Page<ReviewResponseDto> reviewResponseDtoPage = reviews.map(ReviewResponseDto::new);
+        List<ReviewResponseDto> reviewResponseList = reviewService.getReviewsByProductId(productId,
+            pageable);
+//        Page<ReviewResponseDto> reviewResponseDtoPage = reviews.map(ReviewResponseDto::new);
 
-        return ResponseUtil.of(HttpStatus.OK, reviewResponseDtoPage);
+        return ResponseUtil.of(HttpStatus.OK, reviewResponseList);
     }
 
     /**
@@ -86,7 +94,7 @@ public class ReviewController {
      * 리뷰 수정
      *
      * @param userDetails 로그인된 사용자 정보
-     * @param dto 리뷰 수정 요청 DTO
+     * @param dto         리뷰 수정 요청 DTO
      * @return 리뷰 수정 완료
      */
     @PutMapping
@@ -103,7 +111,7 @@ public class ReviewController {
      * 리뷰 삭제
      *
      * @param userDetails 로그인된 사용자 정보
-     * @param dto 리뷰 삭제 요청 DTO
+     * @param dto         리뷰 삭제 요청 DTO
      * @return 리뷰 삭제 완료
      */
     @DeleteMapping

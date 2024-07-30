@@ -140,13 +140,13 @@ class CartServiceTest {
             Product product = mock(Product.class);
             Cart cart = new Cart(
                 1,
-                100,
+                100L,
                 user,
                 productDetail);
 
             given(productDetail.getProduct()).willReturn(product);
             given(product.getProduct()).willReturn("꽃무늬 원피스");
-            given(product.getPrice()).willReturn(100);
+            given(product.getPrice()).willReturn(100L);
             given(productDetail.getSize()).willReturn("M");
             given(productDetail.getColor()).willReturn("BLACK");
 
@@ -180,11 +180,11 @@ class CartServiceTest {
             Product product = mock(Product.class);
             ProductDetail currentProductDetail = mock(ProductDetail.class);
             ProductDetail newProductDetail = mock(ProductDetail.class);
-            Cart cart = new Cart(1, 100, user, currentProductDetail);
+            Cart cart = new Cart(1, 100L, user, currentProductDetail);
 
             given(currentProductDetail.getProduct()).willReturn(product);
             given(newProductDetail.getProduct()).willReturn(product);
-            given(product.getPrice()).willReturn(5000); // 상품의 가격 설정
+            given(product.getPrice()).willReturn(5000L); // 상품의 가격 설정
 
             given(currentProductDetail.getProduct()).willReturn(product);
             given(productDetailRepository.findById(anyLong())).willReturn(Optional.of(currentProductDetail));
@@ -249,7 +249,7 @@ class CartServiceTest {
             // given
             Long productDetailId = 1L;
             ProductDetail productDetail = mock(ProductDetail.class);
-            Cart cart = new Cart(1, 100, user, productDetail);
+            Cart cart = new Cart(1, 100L, user, productDetail);
 
             given(productDetailRepository.findById(anyLong())).willReturn(Optional.of(productDetail));
             given(cartRepository.findByUserAndProductDetail(any(User.class), any(ProductDetail.class))).willReturn(Optional.of(cart));
@@ -296,8 +296,8 @@ class CartServiceTest {
         void ClearCartTest1() {
             // given
             ProductDetail productDetail = mock(ProductDetail.class);
-            Cart cart1 = new Cart(1, 100, user, productDetail);
-            Cart cart2 = new Cart(2, 200, user, productDetail);
+            Cart cart1 = new Cart(1, 100L, user, productDetail);
+            Cart cart2 = new Cart(2, 200L, user, productDetail);
             List<Cart> cartList = List.of(cart1, cart2); // mock Cart 리스트 생성
 
             given(cartRepository.findByUser(any(User.class))).willReturn(cartList);

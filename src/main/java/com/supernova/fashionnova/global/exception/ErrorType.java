@@ -24,6 +24,10 @@ public enum ErrorType {
     // WISH
     NOT_FOUND_WISH(HttpStatus.NOT_FOUND, "위시리시트를 찾을 수 없습니다."),
     INVALID_WISH(HttpStatus.UNAUTHORIZED, "유저의 위시리스트가 아닙니다."),
+    BAD_REQUEST_WISH_EXISTS(HttpStatus.BAD_REQUEST, "이미 존재하는 위시입니다."),
+
+    // QUESTION
+    NOT_FOUND_QUESTION(HttpStatus.NOT_FOUND, "문의를 찾을 수 없습니다."),
 
     // PRODUCT
     NOT_FOUND_PRODUCT(HttpStatus.NOT_FOUND, "상품을 찾을 수 없습니다."),
@@ -38,8 +42,10 @@ public enum ErrorType {
     NOT_FOUND_REVIEW(HttpStatus.BAD_REQUEST, "리뷰가 존재하지 않습니다."),
 
     // WARN
-    NOT_FOUND_WARN(HttpStatus.NOT_FOUND, "경고를 찾을 수 없습니다.");
+    NOT_FOUND_WARN(HttpStatus.NOT_FOUND, "경고를 찾을 수 없습니다."),
 
+    // UPLOAD
+    UPLOAD_REVIEW(HttpStatus.INTERNAL_SERVER_ERROR,"리뷰 사진 등록중 실패");
     private final HttpStatus httpStatus;
     private final String message;
 }

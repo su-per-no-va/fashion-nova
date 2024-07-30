@@ -33,7 +33,7 @@ public class Product extends Timestamped {
     private String product;
 
     @Column(nullable = false)
-    private int price;
+    private Long price;
 
     private String explanation;
 
@@ -46,7 +46,7 @@ public class Product extends Timestamped {
     private ProductStatus productStatus;
 
     @Column(nullable = false)
-    private int likeCount;
+    private int wishCount;
 
     @Column(nullable = false)
     private int reviewCount;
@@ -54,21 +54,6 @@ public class Product extends Timestamped {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductDetail> productDetailList = new ArrayList<>();
 
-/*
-    @OneToMany(mappedBy = "product")
-    private List<Wish> wishList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "product")
-    private List<Review> reviewList = new ArrayList<>();
-
-    @OneToMany
-    @JoinColumn(name = "product_image_id")
-    private List<ProductImage> imageList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "product")
-    private List<ProductDetail> productDetail = new ArrayList<>();
-
-*/
     public void addDetail(ProductDetail detail) {
         ProductDetail productDetail = productDetailList.stream()
             .filter(p -> p.getColor().equals(detail.getColor()) && p.getSize().equals(detail.getSize())).findFirst().orElse(null);
@@ -86,35 +71,38 @@ public class Product extends Timestamped {
 
 
     @Builder
-    public Product(String product, int price, String explanation, ProductCategory category, ProductStatus productStatus) {
+    public Product(String product, Long price, String explanation, ProductCategory category, ProductStatus productStatus) {
         this.product = product;
         this.price = price;
         this.explanation = explanation;
         this.category = category;
         this.productStatus = productStatus;
-        this.likeCount = 0;
+        this.wishCount = 0;
         this.reviewCount = 0;
     }
 
-    public void updateProductDetails(List<ProductDetail> newDetails) {
-        for (ProductDetail newDetail : newDetails) {
-            ProductDetail existingDetail = productDetailList.stream()
-                .filter(detail -> detail.getId().equals(newDetail.getId()))
-                .findFirst()
-                .orElse(null);
-
-            if (existingDetail != null) {
-                existingDetail.updateDetail(newDetail.getSize(), newDetail.getColor(), newDetail.getQuantity(), newDetail.getStatus());
-            }
-        }
-
-    }
-
-    public void updateProduct(String product, int price, String explanation, ProductCategory category, ProductStatus productStatus) {
+    public void updateProduct(String product, Long price, String explanation, ProductCategory category, ProductStatus productStatus) {
         this.product = product;
         this.price = price;
         this.explanation = explanation;
         this.category = category;
         this.productStatus = productStatus;
     }
+
+    public void increaseWish() {
+        wishCount++;
+    }
+
+    public void decreaseWish() {
+        wishCount--;
+    }
+
+    public void increaseReview() {
+        reviewCount++;
+    }
+
+    public void decreaseReview() {
+        reviewCount++;
+    }
+
 }

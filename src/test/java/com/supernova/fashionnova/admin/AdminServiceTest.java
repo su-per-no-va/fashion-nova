@@ -62,7 +62,7 @@ class AdminServiceTest {
 
         this.product = new Product(
             "꽃무늬 원피스",
-            10000,
+            10000L,
             "겁나 멋진 원피스",
             ProductCategory.TOP,
             ProductStatus.ACTIVE
@@ -90,7 +90,7 @@ class AdminServiceTest {
                 reviewPage);
 
             // when
-            List<ReviewResponseDto> reviews = adminService.getReviewsByUserId(1L, 0);
+            List<ReviewResponseDto> reviews = adminService.getReviewListByUserId(1L, 0);
 
             // then
             assertThat(reviews).isNotEmpty();
@@ -105,7 +105,7 @@ class AdminServiceTest {
 
             // when / then
             CustomException exception = assertThrows(CustomException.class,
-                () -> adminService.getReviewsByUserId(1L, 0));
+                () -> adminService.getReviewListByUserId(1L, 0));
             assertThat(exception.getErrorType()).isEqualTo(ErrorType.NOT_FOUND_USER);
         }
     }

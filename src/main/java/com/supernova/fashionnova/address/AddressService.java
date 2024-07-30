@@ -1,5 +1,6 @@
 package com.supernova.fashionnova.address;
 
+import com.supernova.fashionnova.address.dto.AddressDefaultRequestDto;
 import com.supernova.fashionnova.address.dto.AddressRequestDto;
 import com.supernova.fashionnova.address.dto.AddressResponseDto;
 import com.supernova.fashionnova.user.User;
@@ -57,12 +58,12 @@ public class AddressService {
      * 기본 배송지 설정
      *
      * @param user
-     * @param addressId
+     * @param requestDto
      */
     @Transactional
-    public void updateDefaultAddress(User user, Long addressId) {
+    public void updateDefaultAddress(User user, AddressDefaultRequestDto requestDto) {
 
-        addressRepository.updateDefaultAddress(user.getId(), addressId);
+        addressRepository.updateDefaultAddress(user.getId(), requestDto.getAddressId());
 
     }
 

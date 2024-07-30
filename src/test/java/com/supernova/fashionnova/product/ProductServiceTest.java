@@ -32,9 +32,9 @@ class ProductServiceTest {
     @DisplayName("상품 조회 테스트")
     void high_priceTest() {
         //given
-        Product product1 = new Product("Test Product", 1000, "Test Explanation", ProductCategory.TOP, ProductStatus.ACTIVE);
-        Product product2 = new Product("Test Product", 3000, "Test Explanation", ProductCategory.TOP, ProductStatus.ACTIVE);
-        Product product3 = new Product("Test Product", 5000, "Test Explanation", ProductCategory.TOP, ProductStatus.ACTIVE);
+        Product product1 = new Product("Test Product", 1000L, "Test Explanation", ProductCategory.TOP, ProductStatus.ACTIVE);
+        Product product2 = new Product("Test Product", 3000L, "Test Explanation", ProductCategory.TOP, ProductStatus.ACTIVE);
+        Product product3 = new Product("Test Product", 5000L, "Test Explanation", ProductCategory.TOP, ProductStatus.ACTIVE);
         List<Product> productList = Arrays.asList(product1, product2, product3);
 
         Sort.Direction direction = Sort.Direction.DESC;
@@ -55,9 +55,9 @@ class ProductServiceTest {
 
         //then
         assertNotNull(result);
-        assertEquals(1000, result.getContent().get(0).getPrice());
-        assertEquals(3000, result.getContent().get(1).getPrice());
-        assertEquals(5000, result.getContent().get(2).getPrice());
+        assertEquals(1000L, result.getContent().get(0).getPrice());
+        assertEquals(3000L, result.getContent().get(1).getPrice());
+        assertEquals(5000L, result.getContent().get(2).getPrice());
     }
 
 }

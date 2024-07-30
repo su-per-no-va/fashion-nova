@@ -35,11 +35,11 @@ class ProductRepositoryQueryImplTest {
     @DisplayName("높은 가격순")
     void test1() {
 
-        Product p1 = new Product("Test Product", 1000, "Test Explanation", ProductCategory.TOP,
+        Product p1 = new Product("Test Product", 1000L, "Test Explanation", ProductCategory.TOP,
             ProductStatus.ACTIVE);
-        Product p2 = new Product("Test Product", 3000, "Test Explanation", ProductCategory.TOP,
+        Product p2 = new Product("Test Product", 3000L, "Test Explanation", ProductCategory.TOP,
             ProductStatus.ACTIVE);
-        Product p3 = new Product("Test Product", 5000, "Test Explanation", ProductCategory.TOP,
+        Product p3 = new Product("Test Product", 5000L, "Test Explanation", ProductCategory.TOP,
             ProductStatus.ACTIVE);
 
         productRepository.save(p1);
@@ -58,11 +58,11 @@ class ProductRepositoryQueryImplTest {
     @DisplayName("낮은 가격순")
     void test2() {
 
-        Product p1 = new Product("Test Product", 1000, "Test Explanation", ProductCategory.TOP,
+        Product p1 = new Product("Test Product", 1000L, "Test Explanation", ProductCategory.TOP,
             ProductStatus.ACTIVE);
-        Product p2 = new Product("Test Product", 3000, "Test Explanation", ProductCategory.TOP,
+        Product p2 = new Product("Test Product", 3000L, "Test Explanation", ProductCategory.TOP,
             ProductStatus.ACTIVE);
-        Product p3 = new Product("Test Product", 5000, "Test Explanation", ProductCategory.TOP,
+        Product p3 = new Product("Test Product", 5000L, "Test Explanation", ProductCategory.TOP,
             ProductStatus.ACTIVE);
 
         productRepository.save(p1);
@@ -81,11 +81,11 @@ class ProductRepositoryQueryImplTest {
     @DisplayName("신상품순")
     void test3() {
 
-        Product p1 = new Product("first item", 1000, "Test Explanation", ProductCategory.TOP,
+        Product p1 = new Product("first item", 1000L, "Test Explanation", ProductCategory.TOP,
             ProductStatus.ACTIVE);
-        Product p2 = new Product("second item", 3000, "Test Explanation", ProductCategory.TOP,
+        Product p2 = new Product("second item", 3000L, "Test Explanation", ProductCategory.TOP,
             ProductStatus.ACTIVE);
-        Product p3 = new Product("third item", 5000, "Test Explanation", ProductCategory.TOP,
+        Product p3 = new Product("third item", 5000L, "Test Explanation", ProductCategory.TOP,
             ProductStatus.ACTIVE);
 
         productRepository.save(p1);
@@ -148,11 +148,11 @@ class ProductRepositoryQueryImplTest {
     @DisplayName("카테고리 + 신상품순")
     void test6() {
 
-        Product p1 = new Product("first item", 1000, "Test Explanation", ProductCategory.TOP,
+        Product p1 = new Product("first item", 1000L, "Test Explanation", ProductCategory.TOP,
             ProductStatus.ACTIVE);
-        Product p2 = new Product("second item", 3000, "Test Explanation", ProductCategory.BOTTOM,
+        Product p2 = new Product("second item", 3000L, "Test Explanation", ProductCategory.BOTTOM,
             ProductStatus.ACTIVE);
-        Product p3 = new Product("third item", 5000, "Test Explanation", ProductCategory.TOP,
+        Product p3 = new Product("third item", 5000L, "Test Explanation", ProductCategory.TOP,
             ProductStatus.ACTIVE);
 
         productRepository.save(p1);

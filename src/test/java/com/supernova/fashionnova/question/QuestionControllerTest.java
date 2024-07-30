@@ -25,6 +25,8 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -68,14 +70,14 @@ class QuestionControllerTest {
 
     @Test
     @DisplayName("문의 등록 테스트")
-    void addQuestion() throws Exception {
+    void addQuestionTest() throws Exception {
         //given
         QuestionRequestDto questionRequestDto = QuestionRequestDto.builder()
             .title("테스트 문의")
             .question("테스트 문의 내용")
             .type("PRODUCT")
             .build();
-        doNothing().when(service).addQuestion(any(User.class), any(QuestionRequestDto.class));
+        doNothing().when(service).addQuestion(any(User.class), any(QuestionRequestDto.class),null);
 
         //when * then
         mockMvc.perform(post(baseUrl).with(csrf())
@@ -88,9 +90,10 @@ class QuestionControllerTest {
 
     @Test
     @DisplayName("내 문의 조회 테스트")
-    void getAddressList() throws Exception{
+    void getUserQuestionPageTest() throws Exception{
         //given
         User user = userDetails.getUser();
+        int page = 1;
         List<QuestionResponseDto> responseDtoList = Arrays.asList(
             new QuestionResponseDto
                 (new Question(user, "문의1", "문의내용1", QuestionType.PRODUCT)),
@@ -98,8 +101,10 @@ class QuestionControllerTest {
                 (new Question(user, "문의2", "문의내용2", QuestionType.DELIVERY))
         );
 
+        Page<QuestionResponseDto> responseDtoPage = new PageImpl<>(responseDtoList);
+
         //when
-        when(service.getUserQuestionList(user)).thenReturn(responseDtoList);
+        when(service.getUserQuestionList(user, page)).thenReturn(responseDtoPage.getContent());
 
         //then
         mockMvc.perform(get(baseUrl).with(csrf()))

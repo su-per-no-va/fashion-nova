@@ -1,35 +1,41 @@
-package com.supernova.fashionnova.question;
+package com.supernova.fashionnova.answer;
 
+import com.supernova.fashionnova.global.common.Timestamped;
+import com.supernova.fashionnova.question.Question;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Table(name = "question_image")
+@Table(name = "answer")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class QuestionImage {
+public class Answer extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String questionImageUrl;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "question_id", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "question_id")
     private Question question;
 
-    public QuestionImage(Question question, String questionImageUrl) {
+    @Column(nullable = false)
+    private String answer;
+
+    @Builder
+    public Answer(Question question, String answer) {
         this.question = question;
-        this.questionImageUrl = questionImageUrl;
+        this.answer = answer;
     }
+
 }

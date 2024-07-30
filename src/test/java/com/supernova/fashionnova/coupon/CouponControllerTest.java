@@ -12,6 +12,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.supernova.fashionnova.coupon.dto.CouponResponseDto;
 import com.supernova.fashionnova.security.UserDetailsImpl;
 import com.supernova.fashionnova.user.User;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -66,7 +68,9 @@ class CouponControllerTest {
 
         // given
         User user = userDetails.getUser();
-        Coupon coupon = new Coupon(user, "신규 회원 쿠폰", "20%", CouponType.WELCOME);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = format.parse("2024-08-02");
+        Coupon coupon = new Coupon(user, "신규 회원 쿠폰", date, "20%", CouponType.WELCOME);
         List<CouponResponseDto> responseDtoList = List.of(new CouponResponseDto(coupon));
 
         // when
@@ -91,7 +95,9 @@ class CouponControllerTest {
 
         // given
         User user = userDetails.getUser();
-        Coupon coupon = new Coupon(user, "등급 상승 쿠폰", "15%", CouponType.GRADE_UP);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = format.parse("2024-08-02");
+        Coupon coupon = new Coupon(user, "등급 상승 쿠폰", date,"15%", CouponType.GRADE_UP);
         coupon.useCoupon();
         List<CouponResponseDto> responseDtoList = List.of(new CouponResponseDto(coupon));
 
