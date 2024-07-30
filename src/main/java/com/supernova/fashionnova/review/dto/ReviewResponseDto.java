@@ -3,7 +3,6 @@ package com.supernova.fashionnova.review.dto;
 import com.supernova.fashionnova.review.Review;
 import java.util.List;
 import lombok.Getter;
-import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 public class ReviewResponseDto {

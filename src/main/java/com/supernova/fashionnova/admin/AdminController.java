@@ -3,6 +3,7 @@ package com.supernova.fashionnova.admin;
 import com.supernova.fashionnova.answer.dto.AnswerRequestDto;
 import com.supernova.fashionnova.coupon.dto.CouponRequestDto;
 import com.supernova.fashionnova.global.util.ResponseUtil;
+import com.supernova.fashionnova.product.dto.ProductDetailCreateDto;
 import com.supernova.fashionnova.product.dto.ProductRequestDto;
 import com.supernova.fashionnova.question.dto.QuestionResponseDto;
 import com.supernova.fashionnova.review.dto.ReviewResponseDto;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -90,12 +92,48 @@ public class AdminController {
         return ResponseUtil.of(HttpStatus.OK, reviews);
     }
 
+    /**
+     * 상품 등록
+     *
+     * @param requestDto
+     * @return "상품 등록 성공"
+     */
     @PostMapping("/products")
     public ResponseEntity<String> addProduct(@RequestBody ProductRequestDto requestDto) {
 
         adminService.addProduct(requestDto);
 
         return ResponseUtil.of(HttpStatus.CREATED,"상품 등록 성공");
+    }
+
+    /**
+     * 상품 디테일 추가
+     *
+     * @param requestDto
+     * @return "상품 디테일 추가 성공"
+     */
+    @PostMapping("/products/details")
+    public ResponseEntity<String> addProductDetails(
+        @RequestBody ProductDetailCreateDto requestDto) {
+
+        adminService.addProductDetails(requestDto.getProductId(), requestDto.getProductDetailRequestDtoList());
+
+        return ResponseUtil.of(HttpStatus.OK, "상품 디테일 추가 성공");
+    }
+
+    /**
+     * 상품 수정
+     *
+     * @param requestDto
+     * @return "상품 수정 성공"
+     */
+    @PutMapping("/products")
+    public ResponseEntity<String> updateProduct(
+        @RequestBody ProductRequestDto requestDto) {
+
+        adminService.updateProduct(requestDto);
+
+        return ResponseUtil.of(HttpStatus.OK, "상품 수정 성공");
     }
 
     /**

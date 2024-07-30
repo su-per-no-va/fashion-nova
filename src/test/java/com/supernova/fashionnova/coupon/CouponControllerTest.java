@@ -13,7 +13,6 @@ import com.supernova.fashionnova.coupon.dto.CouponResponseDto;
 import com.supernova.fashionnova.security.UserDetailsImpl;
 import com.supernova.fashionnova.user.User;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -71,7 +70,7 @@ class CouponControllerTest {
         User user = userDetails.getUser();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date date = format.parse("2024-08-02");
-        Coupon coupon = new Coupon(user, "신규 회원 쿠폰", date,"20%", CouponType.WELCOME);
+        Coupon coupon = new Coupon(user, "신규 회원 쿠폰", date, "20%", CouponType.WELCOME);
         List<CouponResponseDto> responseDtoList = List.of(new CouponResponseDto(coupon));
 
         // when

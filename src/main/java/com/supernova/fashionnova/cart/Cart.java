@@ -31,7 +31,7 @@ public class Cart {
     private int count = 0;
 
     @Column(nullable = false)
-    private int totalPrice = 0;
+    private Long totalPrice = 0L;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -42,7 +42,7 @@ public class Cart {
     @JoinColumn(name = "product_detail_id")
     private ProductDetail productDetail;
 
-    public Cart(int count, int totalPrice, User user, ProductDetail productDetail) {
+    public Cart(int count, Long totalPrice, User user, ProductDetail productDetail) {
         this.count = count;
         this.totalPrice = totalPrice;
         this.user = user;
@@ -55,7 +55,7 @@ public class Cart {
     }
 
     // totalPrice 증가
-    public void incrementTotalPrice(int price) {
+    public void incrementTotalPrice(Long price) {
         this.totalPrice += price;
     }
 

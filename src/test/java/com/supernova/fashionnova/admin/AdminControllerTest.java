@@ -80,7 +80,7 @@ class AdminControllerTest {
 
         this.product = new Product(
             "꽃무늬 원피스",
-            10000,
+            10000L,
             "겁나 멋진 원피스",
             ProductCategory.TOP,
             ProductStatus.ACTIVE
