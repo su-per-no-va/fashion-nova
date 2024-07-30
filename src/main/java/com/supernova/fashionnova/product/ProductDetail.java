@@ -51,4 +51,11 @@ public class ProductDetail {
         this.product = product;
     }
 
+    public void updateDetail(String size, String color, Long quantity, ProductStatus status) {
+        this.size = size;
+        this.color = color;
+        this.quantity = quantity;
+        this.status = status;
+    }
+
 }

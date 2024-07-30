@@ -1,7 +1,6 @@
 package com.supernova.fashionnova.question;
 
 import com.supernova.fashionnova.global.common.Timestamped;
-import com.supernova.fashionnova.review.ReviewImage;
 import com.supernova.fashionnova.user.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

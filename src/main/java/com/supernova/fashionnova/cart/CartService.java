@@ -56,8 +56,8 @@ public class CartService {
         // 이미 담겨진 상품 장바구니가 있는지 조회
         Optional<Cart> result = cartRepository.findByUserAndProductDetail(user, productDetail);
         int count = dto.getCount();
-        int price = product.getPrice();
-        int totalPrice = count * price;
+        Long price = product.getPrice();
+        Long totalPrice = count * price;
 
         if (result.isPresent()) {
             Cart cart = result.get();
@@ -88,7 +88,7 @@ public class CartService {
                 cart.getProductDetail().getColor()))
             .toList();
 
-        int totalPrice = cartList.stream().mapToInt(Cart::getTotalPrice).sum();
+        Long totalPrice = cartList.stream().mapToLong(Cart::getTotalPrice).sum();
 
         return new CartResponseDto(cartItemDtoList, totalPrice);
     }
@@ -145,7 +145,7 @@ public class CartService {
      * 장바구니 상품 삭제
      *
      * @param user      사용자 정보
-     * @param cartDeleteRequestDto
+     * @param productDetailId
      * @throws CustomException NOT_FOUND_PRODUCT 상품을 찾을 수 없을 때
      */
     @Transactional
