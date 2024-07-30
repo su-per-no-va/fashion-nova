@@ -12,9 +12,9 @@ public class ProductResponseDto {
 
     private final Long id;
     private final String product;
-    private final int price;
+    private final Long price;
     private final ProductStatus productStatus;
-    private final int likeCount;
+    private final int wishCount;
     private final int reviewCount;
     private final List<ProductDetailResponseDto> productDetails;
     private final LocalDateTime createdAt;
@@ -24,7 +24,7 @@ public class ProductResponseDto {
         this.product = product.getProduct();
         this.price = product.getPrice();
         this.productStatus = product.getProductStatus();
-        this.likeCount = product.getWishCount();
+        this.wishCount = product.getWishCount();
         this.reviewCount = product.getReviewCount();
         this.productDetails = product.getProductDetailList().stream()
             .map(ProductDetailResponseDto::new)

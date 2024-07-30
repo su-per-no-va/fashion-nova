@@ -3,7 +3,6 @@ package com.supernova.fashionnova.review.dto;
 import com.supernova.fashionnova.review.Review;
 import com.supernova.fashionnova.review.ReviewImage;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import lombok.Getter;
 

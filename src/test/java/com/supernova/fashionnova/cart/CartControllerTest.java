@@ -100,7 +100,7 @@ class CartControllerTest {
     @DisplayName("장바구니 조회 테스트")
     void getCartTest() throws Exception {
         // given
-        CartResponseDto responseDto = new CartResponseDto(Collections.emptyList(), 0);
+        CartResponseDto responseDto = new CartResponseDto(Collections.emptyList(), 0L);
 
         given(cartService.getCart(any(User.class))).willReturn(responseDto);
 

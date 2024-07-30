@@ -25,7 +25,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
@@ -67,7 +66,7 @@ class WishServiceTest {
         int page = 1;
 
         Wish wish = Mockito.mock(Wish.class);
-        given(wish.getProduct()).willReturn(new Product("Test Product", 10000, "Test Explanation", ProductCategory.TOP, ProductStatus.ACTIVE));
+        given(wish.getProduct()).willReturn(new Product("Test Product", 10000L, "Test Explanation", ProductCategory.TOP, ProductStatus.ACTIVE));
         given(wishRepository.findByUser(user, PageRequest.of(page, 10)))
             .willReturn(new PageImpl<>(Collections.singletonList(wish)));
 

@@ -8,9 +8,9 @@ import lombok.Getter;
 
 @Getter
 public class ProductRequestDto {
-
+    private Long productId;
     private String product;
-    private int price;
+    private Long price;
     private String explanation;
     private ProductCategory category;
     private ProductStatus productStatus;

@@ -28,7 +28,7 @@ GET http://localhost:8080/admin/reviews/{{userId}}?page=0
 Authorization: {{access_token}}
 
 
-### 답변 등록
+### 답변 등록 (admin)
 POST http://localhost:8080/admin/answers
 Content-Type: application/json
 Authorization: {{access_token}}
@@ -38,7 +38,7 @@ Authorization: {{access_token}}
   "answer": "돌아가~"
 }
 
-### 문의 전체 조회
+### 문의 전체 조회 (admin)
 GET http://localhost:8080/admin/answers?page=0
 Authorization: {{access_token}}
 
@@ -53,4 +53,61 @@ Authorization: {{access_token}}
   "period": "2024-08-02",
   "sale": "5%",
   "type": "GRADE_UP"
+}
+
+
+### 상품 등록 (admin)
+POST http://localhost:8080/admin/products
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "product": "여름옷11",
+  "price": 77777777777777,
+  "explanation": "옷",
+  "category": "TOP",
+  "productStatus": "ACTIVE",
+  "productDetailList": [{
+    "size" : "LARGE",
+    "color" : "BLACK",
+    "quantity": 123
+  }]
+}
+
+
+### 상품 디테일 추가 (admin)
+POST http://localhost:8080/admin/products/details
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "productId": 2,
+  "productDetailRequestDtoList": [
+    {
+      "size": "SMALL",
+      "color": "WHITE",
+      "quantity": 5,
+      "status" : "SOLD_OUT"
+    }
+  ]
+}
+### 상품 수정 (admin)
+PUT http://localhost:8080/admin/products
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "productId": 2,
+  "product": "옷입니다옷",
+  "price": 1000000,
+  "explanation": "그냥옷",
+  "category": "TOP",
+  "productStatus": "SOLD_OUT",
+  "productDetailList": [{
+      "productDetailId": 5,
+      "size": "LARGE",
+      "color": "WHITE",
+      "quantity": 5111,
+      "status" : "SOLD_OUT"
+  }]
 }

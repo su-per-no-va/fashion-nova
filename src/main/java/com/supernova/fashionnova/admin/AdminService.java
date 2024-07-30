@@ -12,6 +12,7 @@ import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.product.Product;
 import com.supernova.fashionnova.product.ProductDetail;
 import com.supernova.fashionnova.product.ProductRepository;
+import com.supernova.fashionnova.product.dto.ProductDetailRequestDto;
 import com.supernova.fashionnova.product.dto.ProductRequestDto;
 import com.supernova.fashionnova.question.Question;
 import com.supernova.fashionnova.question.QuestionRepository;
@@ -138,6 +139,12 @@ public class AdminService {
         return reviewResponseDtos;
     }
 
+    /**
+     * 상품등록
+     *
+     * @param requestDto
+     * @return List<ProductDetail>
+     */
     @Transactional
     public void addProduct(ProductRequestDto requestDto) {
 
@@ -158,9 +165,67 @@ public class AdminService {
                     .build();
             })
             .collect(Collectors.toList()));
-        product.addDetail(productDetailList);
+        product.addDetailList(productDetailList);
         productRepository.save(product);
         /*productDetailRepository.saveAll(product.getProductDetailList());*/
+    }
+
+    /**
+     * 상품 디테일 추가
+     *
+     * @param productDetailRequestDto
+     * @throws CustomException NOT_FOUND_PRODUCT 상품 정보가 존재하지 않을 때
+     */
+    @Transactional
+    public void addProductDetails(Long productId, List<ProductDetailRequestDto> productDetailRequestDto) {
+
+        Product product = productRepository.findById(productId)
+            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
+
+        for (ProductDetailRequestDto detailDto : productDetailRequestDto) {
+            ProductDetail productDetail = ProductDetail.builder()
+                .size(detailDto.getSize())
+                .color(detailDto.getColor())
+                .quantity(detailDto.getQuantity())
+                .product(product)
+                .build();
+
+            product.addDetail(productDetail);
+        }
+
+        productRepository.save(product);
+    }
+
+    /**
+     * 상품 수정
+     *
+     * @param requestDto
+     * @throws CustomException NOT_FOUND_PRODUCT 상품 정보가 존재하지 않을 때
+     */
+    @Transactional
+    public void updateProduct(ProductRequestDto requestDto) {
+        Product existingProduct = productRepository.findById(requestDto.getProductId())
+            .orElseThrow(
+                () -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
+
+        List<ProductDetailRequestDto> newProductDetails = requestDto.getProductDetailList();
+
+        List<ProductDetail> productDetailList = existingProduct.getProductDetailList();
+        for(ProductDetailRequestDto productDetailRequestDto : newProductDetails) {
+            ProductDetail productDetail = productDetailList.stream().filter(p -> p.getId().equals(productDetailRequestDto.getProductDetailId())).findFirst().orElse(null);
+            if (productDetail != null) {
+                productDetail.updateDetail(productDetailRequestDto.getSize(), productDetailRequestDto.getColor(), productDetailRequestDto.getQuantity(), productDetailRequestDto.getStatus());
+            }
+        }
+
+        existingProduct.updateProduct(
+            requestDto.getProduct(),
+            requestDto.getPrice(),
+            requestDto.getExplanation(),
+            requestDto.getCategory(),
+            requestDto.getProductStatus()
+        );
+        productRepository.save(existingProduct);
     }
 
     /**
