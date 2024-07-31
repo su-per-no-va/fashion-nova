@@ -8,13 +8,11 @@ import org.springframework.http.ResponseEntity;
 public class ResponseUtil {
 
     public static <T> ResponseEntity<T> of(HttpStatus httpStatus, T data) {
-        return  ResponseEntity.status(httpStatus)
-            .body(data);
+        return  ResponseEntity.status(httpStatus).body(data);
     }
 
-    public static  ResponseEntity<String> of(HttpStatus httpStatus,String message) {
-        return ResponseEntity.status(httpStatus)
-            .body(message);
+    public static ResponseEntity<String> of(HttpStatus httpStatus, String message) {
+        return ResponseEntity.status(httpStatus).body(message);
     }
 
 }
