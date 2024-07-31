@@ -12,20 +12,30 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(CustomException.class)
-    public ResponseEntity<?> handleScheduleException(CustomException ex) {
-        return ResponseEntity.status(ex.getErrorType().getHttpStatus()).body(new ExceptionDto(ex.getErrorType()));
+    public ResponseEntity<?> handleScheduleException(CustomException e) {
+
+        return ResponseEntity.status(e.getErrorType().getHttpStatus())
+            .body(new ExceptionDto(e.getErrorType()));
+
     }
 
-//    밸리데이션 핸들러
+    // 밸리데이션 핸들러
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleException(MethodArgumentNotValidException ex) {
-        BindingResult bindingResult = ex.getBindingResult();
+    public ResponseEntity<?> handleException(MethodArgumentNotValidException e) {
+
+        BindingResult bindingResult = e.getBindingResult();
         StringBuilder builder = new StringBuilder();
 
         for (FieldError fieldError : bindingResult.getFieldErrors()) {
-            builder.append(fieldError.getField()).append(" : ").append(fieldError.getDefaultMessage()).append("\n");
+            builder
+                .append(fieldError.getField())
+                .append(" : ")
+                .append(fieldError.getDefaultMessage())
+                .append("\n");
         }
+
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(builder.toString());
+
     }
 
 }

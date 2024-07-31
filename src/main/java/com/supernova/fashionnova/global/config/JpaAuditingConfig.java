@@ -18,4 +18,5 @@ public class JpaAuditingConfig {
     public JPAQueryFactory jpaQueryFactory() {
         return new JPAQueryFactory(entityManager);
     }
+
 }
