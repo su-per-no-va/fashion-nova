@@ -85,7 +85,7 @@ class WishControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(requestDto)))
             .andExpectAll(
-                status().isOk(),
+                status().isCreated(),
                 content().string("위시리스트 추가")
             );
 

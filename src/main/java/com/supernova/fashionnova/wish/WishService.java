@@ -101,7 +101,7 @@ public class WishService {
     }
 
     private void validateUser(User user, Wish wish) {
-        if (wish.getUser().equals(user)) {
+        if (!wish.getUser().getId().equals(user.getId())) {
             throw new CustomException(ErrorType.INVALID_WISH);
         }
     }

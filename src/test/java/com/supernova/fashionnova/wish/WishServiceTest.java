@@ -87,7 +87,10 @@ class WishServiceTest {
         WishDeleteRequestDto requestDto = new WishDeleteRequestDto(1L);
 
         Wish wish = Mockito.mock(Wish.class);
+        Product product = Mockito.mock(Product.class);
+
         given(wish.getUser()).willReturn(user);
+        given(wish.getProduct()).willReturn(product);
         given(wishRepository.findById(requestDto.getWishId())).willReturn(Optional.of(wish));
 
         // when
@@ -95,6 +98,7 @@ class WishServiceTest {
 
         // then
         verify(wishRepository, times(1)).delete(any(Wish.class));
+        verify(product, times(1)).decreaseWish();
 
     }
 

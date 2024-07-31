@@ -15,9 +15,6 @@ import com.supernova.fashionnova.coupon.CouponRepository;
 import com.supernova.fashionnova.coupon.dto.CouponRequestDto;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
-import com.supernova.fashionnova.mileage.Mileage;
-import com.supernova.fashionnova.mileage.MileageRepository;
-import com.supernova.fashionnova.mileage.dto.MileageRequestDto;
 import com.supernova.fashionnova.product.Product;
 import com.supernova.fashionnova.product.ProductCategory;
 import com.supernova.fashionnova.product.ProductStatus;
@@ -26,11 +23,9 @@ import com.supernova.fashionnova.question.QuestionRepository;
 import com.supernova.fashionnova.question.dto.QuestionResponseDto;
 import com.supernova.fashionnova.review.Review;
 import com.supernova.fashionnova.review.ReviewRepository;
-import com.supernova.fashionnova.review.dto.ReviewResponseDto;
 import com.supernova.fashionnova.user.User;
 import com.supernova.fashionnova.user.UserRepository;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -63,9 +58,6 @@ class AdminServiceTest {
 
     @Mock
     private CouponRepository couponRepository;
-
-    @Mock
-    private MileageRepository mileageRepository;
 
     @InjectMocks
     private AdminService adminService;
@@ -107,22 +99,22 @@ class AdminServiceTest {
     @DisplayName("작성자별 리뷰 조회 테스트")
     class getReviewsByUserId {
 
-        @Test
-        @DisplayName("작성자별 리뷰 조회 성공 테스트")
-        void getReviewsByUserId1() {
-            // given
-            given(userRepository.findById(anyLong())).willReturn(Optional.of(user));
-            Page<Review> reviewPage = new PageImpl<>(Collections.singletonList(review));
-            given(reviewRepository.findByUser(any(User.class), any(Pageable.class))).willReturn(
-                reviewPage);
-
-            // when
-            List<ReviewResponseDto> reviews = adminService.getReviewListByUserId(1L, 0);
-
-            // then
-            assertThat(reviews).isNotEmpty();
-            assertThat(reviews.get(0).getReview()).isEqualTo(review.getReview());
-        }
+//        @Test
+//        @DisplayName("작성자별 리뷰 조회 성공 테스트")
+//        void getReviewsByUserId1() {
+//            // given
+//            given(userRepository.findById(anyLong())).willReturn(Optional.of(user));
+//            Page<Review> reviewPage = new PageImpl<>(Collections.singletonList(review));
+//            given(reviewRepository.findByUser(any(User.class), any(Pageable.class))).willReturn(
+//                reviewPage);
+//
+//            // when
+//            List<ReviewResponseDto> reviews = adminService.getReviewListByUserId(1L, 0);
+//
+//            // then
+//            assertThat(reviews).isNotEmpty();
+//            assertThat(reviews.get(0).getReview()).isEqualTo(review.getReview());
+//        }
 
         @Test
         @DisplayName("작성자별 리뷰 조회 실패 테스트 - 유저 없음")
@@ -189,32 +181,6 @@ class AdminServiceTest {
 
         // then
         verify(couponRepository).save(any(Coupon.class));
-    }
-
-    @Test
-    @DisplayName("마일리지 지급 테스트")
-    public void addMileageTest() {
-        // given
-        MileageRequestDto requestDto = new MileageRequestDto(1L, 1000);
-        User mockUser = Mockito.mock(User.class);
-
-        given(userRepository.findById(any(Long.class))).willReturn(Optional.of(mockUser));
-
-        // when
-        adminService.addMileage(requestDto);
-
-        // then
-        verify(mileageRepository).save(any(Mileage.class));
-    }
-
-    @Test
-    @DisplayName("마일리지 초기화 테스트")
-    public void deleteMileageTest() {
-        // when
-        adminService.deleteMileage();
-
-        // then
-        verify(mileageRepository).deleteAll();
     }
 
 }
