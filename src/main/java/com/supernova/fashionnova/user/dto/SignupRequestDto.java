@@ -34,6 +34,9 @@ public class SignupRequestDto {
     @NotBlank(message = "휴대폰 입력값이 없습니다.")
     private String phone;
 
+    public SignupRequestDto() {
+
+    }
     public SignupRequestDto(String userName, String password, String name, String email,
         String phone) {
         this.userName = userName;

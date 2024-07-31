@@ -38,3 +38,4 @@ function onLogin() {
     window.location.href = host + '/api/user/login-page?error'
   });
 }
+

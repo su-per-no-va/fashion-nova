@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
@@ -13,57 +13,57 @@
 
   <script type="module">
 
-    $(document).ready(function () {
-      $("#btn").click(async function () {
-        let isValid = true;
-
-        // 입력값 유효성 검사
-        $.each($('.int-area > input'), function (index, item) {
-          if (isValid) {
-            var value = $(item).val();
-            if (value === "" || (index === 0 && value.length < 4)) {
-              $(item).next('label').addClass('warning');
-              setTimeout(function () {
-                $('label').removeClass('warning');
-              }, 1500);
-              $(item).focus();
-              isValid = false;
-            }
-          }
-        });
-
-        if (!isValid) return;
-
-        // 입력값을 객체로 수집
-        let doc = {
-          'userName': $('#userName').val(),
-          'password': $('#password').val(),
-          'name': $('#name').val(),
-          'phone': $('#phone').val(),
-          'email': $('#email').val()
-        };
-
-        try {
-          // 서버로 데이터 전송
-          await $.ajax({
-            type: "POST",
-            url: "/users/signup",
-            data: JSON.stringify(doc),
-            contentType: "application/json",
-            success: function (response) {
-              alert('회원 가입 완료!');
-              window.location.href = "/login"; // 로그인 페이지로 이동
-            },
-            error: function (error) {
-              console.error("에러 발생:", error);
-              alert('회원 가입 실패. 다시 시도해주세요.');
-            }
-          });
-        } catch (error) {
-          console.error("AJAX 호출 중 오류 발생:", error);
-        }
-      });
-    });
+    // $(document).ready(function () {
+    //   $("#btn").click(async function () {
+    //     let isValid = true;
+    //
+    //     // 입력값 유효성 검사
+    //     $.each($('.int-area > input'), function (index, item) {
+    //       if (isValid) {
+    //         var value = $(item).val();
+    //         if (value === "" || (index === 0 && value.length < 4)) {
+    //           $(item).next('label').addClass('warning');
+    //           setTimeout(function () {
+    //             $('label').removeClass('warning');
+    //           }, 1500);
+    //           $(item).focus();
+    //           isValid = false;
+    //         }
+    //       }
+    //     });
+    //
+    //     if (!isValid) return;
+    //
+    //     // 입력값을 객체로 수집
+    //     let doc = {
+    //       'userName': $('#userName').val(),
+    //       'password': $('#password').val(),
+    //       'name': $('#name').val(),
+    //       'phone': $('#phone').val(),
+    //       'email': $('#email').val()
+    //     };
+    //
+    //     try {
+    //       // 서버로 데이터 전송
+    //       await $.ajax({
+    //         type: "POST",
+    //         url: "/users/signup",
+    //         data: JSON.stringify(doc),
+    //         contentType: "application/json",
+    //         success: function (response) {
+    //           alert('회원 가입 완료!');
+    //           window.location.href = "/login"; // 로그인 페이지로 이동
+    //         },
+    //         error: function (error) {
+    //           console.error("에러 발생:", error);
+    //           alert('회원 가입 실패. 다시 시도해주세요.');
+    //         }
+    //       });
+    //     } catch (error) {
+    //       console.error("AJAX 호출 중 오류 발생:", error);
+    //     }
+    //   });
+    // });
 
   </script>
 </head>
@@ -73,22 +73,18 @@
 
 <section class="login-form">
   <h1>SIGN UP</h1>
-  <form>
+  <form id="signupForm">
     <div class="int-area">
-      <input type="text" name="id" id="userName" autocomplete="off" required>
+      <input type="text" name="userName" id="userName" autocomplete="off" required>
       <label for="userName">ID</label>
     </div>
     <div class="int-area">
-      <input type="password" name="pw" id="password" autocomplete="off" required>
+      <input type="password" name="password" id="password" autocomplete="off" required>
       <label for="password">PASSWORD</label>
     </div>
     <div class="int-area">
       <input type="text" name="name" id="name" autocomplete="off" required>
       <label for="name">NAME</label>
-    </div>
-    <div class="int-area">
-      <input type="text" name="birthdate" id="birthdate" autocomplete="off" required>
-      <label for="birthdate">BIRTHDATE</label>
     </div>
     <div class="int-area">
       <input type="text" name="phone" id="phone" autocomplete="off" required>
@@ -99,10 +95,38 @@
       <label for="email">E-MAIL</label>
     </div>
     <div class="btn-area">
-      <button id="btn" type="button">CREATE ACCOUNT</button>
+      <button id="btn" type="button" onclick="submitForm()">CREATE ACCOUNT</button>
     </div>
   </form>
 </section>
 </body>
 
+<script>
+  function submitForm() {
+    const form = document.getElementById('signupForm');
+    const formData = new FormData(form);
+
+    // FormData를 JSON으로 변환
+    const jsonData = {};
+    formData.forEach((value, key) => {
+      jsonData[key] = value;
+    });
+
+    fetch('/users/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(jsonData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      alert("회원가입 성공")
+    })
+    .catch(error => {
+      alert(error.get().message);
+    });
+  }
+</script>
 </html>
+
