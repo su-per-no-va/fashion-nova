@@ -45,16 +45,16 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             return;
         }
 
-        //검사
+        // 검사
         checkAccessToken(res, accessToken);
 
         // JWT 토큰 substring
         accessToken = jwtUtil.substringToken(accessToken);
 
-        //유저 정보 가져오기
+        // 유저 정보 가져오기
         Claims accessTokenClaims = jwtUtil.getUserInfoFromToken(accessToken);
 
-        //RefreshToken 검증 (로그 아웃시 리프레쉬 토큰 없음)
+        // RefreshToken 검증 (로그 아웃시 리프레쉬 토큰 없음)
         String refreshToken = jwtUtil.getRefreshTokenFromRequest(accessTokenClaims.getSubject());
         if (refreshToken.isEmpty()) {
             jwtExceptionHandler(res, ErrorType.NOT_FOUND_REFRESH_TOKEN);
@@ -68,38 +68,48 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             log.error(e.getMessage());
             return;
         }
+
         filterChain.doFilter(req, res);
+
     }
 
 
     // 인증 처리
     public void setAuthentication(String userName) {
+
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         Authentication authentication = createAuthentication(userName);
         context.setAuthentication(authentication);
 
         SecurityContextHolder.setContext(context);
+
     }
 
     // 인증 객체 생성
     private Authentication createAuthentication(String userName) {
+
         UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
-        return new UsernamePasswordAuthenticationToken(userDetails, null,
-            userDetails.getAuthorities());
+
+        return new UsernamePasswordAuthenticationToken(
+            userDetails, null, userDetails.getAuthorities());
+
     }
 
     private void checkAccessToken(HttpServletResponse response, String accessToken) {
+
         // hasText : Null체크
         if (!StringUtils.hasText(accessToken)) {
             log.error("AccessToken이 없습니다.");
             jwtExceptionHandler(response, ErrorType.NOT_FOUND_TOKEN);
             return;
         }
+
         //공백 제거
         accessToken = accessToken.replaceAll("\\s", "");
-        //
+
         // Access 토큰 유효성 검사
         jwtUtil.validateToken(accessToken);
 
     }
+
 }
