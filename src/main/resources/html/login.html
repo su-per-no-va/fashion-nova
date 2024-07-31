@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checklist Login</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="/css/login.css" type="text/css">
+  <link rel="stylesheet" href="/css/1.css" type="text/css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+  <script type="module">
+
+    $('#btn').click(async function () {
+
+      // 유효성 검증
+      let isValid = true;
+
+      $.each($('.int-area > input'), function (index, item) {
+        if (isValid) {
+          if ($(item).val() == "") {
+            $(item).next('label').addClass('warning');
+            setTimeout(function () {
+              $('label').removeClass('warning');
+            }, 1500);
+            $(item).focus();
+            isValid = false;
+          }
+        }
+      })
+
+      if (!isValid) return;
+
+      let id = $("#id").val();
+      let pw = $("#pw").val();
+      let flag = true;
+
+      // 아이디로 DB 조회
+      const q = query(collection(db, "USER"), where("id", "==", id));
+      const querySnapshot = await getDocs(q);
+
+      // DB에 아이디가 없을 떄
+      if (querySnapshot.size == 0) {
+        alert("해당 닉네임이 존재하지 않습니다.");
+        flag = false;
+      }
+
+      // 로그인 처리
+      querySnapshot.forEach((doc) => {
+        let data = doc.data();
+        // 비밀번호가 일치하지 않을 때
+        if (pw != data.pw) {
+          alert("비밀번호가 올바르지 않습니다.");
+          flag = false;
+        }
+      });
+
+      if (flag) {
+        window.localStorage.setItem('id', id);
+        location.replace('index.html');
+      }
+    });
+  </script>
+</head>
+
+<body>
+
+<section class="login-form">
+  <h1>LOGIN</h1>
+  <form action="">
+    <div class="int-area">
+      <input type="text" name="id" id="id" autocomplete="off" required>
+      <label for="id">ID</label>
+    </div>
+    <div class="int-area">
+      <input type="password" name="pw" id="pw" autocomplete="off" required>
+      <label for="pw">PASSWORD</label>
+    </div>
+    <div class="btn-area">
+      <button id="btn" type="button">LOGIN</button>
+      <button id="login-kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id={REST_API_KEY}&redirect_uri=http://localhost:8080/api/user/kakao/callback&response_type=code'">
+        카카오로 로그인하기
+      </button>
+    </div>
+  </form>
+  <div class="caption">
+    <a href="#" onclick="location.href='signup.html'">SIGN UP</a>
+  </div>
+</section>
+<script src="/js/login.js"></script>
+</body>
+
+</html>
