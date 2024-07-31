@@ -10,13 +10,13 @@ $(document).ready(function () {
       jqXHR.setRequestHeader('Authorization', auth);
     });
   } else {
-    window.location.href = host + '/api/user/login-page';
+    window.location.href = host + '//user/login-page';
     return;
   }
 
   $.ajax({
     type: 'GET',
-    url: `/api/user-info`,
+    url: `/user-info`,
     contentType: 'application/json',
   })
   .done(function (res, status, xhr) {
@@ -24,7 +24,7 @@ $(document).ready(function () {
     const isAdmin = !!res.admin;
 
     if (!username) {
-      window.location.href = '/api/user/login-page';
+      window.location.href = '//user/login-page';
       return;
     }
 
@@ -39,7 +39,7 @@ $(document).ready(function () {
     // 로그인한 유저의 폴더
     $.ajax({
       type: 'GET',
-      url: `/api/user-folder`,
+      url: `//user-folder`,
       error(error) {
         logout();
       }
@@ -102,10 +102,10 @@ function execSearch() {
     $('#query').focus();
     return;
   }
-  // 3. GET /api/search?query=${query} 요청
+  // 3. GET //search?query=${query} 요청
   $.ajax({
     type: 'GET',
-    url: `/api/search?query=${query}`,
+    url: `//search?query=${query}`,
     success: function (response) {
       $('#search-result-box').empty();
       // 4. for 문마다 itemDto를 꺼내서 HTML 만들고 검색결과 목록에 붙이기!
@@ -153,10 +153,10 @@ function addProduct(itemDto) {
    * 2. data: JSON.stringify(itemDto),
    */
 
-  // 1. POST /api/products 에 관심 상품 생성 요청
+  // 1. POST //products 에 관심 상품 생성 요청
   $.ajax({
     type: 'POST',
-    url: '/api/products',
+    url: '//products',
     contentType: 'application/json',
     data: JSON.stringify(itemDto),
     success: function (response) {
@@ -183,11 +183,11 @@ function showProduct(folderId = null) {
   var isAsc = $(':radio[name="isAsc"]:checked').val();
 
   if (folderId) {
-    dataSource = `/api/folders/${folderId}/products?sortBy=${sorting}&isAsc=${isAsc}`;
+    dataSource = `//folders/${folderId}/products?sortBy=${sorting}&isAsc=${isAsc}`;
   } else if(folderTargetId === undefined) {
-    dataSource = `/api/products?sortBy=${sorting}&isAsc=${isAsc}&folderId=${folderId}`;
+    dataSource = `//products?sortBy=${sorting}&isAsc=${isAsc}&folderId=${folderId}`;
   } else {
-    dataSource = `/api/folders/${folderTargetId}/products?sortBy=${sorting}&isAsc=${isAsc}`;
+    dataSource = `//folders/${folderTargetId}/products?sortBy=${sorting}&isAsc=${isAsc}`;
   }
 
   $('#product-container').empty();
@@ -280,7 +280,7 @@ function addFolder() {
 
   $.ajax({
     type: "POST",
-    url: `/api/folders`,
+    url: `//folders`,
     contentType: "application/json",
     data: JSON.stringify({
       folderNames
@@ -340,12 +340,12 @@ function addProductItem(product) {
 function addInputForProductToFolder(productId, button) {
   $.ajax({
     type: 'GET',
-    url: `/api/folders`,
+    url: `//folders`,
     success: function (folders) {
       const options = folders.map(folder => `<option value="${folder.id}">${folder.name}</option>`)
       const form = `
                 <span>
-                    <form id="folder-select" method="post" autocomplete="off" action="/api/products/${productId}/folder">
+                    <form id="folder-select" method="post" autocomplete="off" action="//products/${productId}/folder">
                         <select name="folderId" form="folder-select">
                             ${options}
                         </select>
@@ -384,7 +384,7 @@ function setMyprice() {
   /**
    * 1. id가 myprice 인 input 태그에서 값을 가져온다.
    * 2. 만약 값을 입력하지 않았으면 alert를 띄우고 중단한다.
-   * 3. PUT /api/product/${targetId} 에 data를 전달한다.
+   * 3. PUT //product/${targetId} 에 data를 전달한다.
    *    주의) contentType: "application/json",
    *         data: JSON.stringify({myprice: myprice}),
    *         빠뜨리지 말 것!
@@ -400,10 +400,10 @@ function setMyprice() {
     return;
   }
 
-  // 3. PUT /api/product/${targetId} 에 data를 전달한다.
+  // 3. PUT //product/${targetId} 에 data를 전달한다.
   $.ajax({
     type: 'PUT',
-    url: `/api/products/${targetId}`,
+    url: `//products/${targetId}`,
     contentType: 'application/json',
     data: JSON.stringify({myprice: myprice}),
     success: function (response) {
@@ -424,7 +424,7 @@ function setMyprice() {
 function logout() {
   // 토큰 삭제
   Cookies.remove('Authorization', {path: '/'});
-  window.location.href = host + '/api/user/login-page';
+  window.location.href = host + '//user/login-page';
 }
 
 function getToken() {

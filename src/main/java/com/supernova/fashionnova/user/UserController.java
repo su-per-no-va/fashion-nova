@@ -9,10 +9,10 @@ import com.supernova.fashionnova.user.dto.UserResponseDto;
 import com.supernova.fashionnova.user.dto.UserUpdateRequestDto;
 import com.supernova.fashionnova.warn.dto.WarnResponseDto;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.filters.ExpiresFilter.XHttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -120,12 +120,12 @@ public class UserController {
         return ResponseUtil.of(HttpStatus.OK, responseDto);
     }
 
-    @GetMapping("/user/kakao/callback")
-    public String kakaoLogin(@RequestParam String code, XHttpServletResponse response)
+    @GetMapping("/kakao/callback")
+    public String kakaoLogin(@RequestParam String code, HttpServletResponse response)
         throws JsonProcessingException {
             String token = kakaoService.kakaoLogin(code);
 
-            Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, token);
+            Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, token.substring(7));
             cookie.setPath("/");
             response.addCookie(cookie);
 
