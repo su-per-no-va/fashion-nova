@@ -86,6 +86,7 @@ public class WebSecurityConfig {
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() //리소스 접근 허용
                 .requestMatchers("/fonts/**").permitAll()
                 .requestMatchers("/vendor/**").permitAll()
+                .requestMatchers("/hamburgers/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/users/signup").permitAll() // 회원가입 허용
                 .requestMatchers(HttpMethod.POST, "/users/login").permitAll() // 로그인 허용
                 .requestMatchers(HttpMethod.GET, "/products/**").permitAll()// 상품 검색 허용

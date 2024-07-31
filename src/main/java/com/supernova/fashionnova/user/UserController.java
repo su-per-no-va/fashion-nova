@@ -27,19 +27,6 @@ public class UserController {
 
     private final UserService userService;
 
-    // 메인 페이지
-    @GetMapping("/")
-    public String home(Model model) {
-        // 필요한 데이터를 모델에 추가할 수 있습니다.
-        return "index"; // 메인 페이지 타임리프 템플릿 파일 (예: src/main/resources/templates/index2.html)
-    }
-
-    // 회원가입 페이지
-    @GetMapping("/signup")
-    public String showSignupForm() {
-        return "signup"; // 회원가입 페이지 타임리프 템플릿 파일 (예: src/main/resources/templates/signup.html)
-    }
-
     /**
      * 유저 회원가입
      *
