@@ -7,8 +7,6 @@ import com.supernova.fashionnova.security.JwtUtil;
 import com.supernova.fashionnova.security.UserDetailsServiceImpl;
 import com.supernova.fashionnova.user.UserRole;
 import com.supernova.fashionnova.user.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,21 +29,24 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig {
 
-    //password 암호화
+    // Password 암호화
     @Bean
     public PasswordEncoder passwordEncoder() {
         // BCrypt = 비밀번호를 암호화 해주는 Hash 함수(강력한 암호화)
         return new BCryptPasswordEncoder();
     }
 
-    private static final Logger log = LoggerFactory.getLogger(WebSecurityConfig.class);
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
     private final AuthenticationConfiguration authenticationConfiguration;
     private final UserService userService;
 
-    public WebSecurityConfig(JwtUtil jwtUtil, UserDetailsServiceImpl userDetailsService,
-        AuthenticationConfiguration authenticationConfiguration, @Lazy UserService userService) {
+    public WebSecurityConfig(
+        JwtUtil jwtUtil,
+        UserDetailsServiceImpl userDetailsService,
+        AuthenticationConfiguration authenticationConfiguration,
+        @Lazy UserService userService) {
+
         this.jwtUtil = jwtUtil;
         this.userDetailsService = userDetailsService;
         this.authenticationConfiguration = authenticationConfiguration;
@@ -81,20 +82,21 @@ public class WebSecurityConfig {
         http.sessionManagement((sessionManagement) ->
             sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         );
+
         http.authorizeHttpRequests((authorizeHttpRequests) ->
             authorizeHttpRequests
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-                .permitAll() // resources 접근 허용 설정
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() //리소스 접근 허용
+                .requestMatchers("/fonts/**").permitAll()
+                .requestMatchers("/vendor/**").permitAll()
+                .requestMatchers("/hamburgers/**").permitAll()
+                .requestMatchers("/images/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/users/signup").permitAll() // 회원가입 허용
                 .requestMatchers(HttpMethod.POST, "/users/login").permitAll() // 로그인 허용
-                .requestMatchers(HttpMethod.GET, "/products/**").permitAll()// 상품 검색 허용
-                .requestMatchers(HttpMethod.GET, "/reviews/**").permitAll()// 상품별 리뷰 조회 허용
-                .requestMatchers(HttpMethod.GET, "/users/user/kakao/**").permitAll()// 카카오
-                .requestMatchers("/api/**").permitAll()// 카카오
-                .requestMatchers("/users/**").permitAll()// 카카오
-                .requestMatchers("/admin/**").hasAuthority(UserRole.ADMIN.getAuthority()) //권한이 Admin 인 유저만 접근가능
+                .requestMatchers(HttpMethod.GET, "/products/**").permitAll() // 상품 검색 허용
+                .requestMatchers(HttpMethod.GET, "/reviews/**").permitAll() // 상품별 리뷰 조회 허용
+                .requestMatchers("/**","/login","/signup").permitAll()
+                .requestMatchers("/admin/**").hasAuthority(UserRole.ADMIN.getAuthority()) // 권한이 Admin 인 유저만 접근가능
                 .anyRequest().authenticated() // 그 외 모든 요청 인증처리
-
         );
 
         // 필터관리 (필터 작동 순서 지정)
@@ -102,12 +104,12 @@ public class WebSecurityConfig {
         http.addFilterBefore(jwtAuthenticationFilter(), JwtAuthorizationFilter.class);
 
         return http.build();
+
     }
 
     @Bean
     public AccessDeniedHandler accessDeniedHandler() {
         return new CustomAccessDeniedHandler();
     }
-
 
 }
