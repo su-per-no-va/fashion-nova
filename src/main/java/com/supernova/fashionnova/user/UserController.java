@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -33,11 +34,11 @@ public class UserController {
      * @return "회원가입 성공"
      */
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(@Valid @RequestBody SignupRequestDto requestDto) {
+    public String signup(@Valid @RequestBody SignupRequestDto requestDto,Model model) {
 
         userService.signup(requestDto);
 
-        return ResponseUtil.of(HttpStatus.CREATED, "회원가입 성공");
+        return "redirect:/login";
     }
 
     /**

@@ -51,26 +51,20 @@ public class WebSecurityConfig {
         this.userDetailsService = userDetailsService;
         this.authenticationConfiguration = authenticationConfiguration;
         this.userService = userService;
-
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(
-        AuthenticationConfiguration configuration) throws Exception {
-
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)
+        throws Exception {
         return configuration.getAuthenticationManager();
-
     }
 
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-
         JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil, userService);
         filter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
-
         return filter;
-
     }
 
     @Bean
@@ -80,7 +74,6 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
         http.csrf(AbstractHttpConfigurer::disable);
         http.formLogin(AbstractHttpConfigurer::disable);
         http.httpBasic(AbstractHttpConfigurer::disable);
@@ -92,12 +85,16 @@ public class WebSecurityConfig {
 
         http.authorizeHttpRequests((authorizeHttpRequests) ->
             authorizeHttpRequests
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-                .permitAll() // resources 접근 허용 설정
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() //리소스 접근 허용
+                .requestMatchers("/fonts/**").permitAll()
+                .requestMatchers("/vendor/**").permitAll()
+                .requestMatchers("/hamburgers/**").permitAll()
+                .requestMatchers("/images/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/users/signup").permitAll() // 회원가입 허용
                 .requestMatchers(HttpMethod.POST, "/users/login").permitAll() // 로그인 허용
                 .requestMatchers(HttpMethod.GET, "/products/**").permitAll() // 상품 검색 허용
                 .requestMatchers(HttpMethod.GET, "/reviews/**").permitAll() // 상품별 리뷰 조회 허용
+                .requestMatchers("/**","/login","/signup").permitAll()
                 .requestMatchers("/admin/**").hasAuthority(UserRole.ADMIN.getAuthority()) // 권한이 Admin 인 유저만 접근가능
                 .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
