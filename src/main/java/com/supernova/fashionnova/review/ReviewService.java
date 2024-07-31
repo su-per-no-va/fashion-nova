@@ -1,5 +1,6 @@
 package com.supernova.fashionnova.review;
 
+import com.amazonaws.util.CollectionUtils;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.order.OrdersRepository;
@@ -59,7 +60,9 @@ public class ReviewService {
         product.increaseReview();
 
         //파일 업로드
-        fileUploadUtil.uploadImage(images, ImageType.REVIEW, review.getId());
+        if (!CollectionUtils.isNullOrEmpty(images)) {
+            fileUploadUtil.uploadImage(images, ImageType.REVIEW, review.getId());
+        }
 
     }
 
@@ -85,7 +88,7 @@ public class ReviewService {
         // ReviewResponseDto 객체 생성 및 설정
         List<ReviewResponseDto> reviewResponseDtos = new ArrayList<>();
         for (Review review : reviews) {
-            ReviewResponseDto dto = new ReviewResponseDto(review, reviewImages.get(review.getId())); // byte[] 리스트 설정
+            ReviewResponseDto dto = new ReviewResponseDto(review, reviewImages.get(review.getId()));
             reviewResponseDtos.add(dto);
         }
 
@@ -143,6 +146,9 @@ public class ReviewService {
     @Transactional
     public void deleteReview(User user, Long reviewId) {
         Review review = getReview(user, reviewId);
+        //s3에서 찾아서 삭제
+        fileUploadUtil.deleteImages(ImageType.REVIEW,reviewId);
+
         reviewRepository.delete(review);
         review.getProduct().decreaseReview();
     }

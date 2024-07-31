@@ -131,7 +131,7 @@ public class AdminService {
         // ReviewResponseDto 객체 생성 및 설정
         List<ReviewResponseDto> reviewResponseDtos = new ArrayList<>();
         for (Review review : reviews) {
-            ReviewResponseDto dto = new ReviewResponseDto(review, reviewImages.get(review.getId())); // byte[] 리스트 설정
+            ReviewResponseDto dto = new ReviewResponseDto(review, reviewImages.get(review.getId()));
             reviewResponseDtos.add(dto);
         }
 

@@ -22,14 +22,17 @@ public class ReviewImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String fileName;
+
     private String reviewImageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_id", nullable = false)
     private Review review;
 
-    public ReviewImage( Review review, String reviewImageUrl) {
+    public ReviewImage( Review review,String fileName ,String reviewImageUrl) {
         this.review = review;
         this.reviewImageUrl = reviewImageUrl;
+        this.fileName = fileName;
     }
 }

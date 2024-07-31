@@ -55,13 +55,8 @@ public class FileUploadUtil {
 
     @Transactional
     public void uploadImage(List<MultipartFile> files, ImageType type, Long typeId) {
-        // nullCheck
-        if (files.isEmpty()) {
-            return;
-        }
 
-        ArrayList<String> imageUrls = new ArrayList<>();
-
+        HashMap<String, String> imageUrls = new HashMap<>();
         for (MultipartFile file : files) {
             String originalFilename = file.getOriginalFilename(); // 원본 파일 명
             String s3FileName = random + originalFilename; // 변경된 파일 명 (같은 이름의 파일 방지)
@@ -71,23 +66,25 @@ public class FileUploadUtil {
             metadata.setContentLength(file.getSize());
 
             try {
-                amazonS3Client.putObject(bucket, s3FileName, file.getInputStream(), metadata); // 파일 업로드
+                // 파일 업로드
+                amazonS3Client.putObject(bucket, s3FileName, file.getInputStream(),
+                    metadata);
 
-                imageUrls.add(amazonS3Client.getUrl(bucket, s3FileName).toString());
+                imageUrls.put(s3FileName, amazonS3Client.getUrl(bucket, s3FileName).toString());
 
             } catch (IOException e) {
                 throw new CustomException(ErrorType.UPLOAD_REVIEW);
             }
         }
 
-
         switch (type) {
             case REVIEW -> {
                 Review review = reviewRepository.findById(typeId).orElseThrow(() ->
                     new CustomException(ErrorType.NOT_FOUND_REVIEW));
 
-                for (String imageUrl : imageUrls) {
-                    ReviewImage reviewImage = new ReviewImage(review, imageUrl);
+                for (Map.Entry<String, String> entry : imageUrls.entrySet()) {
+                    ReviewImage reviewImage = new ReviewImage(review, entry.getKey(),
+                        entry.getValue());
                     reviewImageRepository.save(reviewImage);
                 }
 
@@ -97,8 +94,9 @@ public class FileUploadUtil {
                 Product product = productRepository.findById(typeId).orElseThrow(() ->
                     new CustomException(ErrorType.NOT_FOUND_PRODUCT));
 
-                for (String imageUrl : imageUrls) {
-                    ProductImage productImage = new ProductImage(product, imageUrl);
+                for (Map.Entry<String, String> entry : imageUrls.entrySet()) {
+                    ProductImage productImage = new ProductImage(product, entry.getKey(),
+                        entry.getValue());
                     productImageRepository.save(productImage);
                 }
             }
@@ -106,8 +104,9 @@ public class FileUploadUtil {
             case QUESTION -> {
                 Question question = questionRepository.findById(typeId).orElseThrow(() ->
                     new CustomException(ErrorType.NOT_FOUND_QUESTION));
-                for (String imageUrl : imageUrls) {
-                    QuestionImage questionImage = new QuestionImage(question, imageUrl);
+                for (Map.Entry<String, String> entry : imageUrls.entrySet()) {
+                    QuestionImage questionImage = new QuestionImage(question, entry.getKey(),
+                        entry.getValue());
                     questionImageRepository.save(questionImage);
                     question.getQuestionImageUrls().add(questionImage);
                 }
@@ -125,38 +124,81 @@ public class FileUploadUtil {
                 case REVIEW -> {
                     List<ReviewImage> reviewImages = reviewImageRepository.findAllByReviewId(id);
                     for (ReviewImage reviewImage : reviewImages) {
-                        URL url = amazonS3Client.getUrl("fashion-s3",reviewImage.getReviewImageUrl());
-                        imageUrls.add(url.toString());
+                        //s3에서 이미지 찾아오기
+                        String url = amazonS3Client.getResourceUrl(bucket,
+                            reviewImage.getFileName());
+                        imageUrls.add(url);
                     }
                 }
                 case PRODUCT -> {
                     Product product = productRepository.findById(id).orElseThrow(
-                        () -> new CustomException(ErrorType.NOT_FOUND_PRODUCT)
-                    );
+                        () -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
+
                     List<ProductImage> productImages = productImageRepository.findAllByProduct(
                         product);
                     for (ProductImage productImage : productImages) {
-                        URL url = amazonS3Client.getUrl("fashion-s3",productImage.getProductImageUrl());
-                        imageUrls.add(url.toString());
+                        //s3에서 이미지 찾아오기
+                        String url = amazonS3Client.getResourceUrl(bucket, productImage.getFileName());
+                        imageUrls.add(url);
                     }
                 }
                 case QUESTION -> {
                     Question question = questionRepository.findById(id).orElseThrow(
-                        () -> new CustomException(ErrorType.NOT_FOUND_QUESTION)
-                    );
+                        () -> new CustomException(ErrorType.NOT_FOUND_QUESTION));
+
                     List<QuestionImage> questionImages = questionImageRepository.findAllByQuestion(
                         question);
                     for (QuestionImage questionImage : questionImages) {
-                        imageUrls.add(questionImage.getQuestionImageUrl());
+                        //s3에서 이미지 찾아오기
+                        String url = amazonS3Client.getResourceUrl(bucket, questionImage.getFileName());
+                        imageUrls.add(url);
                     }
                 }
             }
 
-
-            imagesMap.put(id,imageUrls);
+            imagesMap.put(id, imageUrls);
         }
 
         return imagesMap;
+    }
+
+    public void deleteImages(ImageType type, Long typeId) {
+
+        switch (type) {
+            case REVIEW -> {
+                List<ReviewImage> reviewImages = reviewImageRepository.findAllByReviewId(typeId);
+
+                //s3 버킷에서 찾아서 삭제
+                for (ReviewImage reviewImage : reviewImages) {
+                    amazonS3Client.deleteObject(bucket, reviewImage.getFileName());
+                }
+            }
+
+            case PRODUCT -> {
+                List<ProductImage> productImages = productImageRepository.findAllByProductId(
+                    typeId);
+
+                // 상품이미지에서 상품아이디로 삭제
+                productImageRepository.deleteAllByProductId(typeId);
+                //s3 버킷에서 찾아서 삭제
+                for (ProductImage productImage : productImages) {
+                    amazonS3Client.deleteObject(bucket, productImage.getFileName());
+                }
+            }
+
+            case QUESTION -> {
+                List<QuestionImage> questionImages = questionImageRepository.findAllByQuestionId(
+                    typeId);
+
+                // 상품이미지에서 상품아이디로 삭제
+                questionImageRepository.deleteAllByQuestionId(typeId);
+                //s3 버킷에서 찾아서 삭제
+                for (QuestionImage questionImage : questionImages) {
+                    amazonS3Client.deleteObject(bucket, questionImage.getFileName());
+                }
+            }
+        }
+
     }
 
 

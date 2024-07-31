@@ -68,7 +68,6 @@ public class ReviewController {
         Pageable pageable = PageRequest.of(page, 10);
         List<ReviewResponseDto> reviewResponseList = reviewService.getReviewsByProductId(productId,
             pageable);
-//        Page<ReviewResponseDto> reviewResponseDtoPage = reviews.map(ReviewResponseDto::new);
 
         return ResponseUtil.of(HttpStatus.OK, reviewResponseList);
     }
