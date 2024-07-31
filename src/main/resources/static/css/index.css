@@ -1,0 +1,148 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #000;
+  color: #fff;
+  padding: 10px 20px;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.icons-left {
+  display: flex;
+  align-items: center;
+}
+
+.icons-left a img {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+}
+
+.user-menu a {
+  margin-left: 15px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8f8f8;
+  padding: 10px 20px;
+}
+
+.main-header h1 {
+  margin: 0;
+  color: #ff1493;
+}
+
+.main-header nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+}
+
+.main-header nav ul li {
+  margin-right: 15px;
+}
+
+.main-header nav ul li a {
+  text-decoration: none;
+  color: #000;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+}
+
+.search-container input[type="text"] {
+  padding: 5px;
+  margin-right: 10px;
+}
+
+.search-container a img {
+  width: 20px;
+  height: 20px;
+}
+
+.coupon-banner {
+  background-color: #d3f8d3;
+  text-align: center;
+  padding: 20px;
+  position: relative;
+}
+
+.coupon-banner h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.coupon-banner p {
+  margin: 5px 0;
+  font-size: 18px;
+}
+
+.coupon-banner span {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.ranking {
+  text-align: center;
+  padding: 20px;
+}
+
+.ranking .products {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.ranking .product {
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  width: 200px;
+}
+
+.ranking .product img {
+  max-width: 100%;
+  height: auto;
+}
+
+#loadMore {
+  padding: 10px 20px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+footer {
+  background-color: #f8f8f8;
+  text-align: center;
+  padding: 20px;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+}
+
+footer p {
+  margin: 0;
+  color: #666;
+}
