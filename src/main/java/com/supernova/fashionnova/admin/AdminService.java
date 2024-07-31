@@ -9,6 +9,9 @@ import com.supernova.fashionnova.coupon.CouponType;
 import com.supernova.fashionnova.coupon.dto.CouponRequestDto;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
+import com.supernova.fashionnova.mileage.Mileage;
+import com.supernova.fashionnova.mileage.MileageRepository;
+import com.supernova.fashionnova.mileage.dto.MileageRequestDto;
 import com.supernova.fashionnova.product.Product;
 import com.supernova.fashionnova.product.ProductDetail;
 import com.supernova.fashionnova.product.ProductRepository;
@@ -54,6 +57,7 @@ public class AdminService {
     private final AnswerRepository answerRepository;
     private final QuestionRepository questionRepository;
     private final FileUploadUtil fileUploadUtil;
+    private final MileageRepository mileageRepository;
 
     /**
      * 유저 전체조회
@@ -285,6 +289,38 @@ public class AdminService {
             .build();
 
         couponRepository.save(coupon);
+
+    }
+
+    /**
+     * 마일리지 지급
+     *
+     * @param requestDto
+     * @throws CustomException NOT_FOUND_USER 유저ID가 존재하지 않을 때
+     */
+    @Transactional
+    public void addMileage(MileageRequestDto requestDto) {
+
+        User user = userRepository.findById(requestDto.getUserId())
+            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
+
+        Mileage mileage = Mileage.builder()
+            .user(user)
+            .mileage(requestDto.getMileage())
+            .build();
+
+        mileageRepository.save(mileage);
+
+    }
+
+    /**
+     * 마일리지 초기화
+     *
+     */
+    @Transactional
+    public void deleteMileage() {
+
+        mileageRepository.deleteAll();
 
     }
 

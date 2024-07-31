@@ -111,3 +111,18 @@ Authorization: {{access_token}}
       "status" : "SOLD_OUT"
   }]
 }
+
+### 마일리지 지급 (admin)
+POST http://localhost:8080/admin/mileages
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "userId": 1,
+  "mileage": 100
+}
+
+### 마일리지 초기화 (admin)
+DELETE http://localhost:8080/admin/mileages
+Content-Type: application/json
+Authorization: {{access_token}}
