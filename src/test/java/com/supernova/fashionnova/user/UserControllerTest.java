@@ -108,8 +108,8 @@ class UserControllerTest {
                 .with(csrf())
                 .content(objectMapper.writeValueAsString(requestDto))  // 회원가입 엔드포인트로 POST 요청을 보냅니다.
                 .contentType(MediaType.APPLICATION_JSON))  // 요청 본문의 콘텐츠 타입을 JSON으로 설정합니다.
-            .andExpect(status().isCreated())  // 응답 상태 코드가 201 Created인지 확인합니다.
-            .andExpect(content().string("회원가입 성공"));  // 응답 본문이 "회원가입 성공"인지 확인합니다.
+            .andExpect(status().isOk())  // 응답 상태 코드가 201 Created인지 확인합니다.
+            .andExpect(content().string("redirect:/login"));  // 응답 본문이 "회원가입 성공"인지 확인합니다.
     }
 
     @Test
