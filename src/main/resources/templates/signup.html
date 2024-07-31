@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checklist Sign Up</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="/css/login.css" type="text/css">
+  <link rel="stylesheet" href="/css/1.css" type="text/css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+  <script type="module">
+
+    $(document).ready(function () {
+      $("#btn").click(async function () {
+        let isValid = true;
+
+        // 입력값 유효성 검사
+        $.each($('.int-area > input'), function (index, item) {
+          if (isValid) {
+            var value = $(item).val();
+            if (value === "" || (index === 0 && value.length < 4)) {
+              $(item).next('label').addClass('warning');
+              setTimeout(function () {
+                $('label').removeClass('warning');
+              }, 1500);
+              $(item).focus();
+              isValid = false;
+            }
+          }
+        });
+
+        if (!isValid) return;
+
+        // 입력값을 객체로 수집
+        let doc = {
+          'userName': $('#userName').val(),
+          'password': $('#password').val(),
+          'name': $('#name').val(),
+          'phone': $('#phone').val(),
+          'email': $('#email').val()
+        };
+
+        try {
+          // 서버로 데이터 전송
+          await $.ajax({
+            type: "POST",
+            url: "/users/signup",
+            data: JSON.stringify(doc),
+            contentType: "application/json",
+            success: function (response) {
+              alert('회원 가입 완료!');
+              window.location.href = "/login"; // 로그인 페이지로 이동
+            },
+            error: function (error) {
+              console.error("에러 발생:", error);
+              alert('회원 가입 실패. 다시 시도해주세요.');
+            }
+          });
+        } catch (error) {
+          console.error("AJAX 호출 중 오류 발생:", error);
+        }
+      });
+    });
+
+  </script>
+</head>
+
+<body>
+
+
+<section class="login-form">
+  <h1>SIGN UP</h1>
+  <form>
+    <div class="int-area">
+      <input type="text" name="id" id="userName" autocomplete="off" required>
+      <label for="userName">ID</label>
+    </div>
+    <div class="int-area">
+      <input type="password" name="pw" id="password" autocomplete="off" required>
+      <label for="password">PASSWORD</label>
+    </div>
+    <div class="int-area">
+      <input type="text" name="name" id="name" autocomplete="off" required>
+      <label for="name">NAME</label>
+    </div>
+    <div class="int-area">
+      <input type="text" name="birthdate" id="birthdate" autocomplete="off" required>
+      <label for="birthdate">BIRTHDATE</label>
+    </div>
+    <div class="int-area">
+      <input type="text" name="phone" id="phone" autocomplete="off" required>
+      <label for="phone">PHONE NUMBER</label>
+    </div>
+    <div class="int-area">
+      <input type="text" name="email" id="email" autocomplete="off" required>
+      <label for="email">E-MAIL</label>
+    </div>
+    <div class="btn-area">
+      <button id="btn" type="button">CREATE ACCOUNT</button>
+    </div>
+  </form>
+</section>
+</body>
+
+</html>

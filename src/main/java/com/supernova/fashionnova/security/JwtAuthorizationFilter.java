@@ -40,7 +40,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         if (req.getRequestURL().toString().equals("http://localhost:8080/users/signup")
             || req.getRequestURL().toString().equals("http://localhost:8080/users/login")
             || req.getRequestURL().toString().equals("http://localhost:8080/products/product")
-            || req.getRequestURL().toString().matches("http://localhost:8080/reviews/\\d+")) {
+            || req.getRequestURL().toString().matches("http://localhost:8080/reviews/\\d+")
+            || req.getRequestURL().toString().equals("http://localhost:8080/")
+            || req.getRequestURL().toString().contains("/css/")
+            || req.getRequestURL().toString().contains("/js/")
+            || req.getRequestURL().toString().contains("/favicon.ico")
+            || req.getRequestURL().toString().contains("/static/")
+            || req.getRequestURL().toString().contains("/fashion-nova")) {
             filterChain.doFilter(req, res);
             return;
         }
