@@ -1,14 +1,18 @@
 package com.supernova.fashionnova.user;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.supernova.fashionnova.global.util.ResponseUtil;
+import com.supernova.fashionnova.security.JwtUtil;
 import com.supernova.fashionnova.security.UserDetailsImpl;
 import com.supernova.fashionnova.user.dto.SignupRequestDto;
 import com.supernova.fashionnova.user.dto.UserResponseDto;
 import com.supernova.fashionnova.user.dto.UserUpdateRequestDto;
 import com.supernova.fashionnova.warn.dto.WarnResponseDto;
+import jakarta.servlet.http.Cookie;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.filters.ExpiresFilter.XHttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -25,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
+    private final KakaoService kakaoService;
 
     /**
      * 유저 회원가입
@@ -111,5 +117,17 @@ public class UserController {
         UserResponseDto responseDto = userService.updateUser(requestDto,userDetails.getUser());
 
         return ResponseUtil.of(HttpStatus.OK, responseDto);
+    }
+
+    @GetMapping("/user/kakao/callback")
+    public String kakaoLogin(@RequestParam String code, XHttpServletResponse response)
+        throws JsonProcessingException {
+            String token = kakaoService.kakaoLogin(code);
+
+            Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, token);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+
+            return "redirect:/";
     }
 }

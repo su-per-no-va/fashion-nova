@@ -48,6 +48,10 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         //AccessToken 가져온후 가공
         String accessToken = jwtUtil.getAccessTokenFromRequest(req);
 
+        if(accessToken == null){
+            filterChain.doFilter(req, res);
+            return;
+        }
         //검사
         checkAccessToken(res, accessToken);
 
