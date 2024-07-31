@@ -2,7 +2,6 @@ package com.supernova.fashionnova.order;
 
 import com.supernova.fashionnova.global.common.Timestamped;
 import com.supernova.fashionnova.user.User;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

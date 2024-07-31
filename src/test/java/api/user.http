@@ -1,5 +1,52 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=IntelliJ IDEA
 
-###
+###회원가입
+POST http://localhost:8080/users/signup
+Content-Type: application/json
+
+{
+  "userName": "winner7789",
+  "password": "Fb112233!",
+  "name": "류정근4",
+  "email": "winner77@gmail.com",
+  "phone": "010-6231-4814"
+}
+
+###로그인
+POST http://localhost:8080/users/login
+Content-Type: application/json
+
+{
+  "userName": "winner7789",
+  "password": "Fb112233!"
+}
+
+> {% client.global.set("access_token", response.headers.valueOf("Authorization")); %}
+
+###로그아웃
+POST http://localhost:8080/users/logout
+Authorization: {{access_token}}
+
+###회원탈퇴
+PUT http://localhost:8080/users/withdraw
+Authorization: {{access_token}}
+
+###유저정보조회(자신만 가능)
+GET localhost:8080/users
+Authorization: {{access_token}}
+
+###유저경고조회(자신만 가능)
+GET localhost:8080/users/caution
+Authorization: {{access_token}}
+
+###유저정보수정(자신만 가능)
+PUT localhost:8080/users
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "userName": "winner7789",
+  "password": "Fb112233!",
+  "name": "김나은",
+  "email": "na@gmail.com",
+  "phone": "010-1234-5678"
+}

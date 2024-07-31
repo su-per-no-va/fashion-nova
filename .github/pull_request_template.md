@@ -1,20 +1,14 @@
-  제목 : [🎉FEATURE] ] /[♻️ REFACTOR] / [🐞BUG] + 제목을 입력해주세요
- feat(issue 번호): 
- 
+제목 : [🎉FEATURE] / [♻️ REFACTOR] / [🐞BUG] / [🍻TEST] + 제목을 입력해주세요
+feat(issue 번호): #이슈번호
+
 ## 이슈 링크
 - [ ] #이슈번호
 - [ ] #이슈번호
 
 resolved: #이슈번호, resolved: #이슈번호
 
-## 기타
 
 ## 🔎 작업 내용
-
-
-
-
-## ➕ 기타 수정 사항
 
 
 

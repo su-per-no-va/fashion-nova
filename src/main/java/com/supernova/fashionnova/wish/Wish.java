@@ -1,6 +1,5 @@
 package com.supernova.fashionnova.wish;
 
-import com.supernova.fashionnova.global.common.Timestamped;
 import com.supernova.fashionnova.product.Product;
 import com.supernova.fashionnova.user.User;
 import jakarta.persistence.Entity;
@@ -12,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,5 +32,11 @@ public class Wish {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
+
+    @Builder
+    public Wish(User user, Product product) {
+        this.user = user;
+        this.product = product;
+    }
 
 }

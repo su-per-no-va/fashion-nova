@@ -1,9 +1,17 @@
 package com.supernova.fashionnova.cart.dto;
 
-import lombok.Builder;
+import java.util.List;
 import lombok.Getter;
 
 @Getter
-@Builder
 public class CartResponseDto {
+
+    private final List<CartItemDto> cartItemDtoList;
+
+    private final Long totalPrice;
+
+    public CartResponseDto(List<CartItemDto> cartItemDtoList, Long totalPrice) {
+        this.cartItemDtoList = cartItemDtoList;
+        this.totalPrice = totalPrice;
+    }
 }
