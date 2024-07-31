@@ -87,6 +87,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/fonts/**").permitAll()
                 .requestMatchers("/vendor/**").permitAll()
                 .requestMatchers("/hamburgers/**").permitAll()
+                .requestMatchers("/images/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/users/signup").permitAll() // 회원가입 허용
                 .requestMatchers(HttpMethod.POST, "/users/login").permitAll() // 로그인 허용
                 .requestMatchers(HttpMethod.GET, "/products/**").permitAll()// 상품 검색 허용
