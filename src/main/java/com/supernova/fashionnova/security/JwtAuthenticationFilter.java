@@ -143,6 +143,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         log.info("refreshToken : " + refreshToken);
         log.info("userName : " + user.getUserName());
 
+
+
         // 로그인 메세지 띄우기
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

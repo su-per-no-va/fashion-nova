@@ -18,9 +18,9 @@ function onLogin() {
 
   $.ajax({
     type: "POST",
-    url: `/api/user/login`,
+    url: `/users/login`,
     contentType: "application/json",
-    data: JSON.stringify({username: username, password: password}),
+    data: JSON.stringify({userName: username, password: password}),
   })
   .done(function (res, status, xhr) {
     const token = xhr.getResponseHeader('Authorization');
@@ -30,12 +30,11 @@ function onLogin() {
     $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
       jqXHR.setRequestHeader('Authorization', token);
     });
-
     window.location.href = host;
   })
   .fail(function (jqXHR, textStatus) {
-    alert("Login Fail");
-    window.location.href = host + '/api/user/login-page?error'
+    alert("로그인 실패");
+    window.location.href = host + '/users/login'
   });
 }
 
