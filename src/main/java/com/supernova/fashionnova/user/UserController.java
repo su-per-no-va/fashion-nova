@@ -6,6 +6,7 @@ import com.supernova.fashionnova.user.dto.SignupRequestDto;
 import com.supernova.fashionnova.user.dto.UserResponseDto;
 import com.supernova.fashionnova.user.dto.UserUpdateRequestDto;
 import com.supernova.fashionnova.warn.dto.WarnResponseDto;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequiredArgsConstructor
@@ -37,11 +39,11 @@ public class UserController {
      */
 
     @PostMapping("/signup")
-    public String signup(@Valid @RequestBody SignupRequestDto requestDto) {
+    public ModelAndView signup(@Valid @RequestBody SignupRequestDto requestDto) {
 
         userService.signup(requestDto);
 
-        return "redirect:login.html";
+        return new ModelAndView("redirect:/login.html");
     }
 
     /**
@@ -112,7 +114,7 @@ public class UserController {
         @Valid @RequestBody UserUpdateRequestDto requestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        UserResponseDto responseDto = userService.updateUser(requestDto,userDetails.getUser());
+        UserResponseDto responseDto = userService.updateUser(requestDto, userDetails.getUser());
 
         return ResponseUtil.of(HttpStatus.OK, responseDto);
     }

@@ -73,7 +73,7 @@
 
 <section class="login-form">
   <h1>SIGN UP</h1>
-  <form id="signupForm">
+  <form id="signupForm" >
     <div class="int-area">
       <input type="text" name="userName" id="userName" autocomplete="off" required>
       <label for="userName">ID</label>
@@ -122,6 +122,7 @@
     .then(response => response.json())
     .then(data => {
       alert("회원가입 성공")
+      window.location.href = "login.html"; // 로그인 페이지로 이동
     })
     .catch(error => {
       alert(error.get().message);
