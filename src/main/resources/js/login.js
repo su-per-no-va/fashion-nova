@@ -25,7 +25,7 @@ function onLogin() {
   .done(function (res, status, xhr) {
     const token = xhr.getResponseHeader('Authorization');
 
-    Cookies.set('Authorization', token, {path: '/'})
+    Cookies.set('Authorization', token, {path: '/'});
 
     $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
       jqXHR.setRequestHeader('Authorization', token);

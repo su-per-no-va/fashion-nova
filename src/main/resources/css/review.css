@@ -1,0 +1,5 @@
+.table-shopping-cart th,
+.table-shopping-cart td {
+  padding: 15px;
+  text-align: left;
+}
