@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
@@ -122,6 +121,12 @@ public class UserController {
         return ResponseUtil.of(HttpStatus.OK, responseDto);
     }
 
+    /**
+     * 카카오 소셜 로그인
+     *
+     * @param code
+     * @param response
+     */
     @GetMapping("/kakao/callback")
     public void kakaoLogin(@RequestParam String code, HttpServletResponse response)
         throws IOException {
