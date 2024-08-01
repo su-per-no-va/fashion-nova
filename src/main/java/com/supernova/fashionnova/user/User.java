@@ -106,6 +106,7 @@ public class User extends Timestamped {
     public User(String username, String email, String password, Long kakaoId) {
         this.name = username;
         this.password = password;
+        this.userName = email;
         this.email = email;
         this.kakaoId = kakaoId;
         this.userRole = UserRole.USER; // 기본적으로 USER로 권한 설정
