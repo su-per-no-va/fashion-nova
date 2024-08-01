@@ -20,4 +20,10 @@ public class QuestionRequestDto {
     @NotBlank(message = "문의 타입 입력값이 없습니다.")
     private String type;
 
+    public QuestionRequestDto(String title, String question, String type) {
+        this.title = title;
+        this.question = question;
+        this.type = type;
+    }
+
 }
