@@ -29,4 +29,13 @@ public class AddressRequestDto {
 
     private String detail;
 
+    public AddressRequestDto(String name, String recipientName, String recipientNumber, String zipCode, String address, String detail) {
+        this.name = name;
+        this.recipientName = recipientName;
+        this.recipientNumber = recipientNumber;
+        this.zipCode = zipCode;
+        this.address = address;
+        this.detail = detail;
+    }
+
 }

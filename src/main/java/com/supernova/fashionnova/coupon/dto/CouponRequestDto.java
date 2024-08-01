@@ -18,4 +18,12 @@ public class CouponRequestDto {
         message = "유효하지 않은 쿠폰 타입입니다.")
     private String type;
 
+    public CouponRequestDto(Long userId, String name, Date period, String sale, String type) {
+        this.userId = userId;
+        this.name = name;
+        this.period = period;
+        this.sale = sale;
+        this.type = type;
+    }
+
 }
