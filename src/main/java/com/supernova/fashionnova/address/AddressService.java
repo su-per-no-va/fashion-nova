@@ -1,8 +1,11 @@
 package com.supernova.fashionnova.address;
 
 import com.supernova.fashionnova.address.dto.AddressDefaultRequestDto;
+import com.supernova.fashionnova.address.dto.AddressDeleteRequestDto;
 import com.supernova.fashionnova.address.dto.AddressRequestDto;
 import com.supernova.fashionnova.address.dto.AddressResponseDto;
+import com.supernova.fashionnova.global.exception.CustomException;
+import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.user.User;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -65,6 +68,35 @@ public class AddressService {
 
         addressRepository.updateDefaultAddress(user.getId(), requestDto.getAddressId());
 
+    }
+
+    /**
+     * 배송지 삭제
+     *
+     * @param userDetails
+     * @param requestDto
+     * @return "배송지 삭제 성공"
+     */
+    @Transactional
+    public void deleteAddress(User user, AddressDeleteRequestDto requestDto) {
+
+        Address address = getAddress(requestDto.getAddressId());
+        validateUser(user, address);
+
+        addressRepository.delete(address);
+
+    }
+
+    private Address getAddress(Long addressId) {
+        return addressRepository.findById(addressId).orElseThrow(
+            () -> new CustomException(ErrorType.NOT_FOUND_ADDRESS)
+        );
+    }
+
+    private void validateUser(User user, Address address) {
+        if(!address.getUser().getId().equals(user.getId())) {
+            throw new CustomException(ErrorType.INVALID_ADDRESS);
+        }
     }
 
 }
