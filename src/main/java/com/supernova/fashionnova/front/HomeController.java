@@ -42,7 +42,7 @@ public class HomeController {
 
     @GetMapping("/my-page.html")
     public String myPage() {
-        return "mypage";
+        return "my-page";
     }
 
     @GetMapping("/product-detail.html")

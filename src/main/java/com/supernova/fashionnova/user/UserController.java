@@ -41,11 +41,11 @@ public class UserController {
      */
 
     @PostMapping("/signup")
-    public ModelAndView signup(@Valid @RequestBody SignupRequestDto requestDto) {
+    public ResponseEntity<String> signup(@Valid @RequestBody SignupRequestDto requestDto) {
 
         userService.signup(requestDto);
 
-        return new ModelAndView("redirect:/login.html");
+        return ResponseUtil.of(HttpStatus.OK,"회원 가입 성공");
     }
 
     /**
