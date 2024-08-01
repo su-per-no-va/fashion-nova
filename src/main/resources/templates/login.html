@@ -30,37 +30,6 @@
           }
         }
       })
-
-      if (!isValid) return;
-
-      let id = $("#id").val();
-      let pw = $("#pw").val();
-      let flag = true;
-
-      // 아이디로 DB 조회
-      const q = query(collection(db, "USER"), where("id", "==", id));
-      const querySnapshot = await getDocs(q);
-
-      // DB에 아이디가 없을 떄
-      if (querySnapshot.size == 0) {
-        alert("해당 닉네임이 존재하지 않습니다.");
-        flag = false;
-      }
-
-      // 로그인 처리
-      querySnapshot.forEach((doc) => {
-        let data = doc.data();
-        // 비밀번호가 일치하지 않을 때
-        if (pw != data.pw) {
-          alert("비밀번호가 올바르지 않습니다.");
-          flag = false;
-        }
-      });
-
-      if (flag) {
-        window.localStorage.setItem('id', id);
-        location.replace('index.html');
-      }
     });
   </script>
 </head>
@@ -71,16 +40,16 @@
   <h1>LOGIN</h1>
   <form action="">
     <div class="int-area">
-      <input type="text" name="id" id="id" autocomplete="off" required>
-      <label for="id">ID</label>
+      <input type="text" name="username" id="username" autocomplete="off" required>
+      <label for="username">ID</label>
     </div>
     <div class="int-area">
-      <input type="password" name="pw" id="pw" autocomplete="off" required>
-      <label for="pw">PASSWORD</label>
+      <input type="password" name="password" id="password" autocomplete="off" required>
+      <label for="password">PASSWORD</label>
     </div>
     <div class="btn-area">
-      <button id="btn" type="button">LOGIN</button>
-      <button id="login-kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id={REST_API_KEY}&redirect_uri=http://localhost:8080/api/user/kakao/callback&response_type=code'">
+      <button id="btn" onclick="onLogin()" type="button">LOGIN</button>
+      <button id="login-kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=6a0a695cf674d71866251ddbfd539f84&redirect_uri=http://localhost:8080/users/kakao/callback&response_type=code'">
         카카오로 로그인하기
       </button>
     </div>

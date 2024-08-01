@@ -1,6 +1,8 @@
 package com.supernova.fashionnova.front;
 
+import com.supernova.fashionnova.user.dto.SignupRequestDto;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
@@ -18,7 +20,8 @@ public class HomeController {
     }
 
     @GetMapping("/signup.html")
-    public String signup() {
+    public String signup(Model model) {
+        model.addAttribute("SignupRequestDto",new SignupRequestDto());
         return "signup";
     }
 
@@ -39,7 +42,7 @@ public class HomeController {
 
     @GetMapping("/my-page.html")
     public String myPage() {
-        return "mypage";
+        return "my-page";
     }
 
     @GetMapping("/product-detail.html")

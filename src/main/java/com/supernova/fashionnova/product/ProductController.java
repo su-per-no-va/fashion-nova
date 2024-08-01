@@ -32,7 +32,7 @@ public class ProductController {
          @RequestParam(value = "color") String color,
          @RequestParam(value = "page") int page) {
 
-        return productService.getProductList( page - 1, category, size, color, sorted);
+        return productService.getProductList(page - 1, category, size, color, sorted);
     }
 
 }

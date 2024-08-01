@@ -32,6 +32,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.servlet.ModelAndView;
 
 
 @WebMvcTest(UserController.class)  // UserController만 테스트하기 위해 Spring MVC 테스트 환경을 설정합니다.
@@ -45,6 +46,9 @@ class UserControllerTest {
 
     @MockBean
     private UserService service;  // UserService를 목(Mock) 객체로 만들어 UserController의 의존성을 주입합니다.
+
+    @MockBean
+    private KakaoService kakaoService;
 
     private final String baseUrl = "/users";  // 테스트할 기본 URL을 설정합니다.
     UserDetailsImpl userDetails = Mockito.mock(UserDetailsImpl.class);
@@ -109,7 +113,7 @@ class UserControllerTest {
                 .content(objectMapper.writeValueAsString(requestDto))  // 회원가입 엔드포인트로 POST 요청을 보냅니다.
                 .contentType(MediaType.APPLICATION_JSON))  // 요청 본문의 콘텐츠 타입을 JSON으로 설정합니다.
             .andExpect(status().isOk())  // 응답 상태 코드가 201 Created인지 확인합니다.
-            .andExpect(content().string("redirect:/login"));  // 응답 본문이 "회원가입 성공"인지 확인합니다.
+            .andExpect(content().string("회원 가입 성공"));  // 응답 본문이 "회원가입 성공"인지 확인합니다.
     }
 
     @Test

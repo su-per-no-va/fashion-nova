@@ -1,6 +1,6 @@
 $(document).ready(function () {
   // 토큰 삭제
-  Cookies.remove('Authorization', {path: '/'});
+  // Cookies.remove('Authorization', {path: '/'});
 });
 
 const href = location.href;
@@ -18,23 +18,39 @@ function onLogin() {
 
   $.ajax({
     type: "POST",
-    url: `/api/user/login`,
+    url: `/users/login`,
     contentType: "application/json",
-    data: JSON.stringify({username: username, password: password}),
+    data: JSON.stringify({userName: username, password: password}),
   })
   .done(function (res, status, xhr) {
+    console.log('Response:', res); // 서버 응답 확인
+    //헤더에서 토큰 가져오기
     const token = xhr.getResponseHeader('Authorization');
+    const refreshToken = xhr.getResponseHeader('Authorization-Refresh');
 
-    Cookies.set('Authorization', token, {path: '/'})
+    // 토큰을 localStorage에 저장
+    localStorage.setItem('accessToken', token);
+    localStorage.setItem('refreshToken', refreshToken);
 
-    $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-      jqXHR.setRequestHeader('Authorization', token);
-    });
+    if (token) {
+      // Cookies.set('Authorization', token, {path: '/'});
 
-    window.location.href = host;
+
+      $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+
+        //헤더에 토큰 실어보내기
+        jqXHR.setRequestHeader('Authorization', token);
+      });
+
+      alert("로그인 성공!");
+      window.location.href = host;
+    } else {
+      alert("로그인 실패!!");
+    }
   })
   .fail(function (jqXHR, textStatus) {
-    alert("Login Fail");
-    window.location.href = host + '/api/user/login-page?error'
+    alert("로그인 실패");
+    window.location.href = host + '/users/login'
   });
 }
+
