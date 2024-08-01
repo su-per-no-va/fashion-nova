@@ -3,12 +3,18 @@ package com.supernova.fashionnova.user;
 
 import static com.supernova.fashionnova.security.JwtConstants.ACCESS_TOKEN_EXPIRATION;
 import static com.supernova.fashionnova.security.JwtConstants.ACCESS_TOKEN_TYPE;
+import static com.supernova.fashionnova.security.JwtConstants.REFRESH_TOKEN_EXPIRATION;
+import static com.supernova.fashionnova.security.JwtConstants.REFRESH_TOKEN_TYPE;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.supernova.fashionnova.security.JwtUtil;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +38,8 @@ public class KakaoService {
     private final RestTemplate restTemplate;
     private final JwtUtil jwtUtil;
 
-    public String kakaoLogin(String code) throws JsonProcessingException {
+    public List<String> kakaoLogin(String code)
+        throws JsonProcessingException, UnsupportedEncodingException {
         // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getToken(code);
         log.info("인가코드 : " + code);
@@ -43,9 +50,20 @@ public class KakaoService {
        User kakaoUser = registerKakaoUserIfNeeded(kakaoUserInfo);
 
        // 4. JWT 토큰 반환
-        String generateToken = jwtUtil.generateToken(kakaoUser.getUserName(), ACCESS_TOKEN_EXPIRATION, ACCESS_TOKEN_TYPE);
+        /*String generateToken = jwtUtil.generateToken(kakaoUser.getUserName(), ACCESS_TOKEN_EXPIRATION, ACCESS_TOKEN_TYPE);*/
 
-        return generateToken;
+        String accessToken2 =
+            jwtUtil.generateToken(kakaoUser.getUserName(), ACCESS_TOKEN_EXPIRATION, ACCESS_TOKEN_TYPE);
+        String refreshToken2 =
+            jwtUtil.generateToken(kakaoUser.getUserName(), REFRESH_TOKEN_EXPIRATION, REFRESH_TOKEN_TYPE);
+        List<String> tokens = new ArrayList<>();
+        tokens.add(URLEncoder.encode(accessToken2, "utf-8").replaceAll("\\+", "%20"));
+        tokens.add(URLEncoder.encode(refreshToken2, "utf-8").replaceAll("\\+", "%20"));
+
+        kakaoUser.updateRefreshToken(jwtUtil.substringToken(refreshToken2));
+        userRepository.save(kakaoUser);
+
+        return tokens;
     }
 
     private String getToken(String code) throws JsonProcessingException {
@@ -140,6 +158,8 @@ public class KakaoService {
                 // password: random UUID
                 String password = UUID.randomUUID().toString();
                 String encodedPassword = passwordEncoder.encode(password);
+
+
 
                 // email: kakao email
                 String email = kakaoUserInfo.getEmail();
