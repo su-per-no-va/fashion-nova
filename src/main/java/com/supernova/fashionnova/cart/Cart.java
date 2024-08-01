@@ -13,6 +13,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -42,6 +43,7 @@ public class Cart {
     @JoinColumn(name = "product_detail_id")
     private ProductDetail productDetail;
 
+    @Builder
     public Cart(int count, Long totalPrice, User user, ProductDetail productDetail) {
         this.count = count;
         this.totalPrice = totalPrice;

@@ -3,7 +3,6 @@ package com.supernova.fashionnova.global.faker;
 import com.github.javafaker.Faker;
 import com.supernova.fashionnova.address.dto.AddressRequestDto;
 import com.supernova.fashionnova.answer.dto.AnswerRequestDto;
-import com.supernova.fashionnova.cart.dto.CartRequestDto;
 import com.supernova.fashionnova.coupon.dto.CouponRequestDto;
 import com.supernova.fashionnova.mileage.dto.MileageRequestDto;
 import com.supernova.fashionnova.product.ProductCategory;
@@ -16,6 +15,7 @@ import com.supernova.fashionnova.user.dto.SignupRequestDto;
 import com.supernova.fashionnova.wish.dto.WishRequestDto;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.springframework.stereotype.Component;
@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 public class DataGenerator {
 
     private static final Faker faker = new Faker();
+    private static final Random random = new Random();
 
     // User
     public List<SignupRequestDto> generateUsers(int count) {
@@ -38,8 +39,31 @@ public class DataGenerator {
             .collect(Collectors.toList());
     }
 
-    // Warn
-    // 직접 경고 - 더미 X
+    // Product
+    public List<ProductRequestDto> generateProducts(int count) {
+        return IntStream.range(0, count)
+            .mapToObj(i -> new ProductRequestDto(
+                faker.commerce().productName(),
+                faker.number().randomNumber(5, true),
+                faker.lorem().sentence(),
+                faker.options().option(ProductCategory.values()),
+                faker.options().option(ProductStatus.values()),
+                generateProductDetails(faker.number().numberBetween(1, 5))
+            ))
+            .collect(Collectors.toList());
+    }
+
+    // ProductDetail
+    private List<ProductDetailRequestDto> generateProductDetails(int count) {
+        return IntStream.range(0, count)
+            .mapToObj(i -> new ProductDetailRequestDto(
+                faker.options().option("S", "M", "L", "XL"),
+                faker.color().name(),
+                faker.number().numberBetween(1, 100L),
+                faker.options().option(ProductStatus.values())
+            ))
+            .collect(Collectors.toList());
+    }
 
     // Address
     public List<AddressRequestDto> generateAddresses(int count) {
@@ -59,8 +83,8 @@ public class DataGenerator {
     public List<MileageRequestDto> generateMileages(int count) {
         return IntStream.range(0, count)
             .mapToObj(i -> new MileageRequestDto(
-                faker.number().randomNumber(5, true), // userId를 위한 랜덤 숫자
-                faker.number().numberBetween(0, 10000) // mileage
+                faker.number().randomNumber(5, true),
+                faker.number().numberBetween(1, 50) * 10
             ))
             .collect(Collectors.toList());
     }
@@ -69,11 +93,32 @@ public class DataGenerator {
     public List<CouponRequestDto> generateCoupons(int count) {
         return IntStream.range(0, count)
             .mapToObj(i -> new CouponRequestDto(
-                faker.number().randomNumber(5, true), // userId
+                faker.number().randomNumber(5, true),
                 faker.commerce().promotionCode(),
                 new Date(System.currentTimeMillis() + faker.number().numberBetween(0, 1000000000L)),
-                faker.commerce().price(),
+                random.nextInt(10) + "%",
                 faker.options().option("WELCOME", "GRADE_UP", "REGULAR")
+            ))
+            .collect(Collectors.toList());
+    }
+
+    // Wish
+    public List<WishRequestDto> generateWishes(int count) {
+        return IntStream.range(0, count)
+            .mapToObj(i -> new WishRequestDto(
+                faker.number().randomNumber(5, true)
+            ))
+            .collect(Collectors.toList());
+    }
+
+    // Review
+    public List<ReviewRequestDto> generateReviews(int count) {
+        return IntStream.range(0, count)
+            .mapToObj(i -> new ReviewRequestDto(
+                faker.number().randomNumber(5, true),
+                faker.lorem().sentence(),
+                faker.number().numberBetween(1, 5),
+                faker.internet().image()
             ))
             .collect(Collectors.toList());
     }
@@ -89,70 +134,18 @@ public class DataGenerator {
             .collect(Collectors.toList());
     }
 
-    // QuestionImage
-    // fileName, questionImageUrl, questionId
-
-
     // Answer
     public List<AnswerRequestDto> generateAnswers(int count) {
         return IntStream.range(0, count)
             .mapToObj(i -> new AnswerRequestDto(
-                faker.number().randomNumber(5, true), // questionId
+                faker.number().randomNumber(5, true),
                 faker.lorem().paragraph()
             ))
             .collect(Collectors.toList());
     }
 
-    // Product
-    public List<ProductRequestDto> generateProducts(int count) {
-        return IntStream.range(0, count)
-            .mapToObj(i -> new ProductRequestDto(
-                faker.commerce().productName(),
-                faker.number().randomNumber(5, true), // price
-                faker.lorem().sentence(),
-                faker.options().option(ProductCategory.values()),
-                faker.options().option(ProductStatus.values()),
-                generateProductDetails(faker.number().numberBetween(1, 5)) // pass productId
-            ))
-            .collect(Collectors.toList());
-    }
-
-    // ProductDetail
-    private List<ProductDetailRequestDto> generateProductDetails(int count) {
-        return IntStream.range(0, count)
-            .mapToObj(i -> new ProductDetailRequestDto(
-                faker.options().option("S", "M", "L", "XL"), // size
-                faker.color().name(), // color
-                faker.number().numberBetween(1, 100L), // quantity
-                faker.options().option(ProductStatus.values())
-            ))
-            .collect(Collectors.toList());
-    }
-
-    // ProductImage
-    // fileName, productImageUrl, productId
-
-
-    // Wish
-    public List<WishRequestDto> generateWishes(int count) {
-        return IntStream.range(0, count)
-            .mapToObj(i -> new WishRequestDto(
-                faker.number().randomNumber(5, true) // productId
-            ))
-            .collect(Collectors.toList());
-    }
-
     // Cart
-    public List<CartRequestDto> generateCarts(int count) {
-        return IntStream.range(0, count)
-            .mapToObj(i -> new CartRequestDto(
-                faker.number().randomNumber(5, true), // productId
-                faker.number().numberBetween(1, 10),
-                faker.options().option("S", "M", "L", "XL"),
-                faker.color().name()
-            ))
-            .collect(Collectors.toList());
-    }
+
 
     // Orders
     // address, cost, discount, invoice, orderStatus, totalPrice, usedMileage, userId
@@ -161,21 +154,16 @@ public class DataGenerator {
     // OrdersDetails
     // count, price, productName, orderId, productId, productDetailId, userId
 
+    // ProductImage
+    // fileName, productImageUrl, productId
 
-    // Review
-    public List<ReviewRequestDto> generateReviews(int count) {
-        return IntStream.range(0, count)
-            .mapToObj(i -> new ReviewRequestDto(
-                faker.number().randomNumber(5, true), // productId
-                faker.lorem().sentence(),
-                faker.number().numberBetween(1, 5),
-                faker.internet().image()
-            ))
-            .collect(Collectors.toList());
-    }
+    // QuestionImage
+    // fileName, questionImageUrl, questionId
 
     // ReviewImage
     // fileName, reviewImageUrl
 
+    // Warn
+    // 직접 경고 - 더미 X
 
 }
