@@ -34,9 +34,8 @@ public class QuestionController {
      */
     @PostMapping
     public ResponseEntity<String> addQuestion(@AuthenticationPrincipal UserDetailsImpl userDetails,
-        @Valid @RequestPart(value = "request") QuestionRequestDto requestDto,
-        @RequestPart(value = "image") List<MultipartFile> file) {
-
+        @Valid @RequestPart(required = false) QuestionRequestDto requestDto,
+        @RequestPart(required = false) List<MultipartFile> file) {
         questionService.addQuestion(userDetails.getUser(), requestDto, file);
 
         return ResponseUtil.of(HttpStatus.CREATED, "문의 등록 성공");

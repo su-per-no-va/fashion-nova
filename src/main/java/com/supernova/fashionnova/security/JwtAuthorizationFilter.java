@@ -1,6 +1,7 @@
 package com.supernova.fashionnova.security;
 
 import static com.supernova.fashionnova.security.JwtAuthenticationFilter.jwtExceptionHandler;
+import static com.supernova.fashionnova.security.JwtConstants.ACCESS_TOKEN_HEADER;
 
 import com.supernova.fashionnova.global.exception.ErrorType;
 import io.jsonwebtoken.Claims;
@@ -47,8 +48,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
 
         //AccessToken 가져온후 가공
-        String accessToken = jwtUtil.getAccessTokenFromRequest(req);
+        String accessToken = req.getHeader(ACCESS_TOKEN_HEADER);
 
+        log.info("Authorization Header : " + req.getHeader("Authorization"));
+
+        String accessToken1 = jwtUtil.getAccessTokenFromRequest(req);
+         String accessToken2 = jwtUtil.getTokenFromRequest(req,JwtUtil.AUTHORIZATION_HEADER);
         if (accessToken == null) {
             filterChain.doFilter(req,res);
             return;
