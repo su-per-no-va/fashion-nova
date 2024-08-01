@@ -26,6 +26,7 @@ public class ProductRepositoryQueryImpl implements ProductRepositoryQuery {
         BooleanBuilder builder = new BooleanBuilder();
 
         builder.and(product.productStatus.eq(ProductStatus.ACTIVE));
+        builder.and(productDetail.status.eq(ProductStatus.ACTIVE));
 
         if(category != null && !category.trim().isEmpty()) {
             ProductCategory productCategory = ProductCategory.valueOf(category.toUpperCase());
