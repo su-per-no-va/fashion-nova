@@ -12,15 +12,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.ui.Model;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
@@ -33,12 +34,13 @@ public class UserController {
      * @param requestDto
      * @return "회원가입 성공"
      */
+
     @PostMapping("/signup")
-    public String signup(@Valid @RequestBody SignupRequestDto requestDto,Model model) {
+    public ModelAndView signup(@Valid @RequestBody SignupRequestDto requestDto) {
 
         userService.signup(requestDto);
 
-        return "redirect:/login";
+        return new ModelAndView("redirect:/login.html");
     }
 
     /**
@@ -109,7 +111,7 @@ public class UserController {
         @Valid @RequestBody UserUpdateRequestDto requestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        UserResponseDto responseDto = userService.updateUser(requestDto,userDetails.getUser());
+        UserResponseDto responseDto = userService.updateUser(requestDto, userDetails.getUser());
 
         return ResponseUtil.of(HttpStatus.OK, responseDto);
     }
