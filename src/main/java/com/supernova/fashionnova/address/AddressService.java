@@ -73,9 +73,8 @@ public class AddressService {
     /**
      * 배송지 삭제
      *
-     * @param userDetails
+     * @param user
      * @param requestDto
-     * @return "배송지 삭제 성공"
      */
     @Transactional
     public void deleteAddress(User user, AddressDeleteRequestDto requestDto) {

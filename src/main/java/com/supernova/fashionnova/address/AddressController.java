@@ -86,7 +86,7 @@ public class AddressController {
 
         addressService.deleteAddress(userDetails.getUser(), requestDto);
 
-        return ResponseUtil.of(HttpStatus.CREATED,"배송지 삭제 성공");
+        return ResponseUtil.of(HttpStatus.OK,"배송지 삭제 성공");
     }
 
 }
