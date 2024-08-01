@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
@@ -42,11 +42,11 @@ public class UserController {
      */
 
     @PostMapping("/signup")
-    public ModelAndView signup(@Valid @RequestBody SignupRequestDto requestDto) {
+    public ResponseEntity<String> signup(@Valid @RequestBody SignupRequestDto requestDto) {
 
         userService.signup(requestDto);
 
-        return new ModelAndView("redirect:/login.html");
+        return ResponseUtil.of(HttpStatus.OK,"회원 가입 성공");
     }
 
     /**

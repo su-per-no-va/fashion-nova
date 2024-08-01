@@ -158,14 +158,14 @@
       },
       body: JSON.stringify(jsonData)
     })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
+    .then(response => {
+      if (response.status === 200) {
         alert("회원가입 성공");
         window.location.href = "login.html"; // 로그인 페이지로 이동
       } else {
-        alert(data.message || "회원가입에 실패했습니다.");
+          alert(data.message || "회원가입에 실패했습니다.");
       }
+      console.log(response);
     })
     .catch(error => {
       alert("오류 발생: " + error.message);

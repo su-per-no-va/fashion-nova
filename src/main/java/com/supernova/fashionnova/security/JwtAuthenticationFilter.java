@@ -18,6 +18,7 @@ import com.supernova.fashionnova.user.UserService;
 import com.supernova.fashionnova.user.UserStatus;
 import com.supernova.fashionnova.user.dto.LoginRequestDto;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -131,6 +132,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         // 헤더에 전달해야 함
         jwtUtil.addJwtToHeader(response, accessToken,ACCESS_TOKEN_HEADER);
         jwtUtil.addJwtToHeader(response,refreshToken,REFRESH_TOKEN_HEADER);
+
+        // 쿠키에 전달
+        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, accessToken.substring(7));
+        cookie.setPath("/");
+        response.addCookie(cookie);
 
         // 헤더에 userId 전달
         response.setHeader("userName", user.getUserName());
