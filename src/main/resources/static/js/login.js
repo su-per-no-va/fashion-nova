@@ -28,6 +28,9 @@ function onLogin() {
     const token = xhr.getResponseHeader('Authorization');
     const refreshToken = xhr.getResponseHeader('Authorization-Refresh');
 
+    xhr.setRequestHeader(token,'Authorization');
+    xhr.setRequestHeader(refreshToken,'Authorization-Refresh');
+
     // 토큰을 localStorage에 저장
     localStorage.setItem('accessToken', token);
     localStorage.setItem('refreshToken', refreshToken);

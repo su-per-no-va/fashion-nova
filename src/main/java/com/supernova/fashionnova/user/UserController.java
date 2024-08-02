@@ -1,6 +1,9 @@
 package com.supernova.fashionnova.user;
 
+import com.amazonaws.Response;
 import com.supernova.fashionnova.global.util.ResponseUtil;
+import com.supernova.fashionnova.review.Review;
+import com.supernova.fashionnova.review.dto.ReviewResponseDto;
 import com.supernova.fashionnova.security.JwtUtil;
 import com.supernova.fashionnova.security.UserDetailsImpl;
 import com.supernova.fashionnova.user.dto.SignupRequestDto;
@@ -12,7 +15,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
@@ -31,6 +37,19 @@ public class UserController {
 
     private final UserService userService;
     private final KakaoService kakaoService;
+
+    @GetMapping("/test")
+    public ResponseEntity<TestResponseDto> test() {
+        log.info("In test");
+        return ResponseUtil.of(HttpStatus.OK,
+            TestResponseDto.builder()
+                .testName("으아아아앙")
+                .testCode(15L)
+                .testContent("잠와")
+                .testNaEun("프론트 전문가 킹갓갓킹")
+            .build());
+    }
+
 
     /**
      * 유저 회원가입
