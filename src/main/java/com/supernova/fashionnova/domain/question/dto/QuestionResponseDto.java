@@ -2,8 +2,8 @@ package com.supernova.fashionnova.domain.question.dto;
 
 import com.supernova.fashionnova.domain.question.Question;
 import com.supernova.fashionnova.domain.question.QuestionImage;
-import com.supernova.fashionnova.domain.question.QuestionType;
 import com.supernova.fashionnova.domain.question.QuestionStatus;
+import com.supernova.fashionnova.domain.question.QuestionType;
 import java.util.List;
 import lombok.Getter;
 

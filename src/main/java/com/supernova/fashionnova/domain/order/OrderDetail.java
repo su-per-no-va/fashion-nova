@@ -1,9 +1,9 @@
 package com.supernova.fashionnova.domain.order;
 
-import com.supernova.fashionnova.global.common.Timestamped;
 import com.supernova.fashionnova.domain.product.Product;
 import com.supernova.fashionnova.domain.product.ProductDetail;
 import com.supernova.fashionnova.domain.user.User;
+import com.supernova.fashionnova.global.common.Timestamped;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

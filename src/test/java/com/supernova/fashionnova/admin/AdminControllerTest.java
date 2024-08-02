@@ -18,8 +18,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.supernova.fashionnova.domain.answer.dto.AnswerRequestDto;
 import com.supernova.fashionnova.domain.coupon.dto.CouponRequestDto;
-import com.supernova.fashionnova.global.exception.CustomException;
-import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.domain.mileage.dto.MileageRequestDto;
 import com.supernova.fashionnova.domain.product.Product;
 import com.supernova.fashionnova.domain.product.ProductCategory;
@@ -29,6 +27,8 @@ import com.supernova.fashionnova.domain.review.Review;
 import com.supernova.fashionnova.domain.review.dto.ReviewResponseDto;
 import com.supernova.fashionnova.domain.user.User;
 import com.supernova.fashionnova.domain.user.UserRole;
+import com.supernova.fashionnova.global.exception.CustomException;
+import com.supernova.fashionnova.global.exception.ErrorType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

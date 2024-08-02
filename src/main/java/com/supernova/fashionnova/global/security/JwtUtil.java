@@ -2,10 +2,10 @@ package com.supernova.fashionnova.global.security;
 
 import static com.supernova.fashionnova.global.security.JwtConstants.BEARER_PREFIX;
 
-import com.supernova.fashionnova.global.exception.CustomException;
-import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.domain.user.User;
 import com.supernova.fashionnova.domain.user.UserRepository;
+import com.supernova.fashionnova.global.exception.CustomException;
+import com.supernova.fashionnova.global.exception.ErrorType;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;

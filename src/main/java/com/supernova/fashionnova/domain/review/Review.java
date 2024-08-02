@@ -1,8 +1,8 @@
 package com.supernova.fashionnova.domain.review;
 
-import com.supernova.fashionnova.global.common.Timestamped;
 import com.supernova.fashionnova.domain.product.Product;
 import com.supernova.fashionnova.domain.user.User;
+import com.supernova.fashionnova.global.common.Timestamped;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

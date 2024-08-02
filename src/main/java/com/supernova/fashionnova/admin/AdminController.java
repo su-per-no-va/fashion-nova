@@ -2,7 +2,6 @@ package com.supernova.fashionnova.admin;
 
 import com.supernova.fashionnova.domain.answer.dto.AnswerRequestDto;
 import com.supernova.fashionnova.domain.coupon.dto.CouponRequestDto;
-import com.supernova.fashionnova.global.util.ResponseUtil;
 import com.supernova.fashionnova.domain.mileage.dto.MileageRequestDto;
 import com.supernova.fashionnova.domain.product.dto.ProductDetailCreateDto;
 import com.supernova.fashionnova.domain.product.dto.ProductRequestDto;
@@ -11,6 +10,7 @@ import com.supernova.fashionnova.domain.review.dto.ReviewResponseDto;
 import com.supernova.fashionnova.domain.user.dto.UserResponseDto;
 import com.supernova.fashionnova.domain.warn.dto.WarnDeleteRequestDto;
 import com.supernova.fashionnova.domain.warn.dto.WarnRequestDto;
+import com.supernova.fashionnova.global.util.ResponseUtil;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

@@ -13,4 +13,5 @@ public interface OrdersRepository extends JpaRepository<Order, Long> {
     boolean existsByUserIdAndProductId(@Param("userId") Long userId, @Param("productId") Long productId);
 
     Page<Order> findByUser(User user, Pageable pageable);
+
 }

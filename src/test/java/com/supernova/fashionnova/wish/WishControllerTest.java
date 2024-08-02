@@ -14,12 +14,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.supernova.fashionnova.domain.product.Product;
 import com.supernova.fashionnova.domain.product.dto.ProductResponseDto;
+import com.supernova.fashionnova.domain.user.User;
 import com.supernova.fashionnova.domain.wish.WishController;
 import com.supernova.fashionnova.domain.wish.WishService;
-import com.supernova.fashionnova.global.security.UserDetailsImpl;
-import com.supernova.fashionnova.domain.user.User;
 import com.supernova.fashionnova.domain.wish.dto.WishDeleteRequestDto;
 import com.supernova.fashionnova.domain.wish.dto.WishRequestDto;
+import com.supernova.fashionnova.global.security.UserDetailsImpl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

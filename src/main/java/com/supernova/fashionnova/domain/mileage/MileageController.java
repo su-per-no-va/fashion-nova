@@ -1,8 +1,8 @@
 package com.supernova.fashionnova.domain.mileage;
 
 import com.supernova.fashionnova.domain.mileage.dto.MileageResponseDto;
-import com.supernova.fashionnova.global.util.ResponseUtil;
 import com.supernova.fashionnova.global.security.UserDetailsImpl;
+import com.supernova.fashionnova.global.util.ResponseUtil;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
