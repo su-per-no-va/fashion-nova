@@ -148,8 +148,7 @@
 									<th class="column-4">Quantity</th>
 									<th class="column-5">Total</th>
 								</tr>
-
-								<tr class="table_row">
+								<tr id="cart-items" class="table_row">
 									<td class="column-1">
 										<div class="how-itemcart1">
 											<img src="images/item-cart-04.jpg" alt="IMG">
@@ -165,39 +164,6 @@
 
 
 											<input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product1" value="1">
-
-											<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-												<i class="fs-16 zmdi zmdi-plus"></i>
-											</div>
-										</div>
-										<div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
-											<select class="js-select2" name="time">
-												<option>Size</option>
-												<option>S</option>
-												<option>M</option>
-												<option>L</option>
-											</select>
-											<div class="dropDownSelect2"></div>
-										</div>
-									</td>
-									<td class="column-5">50,000원</td>
-								</tr>
-
-								<tr class="table_row">
-									<td class="column-1">
-										<div class="how-itemcart1">
-											<img src="images/item-cart-05.jpg" alt="IMG">
-										</div>
-									</td>
-									<td class="column-2">Lightweight Jacket</td>
-									<td class="column-3">50,000원</td>
-									<td class="column-4">
-										<div class="wrap-num-product flex-w m-l-auto m-r-0">
-											<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-												<i class="fs-16 zmdi zmdi-minus"></i>
-											</div>
-
-											<input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product2" value="1">
 
 											<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
 												<i class="fs-16 zmdi zmdi-plus"></i>
@@ -243,8 +209,8 @@
 							</div>
 
 							<div class="size-209">
-								<span class="mtext-110 cl2">
-									100,000원
+								<span id="subtotal" class="mtext-110 cl2">
+
 								</span>
 							</div>
 						</div>
@@ -270,9 +236,9 @@
 								</span>
 							</div>
 
-							<div class="size-209 p-t-1">
-								<span class="mtext-110 cl2">
-									102,500원
+							<div  class="size-209 p-t-1">
+								<span id="total" class="mtext-110 cl2">
+
 								</span>
 							</div>
 						</div>
@@ -438,12 +404,12 @@
 		function fetchCartItems() {
 			$.ajax({
 				type: 'GET',
-				url: '/carts',
+				url: 'http://localhost:8080/carts',
 				success: function(response) {
 					updateCartTable(response);
 				},
 				error: function(error) {
-					alert("에러: " + error.message);
+					console.error('Error fetching cart items:', error);
 				}
 			});
 		}
@@ -452,32 +418,33 @@
 			let $cartItems = $('#cart-items');
 			$cartItems.empty(); // 기존 내용을 지우고 새로 추가
 
-			let subtotal = cartResponseDto.total;
+			let subtotal = 0;
 
-			cartResponseDto.forEach(function(item) {
-				let total = item.price * item.quantity;
-				console.log("총합: " + total);
+			cartResponseDto.cartItemDtoList.forEach(function(item) {
+				let total = item.price * item.count;
+				subtotal += total;
+
 				let row = `
                 <tr class="table_row">
                     <td class="column-1">
                         <div class="how-itemcart1">
-                            <img src="${item.imageUrl}" alt="IMG">
+                            <img src="${cartResponseDto}" alt="IMG">
                         </div>
                     </td>
-                    <td class="column-2">${item.name}</td>
+                    <td class="column-2">${item.product}</td>
                     <td class="column-3">${item.price}원</td>
                     <td class="column-4">
                         <div class="wrap-num-product flex-w m-l-auto m-r-0">
                             <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
                                 <i class="fs-16 zmdi zmdi-minus"></i>
                             </div>
-                            <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product${item.id}" value="${item.quantity}">
+                            <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product${item.id}" value="${item.id}">
                             <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
                                 <i class="fs-16 zmdi zmdi-plus"></i>
                             </div>
                         </div>
                         <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
-                            <select class="js-select2" name="size${item.id}">
+                            <select class="js-select2" name="size${item.size}">
                                 <option value="S" ${item.size === 'S' ? 'selected' : ''}>S</option>
                                 <option value="M" ${item.size === 'M' ? 'selected' : ''}>M</option>
                                 <option value="L" ${item.size === 'L' ? 'selected' : ''}>L</option>
@@ -492,7 +459,7 @@
 			});
 
 			$('#subtotal').text(subtotal + '원');
-			$('#total').text((subtotal ) + '원'); // 쿠폰 사용 금액 빼주면됨
+			$('#total').text((subtotal + 2500) + '원'); // 배송비 포함 총 금액
 		}
 	</script>
 

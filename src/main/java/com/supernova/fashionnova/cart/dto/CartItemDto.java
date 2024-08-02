@@ -15,6 +15,7 @@ public class CartItemDto {
 
     private String color;
 
+
     public CartItemDto(String product, Long price, int count, String size, String color) {
         this.product = product;
         this.price = price;
@@ -23,3 +24,5 @@ public class CartItemDto {
         this.color = color;
     }
 }
+
+

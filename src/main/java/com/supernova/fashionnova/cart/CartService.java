@@ -10,8 +10,11 @@ import com.supernova.fashionnova.product.Product;
 import com.supernova.fashionnova.product.ProductDetail;
 import com.supernova.fashionnova.product.ProductDetailRepository;
 import com.supernova.fashionnova.product.ProductRepository;
+import com.supernova.fashionnova.upload.FileUploadUtil;
+import com.supernova.fashionnova.upload.ImageType;
 import com.supernova.fashionnova.user.User;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +29,8 @@ public class CartService {
     private final ProductDetailRepository productDetailRepository;
 
     private final ProductRepository productRepository;
+
+    private final FileUploadUtil fileUploadUtil;
 
     /**
      * 장바구니에 상품 추가
@@ -79,7 +84,10 @@ public class CartService {
     public CartResponseDto getCart(User user) {
 
         List<Cart> cartList = cartRepository.findByUser(user);
-        List<CartItemDto> cartItemDtoList = cartList.stream()
+        List<Long> ids = cartList.stream().map(cart -> cart.getProductDetail().getProduct().getId()).toList();
+        Map<Long,List<String>> images =  fileUploadUtil.downloadImages(ImageType.PRODUCT,ids);
+
+            List<CartItemDto> cartItemDtoList = cartList.stream()
             .map(cart -> new CartItemDto(
                 cart.getProductDetail().getProduct().getProduct(),
                 cart.getProductDetail().getProduct().getPrice(),
@@ -89,6 +97,9 @@ public class CartService {
             .toList();
 
         Long totalPrice = cartList.stream().mapToLong(Cart::getTotalPrice).sum();
+
+
+
 
         return new CartResponseDto(cartItemDtoList, totalPrice);
     }
