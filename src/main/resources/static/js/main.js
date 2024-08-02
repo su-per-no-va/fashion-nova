@@ -139,6 +139,49 @@
         });
         
     });
+    //상품 클릭이벤트 추가
+
+    document.getElementById("ALL").addEventListener("click", function () {
+        sendRequest("ALL", null, 1);
+    });
+
+    document.getElementById("TOP").addEventListener("click", function () {
+        sendRequest("TOP", null,1);
+    });
+
+    document.getElementById("BOTTOM").addEventListener("click", function () {
+        sendRequest("BOTTOM", null, 1);
+    });
+
+    document.getElementById("SHOES").addEventListener("click", function () {
+        sendRequest("SHOES", null, 1);
+    });
+
+    document.getElementById("GOODS").addEventListener("click", function () {
+        sendRequest("GOODS", null, 1);
+    });
+
+    function sendRequest(category, sort, page) {
+        var xhr = new XMLHttpRequest();
+        var url = `/products/product?sort=${sort}&category=${category}&page=${page}`; // 쿼리 파라미터로 URL 생성
+
+        xhr.open("GET", url, true); // GET 요청 초기화
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onload = function () {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                var response = JSON.parse(xhr.responseText); // 서버 응답 처리
+                console.log(response); // 서버 응답 출력
+                // TODO: 응답 데이터를 사용해 UI 업데이트
+            }
+        };
+
+        xhr.onerror = function () {
+            console.error("요청 중 오류 발생"); // 오류 처리
+        };
+
+        xhr.send(); // 요청 전송
+    }
 
     // init Isotope
     $(window).on('load', function () {
@@ -176,7 +219,7 @@
         if($('.js-show-search').hasClass('show-search')) {
             $('.js-show-search').removeClass('show-search');
             $('.panel-search').slideUp(400);
-        }    
+        }
     });
 
     $('.js-show-search').on('click',function(){
@@ -186,7 +229,7 @@
         if($('.js-show-filter').hasClass('show-filter')) {
             $('.js-show-filter').removeClass('show-filter');
             $('.panel-filter').slideUp(400);
-        }    
+        }
     });
 
 
@@ -265,7 +308,7 @@
             }
         });
     });
-    
+
     /*==================================================================
     [ Show modal1 ]*/
     $('.js-show-modal1').on('click',function(e){
