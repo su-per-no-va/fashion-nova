@@ -79,6 +79,7 @@ public class DataInitializer implements CommandLineRunner {
     @Transactional
     @Override
     public void run(String... args) throws Exception {
+
         List<SignupRequestDto> userList = dataGenerator.generateUsers(50);
         List<User> users = saveUsers(userList);
 
@@ -105,9 +106,11 @@ public class DataInitializer implements CommandLineRunner {
 
         List<AnswerRequestDto> answerList = dataGenerator.generateAnswers(25);
         saveAnswers(answerList, questions);
+
     }
 
     private List<User> saveUsers(List<SignupRequestDto> requestDtoList) {
+
         List<User> users = requestDtoList.stream()
             .map(dto -> User.builder()
                 .userName(dto.getUserName())
@@ -117,10 +120,13 @@ public class DataInitializer implements CommandLineRunner {
                 .phone(dto.getPhone())
                 .build())
             .collect(Collectors.toList());
+
         return userRepository.saveAll(users);
+
     }
 
     private List<Product> saveProducts(List<ProductRequestDto> requestDtoList) {
+
         List<Product> products = requestDtoList.stream()
             .map(dto -> {
                 Product product = Product.builder()
@@ -144,11 +150,15 @@ public class DataInitializer implements CommandLineRunner {
                 return product;
             })
             .collect(Collectors.toList());
+
         return productRepository.saveAll(products);
+
     }
 
     private void saveAddresses(List<AddressRequestDto> requestDtoList, List<User> users) {
+
         Collections.shuffle(users);
+
         for (AddressRequestDto dto : requestDtoList) {
             User user = users.get(random.nextInt(users.size()));
             Address address = Address.builder()
@@ -162,10 +172,13 @@ public class DataInitializer implements CommandLineRunner {
                 .build();
             addressRepository.save(address);
         }
+
     }
 
     private void saveMileages(List<MileageRequestDto> requestDtoList, List<User> users) {
+
         Collections.shuffle(users);
+
         for (MileageRequestDto dto : requestDtoList) {
             User user = users.get(random.nextInt(users.size()));
             Mileage mileage = Mileage.builder()
@@ -174,10 +187,13 @@ public class DataInitializer implements CommandLineRunner {
                 .build();
             mileageRepository.save(mileage);
         }
+
     }
 
     private void saveCoupons(List<CouponRequestDto> requestDtoList, List<User> users) {
+
         Collections.shuffle(users);
+
         for (CouponRequestDto dto : requestDtoList) {
             User user = users.get(random.nextInt(users.size()));
             Coupon coupon = Coupon.builder()
@@ -189,11 +205,14 @@ public class DataInitializer implements CommandLineRunner {
                 .build();
             couponRepository.save(coupon);
         }
+
     }
 
     private void saveWishes(List<WishRequestDto> requestDtoList, List<User> users, List<Product> products) {
+
         Collections.shuffle(users);
         Collections.shuffle(products);
+
         for (WishRequestDto dto : requestDtoList) {
             User user = users.get(random.nextInt(users.size()));
             Product product = products.get(random.nextInt(products.size()));
@@ -204,11 +223,14 @@ public class DataInitializer implements CommandLineRunner {
             wishRepository.save(wish);
             product.increaseWish();
         }
+
     }
 
     private void saveReviews(List<ReviewRequestDto> requestDtoList, List<User> users, List<Product> products) {
+
         Collections.shuffle(users);
         Collections.shuffle(products);
+
         for (ReviewRequestDto dto : requestDtoList) {
             User user = users.get(random.nextInt(users.size()));
             Product product = products.get(random.nextInt(products.size()));
@@ -221,9 +243,11 @@ public class DataInitializer implements CommandLineRunner {
             reviewRepository.save(review);
             product.increaseReview();
         }
+
     }
 
     private List<Question> saveQuestions(List<QuestionRequestDto> requestDtoList, List<User> users) {
+
         Collections.shuffle(users);
         List<Question> questions = requestDtoList.stream()
             .map(dto -> {
@@ -236,10 +260,13 @@ public class DataInitializer implements CommandLineRunner {
                     .build();
             })
             .collect(Collectors.toList());
+
         return questionRepository.saveAll(questions);
+
     }
 
     private void saveAnswers(List<AnswerRequestDto> requestDtoList, List<Question> questions) {
+
         Collections.shuffle(questions);
 
         for (int i = 0; i < requestDtoList.size(); i++) {
@@ -255,6 +282,7 @@ public class DataInitializer implements CommandLineRunner {
 
             answerRepository.save(answer);
         }
+
     }
 
 }
