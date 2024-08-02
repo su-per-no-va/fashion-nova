@@ -9,7 +9,8 @@
   <!--===============================================================================================-->
   <link rel="stylesheet" type="text/css" href="../vendor/bootstrap/css/bootstrap.min.css">
   <!--===============================================================================================-->
-  <link rel="stylesheet" type="text/css" href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css"
+        href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
   <!--===============================================================================================-->
   <link rel="stylesheet" type="text/css"
         href="../fonts/iconic/css/material-design-iconic-font.min.css">
@@ -98,7 +99,8 @@
             <i class="zmdi zmdi-shopping-cart"></i>
           </a>
 
-          <a href="wish-list.html" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
+          <a href="wish-list.html"
+             class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
              data-notify="0">
             <i class="zmdi zmdi-favorite-outline"></i>
           </a>
@@ -125,7 +127,8 @@
 </header>
 
 <!-- Title page -->
-<section class="bg-img1 txt-center p-lr-15 p-tb-92" style="background-image: url('../images/bg-01.jpg');">
+<section class="bg-img1 txt-center p-lr-15 p-tb-92"
+         style="background-image: url('../images/bg-01.jpg');">
   <h2 class="ltext-105 cl0 txt-center">
     Order
   </h2>
@@ -170,7 +173,7 @@
 
               <tr class="table_row">
                 <td class="column-1">
-                    165473
+                  <a href="order-detail.html">165473</a>
                 </td>
                 <td class="column-2">꽃무늬 원피스 외 1종</td>
                 <td class="column-3">2024-08-01</td>
@@ -182,7 +185,8 @@
 
                 <td class="column-6">배송 완료</td>
                 <td class="column-7">
-                  <button type="button" class="btn btn-secondary open-modal flex-c-m stext-101 cl0 size-103 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+                  <button type="button"
+                          class="btn btn-secondary open-modal flex-c-m stext-101 cl0 size-103 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
                     주문 취소
                   </button>
 
@@ -362,24 +366,24 @@
 <!--===============================================================================================-->
 <script>
   // JavaScript to handle modal
-  document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener("DOMContentLoaded", function () {
     var modal = document.getElementById("cancelOrderModal");
     var openModalBtns = document.querySelectorAll(".open-modal");
     var closeModalBtns = document.querySelectorAll(".close, .close-modal");
 
-    openModalBtns.forEach(function(btn) {
-      btn.addEventListener("click", function() {
+    openModalBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
         modal.style.display = "block";
       });
     });
 
-    closeModalBtns.forEach(function(btn) {
-      btn.addEventListener("click", function() {
+    closeModalBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
         modal.style.display = "none";
       });
     });
 
-    window.addEventListener("click", function(event) {
+    window.addEventListener("click", function (event) {
       if (event.target == modal) {
         modal.style.display = "none";
       }

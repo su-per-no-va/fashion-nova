@@ -64,6 +64,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         // JWT 토큰 substring
         accessToken = jwtUtil.substringToken(accessToken);
+        log.info("----------------------------" + accessToken);
 
         // 유저 정보 가져오기
         Claims accessTokenClaims = jwtUtil.getUserInfoFromToken(accessToken);
@@ -120,7 +121,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         //공백 제거
         accessToken = accessToken.replaceAll("\\s", "");
-
+        log.info("=========================================================================================" + accessToken);
         // Access 토큰 유효성 검사
         jwtUtil.validateToken(accessToken);
 
