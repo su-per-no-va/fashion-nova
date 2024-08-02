@@ -13,8 +13,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -38,6 +40,7 @@ public class OrderDetail {
     @JoinColumn(name="user_id")
     private User user;
 
+    @Setter
     @ManyToOne
     @JoinColumn(name="order_id")
     private Order order;
@@ -50,4 +53,14 @@ public class OrderDetail {
     @JoinColumn(name="product_detail_id")
     private ProductDetail productDetail;
 
+    @Builder
+    public OrderDetail(int count, String productName, int price, User user, Order order, Product product, ProductDetail productDetail) {
+        this.count = count;
+        this.productName = productName;
+        this.price = price;
+        this.user = user;
+        this.order = order;
+        this.product = product;
+        this.productDetail = productDetail;
+    }
 }

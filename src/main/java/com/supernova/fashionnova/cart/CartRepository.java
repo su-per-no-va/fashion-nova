@@ -1,5 +1,6 @@
 package com.supernova.fashionnova.cart;
 
+import com.supernova.fashionnova.order.QOrder;
 import com.supernova.fashionnova.product.ProductDetail;
 import com.supernova.fashionnova.user.User;
 import java.util.List;
@@ -12,4 +13,7 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
 
     Optional<Cart> findByUserAndProductDetail(User user, ProductDetail productDetail);
 
+    List<Cart> findAllByUserId(Long id);
+
+    int countByUserId(Long orderId);
 }

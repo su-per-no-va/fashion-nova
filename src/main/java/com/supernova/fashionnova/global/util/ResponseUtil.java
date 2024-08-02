@@ -16,5 +16,4 @@ public class ResponseUtil {
         return ResponseEntity.status(httpStatus)
             .body(message);
     }
-
 }

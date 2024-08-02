@@ -1,4 +1,4 @@
-package com.supernova.fashionnova.delivery;
+package com.supernova.fashionnova.address;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

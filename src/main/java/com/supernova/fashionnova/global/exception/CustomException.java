@@ -12,5 +12,4 @@ public class CustomException extends RuntimeException {
         this.result = "ERROR";
         this.errorType = errorType;
     }
-
 }

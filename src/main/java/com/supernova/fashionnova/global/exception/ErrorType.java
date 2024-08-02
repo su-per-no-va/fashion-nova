@@ -30,12 +30,16 @@ public enum ErrorType {
     NOT_FOUND_PRODUCT(HttpStatus.NOT_FOUND, "상품을 찾을 수 없습니다."),
     OUT_OF_STOCK(HttpStatus.BAD_REQUEST, "품절된 상품입니다."),
     NOT_ORDERED_PRODUCT(HttpStatus.BAD_REQUEST, "구매하지 않은 상품입니다."),
+    NOT_FOUND_PRODUCT_DETAIL(HttpStatus.BAD_REQUEST, "상품 상세를 찾을 수 없습니다."),
 
     // CART
     CART_EMPTY(HttpStatus.BAD_REQUEST, "장바구니에 상품이 존재하지 않습니다."),
 
     // REVIEW
-    NOT_FOUND_REVIEW(HttpStatus.BAD_REQUEST, "리뷰가 존재하지 않습니다.");
+    NOT_FOUND_REVIEW(HttpStatus.BAD_REQUEST, "리뷰가 존재하지 않습니다."),
+
+    //ORDER
+    NOT_FOUND_ORDER(HttpStatus.BAD_REQUEST, "주문이 존재하지 않습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;

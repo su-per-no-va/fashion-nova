@@ -3,7 +3,6 @@ package com.supernova.fashionnova.payment.dto;
 import com.supernova.fashionnova.payment.Amount;
 import com.supernova.fashionnova.payment.CardInfo;
 import java.time.LocalDateTime;
-import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

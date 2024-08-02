@@ -165,9 +165,9 @@ public class CartService {
      * @throws CustomException CART_EMPTY 장바구니에 상품이 존재하지 않을 때
      */
     @Transactional
-    public void clearCart(User user) {
+    public void clearCart(Long userId) {
 
-        List<Cart> cartList = cartRepository.findByUser(user);
+        List<Cart> cartList = cartRepository.findAllByUserId(userId);
 
         if (cartList.isEmpty()) {
             throw new CustomException(ErrorType.CART_EMPTY);
