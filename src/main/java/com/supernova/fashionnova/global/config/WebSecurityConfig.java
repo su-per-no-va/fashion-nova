@@ -1,12 +1,12 @@
 package com.supernova.fashionnova.global.config;
 
 import com.supernova.fashionnova.global.exception.CustomAccessDeniedHandler;
-import com.supernova.fashionnova.security.JwtAuthenticationFilter;
-import com.supernova.fashionnova.security.JwtAuthorizationFilter;
-import com.supernova.fashionnova.security.JwtUtil;
-import com.supernova.fashionnova.security.UserDetailsServiceImpl;
-import com.supernova.fashionnova.user.UserRole;
-import com.supernova.fashionnova.user.UserService;
+import com.supernova.fashionnova.global.security.JwtAuthenticationFilter;
+import com.supernova.fashionnova.global.security.JwtAuthorizationFilter;
+import com.supernova.fashionnova.global.security.JwtUtil;
+import com.supernova.fashionnova.global.security.UserDetailsServiceImpl;
+import com.supernova.fashionnova.domain.user.UserRole;
+import com.supernova.fashionnova.domain.user.UserService;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

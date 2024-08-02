@@ -13,11 +13,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.supernova.fashionnova.security.UserDetailsImpl;
-import com.supernova.fashionnova.user.dto.SignupRequestDto;
-import com.supernova.fashionnova.user.dto.UserResponseDto;
-import com.supernova.fashionnova.warn.Warn;
-import com.supernova.fashionnova.warn.dto.WarnResponseDto;
+import com.supernova.fashionnova.domain.user.KakaoService;
+import com.supernova.fashionnova.domain.user.User;
+import com.supernova.fashionnova.domain.user.UserController;
+import com.supernova.fashionnova.domain.user.UserGrade;
+import com.supernova.fashionnova.domain.user.UserService;
+import com.supernova.fashionnova.domain.user.UserStatus;
+import com.supernova.fashionnova.global.security.UserDetailsImpl;
+import com.supernova.fashionnova.domain.user.dto.SignupRequestDto;
+import com.supernova.fashionnova.domain.user.dto.UserResponseDto;
+import com.supernova.fashionnova.domain.warn.Warn;
+import com.supernova.fashionnova.domain.warn.dto.WarnResponseDto;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,7 +38,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.servlet.ModelAndView;
 
 
 @WebMvcTest(UserController.class)  // UserController만 테스트하기 위해 Spring MVC 테스트 환경을 설정합니다.

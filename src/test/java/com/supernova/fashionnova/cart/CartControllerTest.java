@@ -16,12 +16,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.supernova.fashionnova.cart.dto.CartDeleteRequestDto;
-import com.supernova.fashionnova.cart.dto.CartRequestDto;
-import com.supernova.fashionnova.cart.dto.CartResponseDto;
-import com.supernova.fashionnova.cart.dto.CartUpdateRequestDto;
-import com.supernova.fashionnova.security.UserDetailsImpl;
-import com.supernova.fashionnova.user.User;
+import com.supernova.fashionnova.domain.cart.CartController;
+import com.supernova.fashionnova.domain.cart.CartService;
+import com.supernova.fashionnova.domain.cart.dto.CartDeleteRequestDto;
+import com.supernova.fashionnova.domain.cart.dto.CartRequestDto;
+import com.supernova.fashionnova.domain.cart.dto.CartResponseDto;
+import com.supernova.fashionnova.domain.cart.dto.CartUpdateRequestDto;
+import com.supernova.fashionnova.global.security.UserDetailsImpl;
+import com.supernova.fashionnova.domain.user.User;
 import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

@@ -7,9 +7,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.supernova.fashionnova.product.dto.ProductResponseDto;
-import com.supernova.fashionnova.security.UserDetailsImpl;
-import com.supernova.fashionnova.user.User;
+import com.supernova.fashionnova.domain.product.Product;
+import com.supernova.fashionnova.domain.product.ProductController;
+import com.supernova.fashionnova.domain.product.ProductService;
+import com.supernova.fashionnova.domain.product.dto.ProductResponseDto;
+import com.supernova.fashionnova.global.security.UserDetailsImpl;
+import com.supernova.fashionnova.domain.user.User;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

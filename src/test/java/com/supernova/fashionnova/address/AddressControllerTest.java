@@ -13,11 +13,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.supernova.fashionnova.address.dto.AddressDefaultRequestDto;
-import com.supernova.fashionnova.address.dto.AddressRequestDto;
-import com.supernova.fashionnova.address.dto.AddressResponseDto;
-import com.supernova.fashionnova.security.UserDetailsImpl;
-import com.supernova.fashionnova.user.User;
+import com.supernova.fashionnova.domain.address.Address;
+import com.supernova.fashionnova.domain.address.AddressController;
+import com.supernova.fashionnova.domain.address.AddressService;
+import com.supernova.fashionnova.domain.address.dto.AddressDefaultRequestDto;
+import com.supernova.fashionnova.domain.address.dto.AddressRequestDto;
+import com.supernova.fashionnova.domain.address.dto.AddressResponseDto;
+import com.supernova.fashionnova.global.security.UserDetailsImpl;
+import com.supernova.fashionnova.domain.user.User;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
