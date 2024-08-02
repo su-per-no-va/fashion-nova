@@ -533,7 +533,7 @@
     console.log("엑세스 토큰: " + auth);
     console.log("리프레시 토큰: " + refreshToken);
 
-    if (auth !== undefined && auth !== '') {
+    if (auth !== undefined && auth !== null) {
       $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
         console.log("auth : " + auth);
         jqXHR.setRequestHeader('Authorization', auth);
@@ -543,6 +543,8 @@
       alert("로그인 후 이용해 주세요");
       window.location.href = "login.html";
     }
+
+    getShoppingCart()
   });
 
   document.getElementById('submit-button').addEventListener('click', function () {
@@ -578,8 +580,6 @@
 
   // AJAX 요청
   function postQuestion(finalFormData) {
-    console.log("postQuestion 진입");
-    console.log(finalFormData);
     $.ajax({
       type: 'POST',
       url: 'http://localhost:8080/questions',
@@ -603,6 +603,8 @@
       },
     });
   }
+
+
 </script>
 </body>
 </html>
