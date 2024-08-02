@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Review</title>
+  <title>Order Detail</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!--===============================================================================================-->
@@ -9,12 +9,14 @@
   <!--===============================================================================================-->
   <link rel="stylesheet" type="text/css" href="../vendor/bootstrap/css/bootstrap.min.css">
   <!--===============================================================================================-->
-  <link rel="stylesheet" type="text/css" href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css"
+        href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
   <!--===============================================================================================-->
   <link rel="stylesheet" type="text/css"
         href="../fonts/iconic/css/material-design-iconic-font.min.css">
   <!--===============================================================================================-->
-  <link rel="stylesheet" type="text/css" href="../fonts/linearicons-v1.0.0/icon-font.min.css">
+  <link rel="stylesheet" type="text/css"
+        href="../fonts/linearicons-v1.0.0/icon-font.min.css">
   <!--===============================================================================================-->
   <link rel="stylesheet" type="text/css" href="../vendor/animate/animate.css">
   <!--===============================================================================================-->
@@ -24,16 +26,18 @@
   <!--===============================================================================================-->
   <link rel="stylesheet" type="text/css" href="../vendor/select2/select2.min.css">
   <!--===============================================================================================-->
-  <link rel="stylesheet" type="text/css" href="../vendor/perfect-scrollbar/perfect-scrollbar.css">
+  <link rel="stylesheet" type="text/css"
+        href="../vendor/perfect-scrollbar/perfect-scrollbar.css">
   <!--===============================================================================================-->
   <link rel="stylesheet" type="text/css" href="../css/util.css">
   <link rel="stylesheet" type="text/css" href="../css/main.css">
-  <link rel="stylesheet" type="text/css" href="/css/review.css">
+  <link rel="stylesheet" type="text/css" href="../css/review.css">
+  <link rel="stylesheet" type="text/css" href="../css/order.css">
+  <link rel="stylesheet" type="text/css" href="../css/order-detail.css">
   <!--===============================================================================================-->
 </head>
 <body class="animsition">
 
-<!-- Header -->
 <header>
   <!-- Header desktop -->
   <div class="container-menu-desktop">
@@ -121,9 +125,10 @@
 </header>
 
 <!-- Title page -->
-<section class="bg-img1 txt-center p-lr-15 p-tb-92" style="background-image: url('/images/bg-01.jpg');">
+<section class="bg-img1 txt-center p-lr-15 p-tb-92"
+         style="background-image: url('/images/bg-01.jpg');">
   <h2 class="ltext-105 cl0 txt-center">
-    My Review
+    Order Detail
   </h2>
 </section>
 
@@ -135,18 +140,24 @@
       <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
     </a>
 
-    <a href="my-page.html" class="stext-109 cl8 hov-cl1 trans-04">
+    <a href="my-page.html"
+       class="stext-109 cl8 hov-cl1 trans-04">
       My Page
       <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
     </a>
 
+    <a href="order.html" class="stext-109 cl8 hov-cl1 trans-04">
+      Order
+      <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+    </a>
+
     <span class="stext-109 cl4">
-				My Review
+				Order Detail
 			</span>
   </div>
 </div>
 
-<!-- My Review -->
+<!-- Order Detail Page -->
 <form class="bg0 p-t-75 p-b-85">
   <div class="container">
     <div class="row">
@@ -156,46 +167,100 @@
             <table class="table-shopping-cart">
               <tr class="table_head">
                 <th class="column-1">Product</th>
-                <th class="column-2"></th>
-                <th class="column-3">Date</th>
-                <th class="column-4">grade</th>
-                <th class="column-5">Review</th>
+                <th class="column-2">Product Name</th>
+                <th class="column-3">Count</th>
+                <th class="column-4">Price</th>
+                <th class="column-5">Order Status</th>
                 <th class="column-6"></th>
                 <th class="column-7">Edit</th>
               </tr>
 
               <tr class="table_row">
                 <td class="column-1">
-                  <div class="how-itemcart1">
-                    <img src="../images/item-cart-05.jpg" alt="IMG">
-                  </div>
+                  <img src="/images/item-cart-05.jpg" alt="IMG">
                 </td>
                 <td class="column-2">Lightweight Jacket</td>
-                <td class="column-3">2024-08-01</td>
-
-                <td class="column-4">
-										<span class="fs-18 cl11">
-											<i class="zmdi zmdi-star"></i>
-											<i class="zmdi zmdi-star"></i>
-											<i class="zmdi zmdi-star"></i>
-											<i class="zmdi zmdi-star"></i>
-											<i class="zmdi zmdi-star"></i>
-										</span>
-                </td>
-                <td class="column-5">빠른 배송! 품질 좋은 옷 감사합니다.</td>
-
+                <td class="column-3">3</td>
+                <td class="column-4">150,000</td>
+                <td class="column-5">주문</td>
                 <td class="column-6"></td>
                 <td class="column-7">
-                  <button
-                      class="flex-c-m stext-101 cl0 size-103 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
-                    Edit
-                  </button>
-                  <br>
-                  <button
-                      class="flex-c-m stext-101 cl2 size-103 bg8 bor14 hov-btn3 p-lr-15 trans-04 pointer">
-                    Delete
+                  <button type="button"
+                          class="btn btn-secondary open-modal flex-c-m stext-101 cl0 size-103 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+                    Refund/Exchange
                   </button>
                 </td>
+              </tr>
+              <tr class="table_row">
+                <td class="column-1">
+                  <img src="/images/item-cart-05.jpg" alt="IMG">
+                </td>
+                <td class="column-2">Lightweight Jacket</td>
+                <td class="column-3">3</td>
+                <td class="column-4">150,000</td>
+                <td class="column-5">주문</td>
+                <td class="column-6"></td>
+                <td class="column-7">
+
+                  <button type="button"
+                          class="btn btn-secondary open-modal flex-c-m stext-101 cl0 size-103 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+                    Refund/Exchange
+                  </button>
+                </td>
+              </tr>
+            </table>
+          </div>
+
+          <!-- Modal -->
+          <div id="cancelOrderModal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <h4 class="mtext-105 cl2 txt-center p-b-30">환불/교환 신청</h4>
+              <form>
+                <div class="form-group">
+                  <label for="reason">사유</label>
+                  <textarea id="reason" class="form-control" rows="5"
+                            placeholder="사유를 입력하세요"></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="file">파일 첨부하기</label>
+                  <input type="file" id="file" class="form-control-file">
+                </div>
+                <div class="text-center">
+                  <button type="submit" class="btn btn-primary">등록</button>
+                  <button type="button" class="btn btn-secondary close-modal">취소</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- 결제 금액 계산 -->
+          <div class="wrap-table-shopping-cart m-t-30">
+            <table class="table-shopping-cart-price">
+              <tr class="table_head">
+                <th class="column-1">Description</th>
+                <th class="column-2">Amount</th>
+              </tr>
+
+              <tr class="table_row">
+                <td class="column-1">총 금액</td>
+                <td class="column-2">300,000원</td>
+              </tr>
+              <tr class="table_row">
+                <td class="column-1">브론즈 5% 쿠폰</td>
+                <td class="column-2">-10,000원</td>
+              </tr>
+              <tr class="table_row">
+                <td class="column-1">사용 마일리지</td>
+                <td class="column-2">-5,000원</td>
+              </tr>
+              <tr class="table_row">
+                <td class="column-1">배송비</td>
+                <td class="column-2">+2,500원</td>
+              </tr>
+              <tr class="table_row">
+                <td class="column-1"><strong>결제 금액</strong></td>
+                <td class="column-2"><strong>287,500원</strong></td>
               </tr>
             </table>
           </div>
@@ -252,12 +317,11 @@
   </div>
 </footer>
 
-
 <!-- Back to top -->
 <div class="btn-back-to-top" id="myBtn">
-		<span class="symbol-btn-back-to-top">
-			<i class="zmdi zmdi-chevron-up"></i>
-		</span>
+  <span class="symbol-btn-back-to-top">
+    <i class="zmdi zmdi-chevron-up"></i>
+  </span>
 </div>
 
 <!--===============================================================================================-->
@@ -345,6 +409,33 @@
       window.location.href = host + '/api/user/login-page?error';
     });
   }
+</script>
+<!--===============================================================================================-->
+<script>
+  // JavaScript to handle modal
+  document.addEventListener("DOMContentLoaded", function () {
+    var modal = document.getElementById("cancelOrderModal");
+    var openModalBtns = document.querySelectorAll(".open-modal");
+    var closeModalBtns = document.querySelectorAll(".close, .close-modal");
+
+    openModalBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        modal.style.display = "block";
+      });
+    });
+
+    closeModalBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        modal.style.display = "none";
+      });
+    });
+
+    window.addEventListener("click", function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    });
+  });
 </script>
 </body>
 </html>

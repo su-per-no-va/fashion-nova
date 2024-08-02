@@ -104,4 +104,9 @@ public class HomeController {
     public String review() {
         return "review";
     }
+
+    @GetMapping("/order-detail.html")
+    public String orderDetail() {
+        return "order-detail";
+    }
 }
