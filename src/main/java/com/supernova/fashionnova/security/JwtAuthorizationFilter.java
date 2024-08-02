@@ -52,13 +52,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         log.info("Authorization Header : " + req.getHeader("Authorization"));
 
-        String accessToken1 = jwtUtil.getAccessTokenFromRequest(req);
-         String accessToken2 = jwtUtil.getTokenFromRequest(req,JwtUtil.AUTHORIZATION_HEADER);
-        if (accessToken == null) {
-            filterChain.doFilter(req,res);
+//        String accessToken1 = jwtUtil.getAccessTokenFromRequest(req);
+//        String accessToken2 = jwtUtil.getTokenFromRequest(req,JwtUtil.AUTHORIZATION_HEADER);
+
+        if (accessToken == null || accessToken.isBlank() || "null".equals(accessToken)) {
+            filterChain.doFilter(req, res);
             return;
         }
-
         // 검사
         checkAccessToken(res, accessToken);
 
