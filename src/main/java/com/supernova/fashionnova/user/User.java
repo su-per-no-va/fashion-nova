@@ -1,7 +1,11 @@
 package com.supernova.fashionnova.user;
 
+import com.supernova.fashionnova.address.Address;
+import com.supernova.fashionnova.coupon.Coupon;
 import com.supernova.fashionnova.global.common.Timestamped;
+import com.supernova.fashionnova.mileage.Mileage;
 import com.supernova.fashionnova.user.dto.UserUpdateRequestDto;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -9,8 +13,11 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -61,6 +68,14 @@ public class User extends Timestamped {
 
     private String refreshToken;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Address> addressList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Mileage> mileageList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Coupon> couponList = new ArrayList<>();
 
     @Builder
     public User(String userName, String password, String name, String email, String phone) {
@@ -106,6 +121,7 @@ public class User extends Timestamped {
     public User(String username, String email, String password, Long kakaoId) {
         this.name = username;
         this.password = password;
+        this.userName = email;
         this.email = email;
         this.kakaoId = kakaoId;
         this.userRole = UserRole.USER; // 기본적으로 USER로 권한 설정

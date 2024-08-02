@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 @Slf4j
 @RestController
@@ -149,11 +148,14 @@ public class UserController {
     @GetMapping("/kakao/callback")
     public void kakaoLogin(@RequestParam String code, HttpServletResponse response)
         throws IOException {
-            String token = kakaoService.kakaoLogin(code);
+            List<String> token = kakaoService.kakaoLogin(code);
 
-            Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, token.substring(7));
+            Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, token.get(0).substring(7));
+            Cookie cookie2 = new Cookie(token.get(1), token.get(1).substring(7));
             cookie.setPath("/");
             response.addCookie(cookie);
+            response.addCookie(cookie2);
+
 
             response.sendRedirect("/index.html");
     }

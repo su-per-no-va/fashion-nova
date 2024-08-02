@@ -18,8 +18,9 @@ public enum ErrorType {
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다."),
     NOT_FOUND_REFRESH_TOKEN(HttpStatus.NOT_FOUND, "리프레쉬토큰을 찾을 수 없습니다."),
 
-    // Address
+    // ADDRESS
     NOT_FOUND_ADDRESS(HttpStatus.NOT_FOUND, "배송지를 찾을 수 없습니다."),
+    INVALID_ADDRESS(HttpStatus.BAD_REQUEST, "유저의 배송지가 아닙니다."),
 
     // WISH
     NOT_FOUND_WISH(HttpStatus.NOT_FOUND, "위시리시트를 찾을 수 없습니다."),
