@@ -51,6 +51,9 @@ public class Product extends Timestamped {
 
     @Column(nullable = false)
     private int reviewCount;
+    @Column
+    private String imageUrl;
+
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductDetail> productDetailList = new ArrayList<>();
@@ -64,6 +67,10 @@ public class Product extends Timestamped {
             throw new CustomException(ErrorType.DUPLICATED_DETAIL);
         }
 
+    }
+
+    public void updateImage(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public void addDetailList(List<ProductDetail> detail) {

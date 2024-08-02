@@ -141,46 +141,7 @@
 					<div class="m-l-25 m-r--38 m-lr-0-xl">
 						<div class="wrap-table-shopping-cart">
 							<table class="table-shopping-cart">
-								<tr class="table_head">
-									<th class="column-1">Product</th>
-									<th class="column-2"></th>
-									<th class="column-3">Price</th>
-									<th class="column-4">Quantity</th>
-									<th class="column-5">Total</th>
-								</tr>
-								<tr id="cart-items" class="table_row">
-									<td class="column-1">
-										<div class="how-itemcart1">
-											<img src="images/item-cart-04.jpg" alt="IMG">
-										</div>
-									</td>
-									<td class="column-2">Fresh Strawberries</td>
-									<td class="column-3">50,000원</td>
-									<td class="column-4">
-										<div class="wrap-num-product flex-w m-l-auto m-r-0">
-											<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-												<i class="fs-16 zmdi zmdi-minus"></i>
-											</div>
-
-
-											<input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product1" value="1">
-
-											<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-												<i class="fs-16 zmdi zmdi-plus"></i>
-											</div>
-										</div>
-										<div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
-											<select class="js-select2" name="time">
-												<option>Size</option>
-												<option>S</option>
-												<option>M</option>
-												<option>L</option>
-											</select>
-											<div class="dropDownSelect2"></div>
-										</div>
-									</td>
-									<td class="column-5">50,000원</td>
-								</tr>
+								<tr class="table_head" id="cart-items"></tr>
 							</table>
 						</div>
 
@@ -420,25 +381,36 @@
 
 			let subtotal = 0;
 
+			let initrow = `
+<tr class="table_head">
+<th class="column-1">Product</th>
+<th class="column-2"></th>
+<th class="column-3"></th>
+<th class="column-4">Quantity</th>
+<th class="column-5">Total</th>
+</tr>`;
+
+			$cartItems.append(initrow);
+
 			cartResponseDto.cartItemDtoList.forEach(function(item) {
 				let total = item.price * item.count;
 				subtotal += total;
 
 				let row = `
-                <tr class="table_row">
+                <tr class="table_row" data-item-id="${item.id}">
                     <td class="column-1">
                         <div class="how-itemcart1">
-                            <img src="${cartResponseDto}" alt="IMG">
+                            <img src="${item.imageUrl}" alt="IMG">
                         </div>
                     </td>
                     <td class="column-2">${item.product}</td>
-                    <td class="column-3">${item.price}원</td>
+                    <td class="column-3">${item.price.toLocaleString()}원</td>
                     <td class="column-4">
                         <div class="wrap-num-product flex-w m-l-auto m-r-0">
                             <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
                                 <i class="fs-16 zmdi zmdi-minus"></i>
                             </div>
-                            <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product${item.id}" value="${item.id}">
+                            <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product${item.id}" value="${item.count}">
                             <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
                                 <i class="fs-16 zmdi zmdi-plus"></i>
                             </div>
@@ -452,14 +424,51 @@
                             <div class="dropDownSelect2"></div>
                         </div>
                     </td>
-                    <td class="column-5">${total}원</td>
+                    <td class="column-5">${total.toLocaleString()}원</td>
                 </tr>
             `;
 				$cartItems.append(row);
 			});
 
-			$('#subtotal').text(subtotal + '원');
-			$('#total').text((subtotal + 2500) + '원'); // 배송비 포함 총 금액
+			$('#subtotal').text(subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원');
+			$('#total').text((subtotal + 2500).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'); // 배송비 포함 총 금액
+		}
+
+
+		// 이벤트 리스너 추가
+		$('.btn-num-product-up').off('click').on('click', function() {
+			let $row = $(this).closest('.table_row');
+			let itemId = $row.data('item-id');
+			let $input = $row.find('.num-product');
+			let newCount = parseInt($input.val()) + 1;
+			$input.val(newCount);
+			updateItemTotal($row, newCount);
+		});
+
+		$('.btn-num-product-down').off('click').on('click', function() {
+			let $row = $(this).closest('.table_row');
+			let itemId = $row.data('item-id');
+			let $input = $row.find('.num-product');
+			let newCount = Math.max(1, parseInt($input.val()) - 1); // 최소 수량 1
+			$input.val(newCount);
+			updateItemTotal($row, newCount);
+		});
+
+		function updateItemTotal($row, newCount) {
+			let price = parseInt($row.find('.column-3').text().replace(/[^0-9]/g, '')); // 가격에서 숫자만 추출
+			let newTotal = price * newCount;
+			$row.find('.column-5').text(newTotal.toLocaleString() + '원');
+			updateCartTotals();
+		}
+
+		function updateCartTotals() {
+			let subtotal = 0;
+			$('.table_row').each(function() {
+				let total = parseInt($(this).find('.column-5').text().replace(/[^0-9]/g, ''));
+				subtotal += total;
+			});
+			$('#subtotal').text(subtotal.toLocaleString() + '원');
+			$('#total').text((subtotal + 2500).toLocaleString() + '원'); // 배송비 포함 총 금액
 		}
 	</script>
 
