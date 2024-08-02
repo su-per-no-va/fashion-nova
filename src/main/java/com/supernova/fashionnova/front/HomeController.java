@@ -114,4 +114,9 @@ public class HomeController {
     public String paymentComplete() {
         return "payment-complete";
     }
+
+    @GetMapping("/my-question-detail.html")
+    public String myQuestionDetail() {
+        return "my-question-detail";
+    }
 }

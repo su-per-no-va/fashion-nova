@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>My Q&A</title>
+  <title>My Q&A Detail</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!--===============================================================================================-->
@@ -15,7 +15,8 @@
   <link rel="stylesheet" type="text/css"
         href="../fonts/iconic/css/material-design-iconic-font.min.css">
   <!--===============================================================================================-->
-  <link rel="stylesheet" type="text/css" href="../fonts/linearicons-v1.0.0/icon-font.min.css">
+  <link rel="stylesheet" type="text/css"
+        href="../fonts/linearicons-v1.0.0/icon-font.min.css">
   <!--===============================================================================================-->
   <link rel="stylesheet" type="text/css" href="../vendor/animate/animate.css">
   <!--===============================================================================================-->
@@ -25,11 +26,20 @@
   <!--===============================================================================================-->
   <link rel="stylesheet" type="text/css" href="../vendor/select2/select2.min.css">
   <!--===============================================================================================-->
-  <link rel="stylesheet" type="text/css" href="../vendor/perfect-scrollbar/perfect-scrollbar.css">
+  <link rel="stylesheet" type="text/css"
+        href="../vendor/daterangepicker/daterangepicker.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../vendor/slick/slick.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../vendor/MagnificPopup/magnific-popup.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css"
+        href="../vendor/perfect-scrollbar/perfect-scrollbar.css">
   <!--===============================================================================================-->
   <link rel="stylesheet" type="text/css" href="../css/util.css">
   <link rel="stylesheet" type="text/css" href="../css/main.css">
-  <link rel="stylesheet" type="text/css" href="/css/review.css">
+  <link rel="stylesheet" type="text/css" href="../css/my-info.css">
+  <link rel="stylesheet" type="text/css" href="../css/my-question-detail.css">
   <!--===============================================================================================-->
 </head>
 <body class="animsition">
@@ -66,7 +76,7 @@
 
         <!-- Logo desktop -->
         <a href="index.html" class="logo">
-          <img src="../images/icons/logo-01.png" alt="IMG-LOGO">
+          <img src="images/icons/logo-01.png" alt="IMG-LOGO">
         </a>
 
         <!-- Menu desktop -->
@@ -112,7 +122,7 @@
   <div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
     <div class="container-search-header">
       <button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
-        <img src="../images/icons/icon-close2.png" alt="CLOSE">
+        <img src="images/icons/icon-close2.png" alt="CLOSE">
       </button>
 
       <form class="wrap-search-header flex-w p-l-15">
@@ -127,9 +137,9 @@
 
 <!-- Title page -->
 <section class="bg-img1 txt-center p-lr-15 p-tb-92"
-         style="background-image: url('/images/bg-01.jpg');">
+         style="background-image: url(/images/bg-01.jpg);">
   <h2 class="ltext-105 cl0 txt-center">
-    My Q&A
+    My Q&A Detail
   </h2>
 </section>
 
@@ -146,48 +156,76 @@
       <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
     </a>
 
+    <a href="my-question.html" class="stext-109 cl8 hov-cl1 trans-04">
+      My Q&A
+      <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+    </a>
+
     <span class="stext-109 cl4">
-				My Q&A
+				My Q&A Detail
 			</span>
   </div>
 </div>
 
-<!-- My Q&A -->
-<form class="bg0 p-t-75 p-b-85">
+<!-- My Q&A Detail page -->
+<section class="bg0 p-t-104 p-b-116">
   <div class="container">
-    <div class="row">
-      <div class="col-lg-10">
-        <div class="m-l-10 m-r--100 m-lr-0-xl">
-          <div class="wrap-table-shopping-cart">
-            <table class="table-shopping-cart">
-              <tr class="table_head">
-                <th class="column-1">Type</th>
-                <th class="column-2">Date</th>
-                <th class="column-3">Question</th>
-                <th class="column-5">Status</th>
-              </tr>
 
-              <tr class="table_row">
-                <td class="column-1">배송문의</td>
-                <td class="column-2">2024-08-01</td>
+    <div class="size-300 bor10 p-lr-70 p-t-55 p-b-70 p-lr-15-lg w-full-md">
+      <form>
+        <h4 class="mtext-105 cl2 txt-center p-b-30">
+          문의하기
+        </h4>
+        <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
+          <select class="js-select2" name="time">
+            <option>문의유형</option>
+            <option value="return">환불</option>
+            <option value="coupon">쿠폰/이벤트/혜택</option>
+            <option value="delivery">배송</option>
+            <option value="order">주문/결제</option>
+            <option value="others">기타</option>
+          </select>
+          <div class="dropDownSelect2"></div>
+        </div>
 
-                <td class="column-3">
-                  누에 키워서 실뽑고 계세요? 배송이 안와요
-                </td>
+        <div class="form-group">
+          <div class="fixed-text" id="name">누에 키워서 실뽑고 계세요? 배송이 안와요</div>
+        </div>
 
-                <td class="column-5">
-                  <a href="my-question-detail.html">
-                    <img src="../images/icons/question-after.png" alt="IMG">
-                  </a>
-                </td>
-              </tr>
-            </table>
+        <div class="bor8 m-b-30">
+          <div class="fixed-text size-120" name="msg">
+            배송이 너무너무 안와서 지쳐쓰러져 잠들었어요.. 언제 발송되나요?
           </div>
         </div>
-      </div>
+
+        <div class="form-group file-upload">
+          <td class="column-1">
+            <img src="../images/item-cart-05.jpg" alt="IMG">
+          </td>
+          <td class="column-1">
+            <img src="../images/item-cart-05.jpg" alt="IMG">
+          </td>
+          <td class="column-1">
+            <img src="../images/item-cart-05.jpg" alt="IMG">
+          </td>
+          <td class="column-1">
+            <img src="../images/item-cart-05.jpg" alt="IMG">
+          </td>
+        </div>
+
+        <h5 class="mtext-105 cl2 p-t-30 p-b-20">
+          운영자 답변
+        </h5>
+
+        <div class="bor8 m-b-30">
+          <div class="fixed-text size-120" name="msg">
+            네 고객님ㅎㅎ 기다리시느라 많이 힘드셨겠어요. 서비스로 나방 몇 마리 더 보내드릴게요.
+          </div>
+        </div>
+      </form>
     </div>
   </div>
-</form>
+</section>
 
 <!-- Footer -->
 <footer class="bg3 p-t-75 p-b-32">
@@ -281,54 +319,11 @@
   });
 </script>
 <!--===============================================================================================-->
-<script src="../js/main.js"></script>
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKFWBqlKAGCeS1rMVoaNlwyayu0e0YRes"></script>
+<script src="../js/map-custom.js"></script>
 <!--===============================================================================================-->
-<script>
-  $(document).ready(function () {
-    // 기존 쿠키 삭제 (필요에 따라 유지)
-    Cookies.remove('Authorization', {path: '/'});
+<script src="../js/main.js"></script>
 
-    // AJAX 요청에 Authorization 헤더 추가
-    $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-      const token = Cookies.get('Authorization');
-      if (token) {
-        jqXHR.setRequestHeader('Authorization', token);
-      }
-    });
-  });
-
-  const host = 'http://' + window.location.host;
-
-  function onLogin() {
-    let username = $('#username').val();
-    let password = $('#password').val();
-
-    $.ajax({
-      type: "POST",
-      url: `/api/user/login`,
-      contentType: "application/json",
-      data: JSON.stringify({username: username, password: password}),
-    })
-    .done(function (res, status, xhr) {
-      const token = xhr.getResponseHeader('Authorization');
-      console.log("Token: ", token);  // 토큰 값 확인
-
-      if (token) {
-        // 쿠키에 토큰 저장
-        Cookies.set('Authorization', token, {path: '/'});
-        console.log("Token set in cookie: ", Cookies.get('Authorization'));  // 쿠키 설정 확인
-
-        window.location.href = host;
-      } else {
-        console.error("Token is null or undefined");
-        alert("Login Fail: Token is null or undefined");
-      }
-    })
-    .fail(function (jqXHR, textStatus) {
-      alert("Login Fail");
-      window.location.href = host + '/api/user/login-page?error';
-    });
-  }
-</script>
 </body>
 </html>
