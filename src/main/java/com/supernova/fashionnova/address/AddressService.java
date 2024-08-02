@@ -1,9 +1,12 @@
 package com.supernova.fashionnova.address;
 
+import com.supernova.fashionnova.address.dto.AddressDefaultRequestDto;
+import com.supernova.fashionnova.address.dto.AddressDeleteRequestDto;
 import com.supernova.fashionnova.address.dto.AddressRequestDto;
 import com.supernova.fashionnova.address.dto.AddressResponseDto;
+import com.supernova.fashionnova.global.exception.CustomException;
+import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.user.User;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +38,7 @@ public class AddressService {
             .build();
 
         addressRepository.save(address);
+
     }
 
     /**
@@ -45,32 +49,52 @@ public class AddressService {
      */
     public List<AddressResponseDto> getAddressList(User user) {
 
-        List<Address> addresses = addressRepository.findByUser(user);
+        List<Address> addresses = addressRepository.findByUserOrderByDefaultAddressDesc(user);
 
         return addresses.stream()
-            .sorted(Comparator.comparing(Address::isDefaultAddress).reversed())
             .map(AddressResponseDto::new)
             .collect(Collectors.toList());
+
     }
 
     /**
      * 기본 배송지 설정
      *
      * @param user
-     * @param addressId
+     * @param requestDto
      */
     @Transactional
-    public void updateDefaultAddress(User user, Long addressId) {
+    public void updateDefaultAddress(User user, AddressDefaultRequestDto requestDto) {
 
-        List<Address> addressList = addressRepository.findByUser(user);
+        addressRepository.updateDefaultAddress(user.getId(), requestDto.getAddressId());
 
-        for (Address address : addressList) {
-            if (address.isDefaultAddress()) {
-                address.updateDefaultAddress();
-            }
-            if (address.getId().equals(addressId)) {
-                address.updateDefaultAddress();
-            }
+    }
+
+    /**
+     * 배송지 삭제
+     *
+     * @param user
+     * @param requestDto
+     */
+    @Transactional
+    public void deleteAddress(User user, AddressDeleteRequestDto requestDto) {
+
+        Address address = getAddress(requestDto.getAddressId());
+        validateUser(user, address);
+
+        addressRepository.delete(address);
+
+    }
+
+    private Address getAddress(Long addressId) {
+        return addressRepository.findById(addressId).orElseThrow(
+            () -> new CustomException(ErrorType.NOT_FOUND_ADDRESS)
+        );
+    }
+
+    private void validateUser(User user, Address address) {
+        if(!address.getUser().getId().equals(user.getId())) {
+            throw new CustomException(ErrorType.INVALID_ADDRESS);
         }
     }
 

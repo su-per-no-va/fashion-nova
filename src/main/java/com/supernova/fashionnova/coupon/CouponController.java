@@ -19,7 +19,8 @@ public class CouponController {
 
     private final CouponService couponService;
 
-    /** 보유 쿠폰 조회
+    /**
+     * 보유 쿠폰 조회
      *
      * @param userDetails
      * @return List<CouponResponseDto>
@@ -30,9 +31,11 @@ public class CouponController {
         List<CouponResponseDto> responseDto = couponService.getCouponList(userDetails.getUser());
 
         return ResponseUtil.of(HttpStatus.OK, responseDto);
+
     }
 
-    /** 쿠폰 내역 조회
+    /**
+     * 쿠폰 내역 조회
      *
      * @param userDetails
      * @return List<CouponResponseDto>
@@ -43,6 +46,7 @@ public class CouponController {
         List<CouponResponseDto> responseDto = couponService.getUsedCouponList(userDetails.getUser());
 
         return ResponseUtil.of(HttpStatus.OK, responseDto);
+
     }
 
 }

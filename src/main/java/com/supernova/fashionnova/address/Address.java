@@ -47,7 +47,7 @@ public class Address {
     private String detail;
 
     @Column(nullable = false)
-    private boolean defaultAddress;
+    private Boolean defaultAddress;
 
     @Builder
     public Address(User user, String name, String recipientName, String recipientNumber, String zipCode, String address, String detail) {
@@ -61,8 +61,8 @@ public class Address {
         this.defaultAddress = false;
     }
 
-    public void updateDefaultAddress() {
-        this.defaultAddress = !this.defaultAddress;
+    public Boolean isDefaultAddress() {
+        return this.defaultAddress;
     }
 
 }

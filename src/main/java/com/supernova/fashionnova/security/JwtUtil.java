@@ -1,6 +1,5 @@
 package com.supernova.fashionnova.security;
 
-import static com.supernova.fashionnova.security.JwtConstants.AUTHORIZATION_HEADER;
 import static com.supernova.fashionnova.security.JwtConstants.BEARER_PREFIX;
 
 import com.supernova.fashionnova.global.exception.CustomException;
@@ -34,6 +33,7 @@ import org.springframework.util.StringUtils;
 public class JwtUtil {
 
     private final UserRepository userRepository;
+    public static final String AUTHORIZATION_HEADER = "Authorization";
 
     // 로그 설정
     public static final Logger logger = LoggerFactory.getLogger("JWT 관련 로그");

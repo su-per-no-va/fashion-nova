@@ -2,6 +2,8 @@ package com.supernova.fashionnova.product;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -9,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,10 +35,27 @@ public class ProductDetail {
     private Long quantity;
 
     @Column(nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private ProductStatus status;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
+
+    @Builder
+    public ProductDetail(String size, String color, Long quantity, Product product) {
+        this.size = size;
+        this.color = color;
+        this.quantity = quantity;
+        this.status = ProductStatus.ACTIVE;
+        this.product = product;
+    }
+
+    public void updateDetail(String size, String color, Long quantity, ProductStatus status) {
+        this.size = size;
+        this.color = color;
+        this.quantity = quantity;
+        this.status = status;
+    }
 
 }

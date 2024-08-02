@@ -2,24 +2,28 @@
 GET http://localhost:8080/products/product?
     sort=high_price&
     category=TOP&
+    size=&
+    color=&
     page=1
-
 
 
 ### 낮은 가격순 & 카테고리 신발
 GET http://localhost:8080/products/product?
     sort=high_price&
-    category=SHOES&
+    category=TOP&
+    size=&
+    color=&
     page=1
-
-
 
 
 ### 리뷰 많은 순 & 카테고리 null
 GET http://localhost:8080/products/product?
     sort=review_count&
     category=&
+    size=&
+    color=&
     page=1
+
 
 ### 리뷰 많은 순 & 카테고리 SHOES & SIZE SMALL & COLOR BLACK
 GET http://localhost:8080/products/product?

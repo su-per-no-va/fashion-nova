@@ -13,4 +13,10 @@ public class CartRequestDto {
 
     private String color;
 
+    public CartRequestDto(Long productId, int count, String size, String color) {
+        this.productId = productId;
+        this.count = count;
+        this.size = size;
+        this.color = color;
+    }
 }

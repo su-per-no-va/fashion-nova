@@ -1,5 +1,6 @@
 package com.supernova.fashionnova.order;
 
+import com.supernova.fashionnova.global.common.Timestamped;
 import com.supernova.fashionnova.product.Product;
 import com.supernova.fashionnova.product.ProductDetail;
 import com.supernova.fashionnova.user.User;
@@ -22,7 +23,7 @@ import lombok.Setter;
 @Getter
 @Table(name = "orders_details")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OrderDetail {
+public class OrderDetail extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

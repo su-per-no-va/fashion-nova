@@ -13,4 +13,10 @@ public class ReviewUpdateRequestDto {
 
 //    private String reviewImageUrl;
 
+    public ReviewUpdateRequestDto(Long reviewId, String review, int rating) {
+        this.reviewId = reviewId;
+        this.review = review;
+        this.rating = rating;
+    }
+
 }

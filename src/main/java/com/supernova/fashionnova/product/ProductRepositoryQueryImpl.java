@@ -25,10 +25,12 @@ public class ProductRepositoryQueryImpl implements ProductRepositoryQuery {
         OrderSpecifier<?> orderSpecifier;
         BooleanBuilder builder = new BooleanBuilder();
 
-        builder.and(product.product_status.eq("ACTIVE"));
+        builder.and(product.productStatus.eq(ProductStatus.ACTIVE));
+        builder.and(productDetail.status.eq(ProductStatus.ACTIVE));
 
         if(category != null && !category.trim().isEmpty()) {
-            builder.and(product.category.eq(category));
+            ProductCategory productCategory = ProductCategory.valueOf(category.toUpperCase());
+            builder.and(product.category.eq(productCategory));
         }
         if(size != null && !size.trim().isEmpty()) {
             builder.and(productDetail.size.eq(size));
@@ -45,7 +47,7 @@ public class ProductRepositoryQueryImpl implements ProductRepositoryQuery {
                 orderSpecifier = product.price.asc();
                 break;
             case "review_count" :
-                orderSpecifier = product.review_count.desc();
+                orderSpecifier = product.reviewCount.desc();
                 break;
             case "new_item" :
                 orderSpecifier = product.createdAt.desc();
@@ -55,7 +57,7 @@ public class ProductRepositoryQueryImpl implements ProductRepositoryQuery {
         }
         List<Product> products = queryFactory
             .selectFrom(product)
-            .leftJoin(product.productDetails, productDetail)
+            .leftJoin(product.productDetailList, productDetail)
             .fetchJoin()
             .where(builder)
             .orderBy(orderSpecifier)
@@ -65,7 +67,7 @@ public class ProductRepositoryQueryImpl implements ProductRepositoryQuery {
         Long count = queryFactory
             .select(product.count())
             .from(product)
-            .leftJoin(product.productDetails, productDetail)
+            .leftJoin(product.productDetailList, productDetail)
             .where(builder)
             .fetchOne();
         return new PageImpl<>(products.stream().map(ProductResponseDto::new).collect(Collectors.toList()), pageable, count);
