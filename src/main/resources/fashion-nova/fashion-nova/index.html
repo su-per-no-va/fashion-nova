@@ -49,11 +49,15 @@
 				</div>
 
 				<div class="right-top-bar flex-w h-full">
-					<a href="#" class="flex-c-m trans-04 p-lr-25">
-						Help & FAQs
+					<a href="/html/login.html" class="flex-c-m trans-04 p-lr-25">
+						Login
 					</a>
 
-					<a href="#" class="flex-c-m trans-04 p-lr-25">
+					<a href="question.html" class="flex-c-m trans-04 p-lr-25">
+						Q&A
+					</a>
+
+					<a href="my-page.html" class="flex-c-m trans-04 p-lr-25">
 						My Page
 					</a>
 				</div>
@@ -95,7 +99,7 @@
 						<i class="zmdi zmdi-shopping-cart"></i>
 					</a>
 
-					<a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
+					<a href="wish-list.html" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
 						<i class="zmdi zmdi-favorite-outline"></i>
 					</a>
 				</div>
@@ -198,7 +202,6 @@
 		</div>
 	</div>
 </section>
-
 
 <!-- Banner -->
 <div class="sec-banner bg0 p-t-80 p-b-50">
@@ -955,7 +958,7 @@
 	$('.js-addwish-b2').each(function(){
 		var nameProduct = $(this).parent().parent().find('.js-name-b2').html();
 		$(this).on('click', function(){
-			swal(nameProduct, "is added to wishlist !", "success");
+			swal(nameProduct, "위시리스트 담기 완료 !", "success");
 
 			$(this).addClass('js-addedwish-b2');
 			$(this).off('click');
@@ -966,7 +969,7 @@
 		var nameProduct = $(this).parent().parent().parent().find('.js-name-detail').html();
 
 		$(this).on('click', function(){
-			swal(nameProduct, "is added to wishlist !", "success");
+			swal(nameProduct, "위시리스트 담기 완료 !", "success");
 
 			$(this).addClass('js-addedwish-detail');
 			$(this).off('click');
@@ -978,7 +981,7 @@
 	$('.js-addcart-detail').each(function(){
 		var nameProduct = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
 		$(this).on('click', function(){
-			swal(nameProduct, "is added to cart !", "success");
+			swal(nameProduct, "장바구니 담기 완료 !", "success");
 		});
 	});
 
