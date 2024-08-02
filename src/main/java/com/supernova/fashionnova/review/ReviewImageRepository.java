@@ -1,10 +1,14 @@
 package com.supernova.fashionnova.review;
 
-import java.util.Optional;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ReviewImageRepository extends JpaRepository<ReviewImage, Long> {
 
-    Optional<ReviewImage> findByReview(Review review);
+    List<ReviewImage> findAllByReview(Review review);
+
+    List<ReviewImage> findAllByReviewId(Long id);
+
+    void deleteAllByReviewId(Long reviewId);
 
 }

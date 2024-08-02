@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,5 +32,11 @@ public class Mileage extends Timestamped {
 
     @Column(nullable = false)
     private int mileage;
+
+    @Builder
+    public Mileage(User user, int mileage) {
+        this.user = user;
+        this.mileage = mileage;
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.supernova.fashionnova.security;
 
 import static com.supernova.fashionnova.security.JwtAuthenticationFilter.jwtExceptionHandler;
+import static com.supernova.fashionnova.security.JwtConstants.ACCESS_TOKEN_HEADER;
 
 import com.supernova.fashionnova.global.exception.ErrorType;
 import io.jsonwebtoken.Claims;
@@ -35,6 +36,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         HttpServletRequest req, HttpServletResponse res, FilterChain filterChain)
         throws ServletException, IOException {
 
+
         log.info("현재주소 : " + req.getRequestURL().toString());
         // 다음 필터로 넘길 주소
         if (req.getRequestURL().toString().equals("http://localhost:8080/users/signup")
@@ -46,18 +48,27 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
 
         //AccessToken 가져온후 가공
-        String accessToken = jwtUtil.getAccessTokenFromRequest(req);
+        String accessToken = req.getHeader(ACCESS_TOKEN_HEADER);
 
-        //검사
+        log.info("Authorization Header : " + req.getHeader("Authorization"));
+
+//        String accessToken1 = jwtUtil.getAccessTokenFromRequest(req);
+//        String accessToken2 = jwtUtil.getTokenFromRequest(req,JwtUtil.AUTHORIZATION_HEADER);
+
+        if (accessToken == null || accessToken.isBlank() || "null".equals(accessToken)) {
+            filterChain.doFilter(req, res);
+            return;
+        }
+        // 검사
         checkAccessToken(res, accessToken);
 
         // JWT 토큰 substring
         accessToken = jwtUtil.substringToken(accessToken);
 
-        //유저 정보 가져오기
+        // 유저 정보 가져오기
         Claims accessTokenClaims = jwtUtil.getUserInfoFromToken(accessToken);
 
-        //RefreshToken 검증 (로그 아웃시 리프레쉬 토큰 없음)
+        // RefreshToken 검증 (로그 아웃시 리프레쉬 토큰 없음)
         String refreshToken = jwtUtil.getRefreshTokenFromRequest(accessTokenClaims.getSubject());
         if (refreshToken.isEmpty()) {
             jwtExceptionHandler(res, ErrorType.NOT_FOUND_REFRESH_TOKEN);
@@ -71,38 +82,48 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             log.error(e.getMessage());
             return;
         }
+
         filterChain.doFilter(req, res);
+
     }
 
 
     // 인증 처리
     public void setAuthentication(String userName) {
+
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         Authentication authentication = createAuthentication(userName);
         context.setAuthentication(authentication);
 
         SecurityContextHolder.setContext(context);
+
     }
 
     // 인증 객체 생성
     private Authentication createAuthentication(String userName) {
+
         UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
-        return new UsernamePasswordAuthenticationToken(userDetails, null,
-            userDetails.getAuthorities());
+
+        return new UsernamePasswordAuthenticationToken(
+            userDetails, null, userDetails.getAuthorities());
+
     }
 
     private void checkAccessToken(HttpServletResponse response, String accessToken) {
+
         // hasText : Null체크
         if (!StringUtils.hasText(accessToken)) {
             log.error("AccessToken이 없습니다.");
             jwtExceptionHandler(response, ErrorType.NOT_FOUND_TOKEN);
             return;
         }
+
         //공백 제거
         accessToken = accessToken.replaceAll("\\s", "");
-        //
+
         // Access 토큰 유효성 검사
         jwtUtil.validateToken(accessToken);
 
     }
+
 }

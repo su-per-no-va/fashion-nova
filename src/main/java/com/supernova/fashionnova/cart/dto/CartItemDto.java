@@ -7,7 +7,7 @@ public class CartItemDto {
 
     private String product;
 
-    private int price;
+    private Long price;
 
     private int count;
 
@@ -15,7 +15,7 @@ public class CartItemDto {
 
     private String color;
 
-    public CartItemDto(String product, int price, int count, String size, String color) {
+    public CartItemDto(String product, Long price, int count, String size, String color) {
         this.product = product;
         this.price = price;
         this.count = count;

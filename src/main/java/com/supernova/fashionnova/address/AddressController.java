@@ -1,6 +1,7 @@
 package com.supernova.fashionnova.address;
 
 import com.supernova.fashionnova.address.dto.AddressDefaultRequestDto;
+import com.supernova.fashionnova.address.dto.AddressDeleteRequestDto;
 import com.supernova.fashionnova.address.dto.AddressRequestDto;
 import com.supernova.fashionnova.address.dto.AddressResponseDto;
 import com.supernova.fashionnova.global.util.ResponseUtil;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,7 +27,8 @@ public class AddressController {
 
     private final AddressService addressService;
 
-    /** 배송지 추가
+    /**
+     * 배송지 추가
      *
      * @param userDetails
      * @param requestDto
@@ -40,7 +43,8 @@ public class AddressController {
         return ResponseUtil.of(HttpStatus.CREATED,"배송지 추가 성공");
     }
 
-    /** 배송지 조회
+    /**
+     * 배송지 조회
      *
      * @param userDetails
      * @return responseDto
@@ -53,7 +57,8 @@ public class AddressController {
         return ResponseUtil.of(HttpStatus.OK, responseDto);
     }
 
-    /** 기본 배송지 설정
+    /**
+     * 기본 배송지 설정
      *
      * @param userDetails
      * @param requestDto
@@ -63,9 +68,25 @@ public class AddressController {
     public ResponseEntity<String> updateDefaultAddress(@AuthenticationPrincipal UserDetailsImpl userDetails,
         @RequestBody AddressDefaultRequestDto requestDto) {
 
-        addressService.updateDefaultAddress(userDetails.getUser(), requestDto.getAddressId());
+        addressService.updateDefaultAddress(userDetails.getUser(), requestDto);
 
         return ResponseUtil.of(HttpStatus.OK,"기본 배송지 설정 성공");
+    }
+
+    /**
+     * 배송지 삭제
+     *
+     * @param userDetails
+     * @param requestDto
+     * @return "배송지 삭제 성공"
+     */
+    @DeleteMapping
+    public ResponseEntity<String> deleteAddress(@AuthenticationPrincipal UserDetailsImpl userDetails,
+        @Valid @RequestBody AddressDeleteRequestDto requestDto) {
+
+        addressService.deleteAddress(userDetails.getUser(), requestDto);
+
+        return ResponseUtil.of(HttpStatus.OK,"배송지 삭제 성공");
     }
 
 }

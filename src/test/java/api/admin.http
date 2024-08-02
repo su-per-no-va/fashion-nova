@@ -26,3 +26,103 @@ Authorization: {{access_token}}
 @userId = 2
 GET http://localhost:8080/admin/reviews/{{userId}}?page=0
 Authorization: {{access_token}}
+
+
+### 답변 등록 (admin)
+POST http://localhost:8080/admin/answers
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "questionId": 1,
+  "answer": "돌아가~"
+}
+
+### 문의 전체 조회 (admin)
+GET http://localhost:8080/admin/answers?page=0
+Authorization: {{access_token}}
+
+### 쿠폰 지급 (admin)
+POST http://localhost:8080/admin/coupons
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "userId": 1,
+  "name": "등급 업 추카포카",
+  "period": "2024-08-02",
+  "sale": "5%",
+  "type": "GRADE_UP"
+}
+
+
+### 상품 등록 (admin)
+POST http://localhost:8080/admin/products
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "product": "여름옷11",
+  "price": 77777777777777,
+  "explanation": "옷",
+  "category": "TOP",
+  "productStatus": "ACTIVE",
+  "productDetailList": [{
+    "size" : "LARGE",
+    "color" : "BLACK",
+    "quantity": 123
+  }]
+}
+
+
+### 상품 디테일 추가 (admin)
+POST http://localhost:8080/admin/products/details
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "productId": 2,
+  "productDetailRequestDtoList": [
+    {
+      "size": "SMALL",
+      "color": "WHITE",
+      "quantity": 5,
+      "status" : "SOLD_OUT"
+    }
+  ]
+}
+### 상품 수정 (admin)
+PUT http://localhost:8080/admin/products
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "productId": 2,
+  "product": "옷입니다옷",
+  "price": 1000000,
+  "explanation": "그냥옷",
+  "category": "TOP",
+  "productStatus": "SOLD_OUT",
+  "productDetailList": [{
+      "productDetailId": 5,
+      "size": "LARGE",
+      "color": "WHITE",
+      "quantity": 5111,
+      "status" : "SOLD_OUT"
+  }]
+}
+
+### 마일리지 지급 (admin)
+POST http://localhost:8080/admin/mileages
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "userId": 1,
+  "mileage": 100
+}
+
+### 마일리지 초기화 (admin)
+DELETE http://localhost:8080/admin/mileages
+Content-Type: application/json
+Authorization: {{access_token}}

@@ -10,7 +10,7 @@ GET http://localhost:8080/products/product?
 ### 낮은 가격순 & 카테고리 신발
 GET http://localhost:8080/products/product?
     sort=high_price&
-    category=SHOES&
+    category=TOP&
     size=&
     color=&
     page=1
