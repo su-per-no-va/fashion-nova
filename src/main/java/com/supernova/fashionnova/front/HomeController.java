@@ -109,4 +109,9 @@ public class HomeController {
     public String orderDetail() {
         return "order-detail";
     }
+
+    @GetMapping("/payment-complete.html")
+    public String paymentComplete() {
+        return "payment-complete";
+    }
 }
