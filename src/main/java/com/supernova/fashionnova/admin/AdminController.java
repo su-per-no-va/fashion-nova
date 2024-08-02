@@ -196,7 +196,7 @@ public class AdminController {
     /**
      * 마일리지 초기화
      *
-     * @return "마일리지 지급 성공"
+     * @return "마일리지 초기화 성공"
      */
     @DeleteMapping("/mileages")
     public ResponseEntity<String> deleteMileage() {

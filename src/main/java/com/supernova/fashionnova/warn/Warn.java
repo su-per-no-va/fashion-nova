@@ -34,4 +34,5 @@ public class Warn extends Timestamped {
         this.detail = detail;
         this.user = user;
     }
+
 }
