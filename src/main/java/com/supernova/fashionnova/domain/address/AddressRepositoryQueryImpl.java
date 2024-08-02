@@ -1,7 +1,6 @@
 package com.supernova.fashionnova.domain.address;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.supernova.fashionnova.address.QAddress;
 import com.supernova.fashionnova.domain.user.User;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

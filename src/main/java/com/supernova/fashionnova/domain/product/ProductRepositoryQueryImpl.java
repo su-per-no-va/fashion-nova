@@ -4,8 +4,6 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.supernova.fashionnova.domain.product.dto.ProductResponseDto;
-import com.supernova.fashionnova.product.QProduct;
-import com.supernova.fashionnova.product.QProductDetail;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;

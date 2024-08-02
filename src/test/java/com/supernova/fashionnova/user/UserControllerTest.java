@@ -39,7 +39,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.test.web.servlet.MockMvc;
 
-
 @WebMvcTest(UserController.class)  // UserController만 테스트하기 위해 Spring MVC 테스트 환경을 설정합니다.
 class UserControllerTest {
 
@@ -64,7 +63,13 @@ class UserControllerTest {
 
         // Given a mock UserDetailsImpl
         given(userDetails.getUsername()).willReturn("user");
-        given(userDetails.getUser()).willReturn(new User());
+        given(userDetails.getUser()).willReturn(new User(
+            "testUSer",
+            "Test1234!@",
+            "테스트유저",
+            "test@gmail.com",
+            "010-1234-5678"
+        ));
 
         // Set the security context
         SecurityContextHolder.setContext(new SecurityContextImpl());
