@@ -2,46 +2,6 @@ $(document).ready(function () {
 
   auth = localStorage.getItem('accessToken');
 
-/*  window.common = {
-    getShoppingCart: function () {
-      if (auth) {
-        $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-          jqXHR.setRequestHeader('Authorization', auth);
-        });
-      console.log(auth)
-        $.ajax({
-          type: 'GET',
-          url: 'http://localhost:8080/carts',
-          success: function (response) {
-            return response;
-
-          },
-          error: function (error) {
-            console.error('에러: ' + error.message)
-          },
-        });
-      }
-    },
-
-    getWishList: function () {
-      if (auth) {
-        $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-          console.log("auth : " + auth);
-          jqXHR.setRequestHeader('Authorization', auth);
-        });
-        $.ajax({
-          type: 'GET',
-          url: 'http://localhost:8080/wishlists',
-          success: function (response) {
-            return response;
-          },
-          error: function (error) {
-            console.error('에러: ' + error.message)
-          },
-        });
-      }
-    },
-  };*/
 
   window.common = {
     getShoppingCart: function () {
@@ -54,7 +14,7 @@ $(document).ready(function () {
 
         return $.ajax({
           type: 'GET',
-          url: 'http://localhost:8080/carts'
+          url: '/carts'
         });
       }
     },
@@ -68,7 +28,7 @@ $(document).ready(function () {
 
         return $.ajax({
           type: 'GET',
-          url: 'http://localhost:8080/wishlists'
+          url: '/wishlists'
         });
       }
     },

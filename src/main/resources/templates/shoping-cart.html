@@ -416,5 +416,86 @@
 		});
 	</script>
 
+	<script>
+		$(document).ready(function () {
+			let auth = localStorage.getItem('accessToken');
+			let refreshToken = localStorage.getItem('refreshToken');
+			console.log("엑세스 토큰: " + auth);
+			console.log("리프레시 토큰: " + refreshToken);
+
+			if (auth) {
+				$.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+					jqXHR.setRequestHeader('Authorization', auth);
+					jqXHR.setRequestHeader('Authorization-refresh', refreshToken);
+				});
+
+				fetchCartItems();
+			} else {
+				alert("로그인 후 이용해 주세요");
+				window.location.href = "login.html";
+			}
+		});
+
+		function fetchCartItems() {
+			$.ajax({
+				type: 'GET',
+				url: '/carts',
+				success: function(response) {
+					updateCartTable(response);
+				},
+				error: function(error) {
+					alert("에러: " + error.message);
+				}
+			});
+		}
+
+		function updateCartTable(cartResponseDto) {
+			let $cartItems = $('#cart-items');
+			$cartItems.empty(); // 기존 내용을 지우고 새로 추가
+
+			let subtotal = cartResponseDto.total;
+
+			cartResponseDto.forEach(function(item) {
+				let total = item.price * item.quantity;
+				console.log("총합: " + total);
+				let row = `
+                <tr class="table_row">
+                    <td class="column-1">
+                        <div class="how-itemcart1">
+                            <img src="${item.imageUrl}" alt="IMG">
+                        </div>
+                    </td>
+                    <td class="column-2">${item.name}</td>
+                    <td class="column-3">${item.price}원</td>
+                    <td class="column-4">
+                        <div class="wrap-num-product flex-w m-l-auto m-r-0">
+                            <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+                                <i class="fs-16 zmdi zmdi-minus"></i>
+                            </div>
+                            <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product${item.id}" value="${item.quantity}">
+                            <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+                                <i class="fs-16 zmdi zmdi-plus"></i>
+                            </div>
+                        </div>
+                        <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
+                            <select class="js-select2" name="size${item.id}">
+                                <option value="S" ${item.size === 'S' ? 'selected' : ''}>S</option>
+                                <option value="M" ${item.size === 'M' ? 'selected' : ''}>M</option>
+                                <option value="L" ${item.size === 'L' ? 'selected' : ''}>L</option>
+                            </select>
+                            <div class="dropDownSelect2"></div>
+                        </div>
+                    </td>
+                    <td class="column-5">${total}원</td>
+                </tr>
+            `;
+				$cartItems.append(row);
+			});
+
+			$('#subtotal').text(subtotal + '원');
+			$('#total').text((subtotal ) + '원'); // 쿠폰 사용 금액 빼주면됨
+		}
+	</script>
+
 </body>
 </html>
