@@ -60,12 +60,4 @@ public class Review extends Timestamped {
         this.rating = rating;
     }
 
-    public void addReviewImage(ReviewImage reviewImage) {
-        reviewImageList.add(reviewImage);
-    }
-
-    public void removeReviewImage(ReviewImage reviewImage) {
-        reviewImageList.remove(reviewImage);
-    }
-
 }

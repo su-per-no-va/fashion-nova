@@ -25,6 +25,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "product")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Product extends Timestamped {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -59,7 +60,7 @@ public class Product extends Timestamped {
             .filter(p -> p.getColor().equals(detail.getColor()) && p.getSize().equals(detail.getSize())).findFirst().orElse(null);
         if(productDetail == null) {
             productDetailList.add(detail);
-        }else{
+        } else {
             throw new CustomException(ErrorType.DUPLICATED_DETAIL);
         }
 
@@ -68,7 +69,6 @@ public class Product extends Timestamped {
     public void addDetailList(List<ProductDetail> detail) {
         productDetailList.addAll(detail);
     }
-
 
     @Builder
     public Product(String product, Long price, String explanation, ProductCategory category, ProductStatus productStatus) {
