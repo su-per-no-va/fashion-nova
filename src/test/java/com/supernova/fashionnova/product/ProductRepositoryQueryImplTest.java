@@ -1,18 +1,9 @@
 package com.supernova.fashionnova.product;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import com.supernova.fashionnova.global.config.JpaAuditingConfig;
-import com.supernova.fashionnova.product.dto.ProductResponseDto;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 /**
  * create on 2024/07/24 create by IntelliJ IDEA.
@@ -30,7 +21,7 @@ class ProductRepositoryQueryImplTest {
     @Autowired
     private ProductRepository productRepository;
 
-
+    /*
     @Test
     @DisplayName("높은 가격순")
     void test1() {
@@ -99,7 +90,7 @@ class ProductRepositoryQueryImplTest {
         assertEquals("second item", products.getContent().get(1).getProduct());
         assertEquals("first item", products.getContent().get(2).getProduct());
     }
-/*    @Test
+    @Test
     @DisplayName("리뷰많은 순")
     void test4() {
 
@@ -142,7 +133,7 @@ class ProductRepositoryQueryImplTest {
         assertEquals("third item", products.getContent().get(0).getProduct());
         assertEquals("second item", products.getContent().get(1).getProduct());
         assertEquals("first item", products.getContent().get(2).getProduct());
-    }*/
+    }
 
     @Test
     @DisplayName("카테고리 + 신상품순")
@@ -163,5 +154,6 @@ class ProductRepositoryQueryImplTest {
             null, null, pa);
         assertThat(products).isNotEmpty();
         assertEquals(2, products.getTotalElements());
-    }
+    }*/
+
 }

@@ -28,6 +28,7 @@ public class DataGenerator {
 
     // User
     public List<SignupRequestDto> generateUsers(int count) {
+
         return IntStream.range(0, count)
             .mapToObj(i -> new SignupRequestDto(
                 faker.regexify("[a-zA-Z0-9]{4,15}"),
@@ -37,10 +38,12 @@ public class DataGenerator {
                 faker.regexify("010-\\d{4}-\\d{4}")
             ))
             .collect(Collectors.toList());
+
     }
 
     // Product
     public List<ProductRequestDto> generateProducts(int count) {
+
         return IntStream.range(0, count)
             .mapToObj(i -> new ProductRequestDto(
                 faker.commerce().productName(),
@@ -51,10 +54,12 @@ public class DataGenerator {
                 generateProductDetails(faker.number().numberBetween(1, 5))
             ))
             .collect(Collectors.toList());
+
     }
 
     // ProductDetail
     private List<ProductDetailRequestDto> generateProductDetails(int count) {
+
         return IntStream.range(0, count)
             .mapToObj(i -> new ProductDetailRequestDto(
                 faker.options().option("S", "M", "L", "XL"),
@@ -63,10 +68,12 @@ public class DataGenerator {
                 faker.options().option(ProductStatus.values())
             ))
             .collect(Collectors.toList());
+
     }
 
     // Address
     public List<AddressRequestDto> generateAddresses(int count) {
+
         return IntStream.range(0, count)
             .mapToObj(i -> new AddressRequestDto(
                 faker.name().fullName(),
@@ -77,20 +84,24 @@ public class DataGenerator {
                 faker.address().secondaryAddress()
             ))
             .collect(Collectors.toList());
+
     }
 
     // Mileage
     public List<MileageRequestDto> generateMileages(int count) {
+
         return IntStream.range(0, count)
             .mapToObj(i -> new MileageRequestDto(
                 faker.number().randomNumber(5, true),
                 faker.number().numberBetween(1, 50) * 10
             ))
             .collect(Collectors.toList());
+
     }
 
     // Coupon
     public List<CouponRequestDto> generateCoupons(int count) {
+
         return IntStream.range(0, count)
             .mapToObj(i -> new CouponRequestDto(
                 faker.number().randomNumber(5, true),
@@ -100,19 +111,23 @@ public class DataGenerator {
                 faker.options().option("WELCOME", "GRADE_UP", "REGULAR")
             ))
             .collect(Collectors.toList());
+
     }
 
     // Wish
     public List<WishRequestDto> generateWishes(int count) {
+
         return IntStream.range(0, count)
             .mapToObj(i -> new WishRequestDto(
                 faker.number().randomNumber(5, true)
             ))
             .collect(Collectors.toList());
+
     }
 
     // Review
     public List<ReviewRequestDto> generateReviews(int count) {
+
         return IntStream.range(0, count)
             .mapToObj(i -> new ReviewRequestDto(
                 faker.number().randomNumber(5, true),
@@ -121,10 +136,12 @@ public class DataGenerator {
                 faker.internet().image()
             ))
             .collect(Collectors.toList());
+
     }
 
     // Question
     public List<QuestionRequestDto> generateQuestions(int count) {
+
         return IntStream.range(0, count)
             .mapToObj(i -> new QuestionRequestDto(
                 faker.lorem().sentence(),
@@ -132,16 +149,19 @@ public class DataGenerator {
                 faker.options().option("PRODUCT", "RESTOCK", "DELIVERY", "SYSTEM", "ORDER_PAYMENT", "EXCHANGE_RETURN")
             ))
             .collect(Collectors.toList());
+
     }
 
     // Answer
     public List<AnswerRequestDto> generateAnswers(int count) {
+
         return IntStream.range(0, count)
             .mapToObj(i -> new AnswerRequestDto(
                 faker.number().randomNumber(5, true),
                 faker.lorem().paragraph()
             ))
             .collect(Collectors.toList());
+
     }
 
     // Cart

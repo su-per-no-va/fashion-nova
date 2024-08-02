@@ -90,6 +90,19 @@ public class User extends Timestamped {
         this.mileage = 0L; // 처음 생성될 때는 0
     }
 
+    // 카카오 회원가입
+    public User(String username, String email, String password, Long kakaoId) {
+        this.name = username;
+        this.password = password;
+        this.userName = email;
+        this.email = email;
+        this.kakaoId = kakaoId;
+        this.userRole = UserRole.USER; // 기본적으로 USER로 권한 설정
+        this.userStatus = UserStatus.MEMBER; // 처음 생성될때는 활성화 상태
+        this.userGrade = UserGrade.BRONZE; // 처음 생성될 때는 브론즈
+        this.mileage = 0L; // 처음 생성될 때는 0
+    }
+
     public void updateUser(UserUpdateRequestDto requestDto,String encodedPassword) {
         this.userName = requestDto.getUserName();
         this.password = encodedPassword;
@@ -111,27 +124,9 @@ public class User extends Timestamped {
         this.userRole = userRole;
     }
 
-    public User(String username, String password, String email, UserRole role) {
-        this.userName = username;
-        this.password = password;
-        this.email = email;
-        this.userRole= role;
-    }
-
-    public User(String username, String email, String password, Long kakaoId) {
-        this.name = username;
-        this.password = password;
-        this.userName = email;
-        this.email = email;
-        this.kakaoId = kakaoId;
-        this.userRole = UserRole.USER; // 기본적으로 USER로 권한 설정
-        this.userStatus = UserStatus.MEMBER; // 처음 생성될때는 활성화 상태
-        this.userGrade = UserGrade.BRONZE; // 처음 생성될 때는 브론즈
-        this.mileage = 0L; // 처음 생성될 때는 0
-    }
-
     public User kakaoIdUpdate(Long kakaoId) {
         this.kakaoId = kakaoId;
         return this;
     }
+
 }
