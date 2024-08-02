@@ -36,31 +36,88 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        List<SignupRequestDto> userList = dataGenerator.generateUsers(20);
-        saveUsers(userList);
 
-        List<AddressRequestDto> addressList = dataGenerator.generateAddresses(10);
-        saveAddresses(addressList);
+        List<SignupRequestDto> userList = dataGenerator.generateUsers(50);
+        List<User> users = saveUsers(userList);
 
         List<ProductRequestDto> productList = dataGenerator.generateProducts(100);
-        saveProducts(productList);
+        List<Product> products = saveProducts(productList);
+
+        List<AddressRequestDto> addressList = dataGenerator.generateAddresses(50);
+        saveAddresses(addressList, users);
+
+        List<MileageRequestDto> mileageList = dataGenerator.generateMileages(50);
+        saveMileages(mileageList, users);
+
+        List<CouponRequestDto> couponList = dataGenerator.generateCoupons(25);
+        saveCoupons(couponList, users);
+
+        List<WishRequestDto> wishList = dataGenerator.generateWishes(300);
+        saveWishes(wishList, users, products);
+
+        List<ReviewRequestDto> reviewList = dataGenerator.generateReviews(300);
+        saveReviews(reviewList, users, products);
+
+        List<QuestionRequestDto> questionList = dataGenerator.generateQuestions(50);
+        List<Question> questions = saveQuestions(questionList, users);
+
+        List<AnswerRequestDto> answerList = dataGenerator.generateAnswers(25);
+        saveAnswers(answerList, questions);
+
     }
 
-    private void saveUsers(List<SignupRequestDto> requestDtoList) {
-        requestDtoList.forEach(dto -> {
-            User user = User.builder()
+    private List<User> saveUsers(List<SignupRequestDto> requestDtoList) {
+
+        List<User> users = requestDtoList.stream()
+            .map(dto -> User.builder()
                 .userName(dto.getUserName())
                 .password(passwordEncoder.encode(dto.getPassword()))
                 .name(dto.getName())
                 .email(dto.getEmail())
                 .phone(dto.getPhone())
-                .build();
-            userRepository.save(user);
-        });
+                .build())
+            .collect(Collectors.toList());
+
+        return userRepository.saveAll(users);
+
     }
 
-    private void saveAddresses(List<AddressRequestDto> requestDtoList) {
-        requestDtoList.forEach(dto -> {
+    private List<Product> saveProducts(List<ProductRequestDto> requestDtoList) {
+
+        List<Product> products = requestDtoList.stream()
+            .map(dto -> {
+                Product product = Product.builder()
+                    .product(dto.getProduct())
+                    .price(dto.getPrice())
+                    .explanation(dto.getExplanation())
+                    .category(dto.getCategory())
+                    .productStatus(dto.getProductStatus())
+                    .build();
+
+                List<ProductDetail> productDetailList = dto.getProductDetailList().stream()
+                    .map(productDetailRequestDto -> ProductDetail.builder()
+                        .size(productDetailRequestDto.getSize())
+                        .color(productDetailRequestDto.getColor())
+                        .quantity(productDetailRequestDto.getQuantity())
+                        .product(product)
+                        .build())
+                    .collect(Collectors.toList());
+
+                product.addDetailList(productDetailList);
+                return product;
+            })
+            .collect(Collectors.toList());
+
+        return productRepository.saveAll(products);
+
+    }
+
+    private void saveAddresses(List<AddressRequestDto> requestDtoList, List<User> users) {
+
+        Collections.shuffle(users);
+
+        for (AddressRequestDto dto : requestDtoList) {
+            User user = users.get(random.nextInt(users.size()));
             Address address = Address.builder()
                 .name(dto.getName())
                 .recipientName(dto.getRecipientName())
@@ -70,7 +127,9 @@ public class DataInitializer implements CommandLineRunner {
                 .detail(dto.getDetail())
                 .build();
             addressRepository.save(address);
+
         });
+
     }
 
     private void saveProducts(List<ProductRequestDto> requestDtoList) {
@@ -95,8 +154,118 @@ public class DataInitializer implements CommandLineRunner {
             product.addDetailList(productDetailList);
             productRepository.save(product);
         });
+
+        }
+
     }
 
+    private void saveMileages(List<MileageRequestDto> requestDtoList, List<User> users) {
 
+        Collections.shuffle(users);
+
+        for (MileageRequestDto dto : requestDtoList) {
+            User user = users.get(random.nextInt(users.size()));
+            Mileage mileage = Mileage.builder()
+                .user(user)
+                .mileage(dto.getMileage())
+                .build();
+            mileageRepository.save(mileage);
+        }
+
+    }
+
+    private void saveCoupons(List<CouponRequestDto> requestDtoList, List<User> users) {
+
+        Collections.shuffle(users);
+
+        for (CouponRequestDto dto : requestDtoList) {
+            User user = users.get(random.nextInt(users.size()));
+            Coupon coupon = Coupon.builder()
+                .user(user)
+                .name(dto.getName())
+                .period(dto.getPeriod())
+                .sale(dto.getSale())
+                .type(CouponType.valueOf(dto.getType()))
+                .build();
+            couponRepository.save(coupon);
+        }
+
+    }
+
+    private void saveWishes(List<WishRequestDto> requestDtoList, List<User> users, List<Product> products) {
+
+        Collections.shuffle(users);
+        Collections.shuffle(products);
+
+        for (WishRequestDto dto : requestDtoList) {
+            User user = users.get(random.nextInt(users.size()));
+            Product product = products.get(random.nextInt(products.size()));
+            Wish wish = Wish.builder()
+                .user(user)
+                .product(product)
+                .build();
+            wishRepository.save(wish);
+            product.increaseWish();
+        }
+
+    }
+
+    private void saveReviews(List<ReviewRequestDto> requestDtoList, List<User> users, List<Product> products) {
+
+        Collections.shuffle(users);
+        Collections.shuffle(products);
+
+        for (ReviewRequestDto dto : requestDtoList) {
+            User user = users.get(random.nextInt(users.size()));
+            Product product = products.get(random.nextInt(products.size()));
+            Review review = Review.builder()
+                .user(user)
+                .product(product)
+                .review(dto.getReview())
+                .rating(dto.getRating())
+                .build();
+            reviewRepository.save(review);
+            product.increaseReview();
+        }
+
+    }
+
+    private List<Question> saveQuestions(List<QuestionRequestDto> requestDtoList, List<User> users) {
+
+        Collections.shuffle(users);
+        List<Question> questions = requestDtoList.stream()
+            .map(dto -> {
+                User user = users.get(random.nextInt(users.size()));
+                return Question.builder()
+                    .title(dto.getTitle())
+                    .question(dto.getQuestion())
+                    .type(QuestionType.valueOf(dto.getType()))
+                    .user(user)
+                    .build();
+            })
+            .collect(Collectors.toList());
+
+        return questionRepository.saveAll(questions);
+
+    }
+
+    private void saveAnswers(List<AnswerRequestDto> requestDtoList, List<Question> questions) {
+
+        Collections.shuffle(questions);
+
+        for (int i = 0; i < requestDtoList.size(); i++) {
+            if (i >= questions.size()) break;
+
+            Question question = questions.get(i);
+            AnswerRequestDto dto = requestDtoList.get(i);
+
+            Answer answer = Answer.builder()
+                .question(question)
+                .answer(dto.getAnswer())
+                .build();
+
+            answerRepository.save(answer);
+        }
+    }
 
 }
