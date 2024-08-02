@@ -18,7 +18,7 @@ public class ProductResponseDto {
     private final int reviewCount;
     private final List<ProductDetailResponseDto> productDetails;
     private final LocalDateTime createdAt;
-
+    private final String imageUrl;
     public ProductResponseDto(Product product) {
         this.id = product.getId();
         this.product = product.getProduct();
@@ -30,6 +30,7 @@ public class ProductResponseDto {
             .map(ProductDetailResponseDto::new)
             .toList();
         this.createdAt = product.getCreatedAt();
+        this.imageUrl = product.getImageUrl();
     }
 
 }

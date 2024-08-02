@@ -433,43 +433,6 @@
 			$('#subtotal').text(subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원');
 			$('#total').text((subtotal + 2500).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'); // 배송비 포함 총 금액
 		}
-
-
-		// 이벤트 리스너 추가
-		$('.btn-num-product-up').off('click').on('click', function() {
-			let $row = $(this).closest('.table_row');
-			let itemId = $row.data('item-id');
-			let $input = $row.find('.num-product');
-			let newCount = parseInt($input.val()) + 1;
-			$input.val(newCount);
-			updateItemTotal($row, newCount);
-		});
-
-		$('.btn-num-product-down').off('click').on('click', function() {
-			let $row = $(this).closest('.table_row');
-			let itemId = $row.data('item-id');
-			let $input = $row.find('.num-product');
-			let newCount = Math.max(1, parseInt($input.val()) - 1); // 최소 수량 1
-			$input.val(newCount);
-			updateItemTotal($row, newCount);
-		});
-
-		function updateItemTotal($row, newCount) {
-			let price = parseInt($row.find('.column-3').text().replace(/[^0-9]/g, '')); // 가격에서 숫자만 추출
-			let newTotal = price * newCount;
-			$row.find('.column-5').text(newTotal.toLocaleString() + '원');
-			updateCartTotals();
-		}
-
-		function updateCartTotals() {
-			let subtotal = 0;
-			$('.table_row').each(function() {
-				let total = parseInt($(this).find('.column-5').text().replace(/[^0-9]/g, ''));
-				subtotal += total;
-			});
-			$('#subtotal').text(subtotal.toLocaleString() + '원');
-			$('#total').text((subtotal + 2500).toLocaleString() + '원'); // 배송비 포함 총 금액
-		}
 	</script>
 
 </body>
