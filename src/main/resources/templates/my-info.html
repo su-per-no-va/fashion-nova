@@ -187,20 +187,16 @@
           <input type="text" id="username" placeholder="아이디를 입력하세요" required>
         </div>
         <div class="form-group">
-          <label for="password">비밀번호</label>
-          <input type="password" id="password" placeholder="비밀번호를 입력해주세요" required>
+          <label for="password">새로운 비밀번호</label>
+          <input type="password" id="password" placeholder="새로운 비밀번호를 입력해주세요" required>
         </div>
         <div class="form-group">
           <label for="confirm-password">비밀번호 확인</label>
-          <input type="password" id="confirm-password" placeholder="비밀번호를 다시 입력해주세요" required>
+          <input type="password" id="confirm-password" placeholder="새로운 비밀번호를 다시 입력해주세요" required>
         </div>
         <div class="form-group">
           <label for="name">이름</label>
           <input type="text" id="name" placeholder="이름을 입력하세요" required>
-        </div>
-        <div class="form-group">
-          <label for="birthdate">생년월일</label>
-          <input type="text" id="birthdate" placeholder="YYYYMMDD" required>
         </div>
         <div class="form-group">
           <label for="phone">휴대폰</label>
@@ -389,6 +385,7 @@
   });
 
 </script>
+<!--===============================================================================================-->
 <script>
   // 모달 열기
   var addAddressModal = document.getElementById("addAddressModal");
@@ -429,7 +426,7 @@
     }
   }
 </script>
-
+<!--===============================================================================================-->
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
   function sample6_execDaumPostcode() {
@@ -480,7 +477,7 @@
     }).open();
   }
 </script>
-
+<!--===============================================================================================-->
 <script>
   // 배송지 등록
   $(document).ready(function () {
@@ -532,7 +529,7 @@
       }
 
       $.ajax({
-        url: 'http://localhost:8080/addresses', // 서버 URL을 입력하세요
+        url: 'http://localhost:8080/addresses',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(requestDto),
@@ -627,8 +624,92 @@
       });
     });
       loadAddresses()
+    // 유저정보 가져오기
+    $.ajax({
+      url: 'http://localhost:8080/users',
+      type: 'GET',
+      success: function (response) {
+        $('#username').val(response.username);
+        $('#name').val(response.name);
+        $('#phone').val(response.phone);
+        $('#email').val(response.email);
+      },
+      error: function () {
+        alert('유저 정보를 불러오는 데 실패했습니다.');
+      }
+    });
+
+    // 회원정보 수정
+    $('.info-form').on('click','.btn-save', function (event) {
+      event.preventDefault();
+
+      // 입력받은 값 가져오기
+      var confirmPassword = $('#confirm-password').val();
+
+      var updateDto = {
+        userName: $('#username').val(),
+        password: $('#password').val(),
+        name: $('#name').val(),
+        phone: $('#phone').val(),
+        email: $('#email').val()
+      };
+
+      // 2차 비밀번호 일치 확인
+      if (updateDto.password !== confirmPassword) {
+        alert("비밀번호가 일치하지 않습니다.");
+        return;
+      }
+      // 휴대폰 형식 확인
+      var phonePattern = /^010-\d{4}-\d{4}$/;
+
+      if (!phonePattern.test(updateDto.phone)) {
+        alert("휴대폰 번호를 010-xxxx-xxxx 형식으로 입력해주세요.");
+        return;
+      }
+
+      // ID 검증
+      if (updateDto.userName.length < 4 || updateDto.userName.length > 100) {
+        alert("ID는 최소 4글자, 최대 100글자입니다.");
+        return;
+      }
+
+      // 비밀번호 검증
+      const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&^]{8,}$/;
+      if (!passwordPattern.test(updateDto.password)) {
+        alert("비밀번호는 영문, 숫자, 특수문자 포함 8자리 이상이어야 합니다.");
+        return;
+      }
+
+      // 이름 검증
+      if (updateDto.name.length < 2 || updateDto.name.length > 50) {
+        alert("이름은 최소 2글자, 최대 50글자 입니다.");
+        return;
+      }
+
+      // 이메일 검증
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailPattern.test(updateDto.email)) {
+        alert("이메일 형식에 맞지 않습니다.");
+        return;
+      }
+
+      $.ajax({
+        url: 'http://localhost:8080/users' ,
+        type: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify(updateDto),
+        success: function () {
+          alert('회원 정보가 수정되었습니다.');
+        },
+        error: function () {
+          alert('회원 정보 수정에 실패했습니다.');
+        }
+      });
+    });
   });
 </script>
+<!--===============================================================================================-->
+
 
 </body>
 </html>
