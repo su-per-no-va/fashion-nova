@@ -93,6 +93,7 @@ public class FileUploadUtil {
                 for (Map.Entry<String, String> entry : imageUrls.entrySet()) {
                     ProductImage productImage =
                         new ProductImage(product, entry.getKey(), entry.getValue());
+                    product.updateImage(productImage.getProductImageUrl());
                     productImageRepository.save(productImage);
                 }
 

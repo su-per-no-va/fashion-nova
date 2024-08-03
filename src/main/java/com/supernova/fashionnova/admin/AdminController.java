@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -107,7 +108,7 @@ public class AdminController {
 
         adminService.addProduct(requestDto);
 
-        return ResponseUtil.of(HttpStatus.CREATED,"상품 등록 성공");
+        return ResponseUtil.of(HttpStatus.CREATED, "상품 등록 성공");
     }
 
     /**
@@ -120,7 +121,8 @@ public class AdminController {
     public ResponseEntity<String> addProductDetails(
         @RequestBody ProductDetailCreateDto requestDto) {
 
-        adminService.addProductDetails(requestDto.getProductId(), requestDto.getProductDetailRequestDtoList());
+        adminService.addProductDetails(requestDto.getProductId(),
+            requestDto.getProductDetailRequestDtoList());
 
         return ResponseUtil.of(HttpStatus.OK, "상품 디테일 추가 성공");
     }
@@ -152,7 +154,7 @@ public class AdminController {
 
         adminService.addAnswer(requestDto);
 
-        return ResponseUtil.of(HttpStatus.OK,"Q&A 답변 등록 완성");
+        return ResponseUtil.of(HttpStatus.OK, "Q&A 답변 등록 완성");
     }
 
     /**
@@ -182,7 +184,7 @@ public class AdminController {
 
         adminService.addCoupon(requestDto);
 
-        return ResponseUtil.of(HttpStatus.CREATED,"쿠폰 지급 성공");
+        return ResponseUtil.of(HttpStatus.CREATED, "쿠폰 지급 성공");
     }
 
     /**
@@ -197,7 +199,7 @@ public class AdminController {
 
         adminService.addMileage(requestDto);
 
-        return ResponseUtil.of(HttpStatus.CREATED,"마일리지 지급 성공");
+        return ResponseUtil.of(HttpStatus.CREATED, "마일리지 지급 성공");
     }
 
     /**
@@ -210,7 +212,13 @@ public class AdminController {
 
         adminService.deleteMileage();
 
-        return ResponseUtil.of(HttpStatus.OK,"마일리지 초기화 성공");
+        return ResponseUtil.of(HttpStatus.OK, "마일리지 초기화 성공");
     }
 
+    @PostMapping("/products/image/{productId}")
+    public ResponseEntity<String> updateProductImage(
+        @RequestParam(value = "image") MultipartFile file, @PathVariable Long productId) {
+        adminService.updateProductImage(file,productId);
+       return ResponseUtil.of(HttpStatus.OK,"사진 등록 성공");
+    }
 }

@@ -15,11 +15,16 @@ public class CartItemDto {
 
     private String color;
 
-    public CartItemDto(String product, Long price, int count, String size, String color) {
+    private String imageUrl;
+
+    public CartItemDto(String product, Long price, int count, String size, String color,String imageUrl) {
         this.product = product;
         this.price = price;
         this.count = count;
         this.size = size;
         this.color = color;
+        this.imageUrl = imageUrl;
     }
 }
+
+

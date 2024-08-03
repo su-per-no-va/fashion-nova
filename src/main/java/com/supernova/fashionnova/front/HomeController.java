@@ -64,4 +64,44 @@ public class HomeController {
     public String index() {
         return "index";
     }
+
+    @GetMapping("/wish-list.html")
+    public String wishList() {
+        return "wish-list";
+    }
+
+    @GetMapping("/my-info.html")
+    public String myInfo() {
+        return "my-info";
+    }
+
+    @GetMapping("/grade.html")
+    public String grade() {
+        return "grade";
+    }
+
+    @GetMapping("/my-question.html")
+    public String myQuestion() {
+        return "my-question";
+    }
+
+    @GetMapping("/order.html")
+    public String order() {
+        return "order";
+    }
+
+    @GetMapping("/product-search.html")
+    public String productSearch() {
+        return "product-search";
+    }
+
+    @GetMapping("/product-search-null.html")
+    public String productSearchNull() {
+        return "product-search-null";
+    }
+
+    @GetMapping("/review.html")
+    public String review() {
+        return "review";
+    }
 }
