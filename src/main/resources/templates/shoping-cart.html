@@ -359,6 +359,22 @@
 				});
 			});
 
+			// 수량 증가 버튼 클릭 이벤트
+			$(document).on('click', '.btn-num-product-up', function() {
+				var $input = $(this).closest('.wrap-num-product').find('.num-product');
+				var newVal = parseInt($input.val()) + 1;
+				$input.val(newVal);
+			});
+
+			// 수량 감소 버튼 클릭 이벤트
+			$(document).on('click', '.btn-num-product-down', function() {
+				var $input = $(this).closest('.wrap-num-product').find('.num-product');
+				var newVal = parseInt($input.val()) - 1;
+				if (newVal >= 1) {
+					$input.val(newVal);
+				}
+			});
+
 		});
 
 		//삭제
