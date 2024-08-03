@@ -12,10 +12,7 @@ import com.supernova.fashionnova.domain.user.User;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.global.upload.FileUploadUtil;
-import com.supernova.fashionnova.global.upload.ImageType;
-
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -86,7 +83,7 @@ public class CartService {
 
         List<Cart> cartList = cartRepository.findByUser(user);
 
-            List<CartItemDto> cartItemDtoList = cartList.stream()
+        List<CartItemDto> cartItemDtoList = cartList.stream()
             .map(cart -> new CartItemDto(
                 cart.getProductDetail().getProduct().getProduct(),
                 cart.getProductDetail().getProduct().getPrice(),
@@ -94,7 +91,7 @@ public class CartService {
                 cart.getProductDetail().getSize(),
                 cart.getProductDetail().getColor(),
                 cart.getProductDetail().getProduct().getImageUrl()
-                ))
+            ))
             .toList();
 
         Long totalPrice = cartList.stream().mapToLong(Cart::getTotalPrice).sum();
