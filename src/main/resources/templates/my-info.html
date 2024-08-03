@@ -574,20 +574,26 @@
     // 배송지 삭제
     $(document).on('click', '.btn-delete-address', function () {
       var addressId = $(this).data('address-id');
-      var $addressCard = $(this).closest('.address-card');
+      var addressDeleteRequestDto ={
+        addressId : addressId
+      }
 
       $.ajax({
-        url: 'http://localhost:8080/addresses/' + addressId, // 서버 URL을 입력하세요
+        url: 'http://localhost:8080/addresses',
         type: 'DELETE',
-        success: function () {
-          $addressCard.remove();
+        contentType: 'application/json',
+        data: JSON.stringify(addressDeleteRequestDto),
+        success: function (response, textStatus, jqXHR) {
+          if (jqXHR.status === 200 ) {
+            alert("배송지 삭제 완료");
+            loadAddresses(); // 주소 목록을 다시 로드
+          }
         },
         error: function () {
           alert('배송지 삭제에 실패했습니다.');
         }
       });
     });
-
       loadAddresses()
   });
 </script>
