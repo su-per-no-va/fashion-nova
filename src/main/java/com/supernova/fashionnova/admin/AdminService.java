@@ -1,37 +1,37 @@
 package com.supernova.fashionnova.admin;
 
-import com.supernova.fashionnova.answer.Answer;
-import com.supernova.fashionnova.answer.AnswerRepository;
-import com.supernova.fashionnova.answer.dto.AnswerRequestDto;
-import com.supernova.fashionnova.coupon.Coupon;
-import com.supernova.fashionnova.coupon.CouponRepository;
-import com.supernova.fashionnova.coupon.CouponType;
-import com.supernova.fashionnova.coupon.dto.CouponRequestDto;
+import com.supernova.fashionnova.domain.answer.Answer;
+import com.supernova.fashionnova.domain.answer.AnswerRepository;
+import com.supernova.fashionnova.domain.answer.dto.AnswerRequestDto;
+import com.supernova.fashionnova.domain.coupon.Coupon;
+import com.supernova.fashionnova.domain.coupon.CouponRepository;
+import com.supernova.fashionnova.domain.coupon.CouponType;
+import com.supernova.fashionnova.domain.coupon.dto.CouponRequestDto;
+import com.supernova.fashionnova.domain.mileage.Mileage;
+import com.supernova.fashionnova.domain.mileage.MileageRepository;
+import com.supernova.fashionnova.domain.mileage.dto.MileageRequestDto;
+import com.supernova.fashionnova.domain.product.Product;
+import com.supernova.fashionnova.domain.product.ProductDetail;
+import com.supernova.fashionnova.domain.product.ProductRepository;
+import com.supernova.fashionnova.domain.product.dto.ProductDetailRequestDto;
+import com.supernova.fashionnova.domain.product.dto.ProductRequestDto;
+import com.supernova.fashionnova.domain.question.Question;
+import com.supernova.fashionnova.domain.question.QuestionRepository;
+import com.supernova.fashionnova.domain.question.dto.QuestionResponseDto;
+import com.supernova.fashionnova.domain.review.Review;
+import com.supernova.fashionnova.domain.review.ReviewRepository;
+import com.supernova.fashionnova.domain.review.dto.ReviewResponseDto;
+import com.supernova.fashionnova.domain.user.User;
+import com.supernova.fashionnova.domain.user.UserRepository;
+import com.supernova.fashionnova.domain.user.dto.UserResponseDto;
+import com.supernova.fashionnova.domain.warn.Warn;
+import com.supernova.fashionnova.domain.warn.WarnRepository;
+import com.supernova.fashionnova.domain.warn.dto.WarnDeleteRequestDto;
+import com.supernova.fashionnova.domain.warn.dto.WarnRequestDto;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
-import com.supernova.fashionnova.mileage.Mileage;
-import com.supernova.fashionnova.mileage.MileageRepository;
-import com.supernova.fashionnova.mileage.dto.MileageRequestDto;
-import com.supernova.fashionnova.product.Product;
-import com.supernova.fashionnova.product.ProductDetail;
-import com.supernova.fashionnova.product.ProductRepository;
-import com.supernova.fashionnova.product.dto.ProductDetailRequestDto;
-import com.supernova.fashionnova.product.dto.ProductRequestDto;
-import com.supernova.fashionnova.question.Question;
-import com.supernova.fashionnova.question.QuestionRepository;
-import com.supernova.fashionnova.question.dto.QuestionResponseDto;
-import com.supernova.fashionnova.review.Review;
-import com.supernova.fashionnova.review.ReviewRepository;
-import com.supernova.fashionnova.review.dto.ReviewResponseDto;
-import com.supernova.fashionnova.upload.FileUploadUtil;
-import com.supernova.fashionnova.upload.ImageType;
-import com.supernova.fashionnova.user.User;
-import com.supernova.fashionnova.user.UserRepository;
-import com.supernova.fashionnova.user.dto.UserResponseDto;
-import com.supernova.fashionnova.warn.Warn;
-import com.supernova.fashionnova.warn.dto.WarnDeleteRequestDto;
-import com.supernova.fashionnova.warn.dto.WarnRepository;
-import com.supernova.fashionnova.warn.dto.WarnRequestDto;
+import com.supernova.fashionnova.global.upload.FileUploadUtil;
+import com.supernova.fashionnova.global.upload.ImageType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +50,8 @@ public class AdminService {
 
     private static final int PAGE_SIZE = 30;
 
+    private final FileUploadUtil fileUploadUtil;
+
     private final UserRepository userRepository;
     private final WarnRepository warnRepository;
     private final ReviewRepository reviewRepository;
@@ -57,11 +59,10 @@ public class AdminService {
     private final CouponRepository couponRepository;
     private final AnswerRepository answerRepository;
     private final QuestionRepository questionRepository;
-    private final FileUploadUtil fileUploadUtil;
     private final MileageRepository mileageRepository;
 
     /**
-     * 유저 전체조회
+     * 유저 전체 조회
      *
      * @param page
      * @return List<UserResponseDto>
@@ -86,10 +87,9 @@ public class AdminService {
      */
     public void addCaution(WarnRequestDto requestDto) {
 
-        User user = userRepository.findById(requestDto.getUserId())
-            .orElseThrow(()-> new CustomException(ErrorType.NOT_FOUND_USER));
+        User user = getUser(requestDto.getUserId());
 
-        Warn warn = new Warn(requestDto.getDetail(),user);
+        Warn warn = new Warn(requestDto.getDetail(), user);
         warnRepository.save(warn);
     }
 
@@ -102,8 +102,7 @@ public class AdminService {
     @Transactional
     public void deleteCaution(WarnDeleteRequestDto requestDto) {
 
-        Warn warn = warnRepository.findById(requestDto.getWarnId())
-            .orElseThrow(()-> new CustomException(ErrorType.NOT_FOUND_WARN));
+        Warn warn = getWarn(requestDto.getWarnId());
 
         warnRepository.delete(warn);
     }
@@ -119,8 +118,7 @@ public class AdminService {
     @Transactional(readOnly = true)
     public List<ReviewResponseDto> getReviewListByUserId(Long userId, int page) {
 
-        User user = userRepository.findById(userId)
-            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
+        User user = getUser(userId);
 
         Pageable pageable = PageRequest.of(page, PAGE_SIZE);
         Page<Review> reviewPage = reviewRepository.findByUser(user, pageable);
@@ -132,14 +130,12 @@ public class AdminService {
         // 리뷰 이미지 다운로드
         Map<Long, List<String>> reviewImages = fileUploadUtil.downloadImages(ImageType.REVIEW, reviewIds);
 
-
         // ReviewResponseDto 객체 생성 및 설정
         List<ReviewResponseDto> reviewResponseDtos = new ArrayList<>();
         for (Review review : reviews) {
             ReviewResponseDto dto = new ReviewResponseDto(review, reviewImages.get(review.getId()));
             reviewResponseDtos.add(dto);
         }
-
 
         return reviewResponseDtos;
     }
@@ -148,7 +144,6 @@ public class AdminService {
      * 상품등록
      *
      * @param requestDto
-     * @return List<ProductDetail>
      */
     @Transactional
     public void addProduct(ProductRequestDto requestDto) {
@@ -160,6 +155,7 @@ public class AdminService {
             .category(requestDto.getCategory())
             .productStatus(requestDto.getProductStatus())
             .build();
+
         List<ProductDetail> productDetailList = (requestDto.getProductDetailList().stream()
             .map(productDetailRequestDto -> {
                 return ProductDetail.builder()
@@ -170,9 +166,9 @@ public class AdminService {
                     .build();
             })
             .collect(Collectors.toList()));
+
         product.addDetailList(productDetailList);
         productRepository.save(product);
-        /*productDetailRepository.saveAll(product.getProductDetailList());*/
     }
 
     /**
@@ -184,8 +180,7 @@ public class AdminService {
     @Transactional
     public void addProductDetails(Long productId, List<ProductDetailRequestDto> productDetailRequestDto) {
 
-        Product product = productRepository.findById(productId)
-            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
+        Product product = getProduct(productId);
 
         for (ProductDetailRequestDto detailDto : productDetailRequestDto) {
             ProductDetail productDetail = ProductDetail.builder()
@@ -209,18 +204,29 @@ public class AdminService {
      */
     @Transactional
     public void updateProduct(ProductRequestDto requestDto) {
-        Product existingProduct = productRepository.findById(requestDto.getProductId())
-            .orElseThrow(
-                () -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
 
+        Product existingProduct = getProduct(requestDto.getProductId());
         List<ProductDetailRequestDto> newProductDetails = requestDto.getProductDetailList();
 
         List<ProductDetail> productDetailList = existingProduct.getProductDetailList();
-        for(ProductDetailRequestDto productDetailRequestDto : newProductDetails) {
-            ProductDetail productDetail = productDetailList.stream().filter(p -> p.getId().equals(productDetailRequestDto.getProductDetailId())).findFirst().orElse(null);
+
+        for (ProductDetailRequestDto productDetailRequestDto : newProductDetails) {
+
+            ProductDetail productDetail = productDetailList.stream()
+                .filter(p -> p.getId().equals(productDetailRequestDto.getProductDetailId()))
+                .findFirst().orElse(null);
+
             if (productDetail != null) {
-                productDetail.updateDetail(productDetailRequestDto.getSize(), productDetailRequestDto.getColor(), productDetailRequestDto.getQuantity(), productDetailRequestDto.getStatus());
+
+                productDetail.updateDetail(
+                    productDetailRequestDto.getSize(),
+                    productDetailRequestDto.getColor(),
+                    productDetailRequestDto.getQuantity(),
+                    productDetailRequestDto.getStatus()
+                );
+
             }
+
         }
 
         existingProduct.updateProduct(
@@ -230,6 +236,7 @@ public class AdminService {
             requestDto.getCategory(),
             requestDto.getProductStatus()
         );
+
         productRepository.save(existingProduct);
     }
 
@@ -241,8 +248,7 @@ public class AdminService {
      */
     public void addAnswer(AnswerRequestDto requestDto) {
 
-        Question question = questionRepository.findById(requestDto.getQuestionId())
-            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_QUESTION));
+        Question question = getQuestion(requestDto.getQuestionId());
 
         Answer answer = Answer.builder()
             .question(question)
@@ -250,7 +256,6 @@ public class AdminService {
             .build();
 
         answerRepository.save(answer);
-
     }
 
     /**
@@ -267,7 +272,6 @@ public class AdminService {
         return questionPage.stream()
             .map(QuestionResponseDto::new)
             .collect(Collectors.toList());
-
     }
 
     /**
@@ -278,8 +282,7 @@ public class AdminService {
      */
     public void addCoupon(CouponRequestDto requestDto) {
 
-        User user = userRepository.findById(requestDto.getUserId())
-            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
+        User user = getUser(requestDto.getUserId());
 
         Coupon coupon = Coupon.builder()
             .user(user)
@@ -290,7 +293,6 @@ public class AdminService {
             .build();
 
         couponRepository.save(coupon);
-
     }
 
     /**
@@ -302,8 +304,7 @@ public class AdminService {
     @Transactional
     public void addMileage(MileageRequestDto requestDto) {
 
-        User user = userRepository.findById(requestDto.getUserId())
-            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
+        User user = getUser(requestDto.getUserId());
 
         Mileage mileage = Mileage.builder()
             .user(user)
@@ -311,7 +312,6 @@ public class AdminService {
             .build();
 
         mileageRepository.save(mileage);
-
     }
 
     /**
@@ -322,7 +322,26 @@ public class AdminService {
     public void deleteMileage() {
 
         mileageRepository.deleteAll();
+    }
 
+    private User getUser(Long userId) {
+        return userRepository.findById(userId)
+            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
+    }
+
+    private Warn getWarn(Long warnId) {
+        return warnRepository.findById(warnId)
+            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_WARN));
+    }
+
+    private Product getProduct(Long productId) {
+        return productRepository.findById(productId)
+            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
+    }
+
+    private Question getQuestion(Long questionId) {
+        return questionRepository.findById(questionId)
+            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_QUESTION));
     }
 
     public void updateProductImage(MultipartFile file, Long productId) {

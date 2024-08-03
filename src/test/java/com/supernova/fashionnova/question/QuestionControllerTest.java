@@ -3,8 +3,10 @@ package com.supernova.fashionnova.question;
 import static org.mockito.BDDMockito.given;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.supernova.fashionnova.security.UserDetailsImpl;
-import com.supernova.fashionnova.user.User;
+import com.supernova.fashionnova.domain.question.QuestionController;
+import com.supernova.fashionnova.domain.question.QuestionService;
+import com.supernova.fashionnova.domain.user.User;
+import com.supernova.fashionnova.global.security.UserDetailsImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;

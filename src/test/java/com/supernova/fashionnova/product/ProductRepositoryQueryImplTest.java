@@ -1,5 +1,6 @@
 package com.supernova.fashionnova.product;
 
+import com.supernova.fashionnova.domain.product.ProductRepository;
 import com.supernova.fashionnova.global.config.JpaAuditingConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
