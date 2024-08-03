@@ -441,6 +441,16 @@
 				$wishListContainer.append(productCard);
 			});
 		}
+
+		// 이벤트 위임을 사용하여 동적으로 추가된 요소에 이벤트 핸들러 적용
+		$(document).on('click', '.js-addwish-b2', function(e) {
+			e.preventDefault();
+			var nameProduct = $(this).parent().parent().find('.js-name-b2').html();
+			swal(nameProduct, "is added to wishlist !", "success");
+
+			$(this).addClass('js-addedwish-b2');
+			$(this).off('click'); // 클릭 후 더 이상 반응하지 않도록 설정
+		});
 	</script>
 
 </body>
