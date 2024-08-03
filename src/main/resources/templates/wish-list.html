@@ -414,7 +414,7 @@
 
 			wishList.forEach(function (item) {
 				let productCard = `
-                <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item ${item.productStatus.toLowerCase()}">
+                <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item ${item.productStatus.toLowerCase()}" data-poduct-id="${item.id}">
                     <div class="block2">
                         <div class="block2-pic hov-img0">
                             <img src="${item.imageUrl}" alt="IMG-PRODUCT">
@@ -429,8 +429,8 @@
                                 </span>
                             </div>
                             <div class="block2-txt-child2 flex-r p-t-3">
-                                <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                                    <img class="icon-heart1 dis-block trans-04" src="../images/icons/icon-heart-01.png" alt="ICON">
+                                <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2" data-product-id="${item.id}">
+                                    <img class="icon-heart1 dis-block trans-04" src="../images/icons/icon-heart-02.png" alt="ICON">
                                     <img class="icon-heart2 dis-block trans-04 ab-t-l" src="../images/icons/icon-heart-02.png" alt="ICON">
                                 </a>
                             </div>
@@ -441,15 +441,39 @@
 				$wishListContainer.append(productCard);
 			});
 		}
+	</script>
 
-		// 이벤트 위임을 사용하여 동적으로 추가된 요소에 이벤트 핸들러 적용
+	<script>
+
+		// 위시리스트 제거
 		$(document).on('click', '.js-addwish-b2', function(e) {
 			e.preventDefault();
-			var nameProduct = $(this).parent().parent().find('.js-name-b2').html();
-			swal(nameProduct, "is added to wishlist !", "success");
+			let $this = $(this);
+			let productId = $this.data('product-id'); // data-product-id 값 가져오기
 
-			$(this).addClass('js-addedwish-b2');
-			$(this).off('click'); // 클릭 후 더 이상 반응하지 않도록 설정
+			var wishDeleteRequestDto ={
+				wishId : productId
+			}
+			// AJAX 요청
+			$.ajax({
+				url: 'http://localhost:8080/wishlists',
+				type: 'DELETE',
+				contentType: 'application/json',
+				data: JSON.stringify(wishDeleteRequestDto),
+				success: function(response, textStatus, jqXHR) {
+					// 서버 응답에 따라 필요한 작업 수행
+					if (jqXHR.status === 200) {
+						alert("위시리스트 삭제 완료")
+						swal("Removed!", "The item has been removed from your wishlist.", "success");
+						location.reload()
+					} else {
+						swal("Failed!", "The item could not be removed from your wishlist.", "error");
+					}
+				},
+				error: function(error) {
+					alert("에러: " + error.message)
+				}
+			});
 		});
 	</script>
 
