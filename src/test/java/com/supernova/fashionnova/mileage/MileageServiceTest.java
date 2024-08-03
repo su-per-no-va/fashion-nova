@@ -4,10 +4,11 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
-import com.supernova.fashionnova.mileage.dto.MileageResponseDto;
-import com.supernova.fashionnova.order.Order;
-import com.supernova.fashionnova.order.OrdersRepository;
-import com.supernova.fashionnova.user.User;
+import com.supernova.fashionnova.domain.mileage.MileageService;
+import com.supernova.fashionnova.domain.mileage.dto.MileageResponseDto;
+import com.supernova.fashionnova.domain.order.Order;
+import com.supernova.fashionnova.domain.order.OrdersRepository;
+import com.supernova.fashionnova.domain.user.User;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;

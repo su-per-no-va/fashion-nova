@@ -4,8 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.BDDMockito.given;
 
-import com.supernova.fashionnova.coupon.dto.CouponResponseDto;
-import com.supernova.fashionnova.user.User;
+import com.supernova.fashionnova.domain.coupon.Coupon;
+import com.supernova.fashionnova.domain.coupon.CouponRepository;
+import com.supernova.fashionnova.domain.coupon.CouponService;
+import com.supernova.fashionnova.domain.coupon.CouponStatus;
+import com.supernova.fashionnova.domain.coupon.dto.CouponResponseDto;
+import com.supernova.fashionnova.domain.user.User;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

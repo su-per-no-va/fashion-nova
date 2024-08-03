@@ -17,11 +17,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.supernova.fashionnova.review.dto.ReviewDeleteRequestDto;
-import com.supernova.fashionnova.review.dto.ReviewRequestDto;
-import com.supernova.fashionnova.review.dto.ReviewUpdateRequestDto;
-import com.supernova.fashionnova.security.UserDetailsImpl;
-import com.supernova.fashionnova.user.User;
+import com.supernova.fashionnova.domain.review.Review;
+import com.supernova.fashionnova.domain.review.ReviewController;
+import com.supernova.fashionnova.domain.review.ReviewService;
+import com.supernova.fashionnova.domain.review.dto.ReviewDeleteRequestDto;
+import com.supernova.fashionnova.domain.review.dto.ReviewRequestDto;
+import com.supernova.fashionnova.domain.review.dto.ReviewUpdateRequestDto;
+import com.supernova.fashionnova.domain.user.User;
+import com.supernova.fashionnova.global.security.UserDetailsImpl;
 import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

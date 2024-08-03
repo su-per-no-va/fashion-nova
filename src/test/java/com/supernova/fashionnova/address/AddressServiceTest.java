@@ -7,10 +7,13 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import com.supernova.fashionnova.address.dto.AddressDefaultRequestDto;
-import com.supernova.fashionnova.address.dto.AddressRequestDto;
-import com.supernova.fashionnova.address.dto.AddressResponseDto;
-import com.supernova.fashionnova.user.User;
+import com.supernova.fashionnova.domain.address.Address;
+import com.supernova.fashionnova.domain.address.AddressRepository;
+import com.supernova.fashionnova.domain.address.AddressService;
+import com.supernova.fashionnova.domain.address.dto.AddressDefaultRequestDto;
+import com.supernova.fashionnova.domain.address.dto.AddressRequestDto;
+import com.supernova.fashionnova.domain.address.dto.AddressResponseDto;
+import com.supernova.fashionnova.domain.user.User;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

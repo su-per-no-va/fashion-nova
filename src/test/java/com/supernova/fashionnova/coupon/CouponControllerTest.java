@@ -9,9 +9,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.supernova.fashionnova.coupon.dto.CouponResponseDto;
-import com.supernova.fashionnova.security.UserDetailsImpl;
-import com.supernova.fashionnova.user.User;
+import com.supernova.fashionnova.domain.coupon.Coupon;
+import com.supernova.fashionnova.domain.coupon.CouponController;
+import com.supernova.fashionnova.domain.coupon.CouponService;
+import com.supernova.fashionnova.domain.coupon.CouponType;
+import com.supernova.fashionnova.domain.coupon.dto.CouponResponseDto;
+import com.supernova.fashionnova.domain.user.User;
+import com.supernova.fashionnova.global.security.UserDetailsImpl;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
