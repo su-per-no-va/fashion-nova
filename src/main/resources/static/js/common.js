@@ -2,6 +2,7 @@ $(document).ready(function () {
 
   auth = localStorage.getItem('accessToken');
 
+
   window.common = {
     getShoppingCart: function () {
       if (auth) {

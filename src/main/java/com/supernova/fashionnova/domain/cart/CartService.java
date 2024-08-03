@@ -83,15 +83,16 @@ public class CartService {
 
         List<Cart> cartList = cartRepository.findByUser(user);
 
-        List<CartItemDto> cartItemDtoList = cartList.stream()
+            List<CartItemDto> cartItemDtoList = cartList.stream()
             .map(cart -> new CartItemDto(
                 cart.getProductDetail().getProduct().getProduct(),
                 cart.getProductDetail().getProduct().getPrice(),
                 cart.getCount(),
                 cart.getProductDetail().getSize(),
                 cart.getProductDetail().getColor(),
-                cart.getProductDetail().getProduct().getImageUrl()
-            ))
+                cart.getProductDetail().getProduct().getImageUrl(),
+                cart.getProductDetail().getId()
+                ))
             .toList();
 
         Long totalPrice = cartList.stream().mapToLong(Cart::getTotalPrice).sum();

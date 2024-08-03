@@ -45,7 +45,7 @@ public class Order extends Timestamped {
     private String address;
 
     @Column(nullable = false)
-    private int invoice;
+    private Long invoice;
 
     @Enumerated(value = EnumType.STRING)
     private OrderStatus orderStatus;
