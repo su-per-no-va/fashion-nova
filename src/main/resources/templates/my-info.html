@@ -547,6 +547,47 @@
         }
       });
       }
+    // 기본 배송지 설정
+    $(document).on('click', '.btn-set-default', function () {
+      var addressId = $(this).closest('.address-card').data('address-id');
+      var addressDefaultRequestDto ={
+        addressId : addressId
+      }
+
+      $.ajax({
+        url: 'http://localhost:8080/addresses',
+        type: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify(addressDefaultRequestDto),
+        success: function (response) {
+          if (response === "기본 배송지 설정 성공") {
+            alert("기본 배송지 업데이트 완료");
+            loadAddresses(); // 주소 목록을 다시 로드
+          }
+        },
+        error: function () {
+          alert('기본배송지 설정에 실패했습니다.');
+        }
+      });
+    });
+
+    // 배송지 삭제
+    $(document).on('click', '.btn-delete-address', function () {
+      var addressId = $(this).data('address-id');
+      var $addressCard = $(this).closest('.address-card');
+
+      $.ajax({
+        url: 'http://localhost:8080/addresses/' + addressId, // 서버 URL을 입력하세요
+        type: 'DELETE',
+        success: function () {
+          $addressCard.remove();
+        },
+        error: function () {
+          alert('배송지 삭제에 실패했습니다.');
+        }
+      });
+    });
+
       loadAddresses()
   });
 </script>
