@@ -161,7 +161,7 @@
       <h4 class="mtext-105 cl2 txt-center p-b-30">
         배송지 관리
       </h4>
-
+      <!-- 배송지 카드 동적으로 추가할 부분 -->
       <div class="address-box">
         <div>
           <button class="btn btn-secondary">기본배송지로 설정</button>
@@ -385,8 +385,10 @@
       } else {
         // no response
       }
-    })
+    });
+
   });
+
 </script>
 <script>
   // 모달 열기
@@ -481,6 +483,7 @@
 </script>
 
 <script>
+  // 배송지 등록
   $(document).ready(function () {
     $('.close').on('click', function() {
       $('#addAddressModal').hide();
@@ -513,21 +516,38 @@
       });
     });
 
-    // $(document).on('click', '.btn-delete-address', function () {
-    //   var addressId = $(this).data('address-id');
-    //   var $addressBox = $(this).closest('.address-box');
-    //
-    //   $.ajax({
-    //     url: '서버_주소/' + addressId, // 서버 URL을 입력하세요
-    //     type: 'DELETE',
-    //     success: function (response) {
-    //       $addressBox.remove();
-    //     },
-    //     error: function () {
-    //       alert('배송지 삭제에 실패했습니다.');
-    //     }
-    //   });
-    // });
+    // 배송지 카드 붙이기
+
+
+    // 주소 리스트 로드
+    function loadAddresses() {
+      $.ajax({
+        url: 'http://localhost:8080/addresses', // 서버 URL을 입력하세요
+        type: 'GET',
+        success: function (addresses) {
+          var addressContainer = $('.delivery-management .address-box');
+          addressContainer.empty(); // 기존 주소 목록 비우기
+
+          addresses.forEach(function (address) {
+            var addressCard = `
+                        <div class="address-card" data-address-id="${address.id}">
+                            <div>
+                                <button class="btn btn-secondary btn-set-default">${address.defaultAddress ? '기본배송지' : '기본배송지로 설정'}</button>
+                                <button class="btn btn-secondary btn-delete-address" data-address-id="${address.id}">삭제</button>
+                                <p>${address.address}</p>
+                                <p>${address.detail}</p>
+                            </div>
+                        </div>
+                    `;
+            addressContainer.append(addressCard);
+          });
+        },
+        error: function () {
+          alert('배송지 목록을 불러오는 데 실패했습니다.');
+        }
+      });
+      }
+      loadAddresses()
   });
 </script>
 
