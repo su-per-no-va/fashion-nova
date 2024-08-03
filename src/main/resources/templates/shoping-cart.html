@@ -149,7 +149,7 @@
 							<div class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10" style="margin: 15px;">
 								Update Cart
 							</div>
-							<div class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10 " style="margin: 15px;">
+							<div  class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10 empty-cart-button" style="margin: 15px;">
 								Emptying Cart
 							</div>
 						</div>
@@ -339,6 +339,26 @@
 			.fail(function (error) {
 				alert(error.message)
 			});
+
+			// 장바구니 비우기
+			$(document).on('click', '.empty-cart-button', function() {
+				$.ajax({
+					url: 'http://localhost:8080/carts/delete',
+					type: 'DELETE',
+					success: function(response) {
+						if (response === "장바구니 비우기 완료") {
+							alert("장바구니 비우기 성공");
+							location.reload(); // 성공 시 페이지를 리로드합니다
+						} else {
+							alert('장바구니 비우기 실패: ' + response.error);
+						}
+					},
+					error: function() {
+						alert('장바구니 비우기 요청에 실패했습니다.');
+					}
+				});
+			});
+
 		});
 
 		//삭제
@@ -368,6 +388,8 @@
 				}
 			});
 		});
+
+
 	</script>
 
 	<script>
@@ -457,7 +479,7 @@
                     </td>
                     <td class="column-5">${total.toLocaleString()}원</td>
                <td class="column-6">
-        <button class="btn-delete-item" data-item-id="${item.id}" data-product-detail-id="${item.productDetailId}">삭제</button>>
+        <button style="color: #c82333" class="btn-delete-item" data-item-id="${item.id}" data-product-detail-id="${item.productDetailId}">삭제</button>>
                </td>
                 </tr>
             `;
