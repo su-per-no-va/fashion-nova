@@ -92,7 +92,8 @@ public class CartService {
                 cart.getCount(),
                 cart.getProductDetail().getSize(),
                 cart.getProductDetail().getColor(),
-                cart.getProductDetail().getProduct().getImageUrl()
+                cart.getProductDetail().getProduct().getImageUrl(),
+                cart.getProductDetail().getId()
                 ))
             .toList();
 
