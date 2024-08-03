@@ -245,18 +245,18 @@
   </div>
 </div>
 
-<!-- 회원탈퇴 모달 -->
-<div id="deleteAccountModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <h4 class="mtext-105 cl2 txt-center p-b-30">회원탈퇴</h4>
-    <p class="txt-center">정말 회원탈퇴를 하시겠습니까?</p>
-    <div class="text-center">
-      <button type="button" class="btn btn-save">예</button>
-      <button type="button" class="btn btn-cancel close">아니오</button>
-    </div>
-  </div>
-</div>
+<!--&lt;!&ndash; 회원탈퇴 모달 &ndash;&gt;-->
+<!--<div id="deleteAccountModal" class="modal">-->
+<!--  <div class="modal-content">-->
+<!--    <span class="close">&times;</span>-->
+<!--    <h4 class="mtext-105 cl2 txt-center p-b-30">회원탈퇴</h4>-->
+<!--    <p class="txt-center">정말 회원탈퇴를 하시겠습니까?</p>-->
+<!--    <div class="text-center">-->
+<!--      <button type="button" class="btn btn-save">예</button>-->
+<!--      <button type="button" class="btn btn-cancel close">아니오</button>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
 
 <!-- Footer -->
 <footer class="bg3 p-t-75 p-b-32">
@@ -706,6 +706,23 @@
         }
       });
     });
+  });
+
+  // 회원탈퇴
+  $('#deleteAccountBtn').on('click', function () {
+    if (confirm('정말로 회원탈퇴를 하시겠습니까?')) {
+      $.ajax({
+        url: 'http://localhost:8080/users/withdraw',
+        type: 'PUT',
+        success: function () {
+          alert('회원탈퇴가 완료되었습니다.');
+          // 로그아웃 처리나 메인 페이지로 이동 등의 추가 작업을 수행합니다
+        },
+        error: function (xhr, status, error) {
+          alert('회원탈퇴에 실패했습니다.' + error.message);
+        }
+      });
+    }
   });
 </script>
 <!--===============================================================================================-->
