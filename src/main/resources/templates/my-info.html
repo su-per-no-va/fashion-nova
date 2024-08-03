@@ -498,6 +498,7 @@
     $('#addAddressForm').on('submit', function (event) {
       event.preventDefault();
 
+
       var requestDto = {
         name: $('#address_name').val(),
         recipientName: $('#recipient_name').val(),
@@ -506,6 +507,29 @@
         address: $('#sample6_address').val(),
         detail: $('#sample6_detailAddress').val()
       };
+
+      // 휴대폰 번호 검사
+      var phonePattern = /^010-\d{4}-\d{4}$/;
+      if (!phonePattern.test(requestDto.recipientNumber)) {
+        alert("휴대폰 번호를 010-xxxx-xxxx 형식으로 입력해주세요.");
+        return;
+      }
+
+      // null 체크
+      if (requestDto.name === "") {
+        alert("별칭을 입력해 주세요")
+        return;
+      }
+
+      if (requestDto.recipientName === "") {
+        alert("수취인을 입력해 주세요")
+        return;
+      }
+
+      if (requestDto.zipCode === "") {
+        alert("우편번호를 입력해 주세요")
+        return;
+      }
 
       $.ajax({
         url: 'http://localhost:8080/addresses', // 서버 URL을 입력하세요
