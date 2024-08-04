@@ -414,23 +414,23 @@
 
 			wishList.forEach(function (item) {
 				let productCard = `
-                <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item ${item.productStatus.toLowerCase()}">
+                <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item ${item.product.productStatus.toLowerCase()}" data-poduct-id="${item.product.id}">
                     <div class="block2">
                         <div class="block2-pic hov-img0">
-                            <img src="${item.imageUrl}" alt="IMG-PRODUCT">
+                            <img src="${item.product.imageUrl}" alt="IMG-PRODUCT">
                         </div>
                         <div class="block2-txt flex-w flex-t p-t-14">
                             <div class="block2-txt-child1 flex-col-l">
-                                <a href="product-detail.html?id=${item.id}" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                                    ${item.product}
+                                <a href="product-detail.html?id=${item.product.id}" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                    ${item.product.product}
                                 </a>
                                 <span class="stext-105 cl3">
-                                    ${item.price.toLocaleString()}원
+                                    ${item.product.price.toLocaleString()}원
                                 </span>
                             </div>
                             <div class="block2-txt-child2 flex-r p-t-3">
-                                <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                                    <img class="icon-heart1 dis-block trans-04" src="../images/icons/icon-heart-01.png" alt="ICON">
+                                <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2" data-wish-id="${item.wishId}">
+                                    <img class="icon-heart1 dis-block trans-04" src="../images/icons/icon-heart-02.png" alt="ICON">
                                     <img class="icon-heart2 dis-block trans-04 ab-t-l" src="../images/icons/icon-heart-02.png" alt="ICON">
                                 </a>
                             </div>
@@ -441,6 +441,40 @@
 				$wishListContainer.append(productCard);
 			});
 		}
+	</script>
+
+	<script>
+
+		// 위시리스트 제거
+		$(document).on('click', '.js-addwish-b2', function(e) {
+			e.preventDefault();
+			let $this = $(this);
+			let productId = $this.data('wish-id'); // data-product-id 값 가져오기
+
+			var wishDeleteRequestDto ={
+				wishId : productId
+			}
+			// AJAX 요청
+			$.ajax({
+				url: 'http://localhost:8080/wishlists',
+				type: 'DELETE',
+				contentType: 'application/json',
+				data: JSON.stringify(wishDeleteRequestDto),
+				success: function(response, textStatus, jqXHR) {
+					// 서버 응답에 따라 필요한 작업 수행
+					if (jqXHR.status === 200) {
+						alert("위시리스트 삭제 완료")
+						swal("Removed!", "The item has been removed from your wishlist.", "success");
+						location.reload()
+					} else {
+						swal("Failed!", "The item could not be removed from your wishlist.", "error");
+					}
+				},
+				error: function(error) {
+					alert("에러: " + error.message)
+				}
+			});
+		});
 	</script>
 
 </body>
