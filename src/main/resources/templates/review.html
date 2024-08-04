@@ -9,7 +9,8 @@
   <!--===============================================================================================-->
   <link rel="stylesheet" type="text/css" href="../vendor/bootstrap/css/bootstrap.min.css">
   <!--===============================================================================================-->
-  <link rel="stylesheet" type="text/css" href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css"
+        href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
   <!--===============================================================================================-->
   <link rel="stylesheet" type="text/css"
         href="../fonts/iconic/css/material-design-iconic-font.min.css">
@@ -97,7 +98,8 @@
             <i class="zmdi zmdi-shopping-cart"></i>
           </a>
 
-          <a id="wish-icon" href="wish-list.html" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
+          <a id="wish-icon" href="wish-list.html"
+             class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
              data-notify="0">
             <i class="zmdi zmdi-favorite-outline"></i>
           </a>
@@ -124,7 +126,8 @@
 </header>
 
 <!-- Title page -->
-<section class="bg-img1 txt-center p-lr-15 p-tb-92" style="background-image: url('../images/bg-01.jpg');">
+<section class="bg-img1 txt-center p-lr-15 p-tb-92"
+         style="background-image: url('../images/bg-01.jpg');">
   <h2 class="ltext-105 cl0 txt-center">
     My Review
   </h2>
@@ -341,19 +344,20 @@
     });
     fetchReviews()
   });
-  </script>
+</script>
 <!--===============================================================================================-->
 /* 찜 페이지에 리뷰 추가 */
+<script src="../vendor/sweetalert/sweetalert.min.js"></script>
 <script>
   function fetchReviews() {
     $.ajax({
       url: '/reviews',
       type: 'GET',
-      success: function(response) {
+      success: function (response) {
         const reviews = response.content; // 응답에서 리뷰 리스트 가져오기
         renderReviews(reviews);
       },
-      error: function() {
+      error: function () {
         console.error("Failed to fetch reviews.");
       }
     });
@@ -364,9 +368,9 @@
     const $reviewList = $('#review-list');
     $reviewList.empty(); // 기존 내용을 지우고 새로 추가
 
-    reviews.forEach(function(review) {
+    reviews.forEach(function (review) {
       const reviewCard = `
-          <tr class="table_row" data-reivew-id = ${review.id}>
+          <tr class="table_row" data-review-id = ${review.id}>
             <td class="column-1">
               <div class="how-itemcart1">
                 <img src="${review.reviewImageUrl[0]}" alt="IMG">
@@ -386,13 +390,41 @@
                 Edit
               </button>
               <br>
-              <button class="flex-c-m stext-101 cl2 size-103 bg8 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+              <button class="flex-c-m stext-101 cl2 size-103 bg8 bor14 hov-btn3 p-lr-15 trans-04 pointer delete-review-btn">
                 Delete
               </button>
             </td>
           </tr>
         `;
       $reviewList.append(reviewCard);
+    });
+    // 리뷰삭제
+    $('.delete-review-btn').on('click', function(e) {
+      e.preventDefault();
+      let $this = $(this);
+      let reviewId = $this.closest('.table_row').data('review-id');
+
+      var reviewDeleteRequestDto = {
+        reviewId : reviewId
+      }
+
+      $.ajax({
+        url: `/reviews`,
+        type: 'DELETE',
+        contentType: 'application/json',
+        data: JSON.stringify(reviewDeleteRequestDto),
+        success: function(response, textStatus, jqXHR) {
+          if (jqXHR.status === 200) {
+            swal("Deleted!", "The review has been deleted.", "success");
+            location.reload()
+          } else {
+            swal("Failed!", "The review could not be deleted.", "error");
+          }
+        },
+        error: function(error) {
+          alert("에러: " + error.message)
+        }
+      });
     });
   }
 
@@ -409,5 +441,6 @@
     return stars;
   }
 </script>
-  </body>
-  </html>
+<!--===============================================================================================-->
+</body>
+</html>
