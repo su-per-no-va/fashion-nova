@@ -54,7 +54,6 @@ public class Product extends Timestamped {
     @Column
     private String imageUrl;
 
-
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductDetail> productDetailList = new ArrayList<>();
 

@@ -11,6 +11,7 @@ import com.supernova.fashionnova.domain.coupon.CouponStatus;
 import com.supernova.fashionnova.domain.coupon.dto.CouponResponseDto;
 import com.supernova.fashionnova.domain.user.User;
 import java.util.List;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,6 +29,7 @@ class CouponServiceTest {
     private CouponService couponService;
 
     @Test
+    @DisplayName("보유 쿠폰 조회 테스트")
     void getCouponListTest() {
 
         // given
@@ -36,7 +38,8 @@ class CouponServiceTest {
 
         given(coupon.getName()).willReturn("웰컴쿠폰");
 
-        given(couponRepository.findByUserAndStatus(user, CouponStatus.ACTIVE)).willReturn(List.of(coupon));
+        given(couponRepository.findByUserAndStatus(user, CouponStatus.ACTIVE))
+            .willReturn(List.of(coupon));
 
         // when
         List<CouponResponseDto> result = couponService.getCouponList(user);
@@ -47,10 +50,10 @@ class CouponServiceTest {
 
         CouponResponseDto couponResponseDto = result.get(0);
         assertEquals("웰컴쿠폰", couponResponseDto.getName());
-
     }
 
     @Test
+    @DisplayName("쿠폰 내역 조회 테스트")
     void getUsedCouponListTest() {
 
         // given
@@ -59,7 +62,8 @@ class CouponServiceTest {
 
         given(coupon.getName()).willReturn("웰컴쿠폰");
 
-        given(couponRepository.findByUserAndStatus(user, CouponStatus.INACTIVE)).willReturn(List.of(coupon));
+        given(couponRepository.findByUserAndStatus(user, CouponStatus.INACTIVE))
+            .willReturn(List.of(coupon));
 
         // when
         List<CouponResponseDto> result = couponService.getUsedCouponList(user);
@@ -70,7 +74,6 @@ class CouponServiceTest {
 
         CouponResponseDto couponResponseDto = result.get(0);
         assertEquals("웰컴쿠폰", couponResponseDto.getName());
-
     }
 
 }

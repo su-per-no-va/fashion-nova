@@ -1,26 +1,36 @@
 package com.supernova.fashionnova.wish;
 
+import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import com.supernova.fashionnova.domain.product.Product;
+import com.supernova.fashionnova.domain.product.ProductCategory;
 import com.supernova.fashionnova.domain.product.ProductRepository;
+import com.supernova.fashionnova.domain.product.ProductStatus;
 import com.supernova.fashionnova.domain.user.User;
 import com.supernova.fashionnova.domain.wish.Wish;
 import com.supernova.fashionnova.domain.wish.WishRepository;
 import com.supernova.fashionnova.domain.wish.WishService;
 import com.supernova.fashionnova.domain.wish.dto.WishDeleteRequestDto;
 import com.supernova.fashionnova.domain.wish.dto.WishRequestDto;
+import com.supernova.fashionnova.domain.wish.dto.WishResponseDto;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 @ExtendWith(MockitoExtension.class)
 class WishServiceTest {
@@ -35,6 +45,7 @@ class WishServiceTest {
     private WishService wishService;
 
     @Test
+    @DisplayName("위시리스트 추가 테스트")
     void addWishTest() {
 
         // given
@@ -42,7 +53,8 @@ class WishServiceTest {
         WishRequestDto requestDto = new WishRequestDto(1L);
 
         Product product = Mockito.mock(Product.class);
-        given(productRepository.findById(requestDto.getProductId())).willReturn(Optional.of(product));
+        given(productRepository.findById(requestDto.getProductId()))
+            .willReturn(Optional.of(product));
 
         // when
         assertDoesNotThrow(() -> wishService.addWish(user, requestDto));
@@ -52,8 +64,8 @@ class WishServiceTest {
 
     }
 
-    /*
     @Test
+    @DisplayName("위시리스트 조회 테스트")
     void getWishProductPageTest() {
 
         // given
@@ -61,21 +73,21 @@ class WishServiceTest {
         int page = 1;
 
         Wish wish = Mockito.mock(Wish.class);
-        given(wish.getProduct()).willReturn(new Product("Test Product", 10000L, "Test Explanation", ProductCategory.TOP, ProductStatus.ACTIVE));
+        given(wish.getProduct()).willReturn(
+            new Product("Test Product", 10000L, "Test Explanation", ProductCategory.TOP, ProductStatus.ACTIVE));
         given(wishRepository.findByUser(user, PageRequest.of(page, 10)))
             .willReturn(new PageImpl<>(Collections.singletonList(wish)));
 
         // when
-        List<ProductResponseDto> result = wishService.getWishProductList(user, page);
+        List<WishResponseDto> result = wishService.getWishProductList(user, page);
 
         // then
         assertNotNull(result);
         assertEquals(1, result.size());
-
     }
-    */
 
     @Test
+    @DisplayName("위시리스트 삭제 테스트")
     void deleteWishTest() {
 
         // given
@@ -95,7 +107,6 @@ class WishServiceTest {
         // then
         verify(wishRepository, times(1)).delete(any(Wish.class));
         verify(product, times(1)).decreaseWish();
-
     }
 
 }

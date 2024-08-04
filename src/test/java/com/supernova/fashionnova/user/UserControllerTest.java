@@ -160,12 +160,12 @@ class UserControllerTest {
 
     @Test
     @DisplayName("유저 경고 조회")
-    void getCautionList() throws Exception{
+    void getCautionList() throws Exception {
         //given
         User user = userDetails.getUser();
         List<WarnResponseDto> warnResponseDtoList = Arrays.asList(
-            new WarnResponseDto(new Warn("경고1",user)),
-            new WarnResponseDto(new Warn("경고2",user))
+            new WarnResponseDto(new Warn("경고1", user)),
+            new WarnResponseDto(new Warn("경고2", user))
         );
         //when
         when(service.getCautionList(user)).thenReturn(warnResponseDtoList);
@@ -212,4 +212,5 @@ class UserControllerTest {
             );
 
     }
+
 }

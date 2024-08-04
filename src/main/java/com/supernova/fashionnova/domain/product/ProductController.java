@@ -12,29 +12,32 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/products")
-
 public class ProductController {
 
-     private final ProductService productService;
+    private final ProductService productService;
 
     /**
      * 조건별 상품 검색
+     *
      * @param sorted
      * @param category
+     * @param size
+     * @param color
+     * @param search
      * @param page
      * @return 상품 리스트
      */
+    @GetMapping("/product")
+    public Page<ProductResponseDto> getProductList(
+        @RequestParam(value = "sort") String sorted,
+        @RequestParam(value = "category", required = false) String category,
+        @RequestParam(value = "size", required = false) String size,
+        @RequestParam(value = "color", required = false) String color,
+        @RequestParam(value = "search", required = false) String search,
+        @RequestParam(defaultValue = "0", value = "page", required = false) int page) {
+        System.out.println("[[[[[[[[[[[[" + search);
 
-     @GetMapping("/product")
-    public Page<ProductResponseDto> getProductList(@RequestParam(value = "sort") String sorted,
-         @RequestParam(value = "category", required = false) String category,
-         @RequestParam(value = "size", required = false) String size,
-         @RequestParam(value = "color", required = false) String color,
-         @RequestParam(value = "search", required = false) String search,
-         @RequestParam(value = "page", required = false) int page) {
-         System.out.println("[[[[[[[[[[[[" + search);
-
-        return productService.getProductList(page - 1, category, size, color, search, sorted);
+        return productService.getProductList(sorted, category, size, color, search, page);
     }
 
 }
