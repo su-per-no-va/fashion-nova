@@ -216,7 +216,7 @@
 
         // GET 요청으로 서버에 검색어 전달
         $.ajax({
-            url: 'http://localhost:8080/products/product', // 요청을 보낼 URL
+            url: '/products/product', // 요청을 보낼 URL
             method: 'GET',
             data: {
                 search: searchInput,

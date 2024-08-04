@@ -397,7 +397,7 @@
 	function fetchWishList() {
 		$.ajax({
 			type: 'GET',
-			url: 'http://localhost:8080/wishlists',
+			url: '/wishlists',
 			success: function(response) {
 				console.log('위시리스트 가져오기 성공:', response);
 				updateWishList(response);
@@ -456,7 +456,7 @@
 		}
 		// AJAX 요청
 		$.ajax({
-			url: 'http://localhost:8080/wishlists',
+			url: '/wishlists',
 			type: 'DELETE',
 			contentType: 'application/json',
 			data: JSON.stringify(wishDeleteRequestDto),

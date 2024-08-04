@@ -529,7 +529,7 @@
       }
 
       $.ajax({
-        url: 'http://localhost:8080/addresses',
+        url: '/addresses',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(requestDto),
@@ -551,7 +551,7 @@
     // 주소 리스트 로드
     function loadAddresses() {
       $.ajax({
-        url: 'http://localhost:8080/addresses', // 서버 URL을 입력하세요
+        url: '/addresses', // 서버 URL을 입력하세요
         type: 'GET',
         success: function (addresses) {
           var addressContainer = $('.delivery-management .address-box');
@@ -584,7 +584,7 @@
       }
 
       $.ajax({
-        url: 'http://localhost:8080/addresses',
+        url: '/addresses',
         type: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify(addressDefaultRequestDto),
@@ -608,7 +608,7 @@
       }
 
       $.ajax({
-        url: 'http://localhost:8080/addresses',
+        url: '/addresses',
         type: 'DELETE',
         contentType: 'application/json',
         data: JSON.stringify(addressDeleteRequestDto),
@@ -626,7 +626,7 @@
       loadAddresses()
     // 유저정보 가져오기
     $.ajax({
-      url: 'http://localhost:8080/users',
+      url: '/users',
       type: 'GET',
       success: function (response) {
         $('#username').val(response.username);
@@ -694,7 +694,7 @@
       }
 
       $.ajax({
-        url: 'http://localhost:8080/users' ,
+        url: '/users' ,
         type: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify(updateDto),
@@ -712,7 +712,7 @@
   $('#deleteAccountBtn').on('click', function () {
     if (confirm('정말로 회원탈퇴를 하시겠습니까?')) {
       $.ajax({
-        url: 'http://localhost:8080/users/withdraw',
+        url: '/users/withdraw',
         type: 'PUT',
         success: function () {
           alert('회원탈퇴가 완료되었습니다.');

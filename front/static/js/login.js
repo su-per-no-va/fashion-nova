@@ -24,7 +24,7 @@ function onLogin() {
 
   $.ajax({
     type: "POST",
-    url: `http://localhost:8080/users/login`,
+    url: `/users/login`,
     contentType: "application/json",
     data: JSON.stringify({userName: username, password: password}),
     xhrFields: {
