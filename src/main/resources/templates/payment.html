@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Shopping Cart</title>
+  <title>Payment</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!--===============================================================================================-->
@@ -9,11 +9,9 @@
   <!--===============================================================================================-->
   <link rel="stylesheet" type="text/css" href="../vendor/bootstrap/css/bootstrap.min.css">
   <!--===============================================================================================-->
-  <link rel="stylesheet" type="text/css"
-        href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
   <!--===============================================================================================-->
-  <link rel="stylesheet" type="text/css"
-        href="../fonts/iconic/css/material-design-iconic-font.min.css">
+  <link rel="stylesheet" type="text/css" href="../fonts/iconic/css/material-design-iconic-font.min.css">
   <!--===============================================================================================-->
   <link rel="stylesheet" type="text/css" href="../fonts/linearicons-v1.0.0/icon-font.min.css">
   <!--===============================================================================================-->
@@ -29,6 +27,7 @@
   <!--===============================================================================================-->
   <link rel="stylesheet" type="text/css" href="../css/util.css">
   <link rel="stylesheet" type="text/css" href="../css/main.css">
+  <link rel="stylesheet" type="text/css" href="../css/my-info.css">
   <!--===============================================================================================-->
 </head>
 <body class="animsition">
@@ -65,22 +64,22 @@
 
         <!-- Logo desktop -->
         <a href="index.html" class="logo">
-          <img src="/images/icons/logo-01.png" alt="IMG-LOGO">
+          <img src="../images/icons/logo-01.png" alt="IMG-LOGO">
         </a>
 
         <!-- Menu desktop -->
         <div class="menu-desktop">
           <ul class="main-menu">
             <li>
-              <a href="../about.html">About</a>
+              <a href="about.html">About</a>
             </li>
 
             <li class="label1" data-label1="hot">
-              <a href="../product.html">Shop</a>
+              <a href="product.html">Shop</a>
             </li>
 
             <li>
-              <a href="../contact.html">Contact</a>
+              <a href="contact.html">Contact</a>
             </li>
           </ul>
         </div>
@@ -132,14 +131,18 @@
       <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
     </a>
 
+    <a href="shoping-cart.html" class="stext-109 cl8 hov-cl1 trans-04">
+      Cart
+      <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+    </a>
+
     <span class="stext-109 cl4">
-				Cart
+				Payment
 			</span>
   </div>
 </div>
 
-
-<!-- Shoping Cart -->
+<!-- Payment Page -->
 <form class="bg0 p-t-75 p-b-85">
   <div class="container">
     <div class="row">
@@ -151,7 +154,7 @@
                 <th class="column-1">Product</th>
                 <th class="column-2"></th>
                 <th class="column-3">Price</th>
-                <th class="column-4">Quantity</th>
+                <th class="column-4">Option</th>
                 <th class="column-5">Total</th>
               </tr>
 
@@ -161,101 +164,71 @@
                     <img src="/images/item-cart-04.jpg" alt="IMG">
                   </div>
                 </td>
-                <td class="column-2">Fresh Strawberries</td>
+                <td class="column-2">꽃무늬 원피스</td>
                 <td class="column-3">50,000원</td>
-                <td class="column-4">
-                  <div class="wrap-num-product flex-w m-l-auto m-r-0">
-                    <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-                      <i class="fs-16 zmdi zmdi-minus"></i>
-                    </div>
-
-
-                    <input class="mtext-104 cl3 txt-center num-product" type="number"
-                           name="num-product1" value="1">
-
-                    <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-                      <i class="fs-16 zmdi zmdi-plus"></i>
+                <td class="column-4" style="text-align: center;">
+                  <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
+                    <div class="form-group">
+                      <div class="fixed-text" id="count">Count : 3</div>
                     </div>
                   </div>
                   <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
-                    <select class="js-select2" name="time">
-                      <option>Size</option>
-                      <option>S</option>
-                      <option>M</option>
-                      <option>L</option>
-                    </select>
-                    <div class="dropDownSelect2"></div>
+                    <div class="form-group">
+                      <div class="fixed-text" id="size">Size : S</div>
+                    </div>
                   </div>
+
                   <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
-                    <select class="js-select2" name="time">
-                      <option>Color</option>
-                      <option>WHITE</option>
-                      <option>GRAY</option>
-                      <option>BLACK</option>
-                    </select>
+                    <div class="form-group">
+                      <div class="fixed-text" id="color">Color : BLACK</div>
+                    </div>
                     <div class="dropDownSelect2"></div>
                   </div>
                 </td>
-                <td class="column-5">50,000원</td>
+                <td class="column-5">150,000원</td>
               </tr>
 
-              <tr class="table_row">
-                <td class="column-1">
-                  <div class="how-itemcart1">
-                    <img src="../images/item-cart-05.jpg" alt="IMG">
-                  </div>
-                </td>
-                <td class="column-2">Lightweight Jacket</td>
-                <td class="column-3">50,000원</td>
-                <td class="column-4">
-                  <div class="wrap-num-product flex-w m-l-auto m-r-0">
-                    <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-                      <i class="fs-16 zmdi zmdi-minus"></i>
-                    </div>
-
-                    <input class="mtext-104 cl3 txt-center num-product" type="number"
-                           name="num-product2" value="1">
-
-                    <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-                      <i class="fs-16 zmdi zmdi-plus"></i>
-                    </div>
-                  </div>
-                  <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
-                    <select class="js-select2" name="time">
-                      <option>Size</option>
-                      <option>S</option>
-                      <option>M</option>
-                      <option>L</option>
-                    </select>
-                    <div class="dropDownSelect2"></div>
-                  </div>
-                  <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
-                    <select class="js-select2" name="time">
-                      <option>Color</option>
-                      <option>WHITE</option>
-                      <option>GRAY</option>
-                      <option>BLACK</option>
-                    </select>
-                    <div class="dropDownSelect2"></div>
-                  </div>
-                </td>
-                <td class="column-5">50,000원</td>
-              </tr>
             </table>
           </div>
 
-          <div class="flex-w flex-c-t bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
-            <div
-                class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10"
-                style="margin: 15px;">
-              Update Cart
+          <form class="info-form">
+            <div class="form-group">
+              <div class="member-info">
+                <label for="name">사용 쿠폰</label>
+                <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
+                  <select class="js-select2" name="time">
+                    <option>Coupon</option>
+                    <option>웰컴 10% 쿠폰</option>
+                    <option>브론즈 5% 쿠폰</option>
+                  </select>
+                  <div class="dropDownSelect2"></div>
+                </div>
+              </div>
             </div>
-            <div
-                class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10 "
-                style="margin: 15px;">
-              Emptying Cart
+          </form>
+
+          <form class="info-form">
+            <div class="form-group">
+              <div class="member-info">
+                <label for="name">사용 마일리지</label>
+              <input type="text" id="name" placeholder="사용 금액을 입력하세요." required>
+                <label for="name">사용 가능 마일리지 : 500원</label>
+              </div>
             </div>
-          </div>
+          </form>
+
+          <form class="info-form">
+            <div class="form-group">
+              <div class="member-info">
+                <label for="name">결제 수단</label>
+                <label for="radio1"><input type="radio" id="radio1" name="radio1">
+                  <img src="../images/icons/icon-kakaopay.png" alt="ICON-PAY" width="100" height="100">
+                </label>
+              </div>
+            </div>
+          </form>
+
+
         </div>
       </div>
 
@@ -274,7 +247,32 @@
 
             <div class="size-209">
 								<span class="mtext-110 cl2">
-									100,000원
+									+ 150,000원
+								</span>
+            </div>
+          </div>
+
+          <div class="flex-w flex-t bor12 p-t-15 p-b-30">
+            <div class="size-208 w-full-ssm">
+								<span class="stext-110 cl2">
+									브론즈 5% 쿠폰:
+								</span>
+            </div>
+
+            <div class="size-209">
+								<span class="mtext-110 cl2">
+									- 3,500원
+								</span>
+            </div>
+
+            <div class="size-208 w-full-ssm">
+								<span class="stext-110 cl2">
+									사용 마일리지:
+								</span>
+            </div>
+            <div class="size-209">
+								<span class="mtext-110 cl2">
+									- 300원
 								</span>
             </div>
           </div>
@@ -288,7 +286,7 @@
 
             <div class="size-209">
 								<span class="mtext-110 cl2">
-									2,500원
+									 + 2,500원
 								</span>
             </div>
           </div>
@@ -302,17 +300,15 @@
 
             <div class="size-209 p-t-1">
 								<span class="mtext-110 cl2">
-									102,500원
+									144,700원
 								</span>
             </div>
           </div>
 
-            <button type="button"
-                    class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer"
-                    onclick="location.href='payment.html'">
-              Proceed to Checkout
-            </button>
-
+          <button
+              class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+            Make payment
+          </button>
         </div>
       </div>
     </div>
@@ -366,7 +362,6 @@
   </div>
 </footer>
 
-
 <!-- Back to top -->
 <div class="btn-back-to-top" id="myBtn">
 		<span class="symbol-btn-back-to-top">
@@ -411,7 +406,6 @@
   });
 </script>
 <!--===============================================================================================-->
-<script src="/js/main.js"></script>
-
+<script src="../js/main.js"></script>
 </body>
 </html>

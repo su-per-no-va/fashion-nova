@@ -62,6 +62,7 @@ public class HomeController {
 
     @GetMapping("/index.html")
     public String index() {
+        System.out.println("--------------------------------------------------------------------------");
         return "index";
     }
 
@@ -118,5 +119,10 @@ public class HomeController {
     @GetMapping("/my-question-detail.html")
     public String myQuestionDetail() {
         return "my-question-detail";
+    }
+
+    @GetMapping("/payment.html")
+    public String payment() {
+        return "payment";
     }
 }
