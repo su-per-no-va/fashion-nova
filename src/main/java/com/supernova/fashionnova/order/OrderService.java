@@ -1,6 +1,5 @@
 package com.supernova.fashionnova.order;
 
-import com.supernova.fashionnova.address.Address;
 import com.supernova.fashionnova.address.AddressRepository;
 import com.supernova.fashionnova.address.DeliveryStatus;
 import com.supernova.fashionnova.cart.Cart;
@@ -19,8 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderService {
@@ -39,24 +40,23 @@ public class OrderService {
   ) {
     //송장번호 랜덤 생성 (12자리 수)
     Long invoice=Math.abs(UUID.randomUUID().getLeastSignificantBits()) % 900000000000L + 100000000000L;
-    //배송지 없는 경우
-    Address address = addressRepository.findById(user.getId()).orElseThrow(
-        ()-> new CustomException(ErrorType.NOT_FOUND_ADDRESS));
     //카트에 담긴 상품 없음
     List<Cart> cartList= cartRepository.findAllByUserId(user.getId());
     if(cartList.isEmpty()){
       throw new CustomException(ErrorType.CART_EMPTY);
     }
-
-    int totalPrice = cartList.stream().mapToInt(Cart::getTotalPrice).sum();
-    int totalAmount = totalPrice - orderRequestDto.getDiscount()
+    Long totalPrice = cartList.stream().mapToLong(Cart::getTotalPrice).sum();
+    Long totalAmount = totalPrice - orderRequestDto.getDiscount()
         - orderRequestDto.getUsedMileage();
 
+    // OrderRequestDto -> 주좌길 16-3
+    // UserDetail.getUser().getAddress() -> JWT 에 들어있는 현재 사용자의 주소 가 들어간다 ~
+    // 정근 id 로그인 -> 정근 user 주소가 들어간다 ~
     Order order= Order.builder()
         .cost(totalPrice)
         .orderStatus(OrderStatus.Progress)
         .deliveryStatus(DeliveryStatus.BEFORE)
-        .address(address.getAddress())
+        .address(orderRequestDto.getAddress())
         .discount(orderRequestDto.getDiscount())
         .user(user)
         .usedMileage(orderRequestDto.getUsedMileage())

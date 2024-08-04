@@ -35,7 +35,7 @@ public class OrderDetail extends Timestamped {
     private String productName;
 
     @Column(nullable = false)
-    private int price;
+    private Long price;
 
     @ManyToOne
     @JoinColumn(name="user_id")
@@ -55,7 +55,7 @@ public class OrderDetail extends Timestamped {
     private ProductDetail productDetail;
 
     @Builder
-    public OrderDetail(int count, String productName, int price, User user, Order order, Product product, ProductDetail productDetail) {
+    public OrderDetail(int count, String productName, Long price, User user, Order order, Product product, ProductDetail productDetail) {
         this.count = count;
         this.productName = productName;
         this.price = price;

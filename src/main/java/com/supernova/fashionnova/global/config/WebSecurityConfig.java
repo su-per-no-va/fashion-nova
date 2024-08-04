@@ -110,7 +110,7 @@ public class WebSecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/users/login").permitAll() // 로그인 허용
                 .requestMatchers(HttpMethod.GET, "/products/**").permitAll()// 상품 검색 허용
                 .requestMatchers(HttpMethod.GET, "/reviews/**").permitAll()// 상품별 리뷰 조회 허용
-                .requestMatchers("/**").permitAll()// 카카오
+                .requestMatchers("/users/kakao/callback").permitAll()// 카카오
                 .requestMatchers("/admin/**").hasAuthority(UserRole.ADMIN.getAuthority()) //권한이 Admin 인 유저만 접근가능
                 .anyRequest().authenticated() // 그 외 모든 요청 인증처리
 

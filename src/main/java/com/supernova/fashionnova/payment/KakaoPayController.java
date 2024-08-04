@@ -31,10 +31,11 @@ public class KakaoPayController {
   /**
    * 결제 요청
    * */
-  @PostMapping("/ready")
+  @PostMapping("/ready/{orderId}")
   public KakaoPayReadyResponseDto kakaoPayReady(@RequestBody KakaoPayReadyRequestDto kakaoPayReadyRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long orderId)
   {
+    log.info("In kakaoPayReady, orderId:{}", orderId);
     return kakaoPayService.kakaoPayReady(kakaoPayReadyRequestDto, userDetails.getUser(), orderId);
   }
 

@@ -5,9 +5,13 @@ import com.supernova.fashionnova.order.dto.AllOrderResponseDto;
 import com.supernova.fashionnova.order.dto.OrderRequestDto;
 import com.supernova.fashionnova.order.dto.OrderResponseDto;
 import com.supernova.fashionnova.security.UserDetailsImpl;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequestMapping("/orders")
 @RequiredArgsConstructor
@@ -29,11 +34,10 @@ public class OrderController {
    * */
   @PostMapping
   public ResponseEntity<AllOrderResponseDto> createOrder(
-      @RequestBody OrderRequestDto orderRequestDto,
+      @Valid @RequestBody OrderRequestDto orderRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails
   ) {
     AllOrderResponseDto allOrderResponseDto = orderService.createOrder(orderRequestDto, userDetails.getUser());
-
     return ResponseUtil.of(HttpStatus.CREATED, allOrderResponseDto);
   }
   /**
@@ -45,6 +49,5 @@ public class OrderController {
         order.getCost(), order.getDeliveryStatus(), order.getDiscount(), order.getTotalPrice(), order.getUsedMileage(), order.getCreatedAt())).collect(
         Collectors.toList()));
   }
-
 
 }

@@ -1,5 +1,37 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get$END$
-    ?generated-in=IntelliJ IDEA
+###로그인
+POST http://localhost:8080/users/login
+Content-Type: application/json
 
-###
+{
+  "userName": "winner7789",
+  "password": "Fb112233!"
+}
+
+> {% client.global.set("access_token", response.headers.valueOf("Authorization")); %}
+
+### 주문내역 생성
+POST http://localhost:8080/orders
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "totalPrice": 80000,
+  "cost": 80000,
+  "discount": 0,
+  "usedMileage": 0,
+  "address": "영종도 주좌길 16-65"
+}
+
+### 결제 후 주문내역 조회
+GET http://localhost:8080/orders
+Content-Type: application/json
+Authorization: {{access_token}}
+
+### 결제 후 주문상세 내역 조회
+GET http://localhost:8080/orderDetails/{{orderId}}
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "orderId": 1
+}

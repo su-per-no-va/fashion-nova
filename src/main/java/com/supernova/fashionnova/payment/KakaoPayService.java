@@ -3,6 +3,8 @@ package com.supernova.fashionnova.payment;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.order.Order;
+import com.supernova.fashionnova.order.OrderDetail;
+import com.supernova.fashionnova.order.OrderDetailRepository;
 import com.supernova.fashionnova.order.OrderStatus;
 import com.supernova.fashionnova.order.OrdersRepository;
 import com.supernova.fashionnova.payment.dto.KakaoPayApproveResponseDto;
@@ -29,6 +31,7 @@ public class KakaoPayService {
   private final KakaoPayConfig kakaoPayConfig;
   private final UserRepository userRepository;
   private final OrdersRepository ordersRepository;
+  private final OrderDetailRepository orderDetailRepository;
 
   //카카오페이 요청 양식
   public KakaoPayReadyResponseDto kakaoPayReady(KakaoPayReadyRequestDto readyRequestDto, User user, Long orderId) {
@@ -39,6 +42,7 @@ public class KakaoPayService {
     parameters.add("parent_order_id", String.valueOf(order.getId()));
     parameters.add("parent_user_id", String.valueOf(user.getId()));
     parameters.add("item_name", order.getOrderName());
+    parameters.add("quantity", String.valueOf(order.getCount()));
     parameters.add("total_amount", String.valueOf(order.getTotalPrice()));
     parameters.add("tax_free_amount", String.valueOf(readyRequestDto.getTaxFreeAmount()));
     parameters.add("approval_url", "http://localhost:8080/payments/success/"+user.getId());
@@ -68,7 +72,7 @@ public class KakaoPayService {
     HttpHeaders headers = new HttpHeaders();
     String auth = "SECRET_KEY " + kakaoPayConfig.getSecretKey();
     headers.set("Authorization", auth);
-    headers.set("CONTENT_TYPE", "application/json");
+    headers.set("Content_Type", "application/json");
     return headers;
   }
 

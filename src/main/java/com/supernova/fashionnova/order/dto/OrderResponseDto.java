@@ -11,8 +11,8 @@ import lombok.RequiredArgsConstructor;
 public class OrderResponseDto {
 
   private Long orderId;
-  private int totalPrice;
-  private int cost;
+  private Long totalPrice;
+  private Long cost;
   private int discount;
   private int usedMileage;
   private String address;
@@ -20,7 +20,7 @@ public class OrderResponseDto {
   private DeliveryStatus deliveryStatus;
   private OrderStatus orderStatus;
 
-  public OrderResponseDto(Long orderId, OrderStatus orderStatus, String address, int cost, DeliveryStatus deliveryStatus, int discount, int totalPrice, int usedMileage, LocalDateTime createdAt) {
+  public OrderResponseDto(Long orderId, OrderStatus orderStatus, String address, Long cost, DeliveryStatus deliveryStatus, int discount, Long totalPrice, int usedMileage, LocalDateTime createdAt) {
     this.orderStatus = orderStatus;
     this.address = address;
     this.cost = cost;

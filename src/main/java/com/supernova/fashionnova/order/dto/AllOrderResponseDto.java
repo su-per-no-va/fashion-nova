@@ -6,24 +6,39 @@ import com.supernova.fashionnova.order.OrderStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class AllOrderResponseDto {
 
   private Long orderId;
-  private int totalPrice;
-  private int cost;
+  private Long totalPrice;
+  private Long cost;
   private int discount;
   private int usedMileage;
   private String address;
   private LocalDateTime createdAt;
   private DeliveryStatus deliveryStatus;
   private OrderStatus orderStatus;
-  private List<OrderDetail> orderDetailList;
+  private List<OrderDetailResponseDto> orderDetailList;
   private String orderName;
   private int cartCount;
 
-  public AllOrderResponseDto(Long orderId, OrderStatus orderStatus, String address, int cost, DeliveryStatus deliveryStatus, int discount, int totalPrice, int usedMileage, LocalDateTime createdAt, List<OrderDetail> savedOrderDetailList, String orderName, int cartCount) {
+  public AllOrderResponseDto(
+      Long orderId,
+      OrderStatus orderStatus,
+      String address,
+      Long cost,
+      DeliveryStatus deliveryStatus,
+      int discount,
+      Long totalPrice,
+      int usedMileage,
+      LocalDateTime createdAt,
+      List<OrderDetail> savedOrderDetailList,
+      String orderName,
+      int cartCount
+  ) {
     this.orderStatus = orderStatus;
     this.address = address;
     this.cost = cost;
@@ -33,7 +48,14 @@ public class AllOrderResponseDto {
     this.usedMileage = usedMileage;
     this.createdAt = createdAt;
     this.orderId = orderId;
-    this.orderDetailList = savedOrderDetailList;
+    this.orderDetailList = savedOrderDetailList.stream()
+        .map(orderDetail -> new OrderDetailResponseDto(
+            orderDetail.getId(),
+            orderDetail.getCount(),
+            orderDetail.getProductName(),
+            orderDetail.getPrice()
+        ))
+        .toList();
     this.orderName = orderName;
     this.cartCount = cartCount;
   }

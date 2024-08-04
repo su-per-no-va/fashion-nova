@@ -36,10 +36,10 @@ public class Order extends Timestamped {
     private User user;
 
     @Column(nullable = false)
-    private int totalPrice;
+    private Long totalPrice;
 
     @Column(nullable = false)
-    private int cost;
+    private Long cost;
 
     @Column(nullable = false)
     private int discount;
@@ -68,7 +68,7 @@ public class Order extends Timestamped {
     private int count;
 
     @Builder
-    public Order (User user, int totalPrice, int cost, int discount, int usedMileage, String address, Long invoice, DeliveryStatus deliveryStatus, OrderStatus orderStatus){
+    public Order (User user, Long totalPrice, Long cost, int discount, int usedMileage, String address, Long invoice, DeliveryStatus deliveryStatus, OrderStatus orderStatus){
         this.user = user;
         this.totalPrice = totalPrice;
         this.cost = cost;
