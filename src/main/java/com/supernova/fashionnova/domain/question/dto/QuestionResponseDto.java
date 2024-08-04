@@ -10,6 +10,7 @@ import lombok.Getter;
 @Getter
 public class QuestionResponseDto {
 
+    private final Long id;
     private final String title;
     private final String question;
     private final QuestionType type;
@@ -17,6 +18,7 @@ public class QuestionResponseDto {
     private final List<String> questionUrls;
 
     public QuestionResponseDto(Question question) {
+        this.id = question.getId();
         this.title = question.getTitle();
         this.question = question.getQuestion();
         this.type = question.getType();

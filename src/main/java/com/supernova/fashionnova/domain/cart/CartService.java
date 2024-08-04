@@ -97,9 +97,6 @@ public class CartService {
 
         Long totalPrice = cartList.stream().mapToLong(Cart::getTotalPrice).sum();
 
-
-
-
         return new CartResponseDto(cartItemDtoList, totalPrice);
     }
 
@@ -186,4 +183,5 @@ public class CartService {
         cartRepository.deleteAllInBatch(cartList);
 
     }
+
 }

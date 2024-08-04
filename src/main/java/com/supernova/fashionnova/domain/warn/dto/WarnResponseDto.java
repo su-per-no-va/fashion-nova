@@ -7,11 +7,14 @@ import lombok.Getter;
 @Getter
 public class WarnResponseDto {
 
+    private final Long id;
     private final String detail;
     private final LocalDateTime createdAt;
 
-   public WarnResponseDto(Warn warn) {
+    public WarnResponseDto(Warn warn) {
+        this.id = warn.getId();
         this.detail = warn.getDetail();
         this.createdAt = warn.getCreatedAt();
     }
+
 }
