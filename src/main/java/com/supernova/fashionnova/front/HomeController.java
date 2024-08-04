@@ -125,4 +125,14 @@ public class HomeController {
     public String payment() {
         return "payment";
     }
+
+    @GetMapping("/my-mileage.html")
+    public String myMileage() {
+        return "my-mileage";
+    }
+
+    @GetMapping("/my-coupon.html")
+    public String myCoupon() {
+        return "my-coupon";
+    }
 }
