@@ -166,8 +166,8 @@
                 <th class="column-6"></th>
                 <th class="column-7">Edit</th>
               </tr>
-
-              <tr class="table_row">
+              <!-- 리뷰가 동적으로 추가될 곳  -->
+              <tr id="review-list" class="table_row">
                 <td class="column-1">
                   <div class="how-itemcart1">
                     <img src="../images/item-cart-05.jpg" alt="IMG">
@@ -303,68 +303,13 @@
 <script src="/js/common.js"></script>
 <script src="../js/main.js"></script>
 <!--===============================================================================================-->
-<script>
-  $(document).ready(function () {
-    // 기존 쿠키 삭제 (필요에 따라 유지)
-    Cookies.remove('Authorization', {path: '/'});
 
-    // AJAX 요청에 Authorization 헤더 추가
-    $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-      const token = Cookies.get('Authorization');
-      if (token) {
-        jqXHR.setRequestHeader('Authorization', token);
-      }
-    });
-  });
-
-  const host = 'http://' + window.location.host;
-
-  function onLogin() {
-    let username = $('#username').val();
-    let password = $('#password').val();
-
-    $.ajax({
-      type: "POST",
-      url: `/api/user/login`,
-      contentType: "application/json",
-      data: JSON.stringify({username: username, password: password}),
-    })
-    .done(function (res, status, xhr) {
-      const token = xhr.getResponseHeader('Authorization');
-      console.log("Token: ", token);  // 토큰 값 확인
-
-      if (token) {
-        // 쿠키에 토큰 저장
-        Cookies.set('Authorization', token, {path: '/'});
-        console.log("Token set in cookie: ", Cookies.get('Authorization'));  // 쿠키 설정 확인
-
-        window.location.href = host;
-      } else {
-        console.error("Token is null or undefined");
-        alert("Login Fail: Token is null or undefined");
-      }
-    })
-    .fail(function (jqXHR, textStatus) {
-      alert("Login Fail");
-      window.location.href = host + '/api/user/login-page?error';
-    });
-  }
-</script>
 <script>
   $(document).ready(function () {
 
-    auth = localStorage.getItem('accessToken');
-    let refreshToken = localStorage.getItem('refreshToken');
-    console.log("엑세스 토큰: " + auth);
-    console.log("리프레시 토큰: " + refreshToken);
-
-    if (auth !== undefined && auth !== null) {
-      $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-        console.log("auth : " + auth);
-        jqXHR.setRequestHeader('Authorization', auth);
-        jqXHR.setRequestHeader('Authorization-refresh', refreshToken);
-      });
-    } else {
+    let auth = localStorage.getItem('accessToken');
+    //로그인 안되어 있으면 로그인으로 옮기기
+    if (!auth) {
       alert("로그인 후 이용해 주세요");
       window.location.href = "login.html";
     }
@@ -394,8 +339,75 @@
     .fail(function (error) {
       console.log(error.message)
     });
-    fetchWishList()
+    fetchReviews()
   });
   </script>
+<!--===============================================================================================-->
+/* 찜 페이지에 리뷰 추가 */
+<script>
+  function fetchReviews() {
+    $.ajax({
+      url: '/reviews',
+      type: 'GET',
+      success: function(response) {
+        const reviews = response.content; // 응답에서 리뷰 리스트 가져오기
+        renderReviews(reviews);
+      },
+      error: function() {
+        console.error("Failed to fetch reviews.");
+      }
+    });
+  }
+
+  // 리뷰 데이터를 기반으로 HTML 카드 생성
+  function renderReviews(reviews) {
+    const $reviewList = $('#review-list');
+    $reviewList.empty(); // 기존 내용을 지우고 새로 추가
+
+    reviews.forEach(function(review) {
+      const reviewCard = `
+          <tr class="table_row" data-reivew-id = ${review.id}>
+            <td class="column-1">
+              <div class="how-itemcart1">
+                <img src="${review.reviewImageUrl[0]}" alt="IMG">
+              </div>
+            </td>
+            <td class="column-2">${review.product}</td>
+            <td class="column-3">${new Date().toISOString().split('T')[0]}</td>
+            <td class="column-4">
+              <span class="fs-18 cl11">
+                ${renderStars(review.rating)}
+              </span>
+            </td>
+            <td class="column-5">${review.review}</td>
+            <td class="column-6"></td>
+            <td class="column-7">
+              <button class="flex-c-m stext-101 cl0 size-103 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+                Edit
+              </button>
+              <br>
+              <button class="flex-c-m stext-101 cl2 size-103 bg8 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+                Delete
+              </button>
+            </td>
+          </tr>
+        `;
+      $reviewList.append(reviewCard);
+    });
+  }
+
+  // 별점 렌더링
+  function renderStars(rating) {
+    let stars = '';
+    for (let i = 0; i < 5; i++) {
+      if (i < rating) {
+        stars += '<i class="zmdi zmdi-star"></i>';
+      } else {
+        stars += '<i class="zmdi zmdi-star-outline"></i>';
+      }
+    }
+    return stars;
+  }
+</script>
   </body>
   </html>
