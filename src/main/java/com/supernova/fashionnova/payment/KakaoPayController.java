@@ -49,7 +49,7 @@ public class KakaoPayController {
     //주문 상태 바꾸기
     orderService.updateOrderStatus(orderId);
     //주문 성공 후 장바구니 비우기 실행
-    //cartService.clearCart(userId);
+   // cartService.clearCart(userId);
     log.info("결제 요청 성공");
     response.sendRedirect("/payments-completed");
   }
