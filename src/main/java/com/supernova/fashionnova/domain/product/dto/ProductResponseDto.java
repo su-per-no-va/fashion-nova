@@ -18,6 +18,8 @@ public class ProductResponseDto {
     private final List<ProductDetailResponseDto> productDetails;
     private final LocalDateTime createdAt;
     private final String imageUrl;
+// 나 한승훈인데 여기 나보다 바보인사람 없다
+    //나 김나은인데 나 바보맞다
     public ProductResponseDto(Product product) {
         this.id = product.getId();
         this.product = product.getProduct();
