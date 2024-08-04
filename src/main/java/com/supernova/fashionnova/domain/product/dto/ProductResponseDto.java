@@ -18,6 +18,7 @@ public class ProductResponseDto {
     private final List<ProductDetailResponseDto> productDetails;
     private final LocalDateTime createdAt;
     private final String imageUrl;
+
     public ProductResponseDto(Product product) {
         this.id = product.getId();
         this.product = product.getProduct();

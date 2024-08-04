@@ -1,6 +1,5 @@
 package com.supernova.fashionnova.domain.product.dto;
 
-
 import com.supernova.fashionnova.domain.product.ProductCategory;
 import com.supernova.fashionnova.domain.product.ProductStatus;
 import java.util.List;
@@ -11,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductRequestDto {
+
     private Long productId;
     private String product;
     private Long price;
@@ -27,4 +27,5 @@ public class ProductRequestDto {
         this.productStatus = productStatus;
         this.productDetailList = productDetailList;
     }
+
 }

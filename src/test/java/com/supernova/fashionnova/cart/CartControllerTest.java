@@ -74,7 +74,7 @@ class CartControllerTest {
     }
 
     @Test
-    @DisplayName("장바구니에 상품 추가 성공 테스트")
+    @DisplayName("장바구니에 상품 추가 테스트")
     void addToCartSuccess() throws Exception {
         // given
         CartRequestDto requestDto = new CartRequestDto(
@@ -119,7 +119,7 @@ class CartControllerTest {
     }
 
     @Test
-    @DisplayName("장바구니 수정 성공 테스트")
+    @DisplayName("장바구니 수정 테스트")
     void updateCartSuccess() throws Exception {
         // given
         CartUpdateRequestDto requestDto = new CartUpdateRequestDto(

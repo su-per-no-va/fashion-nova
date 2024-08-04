@@ -53,8 +53,7 @@ class UserServiceTest {
     class SignUpTest {
 
         @Test
-        @DisplayName("성공 테스트")
-            // 테스트의 이름을 지정합니다.
+        @DisplayName("회원 가입 성공 테스트") // 테스트의 이름을 지정합니다.
         void signupTest1() {
             // given - 테스트를 위한 준비 단계
             SignupRequestDto requestDto = new SignupRequestDto("userName",
@@ -73,7 +72,7 @@ class UserServiceTest {
         }
 
         @Test
-        @DisplayName("실패 테스트") // 테스트의 이름을 지정합니다.
+        @DisplayName("회원 가입 실패 테스트") // 테스트의 이름을 지정합니다.
         void signupTest2() {
             // given - 테스트를 위한 준비 단계
             SignupRequestDto requestDto = new SignupRequestDto("userName",

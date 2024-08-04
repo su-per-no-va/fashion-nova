@@ -21,4 +21,5 @@ public class ProductDetailRequestDto {
         this.quantity = quantity;
         this.status = status;
     }
+
 }

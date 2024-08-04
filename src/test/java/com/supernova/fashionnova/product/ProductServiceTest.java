@@ -59,7 +59,7 @@ class ProductServiceTest {
 
         //when
         Page<ProductResponseDto> result =
-            productService.getProductList(1, null, null, null, "high_price");
+            productService.getProductList("high_price", null, null, null, 1);
 
         //then
         assertNotNull(result);

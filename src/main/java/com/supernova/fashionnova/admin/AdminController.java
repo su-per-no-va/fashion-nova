@@ -217,8 +217,12 @@ public class AdminController {
 
     @PostMapping("/products/image/{productId}")
     public ResponseEntity<String> updateProductImage(
-        @RequestParam(value = "image") MultipartFile file, @PathVariable Long productId) {
-        adminService.updateProductImage(file,productId);
+        @RequestParam(value = "image") MultipartFile file,
+        @PathVariable Long productId) {
+
+        adminService.updateProductImage(file, productId);
+
        return ResponseUtil.of(HttpStatus.OK,"사진 등록 성공");
     }
+
 }

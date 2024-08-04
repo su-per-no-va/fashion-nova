@@ -15,24 +15,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class ProductController {
 
-     private final ProductService productService;
+    private final ProductService productService;
 
     /**
      * 조건별 상품 검색
+     *
      * @param sorted
      * @param category
      * @param page
      * @return 상품 리스트
      */
+    @GetMapping("/product")
+    public Page<ProductResponseDto> getProductList(
+        @RequestParam(value = "sort") String sorted,
+        @RequestParam(value = "category") String category,
+        @RequestParam(value = "size") String size,
+        @RequestParam(value = "color") String color,
+        @RequestParam(defaultValue = "0", value = "page") int page) {
 
-     @GetMapping("/product")
-    public Page<ProductResponseDto> getProductList(@RequestParam(value = "sort") String sorted,
-         @RequestParam(value = "category") String category,
-         @RequestParam(value = "size") String size,
-         @RequestParam(value = "color") String color,
-         @RequestParam(value = "page") int page) {
-
-        return productService.getProductList(page - 1, category, size, color, sorted);
+        return productService.getProductList(sorted, category, size, color, page);
     }
 
 }

@@ -65,6 +65,7 @@ class CartServiceTest {
     }
 
     @Nested
+    @DisplayName("장바구니 상품 추가 테스트")
     class AddCartTest {
 
         @Test
@@ -137,10 +138,11 @@ class CartServiceTest {
     }
 
     @Nested
+    @DisplayName("장바구니 조회 테스트")
     class GetCartTest {
 
         @Test
-        @DisplayName("장바구니 조회 테스트")
+        @DisplayName("장바구니 조회 성공 테스트")
         void GetCartTest1() {
             // given
             ProductDetail productDetail = mock(ProductDetail.class);
@@ -172,6 +174,7 @@ class CartServiceTest {
     }
 
     @Nested
+    @DisplayName("장바구니 수정 테스트")
     class UpdateCartTest {
 
         @Test
@@ -255,6 +258,7 @@ class CartServiceTest {
     }
 
     @Nested
+    @DisplayName("장바구니 상품 삭제 테스트")
     class deleteFromCartTest {
 
         @Test
@@ -310,6 +314,7 @@ class CartServiceTest {
     }
 
     @Nested
+    @DisplayName("장바구니 비우기 테스트")
     class ClearCartTest {
 
         @Test

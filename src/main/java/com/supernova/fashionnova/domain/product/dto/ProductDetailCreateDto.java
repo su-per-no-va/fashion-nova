@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductDetailCreateDto {
+
     private Long productId;
     private List<ProductDetailRequestDto> productDetailRequestDtoList;
 
@@ -15,4 +16,5 @@ public class ProductDetailCreateDto {
         this.productId = productId;
         this.productDetailRequestDtoList = productDetailRequestDtoList;
     }
+
 }

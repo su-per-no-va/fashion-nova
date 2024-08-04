@@ -345,10 +345,9 @@ public class AdminService {
     }
 
     public void updateProductImage(MultipartFile file, Long productId) {
-        Product product = productRepository.findById(productId)
-            .orElseThrow(()-> new CustomException(ErrorType.NOT_FOUND_PRODUCT)
-            );
-             List<MultipartFile> files = List.of(file);
-            fileUploadUtil.uploadImage(files,ImageType.PRODUCT,productId);
+        Product product = getProduct(productId);
+        List<MultipartFile> files = List.of(file);
+        fileUploadUtil.uploadImage(files, ImageType.PRODUCT, productId);
     }
+
 }
