@@ -474,7 +474,7 @@
   // 서버에서 제품 데이터를 가져와 페이지에 동적으로 추가하는 함수
   function fetchAndDisplayProducts() {
     $.ajax({
-      url: 'http://localhost:8080/products/product', // 요청을 보낼 URL
+      url: '/products/product', // 요청을 보낼 URL
       method: 'GET', // 요청 방식
       data: {
         sort: "all",
