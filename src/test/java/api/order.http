@@ -1,0 +1,35 @@
+@orderId = 1
+
+###로그인
+POST http://localhost:8080/users/login
+Content-Type: application/json
+
+{
+  "userName": "juyeon555",
+  "password": "Aa12345678!"
+}
+
+> {% client.global.set("access_token", response.headers.valueOf("Authorization")); %}
+
+### 주문내역 생성
+POST http://localhost:8080/orders
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "totalPrice": 80000,
+  "cost": 80000,
+  "discount": 0,
+  "usedMileage": 0,
+  "address": "영종도 주좌길 16-1"
+}
+
+### 결제 후 주문내역 조회
+GET http://localhost:8080/orders
+Content-Type: application/json
+Authorization: {{access_token}}
+
+### 결제 후 주문상세 내역 조회
+GET http://localhost:8080/orderDetails/{{orderId}}
+Content-Type: application/json
+Authorization: {{access_token}}

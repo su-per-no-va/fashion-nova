@@ -4,11 +4,11 @@ POST http://localhost:8080/users/signup
 Content-Type: application/json
 
 {
-  "userName": "winner7789",
-  "password": "Fb112233!",
-  "name": "류정근4",
-  "email": "winner77@gmail.com",
-  "phone": "010-6231-4814"
+  "userName": "juyeon555",
+  "password": "Aa12345678!",
+  "name": "노주연",
+  "email": "99jjwu@gmail.com",
+  "phone": "010-8754-7681"
 }
 
 ###로그인
@@ -16,8 +16,8 @@ POST http://localhost:8080/users/login
 Content-Type: application/json
 
 {
-  "userName": "winner7789",
-  "password": "Fb112233!"
+  "userName": "juyeon555",
+  "password": "Aa12345678!"
 }
 
 > {% client.global.set("access_token", response.headers.valueOf("Authorization")); %}

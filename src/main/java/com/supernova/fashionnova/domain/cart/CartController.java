@@ -99,7 +99,7 @@ public class CartController {
     @DeleteMapping("/delete")
     public ResponseEntity<String> clearCart(@AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        cartService.clearCart(userDetails.getUser());
+        cartService.clearCart(userDetails.getUser().getId());
 
         return ResponseUtil.of(HttpStatus.OK, "장바구니 비우기 완료");
     }

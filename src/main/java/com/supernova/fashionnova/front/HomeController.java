@@ -104,4 +104,9 @@ public class HomeController {
     public String review() {
         return "review";
     }
+
+    @GetMapping("/payments-completed")
+    public String paymentsCompleted() {
+        return "payments-completed";
+    }
 }

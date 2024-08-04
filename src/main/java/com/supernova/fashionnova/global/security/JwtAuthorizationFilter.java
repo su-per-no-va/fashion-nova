@@ -42,7 +42,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         if (req.getRequestURL().toString().equals("http://localhost:8080/users/signup")
             || req.getRequestURL().toString().equals("http://localhost:8080/users/login")
             || req.getRequestURL().toString().equals("http://localhost:8080/products/product")
-            || req.getRequestURL().toString().matches("http://localhost:8080/reviews/\\d+")) {
+            || req.getRequestURL().toString().matches("http://localhost:8080/reviews/\\d+")
+            || req.getRequestURL().toString().startsWith("http://localhost:8080/payments/success")
+        ) {
             filterChain.doFilter(req, res);
             return;
         }
@@ -59,11 +61,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             filterChain.doFilter(req, res);
             return;
         }
-        // 검사
-        checkAccessToken(res, accessToken);
 
         // JWT 토큰 substring
         accessToken = jwtUtil.substringToken(accessToken);
+
+        // 검사
+        checkAccessToken(res, accessToken);
 
         // 유저 정보 가져오기
         Claims accessTokenClaims = jwtUtil.getUserInfoFromToken(accessToken);
@@ -84,6 +87,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(req, res);
+        log.info("AuthorizationFilter End Status: "+String.valueOf(res.getStatus()));
+        log.info("End of filter");
 
     }
 
@@ -121,6 +126,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         //공백 제거
         accessToken = accessToken.replaceAll("\\s", "");
 
+        log.info("====accessToken==== : " + accessToken);
         // Access 토큰 유효성 검사
         jwtUtil.validateToken(accessToken);
 
