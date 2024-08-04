@@ -19,7 +19,7 @@ public class ProductRepositoryQueryImpl implements ProductRepositoryQuery {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<ProductResponseDto> findProductByOrdered(String sort, String category, String size, String color, Pageable pageable) {
+    public Page<ProductResponseDto> findProductByOrdered(String sort, String category, String size, String color, String search, Pageable pageable){
 
         QProduct product = QProduct.product1;
         QProductDetail productDetail = QProductDetail.productDetail;
@@ -42,6 +42,10 @@ public class ProductRepositoryQueryImpl implements ProductRepositoryQuery {
         if (color != null && !color.trim().isEmpty()) {
             builder.and(productDetail.color.eq(color));
         }
+        if (search != null && !search.trim().isEmpty()) {
+            String searchPattern = "%" + search.trim() + "%";
+            builder.and(product.product.like(searchPattern));
+        }
 
         switch (sort) {
 
@@ -49,7 +53,7 @@ public class ProductRepositoryQueryImpl implements ProductRepositoryQuery {
                 orderSpecifier = product.price.desc();
                 break;
 
-            case "row_price":
+            case "row_price", "all":
                 orderSpecifier = product.price.asc();
                 break;
 
@@ -59,6 +63,9 @@ public class ProductRepositoryQueryImpl implements ProductRepositoryQuery {
 
             case "new_item":
                 orderSpecifier = product.createdAt.desc();
+                break;
+            case "wish_count" :
+                orderSpecifier = product.wishCount.desc();
                 break;
 
             default:

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/products")
-
 public class ProductController {
 
     private final ProductService productService;
@@ -28,12 +27,14 @@ public class ProductController {
     @GetMapping("/product")
     public Page<ProductResponseDto> getProductList(
         @RequestParam(value = "sort") String sorted,
-        @RequestParam(value = "category") String category,
-        @RequestParam(value = "size") String size,
-        @RequestParam(value = "color") String color,
-        @RequestParam(defaultValue = "0", value = "page") int page) {
+        @RequestParam(value = "category", required = false) String category,
+        @RequestParam(value = "size", required = false) String size,
+        @RequestParam(value = "color", required = false) String color,
+        @RequestParam(value = "search", required = false) String search,
+        @RequestParam(defaultValue = "0", value = "page", required = false) int page) {
+        System.out.println("[[[[[[[[[[[[" + search);
 
-        return productService.getProductList(sorted, category, size, color, page);
+        return productService.getProductList(sorted, category, size, color, search, page);
     }
 
 }
