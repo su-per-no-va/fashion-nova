@@ -77,9 +77,6 @@ public class User extends Timestamped {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Coupon> couponList = new ArrayList<>();
 
-    //결제 고유번호
-    private String tid;
-
     @Builder
     public User(String userName, String password, String name, String email, String phone) {
         this.userName = userName;
@@ -118,9 +115,6 @@ public class User extends Timestamped {
         this.refreshToken = refreshToken;
     }
 
-    public void updateTid(String tid) {
-        this.tid = tid;
-    }
     public void updateStatus(UserStatus status) {
         this.userStatus = status;
     }

@@ -1,13 +1,13 @@
 package com.supernova.fashionnova.payment;
 
 import com.supernova.fashionnova.cart.CartService;
-import com.supernova.fashionnova.order.Order;
 import com.supernova.fashionnova.order.OrderService;
-import com.supernova.fashionnova.payment.dto.KakaoPayReadyRequestDto;
 import com.supernova.fashionnova.payment.dto.KakaoPayReadyResponseDto;
 import com.supernova.fashionnova.payment.dto.KakaoPayRefundRequestDto;
-import com.supernova.fashionnova.payment.dto.KakaoPayRefundResponseDto;
+import com.supernova.fashionnova.payment.dto.KakaoPayCancelResponseDto;
 import com.supernova.fashionnova.security.UserDetailsImpl;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -32,22 +32,28 @@ public class KakaoPayController {
    * 결제 요청
    * */
   @PostMapping("/ready/{orderId}")
-  public KakaoPayReadyResponseDto kakaoPayReady(@RequestBody KakaoPayReadyRequestDto kakaoPayReadyRequestDto,
+  public KakaoPayReadyResponseDto kakaoPayReady(
       @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long orderId)
   {
     log.info("In kakaoPayReady, orderId:{}", orderId);
-    return kakaoPayService.kakaoPayReady(kakaoPayReadyRequestDto, userDetails.getUser(), orderId);
+    return kakaoPayService.kakaoPayReady(userDetails.getUser(), orderId);
   }
 
-  @GetMapping("/success/{userId}")
-  public void KakaoRequestSuccess(@RequestParam String pgToken,
-      @PathVariable Long userId, @PathVariable Long orderId) {
-    kakaoPayService.kakaoPayApprove(pgToken, userId);
+  @GetMapping("/success/{orderId}/{userId}")
+  public void KakaoRequestSuccess(@RequestParam("pg_token") String pgToken,
+      @PathVariable Long orderId,
+      @PathVariable Long userId,
+      HttpServletResponse response)
+      throws IOException {
+    kakaoPayService.kakaoPayApprove(pgToken, userId, orderId);
     //주문 상태 바꾸기
     orderService.updateOrderStatus(orderId);
     //주문 성공 후 장바구니 비우기 실행
-    cartService.clearCart(userId);
+    //cartService.clearCart(userId);
+    log.info("결제 요청 성공");
+    response.sendRedirect("/payments-completed");
   }
+
 
   @GetMapping("/fail")
   public void KakaoRequestFail() {
@@ -55,18 +61,10 @@ public class KakaoPayController {
   }
 
   /**
-   * 결제 진행 중 취소
-   * */
-  @GetMapping("/cancel")
-  public void KakaoRequestCancel() {
-    log.info("결제 요청 취소");
-  }
-
-  /**
    * 결제 취소(환불)
    * */
-  @PostMapping("/refund")
-  public KakaoPayRefundResponseDto Refund(@RequestBody KakaoPayRefundRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long orderId) {
-    return kakaoPayService.kakaoPayRefund(requestDto, userDetails.getUser(), orderId);
+  @PostMapping("/cancel/{orderId}")
+  public KakaoPayCancelResponseDto Cancel(@RequestBody KakaoPayRefundRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long orderId) {
+    return kakaoPayService.kakaoPayCancel(requestDto, userDetails.getUser(), orderId);
   }
 }

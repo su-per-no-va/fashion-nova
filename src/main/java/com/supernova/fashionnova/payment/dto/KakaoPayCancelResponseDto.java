@@ -9,16 +9,14 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class KakaoPayRefundResponseDto {
+public class KakaoPayCancelResponseDto {
 
   private String aid; //요청 고유번호
   private String tid; //결제 고유번호
   private Status status; //결제 상태
   private Amount amount; //결제 금액
-  private ApprovedCancelAmount canceledAmount; //이번 요청으로 취소된 금액
-  private String itemName; //상품 이름, 최대 10자
+  private ApprovedCancelAmount canceled_amount; //이번 요청으로 취소된 금액
+  private String item_name; //상품 이름, 최대 10자
   private int quantity; //수량
-  private LocalDateTime createdAt; //결제 준비 요청 시각
-  private LocalDateTime approvedAt; //결제 승인 시각
-  private LocalDateTime canceledAt; //결제 취소 시각
+  private LocalDateTime canceled_at; //결제 취소 시각
 }

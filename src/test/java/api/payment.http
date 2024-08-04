@@ -1,4 +1,4 @@
-@orderId = 28
+@orderId = 1
 
 ###로그인
 POST http://localhost:8080/users/login
@@ -17,6 +17,15 @@ Content-Type: application/json
 Authorization: {{access_token}}
 
 {
-  "taxFreeAmount": 80000
+  "taxFreeAmount": 150000
 }
 
+### 카카오페이 취소(환불)
+POST http://localhost:8080/payments/cancel/{{orderId}}
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "cancelAmount": 150000,
+  "cancelTaxFreeAmount": 150000
+}

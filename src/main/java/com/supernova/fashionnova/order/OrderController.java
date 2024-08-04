@@ -31,23 +31,41 @@ public class OrderController {
 
   /**
    * 결제 전 주문내역, 상세주문내역 생성
-   * */
+   */
   @PostMapping
   public ResponseEntity<AllOrderResponseDto> createOrder(
       @Valid @RequestBody OrderRequestDto orderRequestDto,
       @AuthenticationPrincipal UserDetailsImpl userDetails
   ) {
-    AllOrderResponseDto allOrderResponseDto = orderService.createOrder(orderRequestDto, userDetails.getUser());
+    AllOrderResponseDto allOrderResponseDto = orderService.createOrder(orderRequestDto,
+        userDetails.getUser());
     return ResponseUtil.of(HttpStatus.CREATED, allOrderResponseDto);
   }
+
   /**
    * 결제 후 주문내역 조회
-   * */
+   */
   @GetMapping
-  public ResponseEntity<List<OrderResponseDto>> getOrderList(@AuthenticationPrincipal UserDetailsImpl userDetails){
-    return ResponseUtil.of(HttpStatus.OK, orderService.getOrder(userDetails.getUser()).stream().map(order -> new OrderResponseDto(order.getId(), order.getOrderStatus(), order.getAddress(),
-        order.getCost(), order.getDeliveryStatus(), order.getDiscount(), order.getTotalPrice(), order.getUsedMileage(), order.getCreatedAt())).collect(
-        Collectors.toList()));
+  public ResponseEntity<List<OrderResponseDto>> getOrderList(
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    log.info(String.valueOf(userDetails.getUser().getId()));
+    return ResponseUtil.of(HttpStatus.OK,
+        orderService.getOrder(
+                userDetails.getUser()
+            )
+            .stream()
+            .map(order ->
+                new OrderResponseDto(
+                    order.getId(),
+                    order.getOrderStatus(),
+                    order.getAddress(),
+                    order.getCost(),
+                    order.getDeliveryStatus(),
+                    order.getDiscount(),
+                    order.getTotalPrice(),
+                    order.getUsedMileage(),
+                    order.getCreatedAt()))
+            .collect(Collectors.toList())
+    );
   }
-
 }

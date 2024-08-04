@@ -118,7 +118,7 @@ public class OrderService {
       throw new CustomException(ErrorType.NOT_FOUND_ORDER);
     }
 
-    List<Order> showOrder = null;
+    List<Order> showOrder = new ArrayList<>();
     for(Order filterOrder : order){
       if(filterOrder.getOrderStatus().equals(OrderStatus.SUCCESS)){
         showOrder.add(filterOrder);
@@ -133,6 +133,7 @@ public class OrderService {
   /**
    * 결제 성공 후 주문 상태 변경
    */
+  @Transactional
   public void updateOrderStatus(Long orderId) {
     Order order = ordersRepository.findById(orderId).orElseThrow(()-> new CustomException(ErrorType.NOT_FOUND_ORDER));
     order.setOrderStatus(OrderStatus.SUCCESS);

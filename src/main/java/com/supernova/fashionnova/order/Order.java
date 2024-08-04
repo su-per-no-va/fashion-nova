@@ -53,6 +53,9 @@ public class Order extends Timestamped {
     @Column(nullable = false)
     private Long invoice;
 
+    //결제 고유 번호
+    private String tid;
+
     @Setter
     @Enumerated(value = EnumType.STRING)
     private OrderStatus orderStatus;
@@ -65,6 +68,7 @@ public class Order extends Timestamped {
 
     private String orderName;
 
+    //총 상품 개수가 아닌 건수임(바지 10개, 치마 4개 -> 총 2건)
     private int count;
 
     @Builder
@@ -89,6 +93,10 @@ public class Order extends Timestamped {
     public void setOrderPerfect(String orderName, int count) {
        this.orderName=orderName;
        this.count=count;
+    }
+
+    public void updateTid(String tid) {
+        this.tid = tid;
     }
 
 }

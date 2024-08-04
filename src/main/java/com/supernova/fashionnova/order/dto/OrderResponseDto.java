@@ -21,6 +21,7 @@ public class OrderResponseDto {
   private OrderStatus orderStatus;
 
   public OrderResponseDto(Long orderId, OrderStatus orderStatus, String address, Long cost, DeliveryStatus deliveryStatus, int discount, Long totalPrice, int usedMileage, LocalDateTime createdAt) {
+    this.orderId = orderId;
     this.orderStatus = orderStatus;
     this.address = address;
     this.cost = cost;

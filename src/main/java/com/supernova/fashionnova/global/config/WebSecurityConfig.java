@@ -112,6 +112,8 @@ public class WebSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/reviews/**").permitAll()// 상품별 리뷰 조회 허용
                 .requestMatchers("/users/kakao/callback").permitAll()// 카카오
                 .requestMatchers("/admin/**").hasAuthority(UserRole.ADMIN.getAuthority()) //권한이 Admin 인 유저만 접근가능
+                .requestMatchers("/payments-completed/**").permitAll()
+                .requestMatchers("/payments/success/**").permitAll()
                 .anyRequest().authenticated() // 그 외 모든 요청 인증처리
 
         );
