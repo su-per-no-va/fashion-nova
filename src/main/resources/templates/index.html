@@ -1012,7 +1012,6 @@
 		// let wishList = window.common.wishList;
 		// console.log(cartDto)
 		// 	console.log(wishList)
-
 		/* 장바구니 아이콘 개수 */
 		window.common.getShoppingCart()
 		.done(function (response) {
@@ -1036,7 +1035,7 @@
 			}
 		})
 		.fail(function (error) {
-			alert(error.message)
+			console.log(error.message)
 		});
 	});
 </script>
