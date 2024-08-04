@@ -3,8 +3,10 @@ package com.supernova.fashionnova.question;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-import com.supernova.fashionnova.question.dto.QuestionRequestDto;
-import com.supernova.fashionnova.user.User;
+import com.supernova.fashionnova.domain.question.QuestionRepository;
+import com.supernova.fashionnova.domain.question.QuestionService;
+import com.supernova.fashionnova.domain.question.dto.QuestionRequestDto;
+import com.supernova.fashionnova.domain.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
