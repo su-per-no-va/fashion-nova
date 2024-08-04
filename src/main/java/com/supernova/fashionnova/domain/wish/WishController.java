@@ -1,8 +1,8 @@
 package com.supernova.fashionnova.domain.wish;
 
-import com.supernova.fashionnova.domain.product.dto.ProductResponseDto;
 import com.supernova.fashionnova.domain.wish.dto.WishDeleteRequestDto;
 import com.supernova.fashionnova.domain.wish.dto.WishRequestDto;
+import com.supernova.fashionnova.domain.wish.dto.WishResponseDto;
 import com.supernova.fashionnova.global.security.UserDetailsImpl;
 import com.supernova.fashionnova.global.util.ResponseUtil;
 import java.util.List;
@@ -49,10 +49,10 @@ public class WishController {
      * @return List<ProductResponseDto>
      */
     @GetMapping
-    public ResponseEntity<List<ProductResponseDto>> getWishProductList(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<List<WishResponseDto>> getWishProductList(@AuthenticationPrincipal UserDetailsImpl userDetails,
         @RequestParam(defaultValue = "0") int page) {
 
-        List<ProductResponseDto> responseDto = wishService.getWishProductList(userDetails.getUser(), page);
+        List<WishResponseDto> responseDto = wishService.getWishProductList(userDetails.getUser(), page);
 
         return ResponseUtil.of(HttpStatus.OK, responseDto);
     }
