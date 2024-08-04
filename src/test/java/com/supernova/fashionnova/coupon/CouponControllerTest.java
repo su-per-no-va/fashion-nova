@@ -9,13 +9,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.supernova.fashionnova.coupon.dto.CouponResponseDto;
-import com.supernova.fashionnova.security.UserDetailsImpl;
-import com.supernova.fashionnova.user.User;
+import com.supernova.fashionnova.domain.coupon.Coupon;
+import com.supernova.fashionnova.domain.coupon.CouponController;
+import com.supernova.fashionnova.domain.coupon.CouponService;
+import com.supernova.fashionnova.domain.coupon.CouponType;
+import com.supernova.fashionnova.domain.coupon.dto.CouponResponseDto;
+import com.supernova.fashionnova.domain.user.User;
+import com.supernova.fashionnova.global.security.UserDetailsImpl;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +69,7 @@ class CouponControllerTest {
     }
 
     @Test
+    @DisplayName("보유 쿠폰 조회 테스트")
     void getCouponListTest() throws Exception {
 
         // given
@@ -91,13 +97,14 @@ class CouponControllerTest {
     }
 
     @Test
+    @DisplayName("쿠폰 내역 조회 테스트")
     void getUsedCouponListTest() throws Exception {
 
         // given
         User user = userDetails.getUser();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date date = format.parse("2024-08-02");
-        Coupon coupon = new Coupon(user, "등급 상승 쿠폰", date,"15%", CouponType.GRADE_UP);
+        Coupon coupon = new Coupon(user, "등급 상승 쿠폰", date, "15%", CouponType.GRADE_UP);
         coupon.useCoupon();
         List<CouponResponseDto> responseDtoList = List.of(new CouponResponseDto(coupon));
 

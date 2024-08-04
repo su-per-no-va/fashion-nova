@@ -1,16 +1,16 @@
 package com.supernova.fashionnova.admin;
 
-import com.supernova.fashionnova.answer.dto.AnswerRequestDto;
-import com.supernova.fashionnova.coupon.dto.CouponRequestDto;
+import com.supernova.fashionnova.domain.answer.dto.AnswerRequestDto;
+import com.supernova.fashionnova.domain.coupon.dto.CouponRequestDto;
+import com.supernova.fashionnova.domain.mileage.dto.MileageRequestDto;
+import com.supernova.fashionnova.domain.product.dto.ProductDetailCreateDto;
+import com.supernova.fashionnova.domain.product.dto.ProductRequestDto;
+import com.supernova.fashionnova.domain.question.dto.QuestionResponseDto;
+import com.supernova.fashionnova.domain.review.dto.ReviewResponseDto;
+import com.supernova.fashionnova.domain.user.dto.UserResponseDto;
+import com.supernova.fashionnova.domain.warn.dto.WarnDeleteRequestDto;
+import com.supernova.fashionnova.domain.warn.dto.WarnRequestDto;
 import com.supernova.fashionnova.global.util.ResponseUtil;
-import com.supernova.fashionnova.mileage.dto.MileageRequestDto;
-import com.supernova.fashionnova.product.dto.ProductDetailCreateDto;
-import com.supernova.fashionnova.product.dto.ProductRequestDto;
-import com.supernova.fashionnova.question.dto.QuestionResponseDto;
-import com.supernova.fashionnova.review.dto.ReviewResponseDto;
-import com.supernova.fashionnova.user.dto.UserResponseDto;
-import com.supernova.fashionnova.warn.dto.WarnDeleteRequestDto;
-import com.supernova.fashionnova.warn.dto.WarnRequestDto;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,7 +35,7 @@ public class AdminController {
     private final AdminService adminService;
 
     /**
-     * 유저 전체조회
+     * 유저 전체 조회
      *
      * @param page
      * @return size는 30으로 고정했음
@@ -55,7 +56,8 @@ public class AdminController {
      * @return "회원 경고 등록 완성"
      */
     @PostMapping("/cautions")
-    public ResponseEntity<String> addCaution(@RequestBody WarnRequestDto requestDto) {
+    public ResponseEntity<String> addCaution(
+        @RequestBody WarnRequestDto requestDto) {
 
         adminService.addCaution(requestDto);
 
@@ -69,7 +71,8 @@ public class AdminController {
      * @return "회원 경고 삭제 완료"
      */
     @DeleteMapping("/cautions")
-    public ResponseEntity<String> deleteCaution(@RequestBody WarnDeleteRequestDto requestDto) {
+    public ResponseEntity<String> deleteCaution(
+        @RequestBody WarnDeleteRequestDto requestDto) {
 
         adminService.deleteCaution(requestDto);
 
@@ -100,11 +103,12 @@ public class AdminController {
      * @return "상품 등록 성공"
      */
     @PostMapping("/products")
-    public ResponseEntity<String> addProduct(@RequestBody ProductRequestDto requestDto) {
+    public ResponseEntity<String> addProduct(
+        @RequestBody ProductRequestDto requestDto) {
 
         adminService.addProduct(requestDto);
 
-        return ResponseUtil.of(HttpStatus.CREATED,"상품 등록 성공");
+        return ResponseUtil.of(HttpStatus.CREATED, "상품 등록 성공");
     }
 
     /**
@@ -117,7 +121,8 @@ public class AdminController {
     public ResponseEntity<String> addProductDetails(
         @RequestBody ProductDetailCreateDto requestDto) {
 
-        adminService.addProductDetails(requestDto.getProductId(), requestDto.getProductDetailRequestDtoList());
+        adminService.addProductDetails(requestDto.getProductId(),
+            requestDto.getProductDetailRequestDtoList());
 
         return ResponseUtil.of(HttpStatus.OK, "상품 디테일 추가 성공");
     }
@@ -144,11 +149,12 @@ public class AdminController {
      * @return "Q&A 답변 등록 완성"
      */
     @PostMapping("/answers")
-    public ResponseEntity<String> addAnswer(@RequestBody AnswerRequestDto requestDto) {
+    public ResponseEntity<String> addAnswer(
+        @RequestBody AnswerRequestDto requestDto) {
 
         adminService.addAnswer(requestDto);
 
-        return ResponseUtil.of(HttpStatus.OK,"Q&A 답변 등록 완성");
+        return ResponseUtil.of(HttpStatus.OK, "Q&A 답변 등록 완성");
     }
 
     /**
@@ -158,7 +164,8 @@ public class AdminController {
      * @return responseDto
      */
     @GetMapping("/answers")
-    public ResponseEntity<List<QuestionResponseDto>> getQuestionList(@RequestParam(defaultValue = "0") int page) {
+    public ResponseEntity<List<QuestionResponseDto>> getQuestionList(
+        @RequestParam(defaultValue = "0") int page) {
 
         List<QuestionResponseDto> responseDto = adminService.getQuestionList(page);
 
@@ -172,11 +179,12 @@ public class AdminController {
      * @return "쿠폰 지급 성공"
      */
     @PostMapping("/coupons")
-    public ResponseEntity<String> addCoupon(@Valid @RequestBody CouponRequestDto requestDto) {
+    public ResponseEntity<String> addCoupon(
+        @Valid @RequestBody CouponRequestDto requestDto) {
 
         adminService.addCoupon(requestDto);
 
-        return ResponseUtil.of(HttpStatus.CREATED,"쿠폰 지급 성공");
+        return ResponseUtil.of(HttpStatus.CREATED, "쿠폰 지급 성공");
     }
 
     /**
@@ -186,11 +194,12 @@ public class AdminController {
      * @return "마일리지 지급 성공"
      */
     @PostMapping("/mileages")
-    public ResponseEntity<String> addMileage(@Valid @RequestBody MileageRequestDto requestDto) {
+    public ResponseEntity<String> addMileage(
+        @Valid @RequestBody MileageRequestDto requestDto) {
 
         adminService.addMileage(requestDto);
 
-        return ResponseUtil.of(HttpStatus.CREATED,"마일리지 지급 성공");
+        return ResponseUtil.of(HttpStatus.CREATED, "마일리지 지급 성공");
     }
 
     /**
@@ -203,7 +212,17 @@ public class AdminController {
 
         adminService.deleteMileage();
 
-        return ResponseUtil.of(HttpStatus.OK,"마일리지 초기화 성공");
+        return ResponseUtil.of(HttpStatus.OK, "마일리지 초기화 성공");
+    }
+
+    @PostMapping("/products/image/{productId}")
+    public ResponseEntity<String> updateProductImage(
+        @RequestParam(value = "image") MultipartFile file,
+        @PathVariable Long productId) {
+
+        adminService.updateProductImage(file, productId);
+
+       return ResponseUtil.of(HttpStatus.OK,"사진 등록 성공");
     }
 
 }

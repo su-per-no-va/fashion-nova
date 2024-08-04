@@ -17,12 +17,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.supernova.fashionnova.review.dto.ReviewDeleteRequestDto;
-import com.supernova.fashionnova.review.dto.ReviewRequestDto;
-import com.supernova.fashionnova.review.dto.ReviewUpdateRequestDto;
-import com.supernova.fashionnova.security.UserDetailsImpl;
-import com.supernova.fashionnova.user.User;
+import com.supernova.fashionnova.domain.review.Review;
+import com.supernova.fashionnova.domain.review.ReviewController;
+import com.supernova.fashionnova.domain.review.ReviewService;
+import com.supernova.fashionnova.domain.review.dto.ReviewDeleteRequestDto;
+import com.supernova.fashionnova.domain.review.dto.ReviewRequestDto;
+import com.supernova.fashionnova.domain.review.dto.ReviewResponseDto;
+import com.supernova.fashionnova.domain.review.dto.ReviewUpdateRequestDto;
+import com.supernova.fashionnova.domain.user.User;
+import com.supernova.fashionnova.global.security.UserDetailsImpl;
 import java.util.Collections;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -82,13 +87,15 @@ class ReviewControllerTest {
     @DisplayName("리뷰 등록 성공 테스트")
     void addReview() throws Exception {
         // given
-        ReviewRequestDto requestDto = new ReviewRequestDto(1L, "좋아요", 5, "image.jpg");
-        MockMultipartFile requestDtoFile = new MockMultipartFile("request",
-            "", MediaType.APPLICATION_JSON_VALUE,
-            objectMapper.writeValueAsBytes(requestDto));
-        MockMultipartFile image = new MockMultipartFile("image", "image.jpg", MediaType.IMAGE_JPEG_VALUE, new byte[0]);
+        ReviewRequestDto requestDto =
+            new ReviewRequestDto(1L, "좋아요", 5, "image.jpg");
+        MockMultipartFile requestDtoFile =
+            new MockMultipartFile("request", "", MediaType.APPLICATION_JSON_VALUE, objectMapper.writeValueAsBytes(requestDto));
+        MockMultipartFile image =
+            new MockMultipartFile("image", "image.jpg", MediaType.IMAGE_JPEG_VALUE, new byte[0]);
 
-        doNothing().when(reviewService).addReview(any(User.class), any(ReviewRequestDto.class), anyList());
+        doNothing().when(reviewService)
+            .addReview(any(User.class), any(ReviewRequestDto.class), anyList());
 
         // when
         ResultActions result = mockMvc.perform(multipart(baseUrl)
@@ -103,26 +110,30 @@ class ReviewControllerTest {
         verify(reviewService).addReview(any(User.class), any(ReviewRequestDto.class), anyList());
     }
 
-//    @Test
-//    @DisplayName("상품별 리뷰 전체 조회 테스트")
-//    void getReviewsByProductId() throws Exception {
-//        // given
-//        Pageable pageable = PageRequest.of(0, 10);
-//        List<Review> reviews = new List<Review>(Collections.emptyList(), pageable, 0) {
-//        };
-//        given(reviewService.getReviewsByProductId(anyLong(), any(Pageable.class))).willReturn(reviews);
-//
-//        // when
-//        ResultActions result = mockMvc.perform(get(baseUrl + "/{productId}", 1L)
-//            .param("page", "0")
-//            .with(csrf())
-//            .principal(() -> userDetails.getUsername()));
-//
-//        // then
-//        result.andExpect(status().isOk())
-//            .andExpect(jsonPath("$.content").isEmpty());
-//        verify(reviewService).getReviewsByProductId(anyLong(), any(Pageable.class));
-//    }
+    @Test
+    @DisplayName("상품별 리뷰 전체 조회 테스트")
+    void getReviewsByProductId() throws Exception {
+        // given
+        Pageable pageable = PageRequest.of(0, 10);
+        List<ReviewResponseDto> reviewResponseList = Collections.emptyList();
+
+        given(reviewService.getReviewsByProductId(anyLong(), any(Pageable.class))).willReturn(
+            reviewResponseList);
+
+        // when
+        ResultActions result = mockMvc.perform(get(baseUrl + "/{productId}", 1L)
+            .param("page", "0")
+            .with(csrf())
+            .contentType(MediaType.APPLICATION_JSON)
+            .principal(() -> userDetails.getUsername()));
+
+        // then
+        result.andExpect(status().isOk())
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        verify(reviewService).getReviewsByProductId(anyLong(), any(Pageable.class));
+    }
 
     @Test
     @DisplayName("내가 작성한 리뷰 조회 테스트")
@@ -130,7 +141,8 @@ class ReviewControllerTest {
         // given
         Pageable pageable = PageRequest.of(0, 10);
         Page<Review> reviews = new PageImpl<>(Collections.emptyList(), pageable, 0);
-        given(reviewService.getReviewsByUser(any(User.class), any(Pageable.class))).willReturn(reviews);
+        given(reviewService.getReviewsByUser(any(User.class), any(Pageable.class)))
+            .willReturn(reviews);
 
         // when
         ResultActions result = mockMvc.perform(get(baseUrl)
@@ -150,7 +162,8 @@ class ReviewControllerTest {
         // given
         ReviewUpdateRequestDto requestDto = new ReviewUpdateRequestDto(1L, "수정된 리뷰", 4);
 
-        doNothing().when(reviewService).updateReview(any(User.class), any(ReviewUpdateRequestDto.class));
+        doNothing().when(reviewService)
+            .updateReview(any(User.class), any(ReviewUpdateRequestDto.class));
 
         // when
         ResultActions result = mockMvc.perform(put(baseUrl)
@@ -186,4 +199,5 @@ class ReviewControllerTest {
             .andExpect(content().string("리뷰 삭제 완료"));
         verify(reviewService).deleteReview(any(User.class), anyLong());
     }
+
 }

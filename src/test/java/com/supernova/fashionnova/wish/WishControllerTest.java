@@ -12,16 +12,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.supernova.fashionnova.product.Product;
-import com.supernova.fashionnova.product.dto.ProductResponseDto;
-import com.supernova.fashionnova.security.UserDetailsImpl;
-import com.supernova.fashionnova.user.User;
-import com.supernova.fashionnova.wish.dto.WishDeleteRequestDto;
-import com.supernova.fashionnova.wish.dto.WishRequestDto;
+import com.supernova.fashionnova.domain.product.Product;
+import com.supernova.fashionnova.domain.product.ProductCategory;
+import com.supernova.fashionnova.domain.product.ProductStatus;
+import com.supernova.fashionnova.domain.user.User;
+import com.supernova.fashionnova.domain.wish.Wish;
+import com.supernova.fashionnova.domain.wish.WishController;
+import com.supernova.fashionnova.domain.wish.WishService;
+import com.supernova.fashionnova.domain.wish.dto.WishDeleteRequestDto;
+import com.supernova.fashionnova.domain.wish.dto.WishRequestDto;
+import com.supernova.fashionnova.domain.wish.dto.WishResponseDto;
+import com.supernova.fashionnova.global.security.UserDetailsImpl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +78,7 @@ class WishControllerTest {
     }
 
     @Test
+    @DisplayName("위시리스트 추가 테스트")
     void addWishTest() throws Exception {
 
         // given
@@ -92,17 +99,25 @@ class WishControllerTest {
     }
 
     @Test
+    @DisplayName("위시리스트 조회 테스트")
     void getWishProductListTest() throws Exception {
         // given
         User user = userDetails.getUser();
         int page = 1;
 
-        Product product1 = Mockito.mock(Product.class);
-        Product product2 = Mockito.mock(Product.class);
+        Wish wish1 = Mockito.mock(Wish.class);
+        Wish wish2 = Mockito.mock(Wish.class);
+        Product product1 =
+            new Product("Test Product 1", 10000L, "Test Explanation 1", ProductCategory.TOP, ProductStatus.ACTIVE);
+        Product product2 =
+            new Product("Test Product 2", 20000L, "Test Explanation 2", ProductCategory.BOTTOM, ProductStatus.ACTIVE);
 
-        List<Product> products = new ArrayList<>(Arrays.asList(product1, product2));
-        Page<Product> productPage = new PageImpl<>(products);
-        Page<ProductResponseDto> responseDto = productPage.map(ProductResponseDto::new);
+        given(wish1.getProduct()).willReturn(product1);
+        given(wish2.getProduct()).willReturn(product2);
+
+        List<Wish> wishes = new ArrayList<>(Arrays.asList(wish1, wish2));
+        Page<Wish> wishPage = new PageImpl<>(wishes);
+        Page<WishResponseDto> responseDto = wishPage.map(WishResponseDto::new);
 
         when(wishService.getWishProductList(user, 0)).thenReturn(responseDto.getContent());
 
@@ -117,6 +132,7 @@ class WishControllerTest {
     }
 
     @Test
+    @DisplayName("위시리스트 삭제 테스트")
     void deleteWishTest() throws Exception {
 
         // given

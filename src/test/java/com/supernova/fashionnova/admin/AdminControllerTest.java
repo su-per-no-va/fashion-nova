@@ -16,19 +16,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.supernova.fashionnova.answer.dto.AnswerRequestDto;
-import com.supernova.fashionnova.coupon.dto.CouponRequestDto;
+import com.supernova.fashionnova.domain.answer.dto.AnswerRequestDto;
+import com.supernova.fashionnova.domain.coupon.dto.CouponRequestDto;
+import com.supernova.fashionnova.domain.mileage.dto.MileageRequestDto;
+import com.supernova.fashionnova.domain.product.Product;
+import com.supernova.fashionnova.domain.product.ProductCategory;
+import com.supernova.fashionnova.domain.product.ProductStatus;
+import com.supernova.fashionnova.domain.question.dto.QuestionResponseDto;
+import com.supernova.fashionnova.domain.review.Review;
+import com.supernova.fashionnova.domain.review.dto.ReviewResponseDto;
+import com.supernova.fashionnova.domain.user.User;
+import com.supernova.fashionnova.domain.user.UserRole;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
-import com.supernova.fashionnova.mileage.dto.MileageRequestDto;
-import com.supernova.fashionnova.product.Product;
-import com.supernova.fashionnova.product.ProductCategory;
-import com.supernova.fashionnova.product.ProductStatus;
-import com.supernova.fashionnova.question.dto.QuestionResponseDto;
-import com.supernova.fashionnova.review.Review;
-import com.supernova.fashionnova.review.dto.ReviewResponseDto;
-import com.supernova.fashionnova.user.User;
-import com.supernova.fashionnova.user.UserRole;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -102,41 +102,42 @@ class AdminControllerTest {
         @Test
         @DisplayName("작성자별 리뷰 조회 성공 테스트")
         @WithMockUser(roles = "ADMIN")
-        void getReviewsByUserId1 () throws Exception {
-        // given
-        List<ReviewResponseDto> reviews = Collections.singletonList(new ReviewResponseDto(review,null));
+        void getReviewsByUserId1() throws Exception {
+            // given
+            List<ReviewResponseDto> reviews =
+                Collections.singletonList(new ReviewResponseDto(review, null));
 
-        when(adminService.getReviewListByUserId(anyLong(), anyInt())).thenReturn(reviews);
+            when(adminService.getReviewListByUserId(anyLong(), anyInt())).thenReturn(reviews);
 
-        // when
-        ResultActions result = mockMvc.perform(get(baseUrl + "/reviews/{userId}", user.getId())
-                .param("page", "0")
-                .contentType(MediaType.APPLICATION_JSON)
-                .with(csrf()))
-            .andDo(print());
+            // when
+            ResultActions result = mockMvc.perform(get(baseUrl + "/reviews/{userId}", user.getId())
+                    .param("page", "0")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .with(csrf()))
+                .andDo(print());
 
-        // then
-        result.andExpect(status().isOk())
-            .andExpect(content().json(objectMapper.writeValueAsString(reviews)));
-    }
+            // then
+            result.andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(reviews)));
+        }
 
         @Test
         @DisplayName("작성자별 리뷰 조회 실패 테스트 - 유저 없음")
         @WithMockUser(roles = "ADMIN")
-        void getReviewsByUserId2 () throws Exception {
-        // given
-        when(adminService.getReviewListByUserId(anyLong(), anyInt())).thenThrow(
-            new CustomException(ErrorType.NOT_FOUND_USER));
+        void getReviewsByUserId2() throws Exception {
+            // given
+            when(adminService.getReviewListByUserId(anyLong(), anyInt())).thenThrow(
+                new CustomException(ErrorType.NOT_FOUND_USER));
 
-        // when
-        ResultActions result = mockMvc.perform(get(baseUrl + "/reviews/{userId}", user.getId())
-                .param("page", "0")
-                .contentType(MediaType.APPLICATION_JSON)
-                .with(csrf()))
-            .andDo(print());
+            // when
+            ResultActions result = mockMvc.perform(get(baseUrl + "/reviews/{userId}", user.getId())
+                    .param("page", "0")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .with(csrf()))
+                .andDo(print());
 
-        // then
-        result.andExpect(status().isNotFound());
+            // then
+            result.andExpect(status().isNotFound());
         }
     }
 

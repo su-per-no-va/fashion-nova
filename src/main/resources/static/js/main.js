@@ -139,6 +139,194 @@
         });
         
     });
+    //상품 클릭이벤트 추가
+
+    document.getElementById("ALL").addEventListener("click", function () {
+        let sort = $(".filter-link-active").data("sort");
+        console.log(sort);
+        sendRequest("", sort, 1);
+    });
+
+    document.getElementById("TOP").addEventListener("click", function () {
+        let sort = $(".filter-link-active").data("sort");
+        console.log(sort);
+        sendRequest("TOP", sort,1);
+    });
+
+    document.getElementById("BOTTOM").addEventListener("click", function () {
+        let sort = $(".filter-link-active").data("sort");
+        console.log(sort);
+        sendRequest("BOTTOM", sort, 1);
+    });
+
+    document.getElementById("SHOES").addEventListener("click", function () {
+        let sort = $(".filter-link-active").data("sort");
+        console.log(sort);
+        sendRequest("SHOES", sort, 1);
+    });
+
+    document.getElementById("GOODS").addEventListener("click", function () {
+        let sort = $(".filter-link-active").data("sort");
+        console.log(sort);
+        sendRequest("GOODS", sort, 1);
+    });
+
+    $(document).ready(function() {
+
+        var currentCategory = "";
+        var currentSort = "";
+
+        // 카테고리 버튼 클릭 이벤트
+        $(".category-btn").on("click", function() {
+            currentCategory = $(this).data("filter"); // 클릭한 버튼의 데이터 필터 값 가져오기
+
+            // 모든 카테고리 버튼에서 active 클래스 제거
+            $(".category-btn").removeClass("category-active");
+
+            // 현재 클릭된 버튼에 active 클래스 추가
+            $(this).addClass("category-active");
+
+            // 기존에 선택된 정렬 기준을 사용하여 요청
+        });
+
+        // 정렬 버튼 클릭 이벤트
+        $('.filter-link').on('click', function(e) {
+            e.preventDefault(); // 기본 링크 동작을 막음
+
+            // 모든 정렬 링크에서 filter-link-active 클래스 제거
+            $('.filter-link').removeClass('filter-link-active');
+
+            // 현재 클릭된 링크에 filter-link-active 클래스 추가
+            $(this).addClass('filter-link-active');
+
+            currentSort = $(this).data('sort'); // 클릭된 버튼의 data-sort 속성 값 가져오기
+            sendRequest(currentCategory, currentSort, 1);
+            // 기존에 선택된 카테고리를 사용하여 요청
+        });
+    });
+
+    function performSearch() {
+        const searchInput = $('#search-input').val().trim(); // 입력값 가져오기
+        console.log(searchInput);
+        // 입력값이 비어 있는지 확인
+        if (searchInput === '') {
+            alert('상품명을 입력해주세요.');
+            return;
+        }
+
+        // GET 요청으로 서버에 검색어 전달
+        $.ajax({
+            url: '/products/product', // 요청을 보낼 URL
+            method: 'GET',
+            data: {
+                search: searchInput,
+                sort: "all",
+                page: 1 // 요청에 포함할 page 파라미터
+            }, // 쿼리 파라미터로 전송
+            success: function(data) {
+                console.log('검색 결과:', data);
+                // 검색 결과를 처리하는 로직 추가
+                searchResult(data.content);
+            },
+            error: function(xhr, status, error) {
+                console.error('검색 중 오류 발생:', error);
+                alert('검색 중 오류가 발생했습니다. 다시 시도해주세요.');
+            }
+        });
+    }
+
+// 검색 결과 표시 함수
+    function searchResult(productList) {
+        let $productListContainer = $('#productListArea');
+        $productListContainer.empty(); // 기존 내용을 지우고 새로 추가
+
+        productList.forEach(function(item) {
+            let productCard = `
+                <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item ${item.productStatus.toLowerCase()}" data-poduct-id="${item.id}">
+                    <div class="block2">
+                        <div class="block2-pic hov-img0">
+                            <img src="${item.imageUrl}" alt="${item.product}">
+                        </div>
+                        <div class="block2-txt flex-w flex-t p-t-14">
+                            <div class="block2-txt-child1 flex-col-l">
+                                <a href="product-detail.html?id=${item.id}" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                    ${item.product}
+                                </a>
+                                <span class="stext-105 cl3">
+                                    ${item.price.toLocaleString()}원
+                                </span>
+                            </div>
+                            <div class="block2-txt-child2 flex-r p-t-3">
+                                <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
+                                    <img class="icon-heart1 dis-block trans-04" src="../images/icons/icon-heart-01.png" alt="ICON">
+                                    <img class="icon-heart2 dis-block trans-04 ab-t-l" src="../images/icons/icon-heart-02.png" alt="ICON">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                `;
+            $productListContainer.append(productCard);
+        });
+    }
+
+    function sendRequest(category, sort, page) {
+        var xhr = new XMLHttpRequest();
+        var url = `/products/product?sort=${sort}&category=${category}&page=${page}`; // 쿼리 파라미터로 URL 생성
+
+        xhr.open("GET", url, true); // GET 요청 초기화
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onload = function () {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                var response = JSON.parse(xhr.responseText); // 서버 응답 처리
+                console.log(response); // 서버 응답 출력
+                updateProductList(response.content);
+                // TODO: 응답 데이터를 사용해 UI 업데이트
+            }
+        };
+
+        xhr.onerror = function () {
+            console.error("요청 중 오류 발생"); // 오류 처리
+        };
+
+        xhr.send(); // 요청 전송
+    }
+    function updateProductList(products) {
+        var container = document.getElementById('productListArea');
+        container.innerHTML = ""; // 기존 내용 삭제
+
+        products.forEach(function (product) {
+            var productCard = `
+            <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item ${product.productStatus.toLowerCase()}">
+                <div class="block2">
+                    <div class="block2-pic hov-img0">
+                        <img src="${product.imageUrl}" alt="IMG-PRODUCT">
+                    </div>
+                    <div class="block2-txt flex-w flex-t p-t-14">
+                        <div class="block2-txt-child1 flex-col-l">
+                            <a href="product-detail.html?id=${product.id}" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                ${product.product}
+                            </a>
+                            <span class="stext-105 cl3">
+                                ${product.price.toLocaleString()}원
+                            </span>
+                        </div>
+                        <div class="block2-txt-child2 flex-r p-t-3">
+                            <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
+                                <img class="icon-heart1 dis-block trans-04" src="../images/icons/icon-heart-01.png" alt="ICON">
+                                <img class="icon-heart2 dis-block trans-04 ab-t-l" src="../images/icons/icon-heart-02.png" alt="ICON">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+            container.innerHTML += productCard; // 생성한 HTML을 컨테이너에 추가
+        });
+    }
+
 
     // init Isotope
     $(window).on('load', function () {
@@ -176,21 +364,32 @@
         if($('.js-show-search').hasClass('show-search')) {
             $('.js-show-search').removeClass('show-search');
             $('.panel-search').slideUp(400);
-        }    
+        }
     });
 
-    $('.js-show-search').on('click',function(){
+    $('.js-show-search').on('click',function(event){
         $(this).toggleClass('show-search');
-        $('.panel-search').slideToggle(400);
+        $('.panel-search').slideToggle(200);
 
         if($('.js-show-filter').hasClass('show-filter')) {
             $('.js-show-filter').removeClass('show-filter');
             $('.panel-filter').slideUp(400);
-        }    
+        }
+    });
+    $('#searchBtn').on('click', function(event) {
+        performSearch();
+        /*if (event.key === 'Enter') { // 엔터키가 눌렸을 때
+            event.preventDefault(); // 기본 폼 제출 방지
+            performSearch();
+        }*/
     });
 
-
-
+    $('#search-input').keypress(function (event){
+        if(event.which == 13){
+            $('#searchBtn').click();
+            console.log('test');
+        }
+    })
 
     /*==================================================================
     [ Cart ]*/
@@ -265,7 +464,7 @@
             }
         });
     });
-    
+
     /*==================================================================
     [ Show modal1 ]*/
     $('.js-show-modal1').on('click',function(e){
@@ -280,3 +479,4 @@
 
 
 })(jQuery);
+

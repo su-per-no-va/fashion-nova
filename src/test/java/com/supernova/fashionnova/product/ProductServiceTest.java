@@ -4,7 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.BDDMockito.given;
 
-import com.supernova.fashionnova.product.dto.ProductResponseDto;
+import com.supernova.fashionnova.domain.product.Product;
+import com.supernova.fashionnova.domain.product.ProductCategory;
+import com.supernova.fashionnova.domain.product.ProductRepository;
+import com.supernova.fashionnova.domain.product.ProductService;
+import com.supernova.fashionnova.domain.product.ProductStatus;
+import com.supernova.fashionnova.domain.product.dto.ProductResponseDto;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,9 +27,10 @@ import org.springframework.data.domain.Sort;
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceTest {
-@Mock
+
+    @Mock
     private ProductRepository productRepository;
-@InjectMocks
+    @InjectMocks
     private ProductService productService;
 
 
@@ -32,9 +38,12 @@ class ProductServiceTest {
     @DisplayName("상품 조회 테스트")
     void high_priceTest() {
         //given
-        Product product1 = new Product("Test Product", 1000L, "Test Explanation", ProductCategory.TOP, ProductStatus.ACTIVE);
-        Product product2 = new Product("Test Product", 3000L, "Test Explanation", ProductCategory.TOP, ProductStatus.ACTIVE);
-        Product product3 = new Product("Test Product", 5000L, "Test Explanation", ProductCategory.TOP, ProductStatus.ACTIVE);
+        Product product1 =
+            new Product("Test Product", 1000L, "Test Explanation", ProductCategory.TOP, ProductStatus.ACTIVE);
+        Product product2 =
+            new Product("Test Product", 3000L, "Test Explanation", ProductCategory.TOP, ProductStatus.ACTIVE);
+        Product product3 =
+            new Product("Test Product", 5000L, "Test Explanation", ProductCategory.TOP, ProductStatus.ACTIVE);
         List<Product> productList = Arrays.asList(product1, product2, product3);
 
         Sort.Direction direction = Sort.Direction.DESC;
@@ -44,14 +53,13 @@ class ProductServiceTest {
         List<ProductResponseDto> productDtoList = productList.stream()
             .map(ProductResponseDto::new)
             .collect(Collectors.toList());
-        Page<ProductResponseDto> pageDto = new PageImpl<>(productDtoList, pageable,
-            productDtoList.size());
-        given(productRepository.findProductByOrdered("high_price", null, null, null,
-            pageable)).willReturn(pageDto);
+        Page<ProductResponseDto> pageDto = new PageImpl<>(productDtoList, pageable, productDtoList.size());
+        given(productRepository.findProductByOrdered("high_price", null, null, null, null, pageable))
+            .willReturn(pageDto);
 
         //when
-        Page<ProductResponseDto> result = productService.getProductList(1, null, null, null,
-            "high_price");
+        Page<ProductResponseDto> result =
+            productService.getProductList("high_price", null, null, null, null, 1);
 
         //then
         assertNotNull(result);

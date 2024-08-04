@@ -7,9 +7,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.supernova.fashionnova.product.dto.ProductResponseDto;
-import com.supernova.fashionnova.security.UserDetailsImpl;
-import com.supernova.fashionnova.user.User;
+import com.supernova.fashionnova.domain.product.Product;
+import com.supernova.fashionnova.domain.product.ProductController;
+import com.supernova.fashionnova.domain.product.ProductService;
+import com.supernova.fashionnova.domain.product.dto.ProductResponseDto;
+import com.supernova.fashionnova.domain.user.User;
+import com.supernova.fashionnova.global.security.UserDetailsImpl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -65,10 +68,10 @@ class ProductControllerTest {
     }
 
     @Test
-    @DisplayName("조회")
-    void getProductListTest() throws Exception{
+    @DisplayName("상품 조회 테스트")
+    void getProductListTest() throws Exception {
         // given
-        int page = 1;
+        int page = 0;
 
         Product product1 = Mockito.mock(Product.class);
         Product product2 = Mockito.mock(Product.class);
@@ -76,10 +79,11 @@ class ProductControllerTest {
         List<Product> products = new ArrayList<>(Arrays.asList(product1, product2));
         Page<Product> productPage = new PageImpl<>(products);
         Page<ProductResponseDto> responseDto = productPage.map(ProductResponseDto::new);
-        when(productService.getProductList(page-1, null, null, null, null)).thenReturn(responseDto);
+        when(productService.getProductList(null, null, null, null, null, page))
+            .thenReturn(responseDto);
 
         // when * then
-        mockMvc.perform(get(baseUrl+"/product")
+        mockMvc.perform(get(baseUrl + "/product")
                 .param("sort", "")
                 .param("category", "")
                 .param("size", "")
@@ -91,6 +95,6 @@ class ProductControllerTest {
                 status().isOk()
             );
 
-
     }
+
 }
