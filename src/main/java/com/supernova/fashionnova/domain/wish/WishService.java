@@ -2,10 +2,10 @@ package com.supernova.fashionnova.domain.wish;
 
 import com.supernova.fashionnova.domain.product.Product;
 import com.supernova.fashionnova.domain.product.ProductRepository;
-import com.supernova.fashionnova.domain.product.dto.ProductResponseDto;
 import com.supernova.fashionnova.domain.user.User;
 import com.supernova.fashionnova.domain.wish.dto.WishDeleteRequestDto;
 import com.supernova.fashionnova.domain.wish.dto.WishRequestDto;
+import com.supernova.fashionnova.domain.wish.dto.WishResponseDto;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
 import java.util.List;
@@ -54,16 +54,16 @@ public class WishService {
      *
      * @param user
      * @param page
-     * @return List<ProductResponseDto>
+     * @return List<WishResponseDto>
      */
     @Transactional(readOnly = true)
-    public List<ProductResponseDto> getWishProductList(User user, int page) {
+    public List<WishResponseDto> getWishProductList(User user, int page) {
 
         Pageable pageable = PageRequest.of(page, 10);
         Page<Wish> wishPage = wishRepository.findByUser(user, pageable);
 
         return wishPage.getContent().stream()
-            .map(wish -> new ProductResponseDto(wish.getProduct()))
+            .map(WishResponseDto::new)
             .collect(Collectors.toList());
 
     }
