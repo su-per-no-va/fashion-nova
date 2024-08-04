@@ -1,6 +1,8 @@
 package com.supernova.fashionnova.front;
 
+import com.supernova.fashionnova.domain.user.dto.SignupRequestDto;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
@@ -18,7 +20,8 @@ public class HomeController {
     }
 
     @GetMapping("/signup.html")
-    public String signup() {
+    public String signup(Model model) {
+        model.addAttribute("SignupRequestDto",new SignupRequestDto());
         return "signup";
     }
 
@@ -39,7 +42,7 @@ public class HomeController {
 
     @GetMapping("/my-page.html")
     public String myPage() {
-        return "mypage";
+        return "my-page";
     }
 
     @GetMapping("/product-detail.html")
@@ -60,5 +63,45 @@ public class HomeController {
     @GetMapping("/index.html")
     public String index() {
         return "index";
+    }
+
+    @GetMapping("/wish-list.html")
+    public String wishList() {
+        return "wish-list";
+    }
+
+    @GetMapping("/my-info.html")
+    public String myInfo() {
+        return "my-info";
+    }
+
+    @GetMapping("/grade.html")
+    public String grade() {
+        return "grade";
+    }
+
+    @GetMapping("/my-question.html")
+    public String myQuestion() {
+        return "my-question";
+    }
+
+    @GetMapping("/order.html")
+    public String order() {
+        return "order";
+    }
+
+    @GetMapping("/product-search.html")
+    public String productSearch() {
+        return "product-search";
+    }
+
+    @GetMapping("/product-search-null.html")
+    public String productSearchNull() {
+        return "product-search-null";
+    }
+
+    @GetMapping("/review.html")
+    public String review() {
+        return "review";
     }
 }

@@ -6,14 +6,19 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.supernova.fashionnova.domain.user.User;
+import com.supernova.fashionnova.domain.user.UserRepository;
+import com.supernova.fashionnova.domain.user.UserService;
+import com.supernova.fashionnova.domain.user.UserStatus;
+import com.supernova.fashionnova.domain.user.dto.SignupRequestDto;
+import com.supernova.fashionnova.domain.user.dto.UserUpdateRequestDto;
+import com.supernova.fashionnova.domain.warn.Warn;
+import com.supernova.fashionnova.domain.warn.WarnRepository;
+import com.supernova.fashionnova.domain.warn.dto.WarnResponseDto;
 import com.supernova.fashionnova.global.exception.CustomException;
-import com.supernova.fashionnova.user.dto.SignupRequestDto;
-import com.supernova.fashionnova.user.dto.UserUpdateRequestDto;
-import com.supernova.fashionnova.warn.Warn;
-import com.supernova.fashionnova.warn.dto.WarnRepository;
-import com.supernova.fashionnova.warn.dto.WarnResponseDto;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -44,12 +49,14 @@ class UserServiceTest {
 
 
     @Nested  // 내부 클래스를 테스트 그룹으로 묶습니다.
+    @DisplayName("회원 가입 테스트")
     class SignUpTest {
+
         @Test
-        @DisplayName("성공 테스트")  // 테스트의 이름을 지정합니다.
+        @DisplayName("회원 가입 성공 테스트") // 테스트의 이름을 지정합니다.
         void signupTest1() {
             // given - 테스트를 위한 준비 단계
-            SignupRequestDto requestDto  = new SignupRequestDto("userName",
+            SignupRequestDto requestDto = new SignupRequestDto("userName",
                 "Test1234!@#$",
                 "na",
                 "test@teasd.com",
@@ -60,14 +67,15 @@ class UserServiceTest {
             // when(userRepository.existsByUserName(anyString())).thenThrow(CustomException.class);
 
             // then - 예상되는 결과를 검증합니다.
-            assertDoesNotThrow(() -> userService.signup(requestDto));  // signup 메서드가 예외를 던지지 않는지 확인합니다.
+            assertDoesNotThrow(
+                () -> userService.signup(requestDto));  // signup 메서드가 예외를 던지지 않는지 확인합니다.
         }
 
         @Test
-        @DisplayName("실패 테스트")  // 테스트의 이름을 지정합니다.
+        @DisplayName("회원 가입 실패 테스트") // 테스트의 이름을 지정합니다.
         void signupTest2() {
             // given - 테스트를 위한 준비 단계
-            SignupRequestDto requestDto  = new SignupRequestDto("userName",
+            SignupRequestDto requestDto = new SignupRequestDto("userName",
                 "Test1234!@#$",
                 "na",
                 "test@teasd.com",
@@ -78,7 +86,8 @@ class UserServiceTest {
             when(userRepository.existsByUserName(anyString())).thenThrow(CustomException.class);
 
             // then - 예상되는 결과를 검증합니다.
-            assertThrows(CustomException.class, () -> userService.signup(requestDto));  // signup 메서드가 CustomException을 던지는지 확인합니다.
+            assertThrows(CustomException.class,
+                () -> userService.signup(requestDto));  // signup 메서드가 CustomException을 던지는지 확인합니다.
         }
     }
 
@@ -113,12 +122,11 @@ class UserServiceTest {
         assertThat(result.get(0).getDetail()).isEqualTo(detail);  // 결과 리스트의 첫 번째 요소의 detail 값이 예상된 값과 일치하는지 확인합니다.
     }
 
-
     @Test
     @DisplayName("회원 탈퇴 테스트")
     void withdraw() {
         //given
-        User user = new User();  // 실제 User 객체를 사용합니다.
+        User user = Mockito.mock(User.class);  // Mock User 객체를 사용합니다.
         user.updateRefreshToken("Bearer refreshToken");  // 초기 상태 설정
         user.updateStatus(UserStatus.MEMBER);  // 초기 상태 설정
 
@@ -126,8 +134,9 @@ class UserServiceTest {
         userService.withdraw(user);
 
         //then
-        assertThat(user.getRefreshToken()).isEqualTo("");
-        assertThat(user.getUserStatus()).isEqualTo(UserStatus.NON_MEMBER);
+        verify(user).updateStatus(UserStatus.NON_MEMBER);  // 상태 업데이트가 호출되었는지 검증합니다.
+        verify(user).updateRefreshToken("");  // 리프레시 토큰 초기화가 호출되었는지 검증합니다.
+        verify(userRepository).save(user);  // User 저장이 호출되었는지 검증합니다.
     }
 
     @Test
@@ -151,8 +160,9 @@ class UserServiceTest {
             .build();
 
         given(userRepository.findByUserName(user.getUserName())).willReturn(Optional.of(user));
+
         //when
-        userService.updateUser(requestDto,user);
+        userService.updateUser(requestDto, user);
 
         //then
         assertThat(user.getUserName()).isEqualTo("updateUser");
@@ -162,5 +172,5 @@ class UserServiceTest {
         assertThat(user.getPhone()).isEqualTo("010-5678-9012");
 
     }
-}
 
+}

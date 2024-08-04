@@ -13,11 +13,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.supernova.fashionnova.security.UserDetailsImpl;
-import com.supernova.fashionnova.user.dto.SignupRequestDto;
-import com.supernova.fashionnova.user.dto.UserResponseDto;
-import com.supernova.fashionnova.warn.Warn;
-import com.supernova.fashionnova.warn.dto.WarnResponseDto;
+import com.supernova.fashionnova.domain.user.KakaoService;
+import com.supernova.fashionnova.domain.user.User;
+import com.supernova.fashionnova.domain.user.UserController;
+import com.supernova.fashionnova.domain.user.UserGrade;
+import com.supernova.fashionnova.domain.user.UserService;
+import com.supernova.fashionnova.domain.user.UserStatus;
+import com.supernova.fashionnova.domain.user.dto.SignupRequestDto;
+import com.supernova.fashionnova.domain.user.dto.UserResponseDto;
+import com.supernova.fashionnova.domain.warn.Warn;
+import com.supernova.fashionnova.domain.warn.dto.WarnResponseDto;
+import com.supernova.fashionnova.global.security.UserDetailsImpl;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +39,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.test.web.servlet.MockMvc;
 
-
 @WebMvcTest(UserController.class)  // UserController만 테스트하기 위해 Spring MVC 테스트 환경을 설정합니다.
 class UserControllerTest {
 
@@ -46,6 +51,9 @@ class UserControllerTest {
     @MockBean
     private UserService service;  // UserService를 목(Mock) 객체로 만들어 UserController의 의존성을 주입합니다.
 
+    @MockBean
+    private KakaoService kakaoService;
+
     private final String baseUrl = "/users";  // 테스트할 기본 URL을 설정합니다.
     UserDetailsImpl userDetails = Mockito.mock(UserDetailsImpl.class);
 
@@ -55,7 +63,13 @@ class UserControllerTest {
 
         // Given a mock UserDetailsImpl
         given(userDetails.getUsername()).willReturn("user");
-        given(userDetails.getUser()).willReturn(new User());
+        given(userDetails.getUser()).willReturn(new User(
+            "testUSer",
+            "Test1234!@",
+            "테스트유저",
+            "test@gmail.com",
+            "010-1234-5678"
+        ));
 
         // Set the security context
         SecurityContextHolder.setContext(new SecurityContextImpl());
@@ -109,7 +123,7 @@ class UserControllerTest {
                 .content(objectMapper.writeValueAsString(requestDto))  // 회원가입 엔드포인트로 POST 요청을 보냅니다.
                 .contentType(MediaType.APPLICATION_JSON))  // 요청 본문의 콘텐츠 타입을 JSON으로 설정합니다.
             .andExpect(status().isOk())  // 응답 상태 코드가 201 Created인지 확인합니다.
-            .andExpect(content().string("redirect:/login"));  // 응답 본문이 "회원가입 성공"인지 확인합니다.
+            .andExpect(content().string("회원 가입 성공"));  // 응답 본문이 "회원가입 성공"인지 확인합니다.
     }
 
     @Test
@@ -146,12 +160,12 @@ class UserControllerTest {
 
     @Test
     @DisplayName("유저 경고 조회")
-    void getCautionList() throws Exception{
+    void getCautionList() throws Exception {
         //given
         User user = userDetails.getUser();
         List<WarnResponseDto> warnResponseDtoList = Arrays.asList(
-            new WarnResponseDto(new Warn("경고1",user)),
-            new WarnResponseDto(new Warn("경고2",user))
+            new WarnResponseDto(new Warn("경고1", user)),
+            new WarnResponseDto(new Warn("경고2", user))
         );
         //when
         when(service.getCautionList(user)).thenReturn(warnResponseDtoList);
@@ -198,4 +212,5 @@ class UserControllerTest {
             );
 
     }
+
 }

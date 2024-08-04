@@ -43,11 +43,15 @@
 				</div>
 
 				<div class="right-top-bar flex-w h-full">
-					<a href="#" class="flex-c-m trans-04 p-lr-25">
-						Help & FAQs
+					<a href="login.html" class="flex-c-m trans-04 p-lr-25">
+						Login
 					</a>
 
-					<a href="#" class="flex-c-m trans-04 p-lr-25">
+					<a href="question.html" class="flex-c-m trans-04 p-lr-25">
+						Q&A
+					</a>
+
+					<a href="my-page.html" class="flex-c-m trans-04 p-lr-25">
 						My Page
 					</a>
 				</div>
@@ -85,11 +89,11 @@
 						<i class="zmdi zmdi-search"></i>
 					</div>
 
-					<a href="shoping-cart.html" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="2">
+					<a id="cart-icon" href="shoping-cart.html" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="">
 						<i class="zmdi zmdi-shopping-cart"></i>
 					</a>
 
-					<a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
+					<a id="wish-icon" href="wish-list.html" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="">
 						<i class="zmdi zmdi-favorite-outline"></i>
 					</a>
 				</div>
@@ -159,7 +163,7 @@
 							</span>
 
 							<p class="stext-115 cl6 size-213 p-t-18">
-								Coza Store Center 8th floor, 379 Hudson St, New York, NY 10018 US
+								Fashion Nova Center 5th floor, Seoul City, South Korea
 							</p>
 						</div>
 					</div>
@@ -175,7 +179,7 @@
 							</span>
 
 							<p class="stext-115 cl1 size-213 p-t-18">
-								+1 800 1236879
+								+82 1234 1234
 							</p>
 						</div>
 					</div>
@@ -191,7 +195,7 @@
 							</span>
 
 							<p class="stext-115 cl1 size-213 p-t-18">
-								contact@example.com
+								naeun@gmail.com
 							</p>
 						</div>
 					</div>
@@ -302,7 +306,41 @@
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKFWBqlKAGCeS1rMVoaNlwyayu0e0YRes"></script>
 	<script src="../js/map-custom.js"></script>
 <!--===============================================================================================-->
-	<script src="../js/main.js"></script>
+<script src="/js/common.js"></script>
+<script src="../js/main.js"></script>
+<script>
+	$(document).ready(function () {
+		// let cartDto = window.common.cartDto;
+		// let wishList = window.common.wishList;
+		// console.log(cartDto)
+		// 	console.log(wishList)
 
+		/* 장바구니 아이콘 개수 */
+		window.common.getShoppingCart()
+		.done(function (response) {
+			if (response) {
+				$('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
+			} else {
+				// no response
+			}
+		})
+		.fail(function (error) {
+			console.log(error.message)
+		});
+
+		/* 찜 아이콘 개수 */
+		window.common.getWishList()
+		.done(function (response) {
+			if (response) {
+				$('a#wish-icon')[0].dataset.notify = response.length;
+			} else {
+				// no response
+			}
+		})
+		.fail(function (error) {
+			console.log(error.message)
+		});
+	});
+</script>
 </body>
 </html>

@@ -24,3 +24,12 @@ Authorization: {{access_token}}
 {
   "addressId" : 1
 }
+
+### 배송지 삭제
+DELETE http://localhost:8080/addresses
+Content-Type: application/json
+Authorization: {{access_token}}
+
+{
+  "addressId": 1
+}

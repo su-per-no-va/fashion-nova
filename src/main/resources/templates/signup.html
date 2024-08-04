@@ -1,72 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Checklist Sign Up</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <link rel="stylesheet" href="/css/login.css" type="text/css">
-  <link rel="stylesheet" href="/css/1.css" type="text/css">
+  <link rel="stylesheet" href="../css/login.css" type="text/css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
-  <script type="module">
-
-    $(document).ready(function () {
-      $("#btn").click(async function () {
-        let isValid = true;
-
-        // 입력값 유효성 검사
-        $.each($('.int-area > input'), function (index, item) {
-          if (isValid) {
-            var value = $(item).val();
-            if (value === "" || (index === 0 && value.length < 4)) {
-              $(item).next('label').addClass('warning');
-              setTimeout(function () {
-                $('label').removeClass('warning');
-              }, 1500);
-              $(item).focus();
-              isValid = false;
-            }
-          }
-        });
-
-        if (!isValid) return;
-
-        // 입력값을 객체로 수집
-        let doc = {
-          'userName': $('#userName').val(),
-          'password': $('#password').val(),
-          'name': $('#name').val(),
-          'phone': $('#phone').val(),
-          'email': $('#email').val()
-        };
-
-        try {
-          // 서버로 데이터 전송
-          await $.ajax({
-            type: "POST",
-            url: "/users/signup",
-            data: JSON.stringify(doc),
-            contentType: "application/json",
-            success: function (response) {
-              alert('회원 가입 완료!');
-              window.location.href = "/login"; // 로그인 페이지로 이동
-            },
-            error: function (error) {
-              console.error("에러 발생:", error);
-              alert('회원 가입 실패. 다시 시도해주세요.');
-            }
-          });
-        } catch (error) {
-          console.error("AJAX 호출 중 오류 발생:", error);
-        }
-      });
-    });
-
-  </script>
 </head>
 
 <body>
@@ -74,13 +18,13 @@
 
 <section class="login-form">
   <h1>SIGN UP</h1>
-  <form>
+  <form id="signupForm" >
     <div class="int-area">
-      <input type="text" name="id" id="userName" autocomplete="off" required>
+      <input type="text" name="userName" id="userName" autocomplete="off" required>
       <label for="userName">ID</label>
     </div>
     <div class="int-area">
-      <input type="password" name="pw" id="password" autocomplete="off" required>
+      <input type="password" name="password" id="password" autocomplete="off" required>
       <label for="password">PASSWORD</label>
     </div>
     <div class="int-area">
@@ -88,11 +32,7 @@
       <label for="name">NAME</label>
     </div>
     <div class="int-area">
-      <input type="text" name="birthdate" id="birthdate" autocomplete="off" required>
-      <label for="birthdate">BIRTHDATE</label>
-    </div>
-    <div class="int-area">
-      <input type="text" name="phone" id="phone" autocomplete="off" required>
+      <input type="text" name="phone" id="phone" autocomplete="off"  required>
       <label for="phone">PHONE NUMBER</label>
     </div>
     <div class="int-area">
@@ -100,10 +40,82 @@
       <label for="email">E-MAIL</label>
     </div>
     <div class="btn-area">
-      <button id="btn" type="button">CREATE ACCOUNT</button>
+      <button id="btn" type="button" onclick="submitForm()">CREATE ACCOUNT</button>
     </div>
   </form>
 </section>
 </body>
 
+<script>
+  function submitForm() {
+    const userName = document.getElementById('userName').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const name = document.getElementById('name').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const email = document.getElementById('email').value.trim();
+
+    // ID 검증
+    if (userName.length < 4 || userName.length > 100) {
+      alert("ID는 최소 4글자, 최대 100글자입니다.");
+      return;
+    }
+
+    // 비밀번호 검증
+    const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&^]{8,}$/;
+    if (!passwordPattern.test(password)) {
+      alert("비밀번호는 영문, 숫자, 특수문자 포함 8자리 이상이어야 합니다.");
+      return;
+    }
+
+    // 이름 검증
+    if (name.length < 2 || name.length > 50) {
+      alert("이름은 최소 2글자, 최대 50글자 입니다.");
+      return;
+    }
+
+    // 이메일 검증
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailPattern.test(email)) {
+      alert("이메일 형식에 맞지 않습니다.");
+      return;
+    }
+
+    // 휴대폰 번호 검증
+    const phonePattern = /^010-\d{4}-\d{4}$/;
+    if (!phonePattern.test(phone)) {
+      alert("휴대폰 형식에 맞지 않습니다. 휴대폰 형식: 010-****-****");
+      return;
+    }
+
+    const form = document.getElementById('signupForm');
+    const formData = new FormData(form);
+
+    // FormData를 JSON으로 변환
+    const jsonData = {};
+    formData.forEach((value, key) => {
+      jsonData[key] = value;
+    });
+
+    fetch('/users/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(jsonData)
+    })
+    .then(response => {
+      if (response.status === 200) {
+        alert("회원가입 성공");
+        window.location.href = "login.html"; // 로그인 페이지로 이동
+      } else {
+          alert(data.message || "회원가입에 실패했습니다.");
+      }
+      console.log(response);
+    })
+    .catch(error => {
+      alert("오류 발생: " + error.message);
+    });
+  }
+</script>
 </html>
+

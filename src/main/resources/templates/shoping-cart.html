@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Shoping Cart</title>
+	<title>Shopping Cart</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
@@ -25,8 +25,8 @@
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="../vendor/perfect-scrollbar/perfect-scrollbar.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="css/util.css">
-	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<link rel="stylesheet" type="text/css" href="../css/util.css">
+	<link rel="stylesheet" type="text/css" href="../css/main.css">
 <!--===============================================================================================-->
 </head>
 <body class="animsition">
@@ -43,11 +43,15 @@
 					</div>
 
 					<div class="right-top-bar flex-w h-full">
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
-							Help & FAQs
+						<a href="login.html" class="flex-c-m trans-04 p-lr-25">
+							Login
 						</a>
 
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
+						<a href="question.html" class="flex-c-m trans-04 p-lr-25">
+							Q&A
+						</a>
+
+						<a href="my-page.html" class="flex-c-m trans-04 p-lr-25">
 							My Page
 						</a>
 					</div>
@@ -85,11 +89,11 @@
 							<i class="zmdi zmdi-search"></i>
 						</div>
 
-						<a href="shoping-cart.html" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="2">
+						<a id="cart-icon" href="shoping-cart.html" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="">
 							<i class="zmdi zmdi-shopping-cart"></i>
 						</a>
 
-						<a href="#" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
+						<a id="wish-icon" href="wish-list.html" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="">
 							<i class="zmdi zmdi-favorite-outline"></i>
 						</a>
 					</div>
@@ -137,90 +141,16 @@
 					<div class="m-l-25 m-r--38 m-lr-0-xl">
 						<div class="wrap-table-shopping-cart">
 							<table class="table-shopping-cart">
-								<tr class="table_head">
-									<th class="column-1">Product</th>
-									<th class="column-2"></th>
-									<th class="column-3">Price</th>
-									<th class="column-4">Quantity</th>
-									<th class="column-5">Total</th>
-								</tr>
-
-								<tr class="table_row">
-									<td class="column-1">
-										<div class="how-itemcart1">
-											<img src="images/item-cart-04.jpg" alt="IMG">
-										</div>
-									</td>
-									<td class="column-2">Fresh Strawberries</td>
-									<td class="column-3">50,000원</td>
-									<td class="column-4">
-										<div class="wrap-num-product flex-w m-l-auto m-r-0">
-											<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-												<i class="fs-16 zmdi zmdi-minus"></i>
-											</div>
-
-
-											<input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product1" value="1">
-
-											<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-												<i class="fs-16 zmdi zmdi-plus"></i>
-											</div>
-										</div>
-										<div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
-											<select class="js-select2" name="time">
-												<option>Size</option>
-												<option>S</option>
-												<option>M</option>
-												<option>L</option>
-											</select>
-											<div class="dropDownSelect2"></div>
-										</div>
-									</td>
-									<td class="column-5">50,000원</td>
-								</tr>
-
-								<tr class="table_row">
-									<td class="column-1">
-										<div class="how-itemcart1">
-											<img src="images/item-cart-05.jpg" alt="IMG">
-										</div>
-									</td>
-									<td class="column-2">Lightweight Jacket</td>
-									<td class="column-3">50,000원</td>
-									<td class="column-4">
-										<div class="wrap-num-product flex-w m-l-auto m-r-0">
-											<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-												<i class="fs-16 zmdi zmdi-minus"></i>
-											</div>
-
-											<input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product2" value="1">
-
-											<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-												<i class="fs-16 zmdi zmdi-plus"></i>
-											</div>
-										</div>
-										<div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
-											<select class="js-select2" name="time">
-												<option>Size</option>
-												<option>S</option>
-												<option>M</option>
-												<option>L</option>
-											</select>
-											<div class="dropDownSelect2"></div>
-										</div>
-									</td>
-									<td class="column-5">50,000원</td>
-								</tr>
+								<tr class="table_head" id="cart-items"></tr>
 							</table>
 						</div>
 
-						<div class="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
-							<div class="flex-w flex-m m-r-20 m-tb-5">
-
-							</div>
-
-							<div class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10">
+						<div class="flex-w flex-c-t bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
+							<div class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10" style="margin: 15px;">
 								Update Cart
+							</div>
+							<div  class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10 empty-cart-button" style="margin: 15px;">
+								Emptying Cart
 							</div>
 						</div>
 					</div>
@@ -240,8 +170,8 @@
 							</div>
 
 							<div class="size-209">
-								<span class="mtext-110 cl2">
-									100,000원
+								<span id="subtotal" class="mtext-110 cl2">
+
 								</span>
 							</div>
 						</div>
@@ -267,9 +197,9 @@
 								</span>
 							</div>
 
-							<div class="size-209 p-t-1">
-								<span class="mtext-110 cl2">
-									102,500원
+							<div  class="size-209 p-t-1">
+								<span id="total" class="mtext-110 cl2">
+
 								</span>
 							</div>
 						</div>
@@ -375,7 +305,207 @@
 		});
 	</script>
 <!--===============================================================================================-->
+	<script src="/js/common.js"></script>
 	<script src="js/main.js"></script>
+	<script>
+		$(document).ready(function () {
+			// let cartDto = window.common.cartDto;
+			// let wishList = window.common.wishList;
+			// console.log(cartDto)
+			// 	console.log(wishList)
+
+			/* 장바구니 아이콘 개수 */
+			window.common.getShoppingCart()
+			.done(function (response) {
+				if (response) {
+					$('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
+				} else {
+					// no response
+				}
+			})
+			.fail(function (error) {
+				console.log(error.message)
+			});
+
+			/* 찜 아이콘 개수 */
+			window.common.getWishList()
+			.done(function (response) {
+				if (response) {
+					$('a#wish-icon')[0].dataset.notify = response.length;
+				} else {
+					// no response
+				}
+			})
+			.fail(function (error) {
+				console.log(error.message)
+			});
+
+			// 장바구니 비우기
+			$(document).on('click', '.empty-cart-button', function() {
+				$.ajax({
+					url: '/carts/delete',
+					type: 'DELETE',
+					success: function(response) {
+						if (response === "장바구니 비우기 완료") {
+							alert("장바구니 비우기 성공");
+							location.reload(); // 성공 시 페이지를 리로드합니다
+						} else {
+							alert('장바구니 비우기 실패: ' + response.error);
+						}
+					},
+					error: function() {
+						alert('장바구니 비우기 요청에 실패했습니다.');
+					}
+				});
+			});
+
+			// 수량 증가 버튼 클릭 이벤트
+			$(document).on('click', '.btn-num-product-up', function() {
+				var $input = $(this).closest('.wrap-num-product').find('.num-product');
+				var newVal = parseInt($input.val()) + 1;
+				$input.val(newVal);
+			});
+
+			// 수량 감소 버튼 클릭 이벤트
+			$(document).on('click', '.btn-num-product-down', function() {
+				var $input = $(this).closest('.wrap-num-product').find('.num-product');
+				var newVal = parseInt($input.val()) - 1;
+				if (newVal >= 1) {
+					$input.val(newVal);
+				}
+			});
+
+		});
+
+		//삭제
+		$(document).on('click', '.btn-delete-item', function() {
+			var productDetailId = $(this).data('product-detail-id'); // 'data-product-detail-id' 값을 가져옴
+
+			var deleteRequestDto = {
+				productDetailId: productDetailId
+			};
+
+
+			$.ajax({
+				url: '/carts',
+				type: 'DELETE',
+				contentType: 'application/json',
+				data: JSON.stringify(deleteRequestDto),
+				success: function(response) {
+					if(response === "장바구니 상품 삭제 완료") {
+						console.log("삭제 성공")
+						location.reload(); // 성공 시 페이지를 리로드합니다
+					} else {
+						alert('삭제 실패: ' + response.error);
+					}
+				},
+				error: function() {
+					alert('삭제 요청에 실패했습니다.');
+				}
+			});
+		});
+
+
+	</script>
+
+	<script>
+		$(document).ready(function () {
+			let auth = localStorage.getItem('accessToken');
+			let refreshToken = localStorage.getItem('refreshToken');
+			console.log("엑세스 토큰: " + auth);
+			console.log("리프레시 토큰: " + refreshToken);
+
+			if (auth) {
+				$.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+					jqXHR.setRequestHeader('Authorization', auth);
+					jqXHR.setRequestHeader('Authorization-refresh', refreshToken);
+				});
+
+				fetchCartItems();
+			} else {
+				alert("로그인 후 이용해 주세요");
+				window.location.href = "login.html";
+			}
+		});
+
+		function fetchCartItems() {
+			$.ajax({
+				type: 'GET',
+				url: '/carts',
+				success: function(response) {
+					updateCartTable(response);
+				},
+				error: function(error) {
+					console.error('Error fetching cart items:', error);
+				}
+			});
+		}
+
+
+
+		//카드 추가
+		function updateCartTable(cartResponseDto) {
+			let $cartItems = $('#cart-items');
+			$cartItems.empty(); // 기존 내용을 지우고 새로 추가
+
+			let subtotal = 0;
+
+			let initrow = `
+<tr class="table_head">
+<th class="column-1">Product</th>
+<th class="column-2"></th>
+<th class="column-3"></th>
+<th class="column-4">Quantity</th>
+<th class="column-5">Total</th>
+</tr>`;
+
+			$cartItems.append(initrow);
+
+			cartResponseDto.cartItemDtoList.forEach(function(item) {
+				let total = item.price * item.count;
+				subtotal += total;
+
+				let row = `
+                <tr class="table_row" data-item-id="${item.id}">
+                    <td class="column-1">
+                        <div class="how-itemcart1">
+                            <img src="${item.imageUrl}" alt="IMG">
+                        </div>
+                    </td>
+                    <td class="column-2">${item.product}</td>
+                    <td class="column-3">${item.price.toLocaleString()}원</td>
+                    <td class="column-4">
+                        <div class="wrap-num-product flex-w m-l-auto m-r-0">
+                            <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+                                <i class="fs-16 zmdi zmdi-minus"></i>
+                            </div>
+                            <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product${item.id}" value="${item.count}">
+                            <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+                                <i class="fs-16 zmdi zmdi-plus"></i>
+                            </div>
+                        </div>
+                        <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
+                            <select class="js-select2" name="size${item.size}">
+                                <option value="S" ${item.size === 'S' ? 'selected' : ''}>S</option>
+                                <option value="M" ${item.size === 'M' ? 'selected' : ''}>M</option>
+                                <option value="L" ${item.size === 'L' ? 'selected' : ''}>L</option>
+                            </select>
+                            <div class="dropDownSelect2"></div>
+                        </div>
+                    </td>
+                    <td class="column-5">${total.toLocaleString()}원</td>
+               <td class="column-6">
+        <button style="color: #c82333" class="btn-delete-item" data-item-id="${item.id}" data-product-detail-id="${item.productDetailId}">삭제</button>>
+               </td>
+                </tr>
+            `;
+				$cartItems.append(row);
+			});
+
+			$('#subtotal').text(subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원');
+			$('#total').text((subtotal + 2500).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'); // 배송비 포함 총 금액
+		}
+	</script>
 
 </body>
 </html>

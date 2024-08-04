@@ -16,12 +16,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.supernova.fashionnova.cart.dto.CartDeleteRequestDto;
-import com.supernova.fashionnova.cart.dto.CartRequestDto;
-import com.supernova.fashionnova.cart.dto.CartResponseDto;
-import com.supernova.fashionnova.cart.dto.CartUpdateRequestDto;
-import com.supernova.fashionnova.security.UserDetailsImpl;
-import com.supernova.fashionnova.user.User;
+import com.supernova.fashionnova.domain.cart.CartController;
+import com.supernova.fashionnova.domain.cart.CartService;
+import com.supernova.fashionnova.domain.cart.dto.CartDeleteRequestDto;
+import com.supernova.fashionnova.domain.cart.dto.CartRequestDto;
+import com.supernova.fashionnova.domain.cart.dto.CartResponseDto;
+import com.supernova.fashionnova.domain.cart.dto.CartUpdateRequestDto;
+import com.supernova.fashionnova.domain.user.User;
+import com.supernova.fashionnova.global.security.UserDetailsImpl;
 import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -72,7 +74,7 @@ class CartControllerTest {
     }
 
     @Test
-    @DisplayName("장바구니에 상품 추가 성공 테스트")
+    @DisplayName("장바구니에 상품 추가 테스트")
     void addToCartSuccess() throws Exception {
         // given
         CartRequestDto requestDto = new CartRequestDto(
@@ -117,7 +119,7 @@ class CartControllerTest {
     }
 
     @Test
-    @DisplayName("장바구니 수정 성공 테스트")
+    @DisplayName("장바구니 수정 테스트")
     void updateCartSuccess() throws Exception {
         // given
         CartUpdateRequestDto requestDto = new CartUpdateRequestDto(
@@ -180,4 +182,5 @@ class CartControllerTest {
             .andExpect(content().string("장바구니 비우기 완료"));
         verify(cartService).clearCart(any(User.class));
     }
+
 }

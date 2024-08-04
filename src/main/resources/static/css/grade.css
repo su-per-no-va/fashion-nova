@@ -1,0 +1,36 @@
+.content {
+  text-align: center;
+  padding: 20px;
+}
+
+.grade-info {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  margin: 20px auto;
+  background-color: #fff;
+  max-width: 600px;
+}
+
+.grade-benefits {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
+  max-width: 600px;
+}
+
+.benefit {
+  flex: 1;
+  text-align: center;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  margin: 0 10px;
+  background-color: #fff;
+}
+
+.benefits-details {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
