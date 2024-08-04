@@ -1,6 +1,6 @@
 package com.supernova.fashionnova.front;
 
-import com.supernova.fashionnova.user.dto.SignupRequestDto;
+import com.supernova.fashionnova.domain.user.dto.SignupRequestDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -134,5 +134,8 @@ public class HomeController {
     @GetMapping("/my-coupon.html")
     public String myCoupon() {
         return "my-coupon";
+    @GetMapping("/payments-completed")
+    public String paymentsCompleted() {
+        return "payments-completed";
     }
 }
