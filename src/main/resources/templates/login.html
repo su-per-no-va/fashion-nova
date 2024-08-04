@@ -61,4 +61,14 @@
 <script src="/js/login.js"></script>
 </body>
 
+
+<script>
+  $(document).ready(function() {
+    $(document).keypress(function(event) {
+      if (event.which == 13) {
+        onLogin();
+      }
+    });
+  });
+</script>
 </html>
