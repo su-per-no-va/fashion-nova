@@ -35,9 +35,8 @@ public class ProductController {
         @RequestParam(value = "color", required = false) String color,
         @RequestParam(value = "search", required = false) String search,
         @RequestParam(defaultValue = "0", value = "page", required = false) int page) {
-        System.out.println("[[[[[[[[[[[[" + search);
 
-        return productService.getProductList(sorted, category, size, color, search, page);
+        return productService.getProductList(sorted, category, size, color, search, page-1);
     }
 
 }
