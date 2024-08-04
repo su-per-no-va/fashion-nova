@@ -561,6 +561,9 @@
           if (jqXHR.status >= 200 && jqXHR.status < 300) {
             // 성공 시 처리
             swal("Success!", "The product has been added to your wishlist.", "success");
+            $this.addClass('js-addedwish-b2');
+            $this.find('.icon-heart1').attr('src', '../images/icons/icon-heart-02.png'); // 채워진 하트
+            $this.find('.icon-heart2').attr('src', '../images/icons/icon-heart-01.png'); // 빈 하트
             location.reload()
           } else {
             // 실패 시 처리
@@ -573,6 +576,39 @@
         }
       });
     });
+
+    function loadWishlist() {
+      $.ajax({
+        url: '/wishlists', // 실제 API URL로 변경해야 합니다.
+        type: 'GET',
+        success: function (response) {
+          // 위시리스트에 담긴 제품 ID 목록
+          var wishListProductIds = response.map(wishlist => wishlist.product.id);
+
+          // 2. 제품 카드에 하트 상태 업데이트
+          $('.js-addwish-b2').each(function () {
+            var $this = $(this);
+            var productId = $this.closest('.isotope-item').data('product-id');
+
+            if (wishListProductIds.includes(productId)) {
+              $this.addClass('js-addedwish-b2'); // 하트를 채운 상태로 설정
+              $this.find('.icon-heart1').hide(); // 빈 하트 숨기기
+              $this.find('.icon-heart2').show(); // 채워진 하트 표시
+            } else {
+              $this.removeClass('js-addedwish-b2'); // 하트를 채우지 않은 상태로 설정
+              $this.find('.icon-heart1').show(); // 빈 하트 표시
+              $this.find('.icon-heart2').hide(); // 채워진 하트 숨기기
+            }
+          });
+        },
+        error: function (xhr, status, error) {
+          console.error("Error fetching wishlist:", error);
+        }
+      });
+    }
+
+    loadWishlist()
+
   });
 </script>
 
