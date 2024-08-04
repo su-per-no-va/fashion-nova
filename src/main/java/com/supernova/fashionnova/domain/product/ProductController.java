@@ -21,6 +21,9 @@ public class ProductController {
      *
      * @param sorted
      * @param category
+     * @param size
+     * @param color
+     * @param search
      * @param page
      * @return 상품 리스트
      */

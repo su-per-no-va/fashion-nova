@@ -18,6 +18,9 @@ public class ProductService {
      * 조건별 상품 검색
      * @param sorted
      * @param category
+     * @param size
+     * @param color
+     * @param search
      * @param page
      * @return 페이징
      */
