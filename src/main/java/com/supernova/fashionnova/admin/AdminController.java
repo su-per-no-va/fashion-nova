@@ -215,6 +215,14 @@ public class AdminController {
         return ResponseUtil.of(HttpStatus.OK, "마일리지 초기화 성공");
     }
 
+    /**
+     *  상품 이미지 등록
+     *
+     * @param file
+     * @param productId
+     * @return
+     */
+
     @PostMapping("/products/image/{productId}")
     public ResponseEntity<String> updateProductImage(
         @RequestParam(value = "image") MultipartFile file,
