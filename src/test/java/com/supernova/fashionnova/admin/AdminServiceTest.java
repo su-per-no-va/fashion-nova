@@ -3,6 +3,7 @@ package com.supernova.fashionnova.admin;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -21,12 +22,17 @@ import com.supernova.fashionnova.domain.question.QuestionRepository;
 import com.supernova.fashionnova.domain.question.dto.QuestionResponseDto;
 import com.supernova.fashionnova.domain.review.Review;
 import com.supernova.fashionnova.domain.review.ReviewRepository;
+import com.supernova.fashionnova.domain.review.dto.ReviewResponseDto;
 import com.supernova.fashionnova.domain.user.User;
 import com.supernova.fashionnova.domain.user.UserRepository;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
+import com.supernova.fashionnova.global.upload.FileUploadUtil;
+import com.supernova.fashionnova.global.upload.ImageType;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -39,6 +45,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 @ExtendWith(MockitoExtension.class)
@@ -58,6 +65,9 @@ class AdminServiceTest {
 
     @Mock
     private CouponRepository couponRepository;
+
+    @Mock
+    private FileUploadUtil fileUploadUtil;
 
     @InjectMocks
     private AdminService adminService;
@@ -99,22 +109,46 @@ class AdminServiceTest {
     @DisplayName("작성자별 리뷰 조회 테스트")
     class getReviewsByUserId {
 
-//        @Test
-//        @DisplayName("작성자별 리뷰 조회 성공 테스트")
-//        void getReviewsByUserId1() {
-//            // given
-//            given(userRepository.findById(anyLong())).willReturn(Optional.of(user));
-//            Page<Review> reviewPage = new PageImpl<>(Collections.singletonList(review));
-//            given(reviewRepository.findByUser(any(User.class), any(Pageable.class))).willReturn(
-//                reviewPage);
-//
-//            // when
-//            List<ReviewResponseDto> reviews = adminService.getReviewListByUserId(1L, 0);
-//
-//            // then
-//            assertThat(reviews).isNotEmpty();
-//            assertThat(reviews.get(0).getReview()).isEqualTo(review.getReview());
-//        }
+        @Test
+        @DisplayName("작성자별 리뷰 조회 성공 테스트")
+        void getReviewsByUserId1() {
+            // given
+            User user = Mockito.mock(User.class);
+            Review review = Mockito.mock(Review.class);
+
+            // User 리포지토리 모킹
+            given(userRepository.findById(anyLong())).willReturn(Optional.of(user));
+
+            // Review 리포지토리 모킹
+            Page<Review> reviewPage = new PageImpl<>(Collections.singletonList(review), PageRequest.of(0, 10), 1);
+            given(reviewRepository.findByUser(any(User.class), any(Pageable.class))).willReturn(reviewPage);
+
+            // Review 객체 모킹
+            given(review.getId()).willReturn(1L);
+            given(review.getReview()).willReturn("Great product!");
+            given(review.getUser()).willReturn(user);
+            given(user.getUserName()).willReturn("testUser");
+
+            // 리뷰 ID 리스트 생성
+            List<Long> reviewIds = Collections.singletonList(1L);
+
+            // Review 이미지 다운로드 모킹
+            Map<Long, List<String>> reviewImages = Collections.singletonMap(1L, Collections.singletonList("image1.jpg"));
+            given(fileUploadUtil.downloadImages(any(ImageType.class), anyList())).willReturn(reviewImages);
+
+            // when
+            List<ReviewResponseDto> reviews = adminService.getReviewListByUserId(1L, 0);
+
+            // then
+            assertThat(reviews).isNotEmpty();
+            assertThat(reviews.get(0).getReview()).isEqualTo("Great product!");
+            assertThat(reviews.get(0).getImageUrls()).containsExactly("image1.jpg");
+            assertThat(reviews.get(0).getUsername()).isEqualTo("testUser");
+
+            // Verify method calls
+            verify(userRepository).findById(1L);
+            verify(fileUploadUtil).downloadImages(ImageType.REVIEW, reviewIds);
+        }
 
         @Test
         @DisplayName("작성자별 리뷰 조회 실패 테스트 - 유저 없음")

@@ -15,6 +15,7 @@ import com.supernova.fashionnova.domain.address.dto.AddressRequestDto;
 import com.supernova.fashionnova.domain.address.dto.AddressResponseDto;
 import com.supernova.fashionnova.domain.user.User;
 import java.util.List;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -32,6 +33,7 @@ class AddressServiceTest {
     private AddressService addressService;
 
     @Test
+    @DisplayName("배송지 추가 테스트")
     void addAddressTest() {
 
         // given
@@ -54,6 +56,7 @@ class AddressServiceTest {
     }
 
     @Test
+    @DisplayName("배송지 목록 조회 테스트")
     void getAddressListTest() {
 
         // given
@@ -61,7 +64,8 @@ class AddressServiceTest {
         Address address = Mockito.mock(Address.class);
         given(address.getName()).willReturn("집");
 
-        given(addressRepository.findByUserOrderByDefaultAddressDesc(user)).willReturn(List.of(address));
+        given(addressRepository.findByUserOrderByDefaultAddressDesc(user))
+            .willReturn(List.of(address));
 
         // when
         List<AddressResponseDto> result = addressService.getAddressList(user);
@@ -76,6 +80,7 @@ class AddressServiceTest {
     }
 
     @Test
+    @DisplayName("기본 배송지 설정 테스트")
     void updateDefaultAddressTest() {
 
         // given
@@ -86,7 +91,8 @@ class AddressServiceTest {
         addressService.updateDefaultAddress(user, requestDto);
 
         // then
-        verify(addressRepository, times(1)).updateDefaultAddress(user.getId(), requestDto.getAddressId());
+        verify(addressRepository, times(1))
+            .updateDefaultAddress(user.getId(), requestDto.getAddressId());
 
     }
 

@@ -78,7 +78,8 @@ class MileageControllerTest {
 
         List<MileageResponseDto> responseDtoList = List.of(responseDto);
 
-        given(mileageService.getMileageHistoryList(any(User.class), eq(page))).willReturn(responseDtoList);
+        given(mileageService.getMileageHistoryList(any(User.class), eq(page)))
+            .willReturn(responseDtoList);
 
         // when
         ResultActions result = mockMvc.perform(get(baseUrl)

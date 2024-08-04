@@ -182,4 +182,5 @@ class CartControllerTest {
             .andExpect(content().string("장바구니 비우기 완료"));
         verify(cartService).clearCart(any(User.class));
     }
+
 }

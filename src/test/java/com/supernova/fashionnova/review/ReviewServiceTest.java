@@ -124,12 +124,13 @@ class ReviewServiceTest {
         @DisplayName("리뷰 등록 성공 테스트")
         void AddReviewTest1() {
             // given
-            given(ordersRepository.existsByUserIdAndProductId(anyLong(), anyLong())).willReturn(true);
+            given(ordersRepository.existsByUserIdAndProductId(anyLong(), anyLong()))
+                .willReturn(true);
             when(productRepository.findById(anyLong())).thenReturn(Optional.of(product));
             when(reviewRepository.save(any(Review.class))).thenReturn(review);
 
             // when
-            reviewService.addReview(user, reviewRequestDto,null);
+            reviewService.addReview(user, reviewRequestDto, null);
 
             // then
             verify(ordersRepository).existsByUserIdAndProductId(anyLong(), anyLong());
@@ -141,22 +142,25 @@ class ReviewServiceTest {
         @DisplayName("리뷰 등록 실패 테스트 - 주문 내역 없음")
         void AddReviewTest2() {
             // given
-            given(ordersRepository.existsByUserIdAndProductId(anyLong(), anyLong())).willReturn(false);
+            given(ordersRepository.existsByUserIdAndProductId(anyLong(), anyLong()))
+                .willReturn(false);
 
             // when / then
-            assertThrows(CustomException.class, () -> reviewService.addReview(user, reviewRequestDto,null));
+            assertThrows(CustomException.class,
+                () -> reviewService.addReview(user, reviewRequestDto, null));
         }
 
         @Test
         @DisplayName("리뷰 등록 실패 테스트 - 상품 정보 없음")
         void AddReviewTest3() {
             // given
-            given(ordersRepository.existsByUserIdAndProductId(anyLong(), anyLong())).willReturn(true);
+            given(ordersRepository.existsByUserIdAndProductId(anyLong(), anyLong()))
+                .willReturn(true);
             given(productRepository.findById(anyLong())).willReturn(Optional.empty());
 
             // when / then
             CustomException exception = assertThrows(
-                CustomException.class, () -> reviewService.addReview(user, reviewRequestDto,null));
+                CustomException.class, () -> reviewService.addReview(user, reviewRequestDto, null));
             assertThat(exception.getErrorType()).isEqualTo(ErrorType.NOT_FOUND_PRODUCT);
         }
     }
@@ -173,7 +177,8 @@ class ReviewServiceTest {
             List<Review> reviewPage = List.of(review);
 
             lenient().when(productRepository.findById(anyLong())).thenReturn(Optional.of(product));
-            lenient().when(reviewRepository.findByProduct(any(Product.class), any(Pageable.class))).thenReturn(reviewPage);
+            lenient().when(reviewRepository.findByProduct(any(Product.class), any(Pageable.class)))
+                .thenReturn(reviewPage);
 
             // when
             List<ReviewResponseDto> result = reviewService.getReviewsByProductId(1L, pageable);
@@ -190,7 +195,8 @@ class ReviewServiceTest {
             Pageable pageable = mock(Pageable.class);
             Page<Review> reviewPage = new PageImpl<>(List.of(mock(Review.class)));
 
-            when(reviewRepository.findByUser(any(User.class), any(Pageable.class))).thenReturn(reviewPage);
+            when(reviewRepository.findByUser(any(User.class), any(Pageable.class)))
+                .thenReturn(reviewPage);
 
             // when
             Page<Review> result = reviewService.getReviewsByUser(user, pageable);
@@ -208,7 +214,8 @@ class ReviewServiceTest {
         @DisplayName("리뷰 수정 성공 테스트")
         void UpdateReviewTest1() {
             // given
-            lenient().when(reviewRepository.findByIdAndUser(anyLong(), any(User.class))).thenReturn(Optional.of(review));
+            lenient().when(reviewRepository.findByIdAndUser(anyLong(), any(User.class)))
+                .thenReturn(Optional.of(review));
 
             // when
             reviewService.updateReview(user, reviewUpdateRequestDto);
@@ -221,10 +228,12 @@ class ReviewServiceTest {
         @DisplayName("리뷰 수정 실패 테스트 - 리뷰 없음")
         void UpdateReviewTest2() {
             // given
-            lenient().when(reviewRepository.findByIdAndUser(anyLong(), any(User.class))).thenReturn(Optional.empty());
+            lenient().when(reviewRepository.findByIdAndUser(anyLong(), any(User.class)))
+                .thenReturn(Optional.empty());
 
             // when / then
-            assertThrows(CustomException.class, () -> reviewService.updateReview(user, reviewUpdateRequestDto));
+            assertThrows(CustomException.class,
+                () -> reviewService.updateReview(user, reviewUpdateRequestDto));
         }
     }
 
@@ -259,5 +268,7 @@ class ReviewServiceTest {
             // when / then
             assertThrows(CustomException.class, () -> reviewService.deleteReview(user, 1L));
         }
+
     }
+
 }

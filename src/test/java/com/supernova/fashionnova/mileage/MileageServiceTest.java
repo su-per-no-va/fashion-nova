@@ -43,10 +43,12 @@ class MileageServiceTest {
         List<Order> orderList = Collections.singletonList(order);
         Page<Order> ordersPage = new PageImpl<>(orderList);
 
-        given(ordersRepository.findByUser(any(User.class), any(Pageable.class))).willReturn(ordersPage);
+        given(ordersRepository.findByUser(any(User.class), any(Pageable.class)))
+            .willReturn(ordersPage);
 
         // when
-        List<MileageResponseDto> responseDtoList = mileageService.getMileageHistoryList(mockUser, page);
+        List<MileageResponseDto> responseDtoList =
+            mileageService.getMileageHistoryList(mockUser, page);
 
         // then
         assertThat(responseDtoList).isNotNull();

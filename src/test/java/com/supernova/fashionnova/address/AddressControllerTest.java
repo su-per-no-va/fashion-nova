@@ -24,6 +24,7 @@ import com.supernova.fashionnova.global.security.UserDetailsImpl;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +73,7 @@ class AddressControllerTest {
     }
 
     @Test
+    @DisplayName("배송지 추가 테스트")
     void addAddressTest() throws Exception {
 
         // given
@@ -89,8 +91,8 @@ class AddressControllerTest {
         // when * then
         mockMvc.perform(post(baseUrl)
                 .with(csrf())
-            .content(objectMapper.writeValueAsString(requestDto))
-            .contentType(MediaType.APPLICATION_JSON))
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON))
             .andExpectAll(
                 status().isCreated(),
                 content().string("배송지 추가 성공")
@@ -99,6 +101,7 @@ class AddressControllerTest {
     }
 
     @Test
+    @DisplayName("배송지 목록 조회 테스트")
     void getAddressListTest() throws Exception {
 
         // given
@@ -139,6 +142,7 @@ class AddressControllerTest {
     }
 
     @Test
+    @DisplayName("기본 배송지 설정 테스트")
     void updateDefaultAddressTest() throws Exception {
 
         // given
@@ -149,8 +153,8 @@ class AddressControllerTest {
         // when * then
         mockMvc.perform(put(baseUrl)
                 .with(csrf())
-            .content(objectMapper.writeValueAsString(requestDto))
-            .contentType(MediaType.APPLICATION_JSON))
+                .content(objectMapper.writeValueAsString(requestDto))
+                .contentType(MediaType.APPLICATION_JSON))
             .andExpectAll(
                 status().isOk(),
                 content().contentType("text/plain;charset=UTF-8"),

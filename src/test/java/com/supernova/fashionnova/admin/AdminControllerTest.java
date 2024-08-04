@@ -102,41 +102,42 @@ class AdminControllerTest {
         @Test
         @DisplayName("작성자별 리뷰 조회 성공 테스트")
         @WithMockUser(roles = "ADMIN")
-        void getReviewsByUserId1 () throws Exception {
-        // given
-        List<ReviewResponseDto> reviews = Collections.singletonList(new ReviewResponseDto(review,null));
+        void getReviewsByUserId1() throws Exception {
+            // given
+            List<ReviewResponseDto> reviews =
+                Collections.singletonList(new ReviewResponseDto(review, null));
 
-        when(adminService.getReviewListByUserId(anyLong(), anyInt())).thenReturn(reviews);
+            when(adminService.getReviewListByUserId(anyLong(), anyInt())).thenReturn(reviews);
 
-        // when
-        ResultActions result = mockMvc.perform(get(baseUrl + "/reviews/{userId}", user.getId())
-                .param("page", "0")
-                .contentType(MediaType.APPLICATION_JSON)
-                .with(csrf()))
-            .andDo(print());
+            // when
+            ResultActions result = mockMvc.perform(get(baseUrl + "/reviews/{userId}", user.getId())
+                    .param("page", "0")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .with(csrf()))
+                .andDo(print());
 
-        // then
-        result.andExpect(status().isOk())
-            .andExpect(content().json(objectMapper.writeValueAsString(reviews)));
-    }
+            // then
+            result.andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(reviews)));
+        }
 
         @Test
         @DisplayName("작성자별 리뷰 조회 실패 테스트 - 유저 없음")
         @WithMockUser(roles = "ADMIN")
-        void getReviewsByUserId2 () throws Exception {
-        // given
-        when(adminService.getReviewListByUserId(anyLong(), anyInt())).thenThrow(
-            new CustomException(ErrorType.NOT_FOUND_USER));
+        void getReviewsByUserId2() throws Exception {
+            // given
+            when(adminService.getReviewListByUserId(anyLong(), anyInt())).thenThrow(
+                new CustomException(ErrorType.NOT_FOUND_USER));
 
-        // when
-        ResultActions result = mockMvc.perform(get(baseUrl + "/reviews/{userId}", user.getId())
-                .param("page", "0")
-                .contentType(MediaType.APPLICATION_JSON)
-                .with(csrf()))
-            .andDo(print());
+            // when
+            ResultActions result = mockMvc.perform(get(baseUrl + "/reviews/{userId}", user.getId())
+                    .param("page", "0")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .with(csrf()))
+                .andDo(print());
 
-        // then
-        result.andExpect(status().isNotFound());
+            // then
+            result.andExpect(status().isNotFound());
         }
     }
 

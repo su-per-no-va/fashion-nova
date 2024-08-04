@@ -52,6 +52,7 @@ class CartServiceTest {
     private CartService cartService;
 
     private User user;
+
     @BeforeEach
     void setUp() {
         this.user = User.builder()
@@ -81,7 +82,8 @@ class CartServiceTest {
             ProductDetail productDetail = mock(ProductDetail.class);
 
             given(productRepository.findById(anyLong())).willReturn(Optional.of(product));
-            given(productDetailRepository.findByProductAndSizeAndColor(any(Product.class), anyString(), anyString())).willReturn(Optional.of(productDetail));
+            given(productDetailRepository.findByProductAndSizeAndColor(any(Product.class),
+                anyString(), anyString())).willReturn(Optional.of(productDetail));
             given(productDetail.getQuantity()).willReturn(10L);
             given(productDetail.getStatus()).willReturn(ProductStatus.ACTIVE);
 
@@ -105,7 +107,7 @@ class CartServiceTest {
 
             given(productRepository.findById(anyLong())).willReturn(Optional.empty());
 
-            // when / then
+            // when * then
             assertThrows(CustomException.class, () -> cartService.addCart(user, requestDto));
         }
 
@@ -124,12 +126,14 @@ class CartServiceTest {
             ProductDetail productDetail = mock(ProductDetail.class);
 
             given(productRepository.findById(anyLong())).willReturn(Optional.of(product));
-            given(productDetailRepository.findByProductAndSizeAndColor(any(Product.class), anyString(), anyString())).willReturn(Optional.of(productDetail));
+            given(productDetailRepository.findByProductAndSizeAndColor(any(Product.class),
+                anyString(), anyString())).willReturn(Optional.of(productDetail));
             given(productDetail.getQuantity()).willReturn(0L);
 
-            // when / then
+            // when * then
             assertThrows(CustomException.class, () -> cartService.addCart(user, requestDto));
         }
+
     }
 
     @Nested
@@ -163,8 +167,8 @@ class CartServiceTest {
             assertThat(items).isNotEmpty();
             assertThat(items.get(0).getProduct()).isEqualTo("꽃무늬 원피스");
             assertThat(cartResponseDto.getTotalPrice()).isEqualTo(100);
-
         }
+
     }
 
     @Nested
@@ -190,11 +194,15 @@ class CartServiceTest {
             given(product.getPrice()).willReturn(5000L); // 상품의 가격 설정
 
             given(currentProductDetail.getProduct()).willReturn(product);
-            given(productDetailRepository.findById(anyLong())).willReturn(Optional.of(currentProductDetail));
-            given(productDetailRepository.findByProductAndSizeAndColor(any(Product.class), anyString(), anyString())).willReturn(Optional.of(newProductDetail));
+            given(productDetailRepository.findById(anyLong())).willReturn(
+                Optional.of(currentProductDetail));
+            given(productDetailRepository.findByProductAndSizeAndColor(any(Product.class),
+                anyString(), anyString())).willReturn(Optional.of(newProductDetail));
             given(newProductDetail.getQuantity()).willReturn(10L);
-            given(cartRepository.findByUserAndProductDetail(any(User.class), eq(currentProductDetail))).willReturn(Optional.of(cart));
-            given(cartRepository.findByUserAndProductDetail(any(User.class), eq(newProductDetail))).willReturn(Optional.empty());
+            given(cartRepository.findByUserAndProductDetail(any(User.class),
+                eq(currentProductDetail))).willReturn(Optional.of(cart));
+            given(cartRepository.findByUserAndProductDetail(any(User.class),
+                eq(newProductDetail))).willReturn(Optional.empty());
 
             // when
             assertDoesNotThrow(() -> cartService.updateCart(user, requestDto));
@@ -234,13 +242,16 @@ class CartServiceTest {
             ProductDetail newProductDetail = mock(ProductDetail.class);
 
             given(currentProductDetail.getProduct()).willReturn(product);
-            given(productDetailRepository.findById(anyLong())).willReturn(Optional.of(currentProductDetail));
-            given(productDetailRepository.findByProductAndSizeAndColor(any(Product.class), anyString(), anyString())).willReturn(Optional.of(newProductDetail));
+            given(productDetailRepository.findById(anyLong())).willReturn(
+                Optional.of(currentProductDetail));
+            given(productDetailRepository.findByProductAndSizeAndColor(any(Product.class),
+                anyString(), anyString())).willReturn(Optional.of(newProductDetail));
             given(newProductDetail.getQuantity()).willReturn(0L);
 
             // when / then
             assertThrows(CustomException.class, () -> cartService.updateCart(user, requestDto));
         }
+
     }
 
     @Nested
@@ -254,8 +265,10 @@ class CartServiceTest {
             ProductDetail productDetail = mock(ProductDetail.class);
             Cart cart = new Cart(1, 100L, user, productDetail);
 
-            given(productDetailRepository.findById(anyLong())).willReturn(Optional.of(productDetail));
-            given(cartRepository.findByUserAndProductDetail(any(User.class), any(ProductDetail.class))).willReturn(Optional.of(cart));
+            given(productDetailRepository.findById(anyLong())).willReturn(
+                Optional.of(productDetail));
+            given(cartRepository.findByUserAndProductDetail(any(User.class),
+                any(ProductDetail.class))).willReturn(Optional.of(cart));
 
             // when
             assertDoesNotThrow(() -> cartService.deleteFromCart(user, productDetailId));
@@ -273,7 +286,8 @@ class CartServiceTest {
             given(productDetailRepository.findById(anyLong())).willReturn(Optional.empty());
 
             // when / then
-            assertThrows(CustomException.class, () -> cartService.deleteFromCart(user, productDetailId));
+            assertThrows(CustomException.class,
+                () -> cartService.deleteFromCart(user, productDetailId));
         }
 
         @Test
@@ -283,12 +297,16 @@ class CartServiceTest {
             Long productDetailId = 1L;
             ProductDetail productDetail = mock(ProductDetail.class);
 
-            given(productDetailRepository.findById(anyLong())).willReturn(Optional.of(productDetail));
-            given(cartRepository.findByUserAndProductDetail(any(User.class), any(ProductDetail.class))).willReturn(Optional.empty());
+            given(productDetailRepository.findById(anyLong())).willReturn(
+                Optional.of(productDetail));
+            given(cartRepository.findByUserAndProductDetail(any(User.class),
+                any(ProductDetail.class))).willReturn(Optional.empty());
 
             // when / then
-            assertThrows(CustomException.class, () -> cartService.deleteFromCart(user, productDetailId));
+            assertThrows(CustomException.class,
+                () -> cartService.deleteFromCart(user, productDetailId));
         }
+
     }
 
     @Nested
@@ -321,5 +339,7 @@ class CartServiceTest {
             // when / then
             assertThrows(CustomException.class, () -> cartService.clearCart(user));
         }
+
     }
+
 }

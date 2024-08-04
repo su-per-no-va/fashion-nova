@@ -69,7 +69,7 @@ class ProductControllerTest {
 
     @Test
     @DisplayName("조회")
-    void getProductListTest() throws Exception{
+    void getProductListTest() throws Exception {
         // given
         int page = 1;
 
@@ -79,10 +79,11 @@ class ProductControllerTest {
         List<Product> products = new ArrayList<>(Arrays.asList(product1, product2));
         Page<Product> productPage = new PageImpl<>(products);
         Page<ProductResponseDto> responseDto = productPage.map(ProductResponseDto::new);
-        when(productService.getProductList(page-1, null, null, null, null)).thenReturn(responseDto);
+        when(productService.getProductList(page - 1, null, null, null, null))
+            .thenReturn(responseDto);
 
         // when * then
-        mockMvc.perform(get(baseUrl+"/product")
+        mockMvc.perform(get(baseUrl + "/product")
                 .param("sort", "")
                 .param("category", "")
                 .param("size", "")
@@ -94,6 +95,6 @@ class ProductControllerTest {
                 status().isOk()
             );
 
-
     }
+
 }
