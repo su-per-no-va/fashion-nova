@@ -27,7 +27,6 @@ public class ProductService {
     public Page<ProductResponseDto> getProductList(String sorted, String category, String size, String color, String search, int page) {
         Sort.Direction direction = Sort.Direction.DESC;
         Sort sort = Sort.by(direction, sorted);
-        System.out.println("[[[[[[[[[[[[" + search);
         Pageable pageable = PageRequest.of(page, 10, sort);
         
         return productRepository.findProductByOrdered(sorted, category, size, color, search, pageable);
