@@ -7,11 +7,11 @@ import lombok.Getter;
 @Getter
 public class WishResponseDto {
 
-    private final Long wishId;
+    private final Long id;
     private final ProductResponseDto product;
 
     public WishResponseDto(Wish wish) {
-        this.wishId = wish.getId();
+        this.id = wish.getId();
         this.product = new ProductResponseDto(wish.getProduct());
     }
 

@@ -9,6 +9,7 @@ import lombok.Getter;
 @Getter
 public class UserResponseDto {
 
+    private final Long id;
     private final String userName;
     private final String name;
     private final String email;
@@ -19,6 +20,7 @@ public class UserResponseDto {
     private final LocalDateTime createdAt;
 
     public UserResponseDto(User user) {
+        this.id = user.getId();
         this.userName = user.getUserName();
         this.name = user.getName();
         this.email = user.getEmail();
