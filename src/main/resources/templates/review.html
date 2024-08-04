@@ -91,13 +91,13 @@
             <i class="zmdi zmdi-search"></i>
           </div>
 
-          <a href="shoping-cart.html"
+          <a id="cart-icon" href="shoping-cart.html"
              class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
              data-notify="2">
             <i class="zmdi zmdi-shopping-cart"></i>
           </a>
 
-          <a href="wish-list.html" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
+          <a id="wish-icon" href="wish-list.html" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
              data-notify="0">
             <i class="zmdi zmdi-favorite-outline"></i>
           </a>
@@ -300,6 +300,7 @@
   });
 </script>
 <!--===============================================================================================-->
+<script src="/js/common.js"></script>
 <script src="../js/main.js"></script>
 <!--===============================================================================================-->
 <script>
@@ -349,5 +350,52 @@
     });
   }
 </script>
-</body>
-</html>
+<script>
+  $(document).ready(function () {
+
+    auth = localStorage.getItem('accessToken');
+    let refreshToken = localStorage.getItem('refreshToken');
+    console.log("엑세스 토큰: " + auth);
+    console.log("리프레시 토큰: " + refreshToken);
+
+    if (auth !== undefined && auth !== null) {
+      $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+        console.log("auth : " + auth);
+        jqXHR.setRequestHeader('Authorization', auth);
+        jqXHR.setRequestHeader('Authorization-refresh', refreshToken);
+      });
+    } else {
+      alert("로그인 후 이용해 주세요");
+      window.location.href = "login.html";
+    }
+
+    /* 장바구니 아이콘 개수 */
+    window.common.getShoppingCart()
+    .done(function (response) {
+      if (response) {
+        $('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
+      } else {
+        // no response
+      }
+    })
+    .fail(function (error) {
+      console.log(error.message)
+    });
+
+    /* 찜 아이콘 개수 */
+    window.common.getWishList()
+    .done(function (response) {
+      if (response) {
+        $('a#wish-icon')[0].dataset.notify = response.length;
+      } else {
+        // no response
+      }
+    })
+    .fail(function (error) {
+      console.log(error.message)
+    });
+    fetchWishList()
+  });
+  </script>
+  </body>
+  </html>
