@@ -169,7 +169,7 @@ class CartControllerTest {
     @DisplayName("장바구니 비우기 테스트")
     void clearCartTest() throws Exception {
         // given
-        doNothing().when(cartService).clearCart(any(User.class));
+        doNothing().when(cartService).clearCart(any(Long.class));
 
         // when
         ResultActions result = mockMvc.perform(delete(baseUrl + "/delete")
@@ -180,7 +180,7 @@ class CartControllerTest {
         // then
         result.andExpect(status().isOk())
             .andExpect(content().string("장바구니 비우기 완료"));
-        verify(cartService).clearCart(any(User.class));
+        verify(cartService).clearCart(any(Long.class));
     }
 
 }

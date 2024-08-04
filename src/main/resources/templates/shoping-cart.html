@@ -343,7 +343,7 @@
 			// 장바구니 비우기
 			$(document).on('click', '.empty-cart-button', function() {
 				$.ajax({
-					url: 'http://localhost:8080/carts/delete',
+					url: '/carts/delete',
 					type: 'DELETE',
 					success: function(response) {
 						if (response === "장바구니 비우기 완료") {
@@ -387,7 +387,7 @@
 
 
 			$.ajax({
-				url: 'http://localhost:8080/carts',
+				url: '/carts',
 				type: 'DELETE',
 				contentType: 'application/json',
 				data: JSON.stringify(deleteRequestDto),
@@ -431,7 +431,7 @@
 		function fetchCartItems() {
 			$.ajax({
 				type: 'GET',
-				url: 'http://localhost:8080/carts',
+				url: '/carts',
 				success: function(response) {
 					updateCartTable(response);
 				},

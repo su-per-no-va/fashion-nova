@@ -582,7 +582,7 @@
     console.log(finalFormData);
     $.ajax({
       type: 'POST',
-      url: 'http://localhost:8080/questions',
+      url: '/questions',
       data: finalFormData,
       processData: false, // FormData를 있는 그대로 전송하도록 설정
       contentType: false, // multipart/form-data로 전송되도록 설정
