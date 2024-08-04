@@ -79,7 +79,7 @@ class ProductControllerTest {
         List<Product> products = new ArrayList<>(Arrays.asList(product1, product2));
         Page<Product> productPage = new PageImpl<>(products);
         Page<ProductResponseDto> responseDto = productPage.map(ProductResponseDto::new);
-        when(productService.getProductList(null, null, null, null, page))
+        when(productService.getProductList(null, null, null, null, null, page))
             .thenReturn(responseDto);
 
         // when * then

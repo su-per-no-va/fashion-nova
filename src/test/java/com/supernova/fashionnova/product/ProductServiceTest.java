@@ -54,12 +54,12 @@ class ProductServiceTest {
             .map(ProductResponseDto::new)
             .collect(Collectors.toList());
         Page<ProductResponseDto> pageDto = new PageImpl<>(productDtoList, pageable, productDtoList.size());
-        given(productRepository.findProductByOrdered("high_price", null, null, null, pageable))
+        given(productRepository.findProductByOrdered("high_price", null, null, null, null, pageable))
             .willReturn(pageDto);
 
         //when
         Page<ProductResponseDto> result =
-            productService.getProductList("high_price", null, null, null, 1);
+            productService.getProductList("high_price", null, null, null, null, 1);
 
         //then
         assertNotNull(result);
