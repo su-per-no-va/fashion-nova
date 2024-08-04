@@ -1,4 +1,4 @@
-package com.supernova.fashionnova.order.dto;
+package com.supernova.fashionnova.domain.order.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.supernova.fashionnova.order;
+package com.supernova.fashionnova.domain.order;
 
 import java.util.List;
 import java.util.Optional;

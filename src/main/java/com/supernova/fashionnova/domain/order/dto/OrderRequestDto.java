@@ -1,8 +1,7 @@
-package com.supernova.fashionnova.order.dto;
+package com.supernova.fashionnova.domain.order.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Getter

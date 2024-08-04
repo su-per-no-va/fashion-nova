@@ -1,18 +1,11 @@
-package com.supernova.fashionnova.order;
+package com.supernova.fashionnova.domain.order;
 
-import com.supernova.fashionnova.cart.Cart;
-import com.supernova.fashionnova.cart.CartRepository;
+import com.supernova.fashionnova.domain.cart.CartRepository;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
-import com.supernova.fashionnova.order.dto.OrderDetailResponseDto;
-import com.supernova.fashionnova.product.ProductDetailRepository;
-import com.supernova.fashionnova.product.ProductRepository;
-import com.supernova.fashionnova.security.UserDetailsImpl;
-import com.supernova.fashionnova.user.User;
+import com.supernova.fashionnova.domain.user.User;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
 @Service

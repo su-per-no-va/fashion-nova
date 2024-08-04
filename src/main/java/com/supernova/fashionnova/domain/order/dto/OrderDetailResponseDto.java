@@ -1,12 +1,6 @@
-package com.supernova.fashionnova.order.dto;
+package com.supernova.fashionnova.domain.order.dto;
 
-import com.supernova.fashionnova.order.OrderDetail;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Getter
 public class OrderDetailResponseDto {

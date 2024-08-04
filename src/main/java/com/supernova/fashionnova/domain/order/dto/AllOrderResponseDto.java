@@ -1,8 +1,8 @@
-package com.supernova.fashionnova.order.dto;
+package com.supernova.fashionnova.domain.order.dto;
 
-import com.supernova.fashionnova.address.DeliveryStatus;
-import com.supernova.fashionnova.order.OrderDetail;
-import com.supernova.fashionnova.order.OrderStatus;
+import com.supernova.fashionnova.domain.delivery.DeliveryStatus;
+import com.supernova.fashionnova.domain.order.OrderDetail;
+import com.supernova.fashionnova.domain.order.OrderStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;

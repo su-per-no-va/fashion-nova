@@ -1,8 +1,5 @@
 package com.supernova.fashionnova.domain.cart;
 
-import com.supernova.fashionnova.order.QOrder;
-import com.supernova.fashionnova.product.ProductDetail;
-import com.supernova.fashionnova.user.User;
 import com.supernova.fashionnova.domain.product.ProductDetail;
 import com.supernova.fashionnova.domain.user.User;
 import java.util.List;

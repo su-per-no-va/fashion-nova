@@ -1,12 +1,10 @@
-package com.supernova.fashionnova.order;
+package com.supernova.fashionnova.domain.order;
 
 import com.supernova.fashionnova.global.util.ResponseUtil;
-import com.supernova.fashionnova.order.dto.AllOrderResponseDto;
-import com.supernova.fashionnova.order.dto.OrderRequestDto;
-import com.supernova.fashionnova.order.dto.OrderResponseDto;
-import com.supernova.fashionnova.security.UserDetailsImpl;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import com.supernova.fashionnova.domain.order.dto.AllOrderResponseDto;
+import com.supernova.fashionnova.domain.order.dto.OrderRequestDto;
+import com.supernova.fashionnova.domain.order.dto.OrderResponseDto;
+import com.supernova.fashionnova.global.security.UserDetailsImpl;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;

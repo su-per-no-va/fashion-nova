@@ -1,18 +1,18 @@
-package com.supernova.fashionnova.order;
+package com.supernova.fashionnova.domain.order;
 
-import com.supernova.fashionnova.address.AddressRepository;
-import com.supernova.fashionnova.address.DeliveryStatus;
-import com.supernova.fashionnova.cart.Cart;
-import com.supernova.fashionnova.cart.CartRepository;
+import com.supernova.fashionnova.domain.address.AddressRepository;
+import com.supernova.fashionnova.domain.delivery.DeliveryStatus;
+import com.supernova.fashionnova.domain.cart.Cart;
+import com.supernova.fashionnova.domain.cart.CartRepository;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
-import com.supernova.fashionnova.order.dto.AllOrderResponseDto;
-import com.supernova.fashionnova.order.dto.OrderRequestDto;
-import com.supernova.fashionnova.product.Product;
-import com.supernova.fashionnova.product.ProductDetail;
-import com.supernova.fashionnova.product.ProductDetailRepository;
-import com.supernova.fashionnova.product.ProductRepository;
-import com.supernova.fashionnova.user.User;
+import com.supernova.fashionnova.domain.order.dto.AllOrderResponseDto;
+import com.supernova.fashionnova.domain.order.dto.OrderRequestDto;
+import com.supernova.fashionnova.domain.product.Product;
+import com.supernova.fashionnova.domain.product.ProductDetail;
+import com.supernova.fashionnova.domain.product.ProductDetailRepository;
+import com.supernova.fashionnova.domain.product.ProductRepository;
+import com.supernova.fashionnova.domain.user.User;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +50,6 @@ public class OrderService {
         - orderRequestDto.getUsedMileage();
 
     // OrderRequestDto -> 주좌길 16-3
-    // UserDetail.getUser().getAddress() -> JWT 에 들어있는 현재 사용자의 주소 가 들어간다 ~
-    // 정근 id 로그인 -> 정근 user 주소가 들어간다 ~
     Order order= Order.builder()
         .cost(totalPrice)
         .orderStatus(OrderStatus.Progress)
@@ -120,11 +118,11 @@ public class OrderService {
 
     List<Order> showOrder = new ArrayList<>();
     for(Order filterOrder : order){
-      if(filterOrder.getOrderStatus().equals(OrderStatus.SUCCESS)){
-        showOrder.add(filterOrder);
-      }
-      else if(filterOrder.getOrderStatus().equals(OrderStatus.Progress)){
+      if(filterOrder.getOrderStatus().equals(OrderStatus.Progress)){
         ordersRepository.delete(filterOrder);
+      }
+      else {
+        showOrder.add(filterOrder);
       }
     }
     return showOrder;

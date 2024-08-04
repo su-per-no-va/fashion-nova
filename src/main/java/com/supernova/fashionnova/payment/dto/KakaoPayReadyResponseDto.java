@@ -1,6 +1,5 @@
 package com.supernova.fashionnova.payment.dto;
 
-import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
