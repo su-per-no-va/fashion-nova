@@ -9,5 +9,4 @@ public enum UserStatus {
     MEMBER,
     NON_MEMBER,
     BLOCKED_MEMBER
-
 }

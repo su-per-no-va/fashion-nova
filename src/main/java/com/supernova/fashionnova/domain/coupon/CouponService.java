@@ -22,7 +22,6 @@ public class CouponService {
     public List<CouponResponseDto> getCouponList(User user) {
 
         return getCouponListByStatus(user, CouponStatus.ACTIVE);
-
     }
 
     /**
@@ -34,7 +33,6 @@ public class CouponService {
     public List<CouponResponseDto> getUsedCouponList(User user) {
 
         return getCouponListByStatus(user, CouponStatus.INACTIVE);
-
     }
 
     private List<CouponResponseDto> getCouponListByStatus(User user, CouponStatus status) {
@@ -44,7 +42,6 @@ public class CouponService {
         return coupons.stream()
             .map(CouponResponseDto::new)
             .collect(Collectors.toList());
-
     }
 
 }

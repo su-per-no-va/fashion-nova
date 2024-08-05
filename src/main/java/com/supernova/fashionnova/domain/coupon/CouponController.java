@@ -31,7 +31,6 @@ public class CouponController {
         List<CouponResponseDto> responseDto = couponService.getCouponList(userDetails.getUser());
 
         return ResponseUtil.of(HttpStatus.OK, responseDto);
-
     }
 
     /**
@@ -46,7 +45,6 @@ public class CouponController {
         List<CouponResponseDto> responseDto = couponService.getUsedCouponList(userDetails.getUser());
 
         return ResponseUtil.of(HttpStatus.OK, responseDto);
-
     }
 
 }

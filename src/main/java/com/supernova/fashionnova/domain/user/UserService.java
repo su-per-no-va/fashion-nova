@@ -31,6 +31,7 @@ public class UserService {
      * @throws CustomException DUPLICATED_EMAIL 중복된 이메일 일때
      */
     public void signup(SignupRequestDto requestDto) {
+
         // 중복체크
         checkDuplicate(requestDto);
         String encodedPassword = passwordEncoder.encode(requestDto.getPassword());
@@ -42,8 +43,8 @@ public class UserService {
             .email(requestDto.getEmail())
             .phone(requestDto.getPhone())
             .build();
-        userRepository.save(user);
 
+        userRepository.save(user);
     }
 
     /**
@@ -55,7 +56,6 @@ public class UserService {
 
         user.updateRefreshToken("");
         userRepository.save(user);
-
     }
 
     /**
@@ -66,9 +66,9 @@ public class UserService {
     public void withdraw(User user) {
 
         user.updateStatus(UserStatus.NON_MEMBER);
+
         user.updateRefreshToken("");
         userRepository.save(user);
-
     }
 
     /**
@@ -80,7 +80,6 @@ public class UserService {
     public UserResponseDto getUser(User user) {
 
         return new UserResponseDto(user);
-
     }
 
     /**
@@ -116,8 +115,7 @@ public class UserService {
     public UserResponseDto updateUser(UserUpdateRequestDto requestDto, User user) {
 
         User updateUser = userRepository.findByUserName(user.getUserName())
-            .orElseThrow(()-> new CustomException(ErrorType.NOT_FOUND_USER)
-            );
+            .orElseThrow(()-> new CustomException(ErrorType.NOT_FOUND_USER));
 
         String encodedPassword = passwordEncoder.encode(requestDto.getPassword());
         updateUser.updateUser(requestDto,encodedPassword);
@@ -125,19 +123,18 @@ public class UserService {
         return new UserResponseDto(user);
     }
 
-
     private void checkDuplicate(SignupRequestDto requestDto) {
 
         // userName 중복체크
         if (userRepository.existsByUserName(requestDto.getUserName())) {
             throw new CustomException(ErrorType.DUPLICATED_USERNAME);
         }
+
         // email 중복체크
         if (userRepository.existsByEmail(requestDto.getEmail())) {
             throw new CustomException(ErrorType.DUPLICATED_EMAIL);
         }
 
     }
-
 
 }

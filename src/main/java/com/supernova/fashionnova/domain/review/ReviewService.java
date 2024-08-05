@@ -29,9 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
-
     private final ProductRepository productRepository;
-
     private final OrdersRepository ordersRepository;
 
     private final FileUploadUtil fileUploadUtil;
@@ -51,11 +49,9 @@ public class ReviewService {
 
         Product product = getProduct(reviewRequestDto.getProductId());
 
-        Review review = new Review(user, product, reviewRequestDto.getReview(),
-            reviewRequestDto.getRating());
+        Review review = new Review(user, product, reviewRequestDto.getReview(), reviewRequestDto.getRating());
 
         reviewRepository.save(review);
-
 
         product.increaseReview();
 
@@ -76,6 +72,7 @@ public class ReviewService {
      */
     @Transactional(readOnly = true)
     public List<ReviewResponseDto> getReviewsByProductId(Long productId, Pageable pageable) {
+
         Product product = getProduct(productId);
         List<Review> reviews = reviewRepository.findByProduct(product, pageable);
 
@@ -103,6 +100,7 @@ public class ReviewService {
      */
     @Transactional(readOnly = true)
     public Page<Review> getReviewsByUser(User user, Pageable pageable) {
+
         return reviewRepository.findByUser(user, pageable);
     }
 
@@ -145,6 +143,7 @@ public class ReviewService {
      */
     @Transactional
     public void deleteReview(User user, Long reviewId) {
+
         Review review = getReview(user, reviewId);
         //s3에서 찾아서 삭제
         fileUploadUtil.deleteImages(ImageType.REVIEW,reviewId);
