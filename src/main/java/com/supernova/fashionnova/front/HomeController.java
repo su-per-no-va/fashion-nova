@@ -111,11 +111,6 @@ public class HomeController {
         return "order-detail";
     }
 
-    @GetMapping("/payment-complete.html")
-    public String paymentComplete() {
-        return "payment-complete";
-    }
-
     @GetMapping("/my-question-detail.html")
     public String myQuestionDetail() {
         return "my-question-detail";
@@ -134,6 +129,8 @@ public class HomeController {
     @GetMapping("/my-coupon.html")
     public String myCoupon() {
         return "my-coupon";
+    }
+
     @GetMapping("/payments-completed")
     public String paymentsCompleted() {
         return "payments-completed";
