@@ -40,16 +40,18 @@ public class KakaoService {
 
     public List<String> kakaoLogin(String code)
         throws JsonProcessingException, UnsupportedEncodingException {
+
         // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getToken(code);
         log.info("인가코드 : " + code);
+
         // 2. 토큰으로 카카오 API 호출 : "액세스 토큰"으로 "카카오 사용자 정보" 가져오기
         KakaoUserInfoDto kakaoUserInfo = getKakaoUserInfo(accessToken);
 
         // 3. 필요시에 회원가입
-       User kakaoUser = registerKakaoUserIfNeeded(kakaoUserInfo);
+        User kakaoUser = registerKakaoUserIfNeeded(kakaoUserInfo);
 
-       // 4. JWT 토큰 반환
+        // 4. JWT 토큰 반환
         /*String generateToken = jwtUtil.generateToken(kakaoUser.getUserName(), ACCESS_TOKEN_EXPIRATION, ACCESS_TOKEN_TYPE);*/
 
         String accessToken2 =
@@ -67,6 +69,7 @@ public class KakaoService {
     }
 
     private String getToken(String code) throws JsonProcessingException {
+
         // 요청 URL 만들기
         URI uri = UriComponentsBuilder
             .fromUriString("https://kauth.kakao.com")
@@ -99,10 +102,12 @@ public class KakaoService {
 
         // HTTP 응답 (JSON) -> 액세스 토큰 파싱
         JsonNode jsonNode = new ObjectMapper().readTree(response.getBody());
+
         return jsonNode.get("access_token").asText();
     }
 
     private KakaoUserInfoDto getKakaoUserInfo(String accessToken) throws JsonProcessingException {
+
         log.info("엑세스 토큰 : " + accessToken);
         // 요청 URL 만들기
         URI uri = UriComponentsBuilder
@@ -131,16 +136,16 @@ public class KakaoService {
         JsonNode jsonNode = new ObjectMapper().readTree(response.getBody());
         System.out.println(jsonNode);
         Long id = jsonNode.get("id").asLong();
-        String nickname = jsonNode.get("properties")
-            .get("nickname").asText();
-        String email = jsonNode.get("kakao_account")
-            .get("email").asText();
+        String nickname = jsonNode.get("properties").get("nickname").asText();
+        String email = jsonNode.get("kakao_account").get("email").asText();
 
         log.info("카카오 사용자 정보: " + id + ", " + nickname + ", " + email);
+
         return new KakaoUserInfoDto(id, nickname, email);
     }
 
     private User registerKakaoUserIfNeeded(KakaoUserInfoDto kakaoUserInfo) {
+
         // DB 에 중복된 Kakao Id 가 있는지 확인
         Long kakaoId = kakaoUserInfo.getId();
         User kakaoUser = userRepository.findByKakaoId(kakaoId).orElse(null);
@@ -149,6 +154,7 @@ public class KakaoService {
             // 카카오 사용자 email 동일한 email 가진 회원이 있는지 확인
             String kakaoEmail = kakaoUserInfo.getEmail();
             User sameEmailUser = userRepository.findByEmail(kakaoEmail).orElse(null);
+
             if (sameEmailUser != null) {
                 kakaoUser = sameEmailUser;
                 // 기존 회원정보에 카카오 Id 추가
@@ -159,16 +165,16 @@ public class KakaoService {
                 String password = UUID.randomUUID().toString();
                 String encodedPassword = passwordEncoder.encode(password);
 
-
-
                 // email: kakao email
                 String email = kakaoUserInfo.getEmail();
 
-                kakaoUser = new User(kakaoUserInfo.getUsername(), kakaoUserInfo.getEmail(), encodedPassword, kakaoId);
+                kakaoUser = new User(kakaoUserInfo.getUsername(), kakaoUserInfo.getEmail(),
+                    encodedPassword, kakaoId);
             }
 
             userRepository.save(kakaoUser);
         }
+
         return kakaoUser;
     }
 
