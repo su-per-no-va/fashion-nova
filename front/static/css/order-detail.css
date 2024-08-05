@@ -1,0 +1,24 @@
+.table-shopping-cart-price {
+  width: 50%; /* 표의 너비를 줄입니다 */
+  margin: 0 auto; /* 표를 가운데 정렬합니다 */
+}
+
+.table-shopping-cart-price .column-1,
+.table-shopping-cart-price .column-2 {
+  padding: 10px 20px; /* 셀에 패딩을 추가하여 간격을 줍니다 */
+  text-align: left; /* 텍스트를 왼쪽 정렬합니다 */
+}
+
+.table-shopping-cart-price .table_head {
+  background-color: #f7f7f7; /* 헤더의 배경색을 지정합니다 */
+  font-weight: bold; /* 헤더의 글꼴을 굵게 지정합니다 */
+}
+
+.table-shopping-cart-price .table_row {
+  border-bottom: 1px solid #e6e6e6; /* 행 사이에 구분선을 추가합니다 */
+}
+
+.table-shopping-cart-price .column-1 strong,
+.table-shopping-cart-price .column-2 strong {
+  font-weight: bold; /* 결제 금액을 굵게 표시합니다 */
+}
