@@ -324,6 +324,18 @@ public class AdminService {
         mileageRepository.deleteAll();
     }
 
+    /**
+     * 상품 이미지 등록
+     *
+     * @param file
+     * @param productId
+     */
+    public void updateProductImage(MultipartFile file, Long productId) {
+        Product product = getProduct(productId);
+        List<MultipartFile> files = List.of(file);
+        fileUploadUtil.uploadImage(files, ImageType.PRODUCT, productId);
+    }
+
     private User getUser(Long userId) {
         return userRepository.findById(userId)
             .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
@@ -342,12 +354,6 @@ public class AdminService {
     private Question getQuestion(Long questionId) {
         return questionRepository.findById(questionId)
             .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_QUESTION));
-    }
-
-    public void updateProductImage(MultipartFile file, Long productId) {
-        Product product = getProduct(productId);
-        List<MultipartFile> files = List.of(file);
-        fileUploadUtil.uploadImage(files, ImageType.PRODUCT, productId);
     }
 
 }

@@ -33,9 +33,11 @@ public class QuestionController {
      * @return "문의 등록 성공"
      */
     @PostMapping
-    public ResponseEntity<String> addQuestion(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<String> addQuestion(
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
         @Valid @RequestPart(required = false) QuestionRequestDto requestDto,
         @RequestPart(required = false) List<MultipartFile> file) {
+
         questionService.addQuestion(userDetails.getUser(), requestDto, file);
 
         return ResponseUtil.of(HttpStatus.CREATED, "문의 등록 성공");
@@ -53,8 +55,7 @@ public class QuestionController {
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @RequestParam(defaultValue = "0") int page) {
 
-        List<QuestionResponseDto> responseDto = questionService.getUserQuestionList(
-            userDetails.getUser(), page);
+        List<QuestionResponseDto> responseDto = questionService.getUserQuestionList(userDetails.getUser(), page);
 
         return ResponseUtil.of(HttpStatus.OK, responseDto);
     }

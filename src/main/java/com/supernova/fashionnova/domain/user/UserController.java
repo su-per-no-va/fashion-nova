@@ -37,15 +37,15 @@ public class UserController {
     @GetMapping("/test")
     public ResponseEntity<TestResponseDto> test() {
         log.info("In test");
+
         return ResponseUtil.of(HttpStatus.OK,
             TestResponseDto.builder()
                 .testName("으아아아앙")
                 .testCode(15L)
                 .testContent("잠와")
                 .testNaEun("프론트 전문가 킹갓갓킹")
-            .build());
+                .build());
     }
-
 
     /**
      * 유저 회원가입
@@ -53,13 +53,12 @@ public class UserController {
      * @param requestDto
      * @return "회원가입 성공"
      */
-
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@Valid @RequestBody SignupRequestDto requestDto) {
 
         userService.signup(requestDto);
 
-        return ResponseUtil.of(HttpStatus.OK,"회원 가입 성공");
+        return ResponseUtil.of(HttpStatus.OK, "회원 가입 성공");
     }
 
     /**
@@ -110,8 +109,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/caution")
-    public ResponseEntity<List<WarnResponseDto>> getCautionList(
-        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<List<WarnResponseDto>> getCautionList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         List<WarnResponseDto> responseDtoList = userService.getCautionList(userDetails.getUser());
 
@@ -142,17 +140,19 @@ public class UserController {
      * @param response
      */
     @GetMapping("/kakao/callback")
-    public void kakaoLogin(@RequestParam String code, HttpServletResponse response)
-        throws IOException {
-            List<String> token = kakaoService.kakaoLogin(code);
+    public void kakaoLogin(
+        @RequestParam String code,
+        HttpServletResponse response) throws IOException {
 
-            Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, token.get(0).substring(7));
-            Cookie cookie2 = new Cookie(token.get(1), token.get(1).substring(7));
-            cookie.setPath("/");
-            response.addCookie(cookie);
-            response.addCookie(cookie2);
+        List<String> token = kakaoService.kakaoLogin(code);
 
+        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, token.get(0).substring(7));
+        Cookie cookie2 = new Cookie(token.get(1), token.get(1).substring(7));
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        response.addCookie(cookie2);
 
-            response.sendRedirect("/index.html");
+        response.sendRedirect("/index.html");
     }
+
 }
