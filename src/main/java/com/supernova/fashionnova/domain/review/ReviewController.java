@@ -48,6 +48,7 @@ public class ReviewController {
         @Valid @RequestPart(value = "request") ReviewRequestDto reviewRequestDto,
         @RequestPart(value = "image",required = false) List<MultipartFile> images,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
         log.info("addReview");
         reviewService.addReview(userDetails.getUser(), reviewRequestDto, images);
 
@@ -65,9 +66,9 @@ public class ReviewController {
     public ResponseEntity<List<ReviewResponseDto>> getReviewsByProductId(
         @PathVariable Long productId,
         @RequestParam(defaultValue = "0") int page) {
+
         Pageable pageable = PageRequest.of(page, 10);
-        List<ReviewResponseDto> reviewResponseList = reviewService.getReviewsByProductId(productId,
-            pageable);
+        List<ReviewResponseDto> reviewResponseList = reviewService.getReviewsByProductId(productId, pageable);
 
         return ResponseUtil.of(HttpStatus.OK, reviewResponseList);
     }
@@ -82,6 +83,7 @@ public class ReviewController {
     public ResponseEntity<Page<MyReviewResponseDto>> getMyReviews(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @RequestParam(defaultValue = "0") int page) {
+
         Pageable pageable = PageRequest.of(page, 10);
         Page<Review> reviews = reviewService.getReviewsByUser(userDetails.getUser(), pageable);
         Page<MyReviewResponseDto> myReviewResponseDtoPage = reviews.map(MyReviewResponseDto::new);
@@ -93,7 +95,7 @@ public class ReviewController {
      * 리뷰 수정
      *
      * @param userDetails 로그인된 사용자 정보
-     * @param dto         리뷰 수정 요청 DTO
+     * @param reviewUpdateRequestDto 리뷰 수정 요청 DTO
      * @return 리뷰 수정 완료
      */
     @PutMapping
@@ -110,7 +112,7 @@ public class ReviewController {
      * 리뷰 삭제
      *
      * @param userDetails 로그인된 사용자 정보
-     * @param dto         리뷰 삭제 요청 DTO
+     * @param reviewDeleteRequestDto 리뷰 삭제 요청 DTO
      * @return 리뷰 삭제 완료
      */
     @DeleteMapping

@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -169,6 +170,10 @@ class CartControllerTest {
     @DisplayName("장바구니 비우기 테스트")
     void clearCartTest() throws Exception {
         // given
+        User user = Mockito.mock(User.class);
+        when(userDetails.getUser()).thenReturn(user);
+        when(user.getId()).thenReturn(1L);
+
         doNothing().when(cartService).clearCart(any(Long.class));
 
         // when
@@ -180,7 +185,7 @@ class CartControllerTest {
         // then
         result.andExpect(status().isOk())
             .andExpect(content().string("장바구니 비우기 완료"));
-        verify(cartService).clearCart(any(Long.class));
+        verify(cartService).clearCart(user.getId());
     }
 
 }

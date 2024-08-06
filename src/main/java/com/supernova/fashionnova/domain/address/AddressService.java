@@ -38,7 +38,6 @@ public class AddressService {
             .build();
 
         addressRepository.save(address);
-
     }
 
     /**
@@ -54,7 +53,6 @@ public class AddressService {
         return addresses.stream()
             .map(AddressResponseDto::new)
             .collect(Collectors.toList());
-
     }
 
     /**
@@ -67,7 +65,6 @@ public class AddressService {
     public void updateDefaultAddress(User user, AddressDefaultRequestDto requestDto) {
 
         addressRepository.updateDefaultAddress(user.getId(), requestDto.getAddressId());
-
     }
 
     /**
@@ -83,7 +80,6 @@ public class AddressService {
         validateUser(user, address);
 
         addressRepository.delete(address);
-
     }
 
     private Address getAddress(Long addressId) {

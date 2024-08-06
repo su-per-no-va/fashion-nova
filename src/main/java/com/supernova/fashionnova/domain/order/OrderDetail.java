@@ -24,6 +24,7 @@ import lombok.Setter;
 @Table(name = "orders_details")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrderDetail extends Timestamped {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,12 +39,12 @@ public class OrderDetail extends Timestamped {
     private Long price;
 
     @ManyToOne
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Setter
     @ManyToOne
-    @JoinColumn(name="order_id")
+    @JoinColumn(name = "order_id")
     private Order order;
 
     @ManyToOne
@@ -51,7 +52,7 @@ public class OrderDetail extends Timestamped {
     private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="product_detail_id")
+    @JoinColumn(name = "product_detail_id")
     private ProductDetail productDetail;
 
     @Builder
@@ -64,4 +65,5 @@ public class OrderDetail extends Timestamped {
         this.product = product;
         this.productDetail = productDetail;
     }
+
 }

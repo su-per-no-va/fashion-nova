@@ -35,7 +35,8 @@ public class AddressController {
      * @return "배송지 추가 성공"
      */
     @PostMapping
-    public ResponseEntity<String> addAddress(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<String> addAddress(
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
         @Valid @RequestBody AddressRequestDto requestDto) {
 
         addressService.addAddress(userDetails.getUser(), requestDto);
@@ -50,7 +51,8 @@ public class AddressController {
      * @return responseDto
      */
     @GetMapping
-    public ResponseEntity<List<AddressResponseDto>> getAddressList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<List<AddressResponseDto>> getAddressList(
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         List<AddressResponseDto> responseDto = addressService.getAddressList(userDetails.getUser());
 
@@ -65,7 +67,8 @@ public class AddressController {
      * @return "기본 배송지 설정 성공"
      */
     @PutMapping
-    public ResponseEntity<String> updateDefaultAddress(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<String> updateDefaultAddress(
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
         @RequestBody AddressDefaultRequestDto requestDto) {
 
         addressService.updateDefaultAddress(userDetails.getUser(), requestDto);
@@ -81,7 +84,8 @@ public class AddressController {
      * @return "배송지 삭제 성공"
      */
     @DeleteMapping
-    public ResponseEntity<String> deleteAddress(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<String> deleteAddress(
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
         @Valid @RequestBody AddressDeleteRequestDto requestDto) {
 
         addressService.deleteAddress(userDetails.getUser(), requestDto);

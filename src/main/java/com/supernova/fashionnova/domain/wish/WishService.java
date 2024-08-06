@@ -46,7 +46,6 @@ public class WishService {
         wishRepository.save(wish);
 
         product.increaseWish();
-
     }
 
     /**
@@ -65,7 +64,6 @@ public class WishService {
         return wishPage.getContent().stream()
             .map(WishResponseDto::new)
             .collect(Collectors.toList());
-
     }
 
     /**
@@ -85,7 +83,6 @@ public class WishService {
         wishRepository.delete(wish);
 
         wish.getProduct().decreaseWish();
-
     }
 
     private Product getProduct(Long productId) {
