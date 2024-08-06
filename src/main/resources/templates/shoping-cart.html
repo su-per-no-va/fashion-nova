@@ -146,9 +146,7 @@
           </div>
 
           <div class="flex-w flex-c-t bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
-            <div class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10" style="margin: 15px;">
-              Update Cart
-            </div>
+
             <div  class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10 empty-cart-button" style="margin: 15px;">
               Emptying Cart
             </div>
@@ -442,7 +440,6 @@
   }
 
 
-
   //카드 추가
   function updateCartTable(cartResponseDto) {
     let $cartItems = $('#cart-items');
@@ -495,7 +492,12 @@
                     </td>
                     <td class="column-5">${total.toLocaleString()}원</td>
                <td class="column-6">
-        <button style="color: #c82333" class="btn-delete-item" data-item-id="${item.id}" data-product-detail-id="${item.productDetailId}">삭제</button>>
+               <div class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10" style="margin: 15px;">
+               Update Cart
+               </div>
+               <div class="flex-c-m stext-101 cl0 size-119 bg3 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10 btn-delete-item" style="margin: 15px;" data-item-id="${item.id}" data-product-detail-id="${item.productDetailId}">
+               Delete Cart
+               </div>
                </td>
                 </tr>
             `;
