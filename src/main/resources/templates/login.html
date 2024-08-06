@@ -4,13 +4,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checklist Login</title>
+  <title>Fashion Nova Login</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <link rel="stylesheet" href="../css/login.css" type="text/css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-
+  <!--============================================================================================-->
   <script type="module">
 
     $('#btn').click(async function () {
@@ -32,11 +32,14 @@
       })
     });
   </script>
+  <!--============================================================================================-->
 </head>
 
 <body>
-
-<section class="login-form">
+<section class="login-form" style="text-align: center;">
+  <a href="index.html" class="logo" style="display: inline-block;">
+    <img src="../images/icons/logo-01.png" alt="IMG-LOGO" style="width: 150px; height: auto;">
+  </a>
   <h1>LOGIN</h1>
   <form action="">
     <div class="int-area">
@@ -58,17 +61,19 @@
     <a href="#" onclick="location.href='signup.html'">SIGN UP</a>
   </div>
 </section>
+<!--============================================================================================-->
 <script src="/js/login.js"></script>
-</body>
-
-
+<!--============================================================================================-->
 <script>
   $(document).ready(function() {
     $(document).keypress(function(event) {
       if (event.which == 13) {
+        event.preventDefault()
         onLogin();
       }
     });
   });
 </script>
+<!--============================================================================================-->
+</body>
 </html>
