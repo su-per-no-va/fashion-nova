@@ -33,7 +33,6 @@ public class MileageService {
         return mileagePage.stream()
             .map(MileageResponseDto::new)
             .collect(Collectors.toList());
-
     }
 
 }

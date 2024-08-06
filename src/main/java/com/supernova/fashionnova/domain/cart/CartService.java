@@ -34,7 +34,7 @@ public class CartService {
      * 장바구니에 상품 추가
      *
      * @param user 사용자 정보
-     * @param dto 장바구니 데이터
+     * @param dto  장바구니 데이터
      * @throws CustomException NOT_FOUND_PRODUCT 상품 정보를 찾을 수 없을 때
      * @throws CustomException OUT_OF_STOCK 품절된 상품일 때
      */
@@ -50,9 +50,9 @@ public class CartService {
                 dto.getSize(), dto.getColor())
             .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
 
-
         // 상품 재고 확인
-        if (productDetail.getQuantity() == 0 || !"ACTIVE".equals(productDetail.getStatus().toString())) {
+        if (productDetail.getQuantity() == 0 || !"ACTIVE".equals(
+            productDetail.getStatus().toString())) {
             throw new CustomException(ErrorType.OUT_OF_STOCK);
         }
 
@@ -70,6 +70,7 @@ public class CartService {
             Cart cart = new Cart(count, totalPrice, user, productDetail);
             cartRepository.save(cart);
         }
+
     }
 
     /**
@@ -83,7 +84,7 @@ public class CartService {
 
         List<Cart> cartList = cartRepository.findByUser(user);
 
-            List<CartItemDto> cartItemDtoList = cartList.stream()
+        List<CartItemDto> cartItemDtoList = cartList.stream()
             .map(cart -> new CartItemDto(
                 cart.getProductDetail().getProduct().getProduct(),
                 cart.getProductDetail().getProduct().getPrice(),
@@ -92,7 +93,7 @@ public class CartService {
                 cart.getProductDetail().getColor(),
                 cart.getProductDetail().getProduct().getImageUrl(),
                 cart.getProductDetail().getId()
-                ))
+            ))
             .toList();
 
         Long totalPrice = cartList.stream().mapToLong(Cart::getTotalPrice).sum();
@@ -104,7 +105,7 @@ public class CartService {
      * 장바구니 수정
      *
      * @param user 사용자 정보
-     * @param dto 장바구니 데이터
+     * @param dto  장바구니 데이터
      * @throws CustomException NOT_FOUND_PRODUCT 상품 정보를 찾을 수 없을 때
      * @throws CustomException OUT_OF_STOCK 품절된 상품일 때
      */
@@ -129,8 +130,8 @@ public class CartService {
             .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
 
         // 새로운 상품 상세 정보가 이미 장바구니에 있는지 확인
-        Optional<Cart> existingCartOptional = cartRepository.findByUserAndProductDetail(user,
-            newProductDetail);
+        Optional<Cart> existingCartOptional = cartRepository.findByUserAndProductDetail(user, newProductDetail);
+
         if (existingCartOptional.isPresent()) {
             // 이미 존재하면 수량 증가
             Cart existingCart = existingCartOptional.get();
@@ -146,17 +147,19 @@ public class CartService {
             cart.updateCountPrice(dto.getCount());
             cartRepository.save(cart);
         }
+
     }
 
     /**
      * 장바구니 상품 삭제
      *
-     * @param user      사용자 정보
+     * @param user            사용자 정보
      * @param productDetailId
      * @throws CustomException NOT_FOUND_PRODUCT 상품을 찾을 수 없을 때
      */
     @Transactional
     public void deleteFromCart(User user, Long productDetailId) {
+
         Cart cart = cartRepository.findByUserAndProductDetail(user,
                 productDetailRepository.findById(productDetailId)
                     .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT)))
@@ -168,7 +171,7 @@ public class CartService {
     /**
      * 장바구니 비우기
      *
-     * @param user      사용자 정보
+     * @param user 사용자 정보
      * @throws CustomException CART_EMPTY 장바구니에 상품이 존재하지 않을 때
      */
     @Transactional
@@ -181,7 +184,6 @@ public class CartService {
         }
 
         cartRepository.deleteAllInBatch(cartList);
-
     }
 
 }

@@ -28,13 +28,13 @@ public class MileageController {
      * @return List<MileageResponseDto>
      */
     @GetMapping
-    public ResponseEntity<List<MileageResponseDto>> getMileageHistoryList(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<List<MileageResponseDto>> getMileageHistoryList(
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
         @RequestParam(defaultValue = "0") int page) {
 
         List<MileageResponseDto> responseDto = mileageService.getMileageHistoryList(userDetails.getUser(), page);
 
         return ResponseUtil.of(HttpStatus.OK, responseDto);
-
     }
 
 }

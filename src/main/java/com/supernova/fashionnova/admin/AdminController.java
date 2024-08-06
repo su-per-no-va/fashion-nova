@@ -216,13 +216,12 @@ public class AdminController {
     }
 
     /**
-     *  상품 이미지 등록
+     * 상품 이미지 등록
      *
      * @param file
      * @param productId
-     * @return
+     * @return "사진 등록 성공"
      */
-
     @PostMapping("/products/image/{productId}")
     public ResponseEntity<String> updateProductImage(
         @RequestParam(value = "image") MultipartFile file,

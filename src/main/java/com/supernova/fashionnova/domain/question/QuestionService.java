@@ -61,7 +61,6 @@ public class QuestionService {
         return questionPage.stream()
             .map(QuestionResponseDto::new)
             .collect(Collectors.toList());
-
     }
 
 }
