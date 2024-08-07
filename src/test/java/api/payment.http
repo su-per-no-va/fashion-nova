@@ -6,7 +6,7 @@ Content-Type: application/json
 
 {
   "userName": "winner7789",
-  "password": "Fb112233!",
+  "password": "Fb112233!"
 }
 
 > {% client.global.set("access_token", response.headers.valueOf("Authorization")); %}
@@ -17,7 +17,7 @@ Content-Type: application/json
 Authorization: {{access_token}}
 
 {
-  "taxFreeAmount": 150000
+  "taxFreeAmount": 62000
 }
 
 ### 카카오페이 취소(환불)

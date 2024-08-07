@@ -17,10 +17,10 @@ Content-Type: application/json
 Authorization: {{access_token}}
 
 {
-  "cost": 150000,
-  "discount": 0,
+  "cost": 68000,
+  "discount": 6000,
   "usedMileage": 0,
-  "address": "영종도 주좌길 16-1"
+  "address": "영종도는 멋진곳"
 }
 
 ### 결제 후 주문내역 조회
