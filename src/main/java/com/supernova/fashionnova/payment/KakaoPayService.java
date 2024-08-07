@@ -1,5 +1,7 @@
 package com.supernova.fashionnova.payment;
 
+import com.supernova.fashionnova.domain.cart.Cart;
+import com.supernova.fashionnova.domain.cart.CartRepository;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.domain.order.Order;
@@ -21,6 +23,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,9 +34,16 @@ public class KakaoPayService {
   private final KakaoPayConfig kakaoPayConfig;
   private final UserRepository userRepository;
   private final OrdersRepository ordersRepository;
+  private final CartRepository cartRepository;
 
   //카카오페이 요청 양식
   public KakaoPayReadyResponseDto kakaoPayReady(User user, Long orderId) {
+    //장바구니가 비워져있으면 결제 시도를 막음(개발자가 이런 짓을 할 수 있음)
+    List<Cart> cartList = cartRepository.findAllByUserId(user.getId());
+    if (cartList.isEmpty()) {
+      throw new CustomException(ErrorType.CART_EMPTY);
+    }
+
     Order order = ordersRepository.findById(orderId).orElseThrow(
         ()-> new CustomException(ErrorType.NOT_FOUND_ORDER));
     Map<String, String> parameters = new HashMap<>();
