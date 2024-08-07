@@ -119,7 +119,7 @@ public class CartService {
         ProductDetail newProductDetail = productDetailRepository.findByProductAndSizeAndColor(
                 currentProductDetail.getProduct(),
                 dto.getSize(), dto.getColor())
-            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
+            .orElseThrow(() -> new CustomException(ErrorType.CART_NOT_FOUND_COLOR_SIZE));
 
         if (newProductDetail.getQuantity() == 0) {
             throw new CustomException(ErrorType.OUT_OF_STOCK);
@@ -171,7 +171,7 @@ public class CartService {
     /**
      * 장바구니 비우기
      *
-     * @param user 사용자 정보
+     * @param userId 사용자 정보
      * @throws CustomException CART_EMPTY 장바구니에 상품이 존재하지 않을 때
      */
     @Transactional
