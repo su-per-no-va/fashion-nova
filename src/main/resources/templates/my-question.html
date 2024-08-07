@@ -304,51 +304,17 @@
       }
     });
     fetchQuestions()
+
+    // 클릭 이벤트 추가
+    $questionTable.find('.question-title, .question-text').on('click', function() {
+      let questionId = $(this).closest('.table_row').data('question-id');
+      window.location.href = `my-question-detail.html?id=${questionId}`;
+    });
   });
   <!--===============================================================================================-->
 </script>
 
 <script>
-  $.ajax({
-    type: 'GET',
-    url: '/coupons', // 서버에서 쿠폰 데이터를 제공하는 엔드포인트
-    success: function(response) {
-      updateCouponTable(response);
-    },
-    error: function(error) {
-      console.error('쿠폰 불러오기 실패 :', error);
-    }
-  });
-
-  // 쿠폰 테이블 업데이트
-  function updateCouponTable(couponResponseDtos) {
-    let $couponTable = $('#coupon-table'); // 쿠폰 테이블을 표시할 div
-    $couponTable.empty(); // 기존 내용을 지우고 새로 추가
-
-    let initRow = `
-    <tr class="table_head">
-      <th class="column-1">쿠폰 유형</th>
-      <th class="column-2">쿠폰 명</th>
-      <th class="column-3">혜택</th>
-      <th class="column-4">유효기간</th>
-    </tr>`;
-
-    $couponTable.append(initRow);
-
-    couponResponseDtos.forEach(function(coupon) {
-      // 기간을 문자열로 변환
-      let period = new Date(coupon.period).toISOString().split('T')[0]; // 'YYYY-MM-DD' 형식
-
-      let row = `
-      <tr class="table_row">
-        <td class="column-1">${coupon.type}</td>
-        <td class="column-2">${coupon.name}</td>
-        <td class="column-3">${coupon.sale}</td>
-        <td class="column-4">${period}</td>
-      </tr>`;
-      $couponTable.append(row);
-    });
-  }
 
   // 질문 데이터를 가져오는 함수
   function fetchQuestions() {
@@ -377,13 +343,16 @@
           <img src="${imageUrl}" alt="Image" width="100">
         </td>
         <td class="column-2">${new Date().toISOString().split('T')[0]}</td>
-        <td class="column-3">${question.title}</td>
+        <td class="column-3">
+        <a href="my-question-detail.html?id=${question.id}" class="question-title">${question.title}</a>
+        </td>
         <td class="column-4">${question.type}</td>
         <td class="column-5">${question.question}</td>
         <td class="column-6">${question.status}</td>
       </tr>`;
       $questionTable.append(row);
     });
+
   }
 </script>
 </body>
