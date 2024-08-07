@@ -1,4 +1,4 @@
-@orderId = 1
+@orderId = 3
 
 ###로그인
 POST http://localhost:8080/users/login
@@ -17,8 +17,7 @@ Content-Type: application/json
 Authorization: {{access_token}}
 
 {
-  "totalPrice": 80000,
-  "cost": 80000,
+  "cost": 150000,
   "discount": 0,
   "usedMileage": 0,
   "address": "영종도 주좌길 16-1"
