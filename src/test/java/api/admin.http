@@ -68,7 +68,7 @@ Authorization: {{access_token}}
   "category": "TOP",
   "productStatus": "ACTIVE",
   "productDetailList": [{
-    "size" : "LARGE",
+    "size" : "S",
     "color" : "BLACK",
     "quantity": 123
   }]
