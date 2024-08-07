@@ -28,6 +28,7 @@ public class KakaoPayController {
   private final KakaoPayService kakaoPayService;
   private final OrderService orderService;
   private final ProductService productService;
+  private final CartService cartService;
 
   /**
    * 결제 요청
@@ -50,9 +51,9 @@ public class KakaoPayController {
     //주문 상태 바꾸기
     orderService.updateOrderStatus(orderId);
     //주문 성공 후 장바구니 비우기 실행
-    // cartService.clearCart(userId);
+    cartService.clearCart(userId);
     //주문 성공 후 재고 차감
-    productService.calculateQuantity(orderId);
+    productService.calculateQuantity("buy", orderId);
     log.info("결제 성공");
     response.sendRedirect("/payments-completed");
   }
@@ -68,6 +69,8 @@ public class KakaoPayController {
    * */
   @PostMapping("/cancel/{orderId}")
   public KakaoPayCancelResponseDto Cancel(@RequestBody KakaoPayRefundRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long orderId) {
-    return kakaoPayService.kakaoPayCancel(requestDto, userDetails.getUser(), orderId);
+    KakaoPayCancelResponseDto responseDto = kakaoPayService.kakaoPayCancel(requestDto, userDetails.getUser(), orderId);
+    productService.calculateQuantity("cancel", orderId);
+    return responseDto;
   }
 }

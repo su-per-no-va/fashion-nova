@@ -41,18 +41,30 @@ public class ProductService {
     }
 
     @Transactional
-    public void calculateQuantity(Long orderId) {
+    public void calculateQuantity(String action, Long orderId) {
       List<OrderDetail> orderDetailList =orderDetailRepository.findAllByOrderId(orderId);
       if(orderDetailList.isEmpty()){
           throw new CustomException(ErrorType.NOT_FOUND_ORDER);
       }
 
-      for(OrderDetail orderDetail:orderDetailList){
+      if("buy".equals(action)){
+        for(OrderDetail orderDetail:orderDetailList){
           ProductDetail productDetail = productDetailRepository.findById(orderDetail.getProductDetail().getId()).orElseThrow(
               ()-> new CustomException(ErrorType.NOT_FOUND_PRODUCT_DETAIL));
 
-        productDetail.updateQuantity(productDetail.getQuantity() - orderDetail.getCount());
-        productDetailRepository.save(productDetail);
+          productDetail.updateQuantity(productDetail.getQuantity() - orderDetail.getCount());
+          productDetailRepository.save(productDetail);
+        }
       }
+      else{
+        for(OrderDetail orderDetail:orderDetailList){
+          ProductDetail productDetail = productDetailRepository.findById(orderDetail.getProductDetail().getId()).orElseThrow(
+              ()-> new CustomException(ErrorType.NOT_FOUND_PRODUCT_DETAIL));
+
+          productDetail.updateQuantity(productDetail.getQuantity() + orderDetail.getCount());
+          productDetailRepository.save(productDetail);
+        }
+      }
+
     }
 }
