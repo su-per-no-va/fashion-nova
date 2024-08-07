@@ -64,6 +64,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         // JWT 토큰 substring
         accessToken = jwtUtil.substringToken(accessToken);
+        log.info("----------------------------" + accessToken);
 
         // 검사
         checkAccessToken(res, accessToken);
