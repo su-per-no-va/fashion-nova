@@ -46,7 +46,7 @@ public class ReviewController {
     @PostMapping
     public ResponseEntity<String> addReview(
         @Valid @RequestPart(value = "request") ReviewRequestDto reviewRequestDto,
-        @RequestPart(value = "image",required = false) List<MultipartFile> images,
+        @RequestPart(value = "image", required = false) List<MultipartFile> images,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         log.info("addReview");

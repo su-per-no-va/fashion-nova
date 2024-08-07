@@ -1,5 +1,6 @@
 package com.supernova.fashionnova.domain.question;
 
+import com.supernova.fashionnova.domain.question.dto.QuestionDetailResponseDto;
 import com.supernova.fashionnova.domain.question.dto.QuestionRequestDto;
 import com.supernova.fashionnova.domain.question.dto.QuestionResponseDto;
 import com.supernova.fashionnova.global.security.UserDetailsImpl;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,8 +37,8 @@ public class QuestionController {
     @PostMapping
     public ResponseEntity<String> addQuestion(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
-        @Valid @RequestPart(required = false) QuestionRequestDto requestDto,
-        @RequestPart(required = false) List<MultipartFile> file) {
+        @Valid @RequestPart(value = "request") QuestionRequestDto requestDto,
+        @RequestPart(value = "image", required = false) List<MultipartFile> file) {
 
         questionService.addQuestion(userDetails.getUser(), requestDto, file);
 
@@ -56,6 +58,23 @@ public class QuestionController {
         @RequestParam(defaultValue = "0") int page) {
 
         List<QuestionResponseDto> responseDto = questionService.getUserQuestionList(userDetails.getUser(), page);
+
+        return ResponseUtil.of(HttpStatus.OK, responseDto);
+    }
+
+    /**
+     * 문의 상세 조회
+     *
+     * @param userDetails
+     * @param questionId
+     * @return responseDto
+     */
+    @GetMapping("/{questionId}")
+    public ResponseEntity<QuestionDetailResponseDto> getUserQuestionList(
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        @PathVariable Long questionId) {
+
+        QuestionDetailResponseDto responseDto = questionService.getUserQuestion(userDetails.getUser(), questionId);
 
         return ResponseUtil.of(HttpStatus.OK, responseDto);
     }

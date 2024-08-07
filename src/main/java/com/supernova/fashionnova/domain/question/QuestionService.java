@@ -1,9 +1,13 @@
 package com.supernova.fashionnova.domain.question;
 
 import com.amazonaws.util.CollectionUtils;
+import com.supernova.fashionnova.domain.order.OrderDetailRepository;
+import com.supernova.fashionnova.domain.question.dto.QuestionDetailResponseDto;
 import com.supernova.fashionnova.domain.question.dto.QuestionRequestDto;
 import com.supernova.fashionnova.domain.question.dto.QuestionResponseDto;
 import com.supernova.fashionnova.domain.user.User;
+import com.supernova.fashionnova.global.exception.CustomException;
+import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.global.upload.FileUploadUtil;
 import com.supernova.fashionnova.global.upload.ImageType;
 import java.util.List;
@@ -22,6 +26,7 @@ public class QuestionService {
     private final QuestionRepository questionRepository;
 
     private final FileUploadUtil fileUploadUtil;
+    private final OrderDetailRepository orderDetailRepository;
 
     /**
      * 문의 등록
@@ -31,15 +36,27 @@ public class QuestionService {
      */
     public void addQuestion(User user, QuestionRequestDto requestDto, List<MultipartFile> files) {
 
-        Question question = Question.builder()
+        if (requestDto.getType().equals("ORDER_PAYMENT") && requestDto.getOrderDetailId() == null) {
+            throw new CustomException(ErrorType.INVALID_QUESTION_REQUEST);
+        }
+
+        QuestionType questionType = QuestionType.valueOf(requestDto.getType());
+
+        Question.QuestionBuilder questionBuilder = Question.builder()
             .user(user)
             .title(requestDto.getTitle())
             .question(requestDto.getQuestion())
-            .type(QuestionType.valueOf(requestDto.getType()))
-            .build();
+            .type(questionType);
 
+        if (questionType.equals(QuestionType.ORDER_PAYMENT)) {
+            questionBuilder.orderDetail(orderDetailRepository.findById(requestDto.getOrderDetailId()).orElseThrow(
+                () -> new CustomException(ErrorType.NOT_FOUND_ORDER)));
+        }
+
+        Question question = questionBuilder.build();
         questionRepository.save(question);
-        //파일 업로드
+
+        // 파일 업로드
         if (!CollectionUtils.isNullOrEmpty(files)) {
             fileUploadUtil.uploadImage(files, ImageType.QUESTION, question.getId());
         }
@@ -61,6 +78,21 @@ public class QuestionService {
         return questionPage.stream()
             .map(QuestionResponseDto::new)
             .collect(Collectors.toList());
+    }
+
+    /**
+     * 문의 상세 조회
+     *
+     * @param user
+     * @param questionId
+     * @return responseDto
+     */
+    public QuestionDetailResponseDto getUserQuestion(User user, Long questionId) {
+
+        Question question = questionRepository.findByIdAndUser(questionId, user)
+            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_QUESTION));
+
+        return new QuestionDetailResponseDto(question);
     }
 
 }
