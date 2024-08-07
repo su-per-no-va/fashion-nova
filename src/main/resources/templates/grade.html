@@ -326,7 +326,6 @@
 			}
 		});
 		fetchUserInfo()
-		fetchOrderInfo()
 	});
 </script>
 
@@ -338,6 +337,7 @@
 			url: '/users',
 			success: function(response) {
 				updateUserInfo(response);
+				fetchOrderInfo()
 			},
 			error: function(error) {
 				console.error('Error fetching user info:', error);
