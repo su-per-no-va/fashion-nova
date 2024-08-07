@@ -402,7 +402,7 @@
         }
       },
       error: function(xhr, status, error) {
-        alert('Failed to update cart: ' + error);
+        alert('수정 실패:  ' + error.message);
       }
     });
   });
@@ -499,6 +499,11 @@
           `<option value="${color}" ${item.color === color ? 'selected' : ''}>${color}</option>`
       ).join('');
 
+      // 사이즈 옵션 동적 생성
+      let sizeOptions = item.sizes.map(size =>
+          `<option value="${size}" ${item.size === size ? 'selected' : ''}>${size}</option>`
+      ).join('');
+
       let row = `
     <tr class="table_row" data-item-id="${item.productDetailId}">
       <td class="column-1">
@@ -520,9 +525,7 @@
         </div>
         <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
           <select class="js-select2" name="size${item.productDetailId}">
-            <option value="S" ${item.size === 'S' ? 'selected' : ''}>S</option>
-            <option value="M" ${item.size === 'M' ? 'selected' : ''}>M</option>
-            <option value="L" ${item.size === 'L' ? 'selected' : ''}>L</option>
+            ${sizeOptions} <!-- 동적으로 생성된 사이즈 옵션 -->
           </select>
           <div class="dropDownSelect2"></div>
         </div>

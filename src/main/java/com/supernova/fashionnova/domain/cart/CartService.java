@@ -94,7 +94,9 @@ public class CartService {
                 cart.getProductDetail().getProduct().getImageUrl(),
                 cart.getProductDetail().getId(),
                 cart.getProductDetail().getProduct().getProductDetailList().stream()
-                    .map(ProductDetail::getColor).toList()
+                    .map(ProductDetail::getColor).toList(),
+                cart.getProductDetail().getProduct().getProductDetailList().stream()
+                    .map(ProductDetail::getSize).toList()
             ))
             .toList();
 
