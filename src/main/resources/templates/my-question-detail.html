@@ -168,59 +168,42 @@
 </div>
 
 <!-- My Q&A Detail page -->
+<!-- My Q&A Detail page -->
 <section class="bg0 p-t-104 p-b-116">
   <div class="container">
-
     <div class="size-300 bor10 p-lr-70 p-t-55 p-b-70 p-lr-15-lg w-full-md">
       <form>
-        <h4 class="mtext-105 cl2 txt-center p-b-30">
-          문의하기
-        </h4>
-        <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
-          <select class="js-select2" name="time">
-            <option>문의유형</option>
-            <option value="return">환불</option>
-            <option value="coupon">쿠폰/이벤트/혜택</option>
-            <option value="delivery">배송</option>
-            <option value="order">주문/결제</option>
-            <option value="others">기타</option>
-          </select>
-          <div class="dropDownSelect2"></div>
-        </div>
-
+        <!-- 문의유형 -->
         <div class="form-group">
-          <div class="fixed-text" id="name">누에 키워서 실뽑고 계세요? 배송이 안와요</div>
+          <label for="type">문의유형</label>
+          <div class="fixed-text" id="type">--</div>
         </div>
 
+        <!-- 제목 -->
+        <div class="form-group">
+          <label for="title">제목</label>
+          <div class="fixed-text" id="title">--</div>
+        </div>
+
+        <!-- 문의 내용 -->
         <div class="bor8 m-b-30">
-          <div class="fixed-text size-120" name="msg">
-            배송이 너무너무 안와서 지쳐쓰러져 잠들었어요.. 언제 발송되나요?
-          </div>
+          <div class="fixed-text size-120" id="question">--</div>
         </div>
 
-        <div class="form-group file-upload">
-          <td class="column-1">
-            <img src="../images/item-cart-05.jpg" alt="IMG">
-          </td>
-          <td class="column-1">
-            <img src="../images/item-cart-05.jpg" alt="IMG">
-          </td>
-          <td class="column-1">
-            <img src="../images/item-cart-05.jpg" alt="IMG">
-          </td>
-          <td class="column-1">
-            <img src="../images/item-cart-05.jpg" alt="IMG">
-          </td>
+        <!-- 문의 이미지 -->
+        <div class="form-group file-upload" id="question-images">
+          <!-- 이미지들은 JavaScript를 통해 추가됩니다 -->
         </div>
 
-        <h5 class="mtext-105 cl2 p-t-30 p-b-20">
-          운영자 답변
-        </h5>
-
+        <!-- 운영자 답변 -->
+        <h5 class="mtext-105 cl2 p-t-30 p-b-20">운영자 답변</h5>
         <div class="bor8 m-b-30">
-          <div class="fixed-text size-120" name="msg">
-            네 고객님ㅎㅎ 기다리시느라 많이 힘드셨겠어요. 서비스로 나방 몇 마리 더 보내드릴게요.
-          </div>
+          <div class="fixed-text size-120" id="answer">--</div>
+        </div>
+
+        <!-- 주문 상세 정보 (조건부 표시) -->
+        <div id="order-detail" style="display: none;">
+          <!-- 주문 상세 내용이 여기에 표시됩니다 -->
         </div>
       </form>
     </div>
@@ -328,10 +311,10 @@
 <!--===============================================================================================-->
 <script>
   $(document).ready(function () {
-    // let cartDto = window.common.cartDto;
-    // let wishList = window.common.wishList;
-    // console.log(cartDto)
-    // 	console.log(wishList)
+
+    // URL에서 질문 ID를 가져옵니다.
+    const urlParams = new URLSearchParams(window.location.search);
+    const questionId = urlParams.get('id');
 
     /* 장바구니 아이콘 개수 */
     window.common.getShoppingCart()
@@ -353,6 +336,35 @@
         $('a#wish-icon')[0].dataset.notify = response.length;
       } else {
         // no response
+      }
+    });
+
+  $.ajax({
+      type: 'GET',
+      url: `/questions/${questionId}`, // 실제 API 엔드포인트에 맞게 수정
+      success: function(response) {
+        // HTML 요소에 데이터 삽입
+        $('#type').text(response.type);
+        $('#title').text(response.title);
+        $('#question').text(response.question);
+
+        // 이미지 표시
+        const $imageContainer = $('#question-images');
+        $imageContainer.empty(); // 기존 이미지를 비웁니다
+        response.questionUrls.forEach(function(url) {
+          $imageContainer.append(`<img src="${url}" alt="Question Image" width="100">`);
+        });
+
+        // 답변 표시
+        if (response.answer) {
+          $('#answer').text(response.answer.answer);
+        } else {
+          $('#answer').text('답변이 없습니다.');
+        }
+      },
+      error: function(error) {
+        console.error('질문 상세 정보를 불러오는 데 실패했습니다:', error);
+        // 오류 처리 로직 (예: 사용자에게 오류 메시지 표시)
       }
     });
   });
