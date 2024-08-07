@@ -62,7 +62,6 @@ public class HomeController {
 
     @GetMapping("/index.html")
     public String index() {
-        System.out.println("--------------------------------------------------------------------------");
         return "index";
     }
 
@@ -131,8 +130,9 @@ public class HomeController {
         return "my-coupon";
     }
 
-    @GetMapping("/payments-completed")
+    @GetMapping("/payments-completed.html")
     public String paymentsCompleted() {
         return "payments-completed";
     }
+
 }
