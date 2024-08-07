@@ -150,38 +150,20 @@
 
   <div class="container">
 
-    <h5 class="ltext-105 txt-center">
-      나의 적립금액 : 200원
+    <h5 class="ltext-105 txt-center" id="total-mileage">
+      나의 적립금액 :
     </h5>
     <br>
     <div class="row">
       <div class="col-lg-10">
         <div class="m-l-10 m-r--100 m-lr-0-xl">
           <div class="wrap-table-shopping-cart">
-            <table class="table-shopping-cart">
-              <tr class="table_head">
-                <th class="column-1">마일리지 유형</th>
-                <th class="column-2">마일리지</th>
-                <th class="column-3">유효기간</th>
-              </tr>
-
-              <tr class="table_row">
-                <td class="column-1">구매 적립</td>
-                <td class="column-2">+ 500원</td>
-                <td class="column-3">2024-08-01 ~ 2024-09-01</td>
-              </tr>
-
-              <tr class="table_row">
-                <td class="column-1">구매 사용</td>
-                <td class="column-2">- 300원</td>
-                <td class="column-3">2024-08-01 ~ 2024-09-01</td>
-              </tr>
+            <table class="table-shopping-cart" id="mileage-table">
+              <!-- JavaScript에서 행을 추가합니다 -->
             </table>
-
           </div>
-          <p>*마일리지 유효기간은 적립일로 부터 한달 주기로 초기화 됩니다</p>
+          <p>*마일리지 유효기간은 적립일로부터 한달 주기로 초기화 됩니다</p>
         </div>
-
       </div>
     </div>
 
@@ -352,13 +334,14 @@
 
     // 마일리지 목록 추가
     mileageResponseDtos.forEach(function(mileage) {
-      let type = mileage.usedMileage < 0 ? "구매 사용" : "구매 적립";
+      let type = mileage.usedMileage < 0 ? "사용" : "적립";
+      let color = mileage.usedMileage < 0 ? "red" : "black";
       let row = `
-    <tr class="table_row">
-      <td class="column-1">${type}</td>
-      <td class="column-2">${Math.abs(mileage.usedMileage)}원</td>
-      <td class="column-3">${formatDate(mileage.createdAt)}</td>
-    </tr>`;
+        <tr class="table_row">
+          <td class="column-1">${type}</td>
+          <td class="column-2" style="color: ${color};">${Math.abs(mileage.usedMileage)}원</td>
+          <td class="column-3">${formatDate(mileage.createdAt)}</td>
+        </tr>`;
       $mileageTable.append(row);
     });
   }
