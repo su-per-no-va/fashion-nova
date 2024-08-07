@@ -310,6 +310,7 @@
         // no response
       }
     });
+    fetchMileage()
   });
 </script>
 
@@ -318,7 +319,7 @@
   function fetchMileage() {
     $.ajax({
       type: 'GET',
-      url: '/mileage', // 서버에서 마일리지 데이터를 제공하는 엔드포인트
+      url: '/mileages',
       success: function(response) {
         updateMileageTable(response);
       },
@@ -329,31 +330,43 @@
   }
 
   // 마일리지 테이블 업데이트
-  function updateMileageTable(mileageResponseDto) {
+  function updateMileageTable(mileageResponseDtos) {
     let $mileageTable = $('#mileage-table'); // 마일리지 테이블을 표시할 div
     $mileageTable.empty(); // 기존 내용을 지우고 새로 추가
 
-    // 총 마일리지를 업데이트
-    $('#total-mileage').text(mileageResponseDto.totalMileage + '원');
+    // 총 마일리지 계산
+    let totalMileage = mileageResponseDtos.reduce((sum, mileage) => sum + mileage.usedMileage, 0);
 
+    // 총 마일리지를 업데이트
+    $('#total-mileage').text('나의 적립금액 : ' + totalMileage + '원');
+
+    // 테이블 헤더 추가
     let initRow = `
 <tr class="table_head">
   <th class="column-1">마일리지 유형</th>
   <th class="column-2">마일리지</th>
-  <th class="column-3">유효기간</th>
+  <th class="column-3">생성 날짜</th>
 </tr>`;
 
     $mileageTable.append(initRow);
 
-    mileageResponseDto.mileageList.forEach(function(mileage) {
+    // 마일리지 목록 추가
+    mileageResponseDtos.forEach(function(mileage) {
+      let type = mileage.usedMileage < 0 ? "구매 사용" : "구매 적립";
       let row = `
     <tr class="table_row">
-      <td class="column-1">${mileage.type}</td>
-      <td class="column-2">${mileage.amount}원</td>
-      <td class="column-3">${mileage.period}</td>
+      <td class="column-1">${type}</td>
+      <td class="column-2">${Math.abs(mileage.usedMileage)}원</td>
+      <td class="column-3">${formatDate(mileage.createdAt)}</td>
     </tr>`;
       $mileageTable.append(row);
     });
+  }
+
+  // 날짜 포맷팅 함수 (필요에 따라 수정)
+  function formatDate(dateTime) {
+    const date = new Date(dateTime);
+    return date.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 반환
   }
 </script>
 </body>
