@@ -413,23 +413,38 @@
 		});
 
 		// 업데이트된 결제 금액을 UI에 반영
-		$('#current-month-spent').text('00월 결제금액: ' + currentMonthSpent + '원');
-		$('#total-spent').text('총 결제금액: ' + totalSpent + '원');
-		$('#next-month-grade').text('다음 달 예상 등급: ' + getNextGrade($('#grade-name').text()));
+		$('#current-month-spent').text(`00월 결제금액: ${currentMonthSpent}원`);
+		$('#total-spent').text(`총 결제금액: ${totalSpent}원`);
+
+	// 다음 달 예상 등급 계산
+	const currentGrade = $('#grade-name').text();
+	const nextGrade = getNextGrade(currentGrade, currentMonthSpent);
+	$('#next-month-grade').text(`다음 달 예상 등급: ${nextGrade}`);
 	}
 
 	// 다음 달 예상 등급 계산
-	function getNextGrade(currentGrade) {
-		switch (currentGrade) {
-			case '브론즈':
-				return '실버';
-			case '실버':
-				return '골드';
-			case '골드':
-				return '최고';
-			default:
-				return '브론즈';
+	function getNextGrade(currentGrade, currentMonthSpent) {
+		// 등급과 해당 기준 구매금액
+		const gradeThresholds = {
+			'브론즈': 100000, // 10만원
+			'실버': 200000,   // 20만원
+			'골드': Infinity   // 무한대, 최고 등급
+		};
+
+		// 다음 등급 기준
+		const gradeOrder = ['브론즈', '실버', '골드', '최고'];
+
+		// 현재 등급의 인덱스를 찾기
+		const currentIndex = gradeOrder.indexOf(currentGrade);
+
+		// 구매금액을 기반으로 다음 등급 계산
+		for (let i = currentIndex + 1; i < gradeOrder.length; i++) {
+			const grade = gradeOrder[i];
+			if (currentMonthSpent > gradeThresholds[gradeOrder[i - 1]]) {
+				return grade;
+			}
 		}
+		return '브론즈'; // 기본 등급
 	}
 </script>
 
