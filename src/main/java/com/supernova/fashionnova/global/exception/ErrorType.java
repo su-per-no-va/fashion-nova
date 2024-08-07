@@ -44,7 +44,7 @@ public enum ErrorType {
 
     // CART
     CART_EMPTY(HttpStatus.BAD_REQUEST, "장바구니에 상품이 존재하지 않습니다."),
-
+    CART_NOT_FOUND_COLOR_SIZE(HttpStatus.BAD_REQUEST,"수정하려는 사이즈나 색상이 존재하지 않습니다"),
     // REVIEW
     NOT_FOUND_REVIEW(HttpStatus.BAD_REQUEST, "리뷰가 존재하지 않습니다."),
 

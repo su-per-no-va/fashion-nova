@@ -108,11 +108,10 @@ public class WebSecurityConfig {
                 .permitAll() // resources 접근 허용 설정
                 .requestMatchers(HttpMethod.POST, "/users/signup").permitAll() // 회원가입 허용
                 .requestMatchers(HttpMethod.POST, "/users/login").permitAll() // 로그인 허용
-                .requestMatchers(HttpMethod.GET, "/products/**").permitAll() // 상품 검색 허용
-                .requestMatchers(HttpMethod.GET, "/reviews/**").permitAll() // 상품별 리뷰 조회 허용
-                .requestMatchers(HttpMethod.GET, "/**").permitAll() // ?
-                .requestMatchers("/**").permitAll()
-                .requestMatchers("/users/kakao/callback").permitAll() // 카카오
+                .requestMatchers(HttpMethod.GET, "/products/**").permitAll()// 상품 검색 허용
+                .requestMatchers(HttpMethod.GET, "/reviews/**").permitAll()// 상품별 리뷰 조회 허용
+                .requestMatchers("/**").permitAll() // 프론트 403 문제 해결전까지 임시로 전부 허용
+                .requestMatchers("/users/kakao/callback").permitAll()// 카카오
                 .requestMatchers("/admin/**").hasAuthority(UserRole.ADMIN.getAuthority()) //권한이 Admin 인 유저만 접근가능
                 .requestMatchers("/payments-completed/**").permitAll()
                 .requestMatchers("/payments/success/**").permitAll()
