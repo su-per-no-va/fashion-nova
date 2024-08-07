@@ -1,6 +1,7 @@
 package com.supernova.fashionnova.payment;
 
 import com.supernova.fashionnova.domain.cart.CartService;
+import com.supernova.fashionnova.domain.product.ProductService;
 import com.supernova.fashionnova.global.security.UserDetailsImpl;
 import com.supernova.fashionnova.domain.order.OrderService;
 import com.supernova.fashionnova.payment.dto.KakaoPayCancelResponseDto;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class KakaoPayController {
   private final KakaoPayService kakaoPayService;
   private final OrderService orderService;
-  private final CartService cartService;
+  private final ProductService productService;
 
   /**
    * 결제 요청
@@ -49,8 +50,10 @@ public class KakaoPayController {
     //주문 상태 바꾸기
     orderService.updateOrderStatus(orderId);
     //주문 성공 후 장바구니 비우기 실행
-    //cartService.clearCart(userId);
-    log.info("결제 요청 성공");
+    // cartService.clearCart(userId);
+    //주문 성공 후 재고 차감
+    productService.calculateQuantity(orderId);
+    log.info("결제 성공");
     response.sendRedirect("/payments-completed");
   }
 

@@ -58,4 +58,8 @@ public class ProductDetail {
         this.status = status;
     }
 
+    public void updateQuantity(Long quantity) {
+        this.quantity = quantity;
+    }
+
 }
