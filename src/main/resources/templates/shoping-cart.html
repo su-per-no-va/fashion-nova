@@ -1,456 +1,485 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Shopping Cart</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-<!--===============================================================================================-->	
-	<link rel="icon" type="image/png" href="images/icons/favicon.png"/>
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="../vendor/bootstrap/css/bootstrap.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="../fonts/iconic/css/material-design-iconic-font.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="../fonts/linearicons-v1.0.0/icon-font.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="../vendor/animate/animate.css">
-<!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="../vendor/css-hamburgers/hamburgers.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="../vendor/animsition/css/animsition.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="../vendor/select2/select2.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="../vendor/perfect-scrollbar/perfect-scrollbar.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="../css/util.css">
-	<link rel="stylesheet" type="text/css" href="../css/main.css">
-<!--===============================================================================================-->
+  <title>Shopping Cart</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--===============================================================================================-->
+  <link rel="icon" type="image/png" href="images/icons/favicon.png"/>
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../vendor/bootstrap/css/bootstrap.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../fonts/iconic/css/material-design-iconic-font.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../fonts/linearicons-v1.0.0/icon-font.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../vendor/animate/animate.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../vendor/css-hamburgers/hamburgers.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../vendor/animsition/css/animsition.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../vendor/select2/select2.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../vendor/perfect-scrollbar/perfect-scrollbar.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../css/util.css">
+  <link rel="stylesheet" type="text/css" href="../css/main.css">
+  <!--===============================================================================================-->
 </head>
 <body class="animsition">
 
-	<!-- Header -->
-	<header class="header-v4">
-		<!-- Header desktop -->
-		<div class="container-menu-desktop">
-			<!-- Topbar -->
-			<div class="top-bar">
-				<div class="content-topbar flex-sb-m h-full container">
-					<div class="left-top-bar">
-						패셔니스타들을 위한, 패셔니스타들에 의한 패션노바
-					</div>
+<!-- Header -->
+<header class="header-v4">
+  <!-- Header desktop -->
+  <div class="container-menu-desktop">
+    <!-- Topbar -->
+    <div class="top-bar">
+      <div class="content-topbar flex-sb-m h-full container">
+        <div class="left-top-bar">
+          패셔니스타들을 위한, 패셔니스타들에 의한 패션노바
+        </div>
 
-					<div class="right-top-bar flex-w h-full">
-						<a href="login.html" class="flex-c-m trans-04 p-lr-25">
-							Login
-						</a>
+        <div class="right-top-bar flex-w h-full">
+          <a href="login.html" class="flex-c-m trans-04 p-lr-25">
+            Login
+          </a>
 
-						<a href="question.html" class="flex-c-m trans-04 p-lr-25">
-							Q&A
-						</a>
+          <a href="question.html" class="flex-c-m trans-04 p-lr-25">
+            Q&A
+          </a>
 
-						<a href="my-page.html" class="flex-c-m trans-04 p-lr-25">
-							My Page
-						</a>
-					</div>
-				</div>
-			</div>
+          <a href="my-page.html" class="flex-c-m trans-04 p-lr-25">
+            My Page
+          </a>
+        </div>
+      </div>
+    </div>
 
-			<div class="wrap-menu-desktop how-shadow1">
-				<nav class="limiter-menu-desktop container">
+    <div class="wrap-menu-desktop how-shadow1">
+      <nav class="limiter-menu-desktop container">
 
-					<!-- Logo desktop -->
-					<a href="../index.html" class="logo">
-						<img src="images/icons/logo-01.png" alt="IMG-LOGO">
-					</a>
+        <!-- Logo desktop -->
+        <a href="../index.html" class="logo">
+          <img src="images/icons/logo-01.png" alt="IMG-LOGO">
+        </a>
 
-					<!-- Menu desktop -->
-					<div class="menu-desktop">
-						<ul class="main-menu">
-							<li>
-								<a href="../about.html">About</a>
-							</li>
+        <!-- Menu desktop -->
+        <div class="menu-desktop">
+          <ul class="main-menu">
+            <li>
+              <a href="../about.html">About</a>
+            </li>
 
-							<li class="label1" data-label1="hot">
-								<a href="../product.html">Shop</a>
-							</li>
+            <li class="label1" data-label1="hot">
+              <a href="../product.html">Shop</a>
+            </li>
 
-							<li>
-								<a href="../contact.html">Contact</a>
-							</li>
-						</ul>
-					</div>
+            <li>
+              <a href="../contact.html">Contact</a>
+            </li>
+          </ul>
+        </div>
 
-					<!-- Icon header -->
-					<div class="wrap-icon-header flex-w flex-r-m">
-						<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
-							<i class="zmdi zmdi-search"></i>
-						</div>
+        <!-- Icon header -->
+        <div class="wrap-icon-header flex-w flex-r-m">
+          <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
+            <i class="zmdi zmdi-search"></i>
+          </div>
 
-						<a id="cart-icon" href="shoping-cart.html" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="">
-							<i class="zmdi zmdi-shopping-cart"></i>
-						</a>
+          <a id="cart-icon" href="shoping-cart.html" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="">
+            <i class="zmdi zmdi-shopping-cart"></i>
+          </a>
 
-						<a id="wish-icon" href="wish-list.html" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="">
-							<i class="zmdi zmdi-favorite-outline"></i>
-						</a>
-					</div>
-				</nav>
-			</div>
-		</div>
+          <a id="wish-icon" href="wish-list.html" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="">
+            <i class="zmdi zmdi-favorite-outline"></i>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </div>
 
-		<!-- Modal Search -->
-		<div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
-			<div class="container-search-header">
-				<button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
-					<img src="images/icons/icon-close2.png" alt="CLOSE">
-				</button>
+  <!-- Modal Search -->
+  <div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
+    <div class="container-search-header">
+      <button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
+        <img src="images/icons/icon-close2.png" alt="CLOSE">
+      </button>
 
-				<form class="wrap-search-header flex-w p-l-15">
-					<button class="flex-c-m trans-04">
-						<i class="zmdi zmdi-search"></i>
-					</button>
-					<input class="plh3" type="text" name="search" placeholder="Search...">
-				</form>
-			</div>
-		</div>
-	</header>
+      <form class="wrap-search-header flex-w p-l-15">
+        <button class="flex-c-m trans-04">
+          <i class="zmdi zmdi-search"></i>
+        </button>
+        <input class="plh3" type="text" name="search" placeholder="Search...">
+      </form>
+    </div>
+  </div>
+</header>
 
-	<!-- breadcrumb -->
-	<div class="container">
-		<div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
-			<a href="../index.html" class="stext-109 cl8 hov-cl1 trans-04">
-				Home
-				<i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
-			</a>
+<!-- breadcrumb -->
+<div class="container">
+  <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+    <a href="../index.html" class="stext-109 cl8 hov-cl1 trans-04">
+      Home
+      <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+    </a>
 
-			<span class="stext-109 cl4">
+    <span class="stext-109 cl4">
 				Cart
 			</span>
-		</div>
-	</div>
-		
+  </div>
+</div>
 
-	<!-- Shoping Cart -->
-	<form class="bg0 p-t-75 p-b-85">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
-					<div class="m-l-25 m-r--38 m-lr-0-xl">
-						<div class="wrap-table-shopping-cart">
-							<table class="table-shopping-cart">
-								<tr class="table_head" id="cart-items"></tr>
-							</table>
-						</div>
 
-						<div class="flex-w flex-c-t bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
-							<div class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10" style="margin: 15px;">
-								Update Cart
-							</div>
-							<div  class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10 empty-cart-button" style="margin: 15px;">
-								Emptying Cart
-							</div>
-						</div>
-					</div>
-				</div>
+<!-- Shoping Cart -->
+<form class="bg0 p-t-75 p-b-85">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
+        <div class="m-l-25 m-r--38 m-lr-0-xl">
+          <div class="wrap-table-shopping-cart">
+            <table class="table-shopping-cart">
+              <tr class="table_head" id="cart-items"></tr>
+            </table>
+          </div>
 
-				<div class="col-sm-10 col-lg-7 col-xl-5 m-lr-auto m-b-50">
-					<div class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm">
-						<h4 class="mtext-109 cl2 p-b-30">
-							Cart Totals
-						</h4>
+          <div class="flex-w flex-c-t bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
 
-						<div class="flex-w flex-t bor12 p-b-13">
-							<div class="size-208">
+            <div  class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10 empty-cart-button" style="margin: 15px;">
+              Emptying Cart
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-10 col-lg-7 col-xl-5 m-lr-auto m-b-50">
+        <div class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm">
+          <h4 class="mtext-109 cl2 p-b-30">
+            Cart Totals
+          </h4>
+
+          <div class="flex-w flex-t bor12 p-b-13">
+            <div class="size-208">
 								<span class="stext-110 cl2">
 									상품 금액:
 								</span>
-							</div>
+            </div>
 
-							<div class="size-209">
+            <div class="size-209">
 								<span id="subtotal" class="mtext-110 cl2">
 
 								</span>
-							</div>
-						</div>
+            </div>
+          </div>
 
-						<div class="flex-w flex-t bor12 p-t-15 p-b-30">
-							<div class="size-208 w-full-ssm">
+          <div class="flex-w flex-t bor12 p-t-15 p-b-30">
+            <div class="size-208 w-full-ssm">
 								<span class="stext-110 cl2">
 									배송비:
 								</span>
-							</div>
+            </div>
 
-							<div class="size-209">
+            <div class="size-209">
 								<span class="mtext-110 cl2">
 									2,500원
 								</span>
-							</div>
-						</div>
+            </div>
+          </div>
 
-						<div class="flex-w flex-t p-t-27 p-b-33">
-							<div class="size-208">
+          <div class="flex-w flex-t p-t-27 p-b-33">
+            <div class="size-208">
 								<span class="mtext-101 cl2">
 									총 금액:
 								</span>
-							</div>
+            </div>
 
-							<div  class="size-209 p-t-1">
+            <div  class="size-209 p-t-1">
 								<span id="total" class="mtext-110 cl2">
 
 								</span>
-							</div>
-						</div>
+            </div>
+          </div>
 
-						<button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
-							Proceed to Checkout
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</form>
+          <button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+            Proceed to Checkout
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
 
-	<!-- Footer -->
-	<footer class="bg3 p-t-75 p-b-32">
-		<div class="container">
-			<div class="row">
+<!-- Footer -->
+<footer class="bg3 p-t-75 p-b-32">
+  <div class="container">
+    <div class="row">
 
-				<div class="col-sm-6 col-lg-3 p-b-50">
-					<h4 class="stext-301 cl0 p-b-30">
-						FEEDBACK
-					</h4>
+      <div class="col-sm-6 col-lg-3 p-b-50">
+        <h4 class="stext-301 cl0 p-b-30">
+          FEEDBACK
+        </h4>
 
-					<p class="stext-107 cl7 size-201">
-						언제나 고객님들의 피드백을 반영하여 항상 더욱 발전하는 패션 노바가 되겠습니다. - 피드백링크~~
-					</p>
+        <p class="stext-107 cl7 size-201">
+          언제나 고객님들의 피드백을 반영하여 항상 더욱 발전하는 패션 노바가 되겠습니다. - 피드백링크~~
+        </p>
 
-					<div class="p-t-27">
-						<a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-							<i class="fa fa-facebook"></i>
-						</a>
+        <div class="p-t-27">
+          <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+            <i class="fa fa-facebook"></i>
+          </a>
 
-						<a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-							<i class="fa fa-instagram"></i>
-						</a>
+          <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+            <i class="fa fa-instagram"></i>
+          </a>
 
-						<a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-							<i class="fa fa-pinterest-p"></i>
-						</a>
-					</div>
-				</div>
+          <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+            <i class="fa fa-pinterest-p"></i>
+          </a>
+        </div>
+      </div>
 
-				<div class="p-t-40">
-					<div class="flex-c-m flex-w p-b-18">
-						<a href="#" class="m-all-1">
-							<img src="images/icons/icon-pay-01.png" alt="ICON-PAY">
-						</a>
-					</div>
+      <div class="p-t-40">
+        <div class="flex-c-m flex-w p-b-18">
+          <a href="#" class="m-all-1">
+            <img src="images/icons/icon-pay-01.png" alt="ICON-PAY">
+          </a>
+        </div>
 
-					<p class="stext-107 cl6 txt-center">
-						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-						이 홈페이지는 상업적으로 이용되지 않습니다.
-						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+        <p class="stext-107 cl6 txt-center">
+          <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+          이 홈페이지는 상업적으로 이용되지 않습니다.
+          <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 
-					</p>
-				</div>
-			</div>
-		</div>
-	</footer>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
 
 
-	<!-- Back to top -->
-	<div class="btn-back-to-top" id="myBtn">
+<!-- Back to top -->
+<div class="btn-back-to-top" id="myBtn">
 		<span class="symbol-btn-back-to-top">
 			<i class="zmdi zmdi-chevron-up"></i>
 		</span>
-	</div>
+</div>
 
-<!--===============================================================================================-->	
-	<script src="../vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
-	<script src="../vendor/animsition/js/animsition.min.js"></script>
+<script src="../vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
-	<script src="../vendor/bootstrap/js/popper.js"></script>
-	<script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="../vendor/animsition/js/animsition.min.js"></script>
 <!--===============================================================================================-->
-	<script src="../vendor/select2/select2.min.js"></script>
-	<script>
-		$(".js-select2").each(function(){
-			$(this).select2({
-				minimumResultsForSearch: 20,
-				dropdownParent: $(this).next('.dropDownSelect2')
-			});
-		})
-	</script>
+<script src="../vendor/bootstrap/js/popper.js"></script>
+<script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
 <!--===============================================================================================-->
-	<script src="../vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
+<script src="../vendor/select2/select2.min.js"></script>
+<script>
+  $(".js-select2").each(function(){
+    $(this).select2({
+      minimumResultsForSearch: 20,
+      dropdownParent: $(this).next('.dropDownSelect2')
+    });
+  })
+</script>
 <!--===============================================================================================-->
-	<script src="../vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-	<script>
-		$('.js-pscroll').each(function(){
-			$(this).css('position','relative');
-			$(this).css('overflow','hidden');
-			var ps = new PerfectScrollbar(this, {
-				wheelSpeed: 1,
-				scrollingThreshold: 1000,
-				wheelPropagation: false,
-			});
-
-			$(window).on('resize', function(){
-				ps.update();
-			})
-		});
-	</script>
+<script src="../vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
 <!--===============================================================================================-->
-	<script src="/js/common.js"></script>
-	<script src="js/main.js"></script>
-	<script>
-		$(document).ready(function () {
-			// let cartDto = window.common.cartDto;
-			// let wishList = window.common.wishList;
-			// console.log(cartDto)
-			// 	console.log(wishList)
+<script src="../vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script>
+  $('.js-pscroll').each(function(){
+    $(this).css('position','relative');
+    $(this).css('overflow','hidden');
+    var ps = new PerfectScrollbar(this, {
+      wheelSpeed: 1,
+      scrollingThreshold: 1000,
+      wheelPropagation: false,
+    });
 
-			/* 장바구니 아이콘 개수 */
-			window.common.getShoppingCart()
-			.done(function (response) {
-				if (response) {
-					$('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
-				} else {
-					// no response
-				}
-			})
-			.fail(function (error) {
-				console.log(error.message)
-			});
+    $(window).on('resize', function(){
+      ps.update();
+    })
+  });
+</script>
+<!--===============================================================================================-->
+<script src="/js/common.js"></script>
+<script src="js/main.js"></script>
+<script>
+  $(document).ready(function () {
+    // let cartDto = window.common.cartDto;
+    // let wishList = window.common.wishList;
+    // console.log(cartDto)
+    // 	console.log(wishList)
 
-			/* 찜 아이콘 개수 */
-			window.common.getWishList()
-			.done(function (response) {
-				if (response) {
-					$('a#wish-icon')[0].dataset.notify = response.length;
-				} else {
-					// no response
-				}
-			})
-			.fail(function (error) {
-				console.log(error.message)
-			});
+    /* 장바구니 아이콘 개수 */
+    window.common.getShoppingCart()
+    .done(function (response) {
+      if (response) {
+        $('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
+      } else {
+        // no response
+      }
+    })
+    .fail(function (error) {
+      console.log(error.message)
+    });
 
-			// 장바구니 비우기
-			$(document).on('click', '.empty-cart-button', function() {
-				$.ajax({
-					url: '/carts/delete',
-					type: 'DELETE',
-					success: function(response) {
-						if (response === "장바구니 비우기 완료") {
-							alert("장바구니 비우기 성공");
-							location.reload(); // 성공 시 페이지를 리로드합니다
-						} else {
-							alert('장바구니 비우기 실패: ' + response.error);
-						}
-					},
-					error: function() {
-						alert('장바구니 비우기 요청에 실패했습니다.');
-					}
-				});
-			});
+    /* 찜 아이콘 개수 */
+    window.common.getWishList()
+    .done(function (response) {
+      if (response) {
+        $('a#wish-icon')[0].dataset.notify = response.length;
+      } else {
+        // no response
+      }
+    })
+    .fail(function (error) {
+      console.log(error.message)
+    });
 
-			// 수량 증가 버튼 클릭 이벤트
-			$(document).on('click', '.btn-num-product-up', function() {
-				var $input = $(this).closest('.wrap-num-product').find('.num-product');
-				var newVal = parseInt($input.val()) + 1;
-				$input.val(newVal);
-			});
+    // 장바구니 비우기
+    $(document).on('click', '.empty-cart-button', function() {
+      $.ajax({
+        url: '/carts/delete',
+        type: 'DELETE',
+        success: function(response) {
+          if (response === "장바구니 비우기 완료") {
+            alert("장바구니 비우기 성공");
+            location.reload(); // 성공 시 페이지를 리로드합니다
+          } else {
+            alert('장바구니 비우기 실패: ' + response.error);
+          }
+        },
+        error: function() {
+          alert('장바구니 비우기 요청에 실패했습니다.');
+        }
+      });
+    });
 
-			// 수량 감소 버튼 클릭 이벤트
-			$(document).on('click', '.btn-num-product-down', function() {
-				var $input = $(this).closest('.wrap-num-product').find('.num-product');
-				var newVal = parseInt($input.val()) - 1;
-				if (newVal >= 1) {
-					$input.val(newVal);
-				}
-			});
+    // 수량 증가 버튼 클릭 이벤트
+    $(document).on('click', '.btn-num-product-up', function() {
+      var $input = $(this).closest('.wrap-num-product').find('.num-product');
+      var newVal = parseInt($input.val()) + 1;
+      $input.val(newVal);
+    });
 
-		});
+    // 수량 감소 버튼 클릭 이벤트
+    $(document).on('click', '.btn-num-product-down', function() {
+      var $input = $(this).closest('.wrap-num-product').find('.num-product');
+      var newVal = parseInt($input.val()) - 1;
+      if (newVal >= 1) {
+        $input.val(newVal);
+      }
+    });
 
-		//삭제
-		$(document).on('click', '.btn-delete-item', function() {
-			var productDetailId = $(this).data('product-detail-id'); // 'data-product-detail-id' 값을 가져옴
+  });
 
-			var deleteRequestDto = {
-				productDetailId: productDetailId
-			};
+  // 카트 업데이트
+  $(document).on('click', '.update-cart', function() {
+    let itemId = $(this).data('item-id');
+    let productDetailId = $(this).data('product-detail-id');
+    let count = $(`input[name="num-product${itemId}"]`).val();
+    let size = $(`select[name="size${itemId}"]`).val();
+    let color = $(`select[name="color${itemId}"]`).val();
 
+    let updateData = {
+      productDetailId: productDetailId,
+      count: count,
+      size: size,
+      color: color
+    };
 
-			$.ajax({
-				url: '/carts',
-				type: 'DELETE',
-				contentType: 'application/json',
-				data: JSON.stringify(deleteRequestDto),
-				success: function(response) {
-					if(response === "장바구니 상품 삭제 완료") {
-						console.log("삭제 성공")
-						location.reload(); // 성공 시 페이지를 리로드합니다
-					} else {
-						alert('삭제 실패: ' + response.error);
-					}
-				},
-				error: function() {
-					alert('삭제 요청에 실패했습니다.');
-				}
-			});
-		});
+    $.ajax({
+      url: '/carts',
+      type: 'PUT',
+      contentType: 'application/json',
+      data: JSON.stringify(updateData),
+      success: function(response, textStatus, jqXHR) {
+        if (jqXHR.status >= 200 && jqXHR.status < 300) {
+          alert('카트 수정 성공');
+          location.reload();
+        }
+      },
+      error: function(xhr, status, error) {
+        alert('수정 실패:  ' + error.message);
+      }
+    });
+  });
 
+  //삭제
+  $(document).on('click', '.btn-delete-item', function() {
+    var productDetailId = $(this).data('product-detail-id'); // 'data-product-detail-id' 값을 가져옴
 
-	</script>
-
-	<script>
-		$(document).ready(function () {
-			let auth = localStorage.getItem('accessToken');
-			let refreshToken = localStorage.getItem('refreshToken');
-			console.log("엑세스 토큰: " + auth);
-			console.log("리프레시 토큰: " + refreshToken);
-
-			if (auth) {
-				$.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-					jqXHR.setRequestHeader('Authorization', auth);
-					jqXHR.setRequestHeader('Authorization-refresh', refreshToken);
-				});
-
-				fetchCartItems();
-			} else {
-				alert("로그인 후 이용해 주세요");
-				window.location.href = "login.html";
-			}
-		});
-
-		function fetchCartItems() {
-			$.ajax({
-				type: 'GET',
-				url: '/carts',
-				success: function(response) {
-					updateCartTable(response);
-				},
-				error: function(error) {
-					console.error('Error fetching cart items:', error);
-				}
-			});
-		}
+    var deleteRequestDto = {
+      productDetailId: productDetailId
+    };
 
 
+    $.ajax({
+      url: '/carts',
+      type: 'DELETE',
+      contentType: 'application/json',
+      data: JSON.stringify(deleteRequestDto),
+      success: function(response) {
+        if(response === "장바구니 상품 삭제 완료") {
+          console.log("삭제 성공")
+          location.reload(); // 성공 시 페이지를 리로드합니다
+        } else {
+          alert('삭제 실패: ' + response.error);
+        }
+      },
+      error: function(error) {
+        alert(error.message);
+      }
+    });
+  });
 
-		//카드 추가
-		function updateCartTable(cartResponseDto) {
-			let $cartItems = $('#cart-items');
-			$cartItems.empty(); // 기존 내용을 지우고 새로 추가
 
-			let subtotal = 0;
+</script>
 
-			let initrow = `
+<script>
+  $(document).ready(function () {
+    let auth = localStorage.getItem('accessToken');
+    let refreshToken = localStorage.getItem('refreshToken');
+    console.log("엑세스 토큰: " + auth);
+    console.log("리프레시 토큰: " + refreshToken);
+
+    if (auth) {
+      $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+        jqXHR.setRequestHeader('Authorization', auth);
+        jqXHR.setRequestHeader('Authorization-refresh', refreshToken);
+      });
+
+      fetchCartItems();
+    } else {
+      alert("로그인 후 이용해 주세요");
+      window.location.href = "login.html";
+    }
+  });
+
+  function fetchCartItems() {
+    $.ajax({
+      type: 'GET',
+      url: '/carts',
+      success: function(response) {
+        updateCartTable(response);
+      },
+      error: function(error) {
+        console.error('Error fetching cart items:', error);
+      }
+    });
+  }
+
+
+  //카드 추가
+  function updateCartTable(cartResponseDto) {
+    let $cartItems = $('#cart-items');
+    $cartItems.empty(); // 기존 내용을 지우고 새로 추가
+
+    let subtotal = 0;
+
+    let initrow = `
 <tr class="table_head">
 <th class="column-1">Product</th>
 <th class="column-2"></th>
@@ -459,53 +488,74 @@
 <th class="column-5">Total</th>
 </tr>`;
 
-			$cartItems.append(initrow);
+    $cartItems.append(initrow);
 
-			cartResponseDto.cartItemDtoList.forEach(function(item) {
-				let total = item.price * item.count;
-				subtotal += total;
+    cartResponseDto.cartItemDtoList.forEach(function(item) {
+      let total = item.price * item.count;
+      subtotal += total;
 
-				let row = `
-                <tr class="table_row" data-item-id="${item.id}">
-                    <td class="column-1">
-                        <div class="how-itemcart1">
-                            <img src="${item.imageUrl}" alt="IMG">
-                        </div>
-                    </td>
-                    <td class="column-2">${item.product}</td>
-                    <td class="column-3">${item.price.toLocaleString()}원</td>
-                    <td class="column-4">
-                        <div class="wrap-num-product flex-w m-l-auto m-r-0">
-                            <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-                                <i class="fs-16 zmdi zmdi-minus"></i>
-                            </div>
-                            <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product${item.id}" value="${item.count}">
-                            <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-                                <i class="fs-16 zmdi zmdi-plus"></i>
-                            </div>
-                        </div>
-                        <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
-                            <select class="js-select2" name="size${item.size}">
-                                <option value="S" ${item.size === 'S' ? 'selected' : ''}>S</option>
-                                <option value="M" ${item.size === 'M' ? 'selected' : ''}>M</option>
-                                <option value="L" ${item.size === 'L' ? 'selected' : ''}>L</option>
-                            </select>
-                            <div class="dropDownSelect2"></div>
-                        </div>
-                    </td>
-                    <td class="column-5">${total.toLocaleString()}원</td>
-               <td class="column-6">
-        <button style="color: #c82333" class="btn-delete-item" data-item-id="${item.id}" data-product-detail-id="${item.productDetailId}">삭제</button>>
-               </td>
-                </tr>
-            `;
-				$cartItems.append(row);
-			});
+      // 색상 옵션 동적 생성
+      let colorOptions = item.colors.map(color =>
+          `<option value="${color}" ${item.color === color ? 'selected' : ''}>${color}</option>`
+      ).join('');
 
-			$('#subtotal').text(subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원');
-			$('#total').text((subtotal + 2500).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'); // 배송비 포함 총 금액
-		}
-	</script>
+      // 사이즈 옵션 동적 생성
+      let sizeOptions = item.sizes.map(size =>
+          `<option value="${size}" ${item.size === size ? 'selected' : ''}>${size}</option>`
+      ).join('');
 
+      let row = `
+    <tr class="table_row" data-item-id="${item.productDetailId}">
+      <td class="column-1">
+        <div class="how-itemcart1">
+          <img src="${item.imageUrl}" alt="IMG">
+        </div>
+      </td>
+      <td class="column-2">${item.product}</td>
+      <td class="column-3">${item.price.toLocaleString()}원</td>
+      <td class="column-4">
+        <div class="wrap-num-product flex-w m-l-auto m-r-0">
+          <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+            <i class="fs-16 zmdi zmdi-minus"></i>
+          </div>
+          <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product${item.productDetailId}" value="${item.count}">
+          <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+            <i class="fs-16 zmdi zmdi-plus"></i>
+          </div>
+        </div>
+        <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
+          <select class="js-select2" name="size${item.productDetailId}">
+            ${sizeOptions} <!-- 동적으로 생성된 사이즈 옵션 -->
+          </select>
+          <div class="dropDownSelect2"></div>
+        </div>
+      </td>
+      <td class="column-5">${total.toLocaleString()}원</td>
+      <td class="column-6">
+        <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
+          <select class="js-select2" name="color${item.productDetailId}">
+            ${colorOptions} <!-- 동적으로 생성된 색상 옵션 -->
+          </select>
+          <div class="dropDownSelect2"></div>
+        </div>
+      </td>
+      <td class="column-7">
+        <div class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10 update-cart" style="margin: 15px;" data-item-id="${item.productDetailId}" data-product-detail-id="${item.productDetailId}">
+          Update Cart
+        </div>
+        <div class="flex-c-m stext-101 cl0 size-119 bg3 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10 btn-delete-item" style="margin: 15px;" data-item-id="${item.productDetailId}" data-product-detail-id="${item.productDetailId}">
+          Delete Cart
+        </div>
+      </td>
+    </tr>
+  `;
+      $cartItems.append(row);
+    });
+
+    $('#subtotal').text(subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원');
+    $('#total').text((subtotal + 2500).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'); // 배송비 포함 총 금액
+  }
+
+</script>
 </body>
 </html>

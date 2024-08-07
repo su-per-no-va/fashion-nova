@@ -9,5 +9,4 @@ public enum UserGrade {
     BRONZE,
     SILVER,
     GOLD
-
 }

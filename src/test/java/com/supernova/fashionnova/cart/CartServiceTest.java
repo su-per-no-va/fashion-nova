@@ -34,6 +34,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -321,17 +322,18 @@ class CartServiceTest {
         @DisplayName("장바구니 비우기 성공 테스트")
         void ClearCartTest1() {
             // given
+            Long userId = 1L;
             ProductDetail productDetail = mock(ProductDetail.class);
+            User user = Mockito.mock(User.class);
             Cart cart1 = new Cart(1, 100L, user, productDetail);
             Cart cart2 = new Cart(2, 200L, user, productDetail);
             List<Cart> cartList = List.of(cart1, cart2); // mock Cart 리스트 생성
 
-            given(cartRepository.findByUser(any(User.class))).willReturn(cartList);
+            // Mocking repository method
+            given(cartRepository.findAllByUserId(userId)).willReturn(cartList);
 
-            // when
-            assertDoesNotThrow(() -> cartService.clearCart(user));
-
-            // then
+            // when / then
+            assertDoesNotThrow(() -> cartService.clearCart(userId));
             verify(cartRepository).deleteAllInBatch(cartList);
         }
 
@@ -339,12 +341,16 @@ class CartServiceTest {
         @DisplayName("장바구니 비우기 실패 테스트 - 장바구니가 이미 비어 있음")
         void ClearCartTest2() {
             // given
-            given(cartRepository.findByUser(any(User.class))).willReturn(List.of());
+            Long userId = 1L;
+
+            // Mocking repository method to return an empty list
+            given(cartRepository.findAllByUserId(userId)).willReturn(List.of());
 
             // when / then
-            assertThrows(CustomException.class, () -> cartService.clearCart(user));
+            assertThrows(CustomException.class, () -> cartService.clearCart(userId));
         }
 
     }
+
 
 }

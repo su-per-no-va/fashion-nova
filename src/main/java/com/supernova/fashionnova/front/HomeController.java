@@ -62,6 +62,7 @@ public class HomeController {
 
     @GetMapping("/index.html")
     public String index() {
+        System.out.println("--------------------------------------------------------------------------");
         return "index";
     }
 
@@ -103,5 +104,35 @@ public class HomeController {
     @GetMapping("/review.html")
     public String review() {
         return "review";
+    }
+
+    @GetMapping("/order-detail.html")
+    public String orderDetail() {
+        return "order-detail";
+    }
+
+    @GetMapping("/my-question-detail.html")
+    public String myQuestionDetail() {
+        return "my-question-detail";
+    }
+
+    @GetMapping("/payment.html")
+    public String payment() {
+        return "payment";
+    }
+
+    @GetMapping("/my-mileage.html")
+    public String myMileage() {
+        return "my-mileage";
+    }
+
+    @GetMapping("/my-coupon.html")
+    public String myCoupon() {
+        return "my-coupon";
+    }
+
+    @GetMapping("/payments-completed")
+    public String paymentsCompleted() {
+        return "payments-completed";
     }
 }

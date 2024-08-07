@@ -35,7 +35,7 @@
 <body class="animsition">
 
 <!-- Header -->
-<header class="header-v4">
+<header>
   <!-- Header desktop -->
   <div class="container-menu-desktop">
     <!-- Topbar -->
@@ -61,7 +61,7 @@
       </div>
     </div>
 
-    <div class="wrap-menu-desktop how-shadow1">
+    <div class="wrap-menu-desktop">
       <nav class="limiter-menu-desktop container">
 
         <!-- Logo desktop -->
@@ -126,8 +126,7 @@
 </header>
 
 <!-- Title page -->
-<section class="bg-img1 txt-center p-lr-15 p-tb-92"
-         style="background-image: url('../images/bg-01.jpg');">
+<section class="bg-img1 txt-center p-lr-15 p-tb-92" style="background-image: url('/images/bg-01.jpg');">
   <h2 class="ltext-105 cl0 txt-center">
     My Review
   </h2>
@@ -160,17 +159,25 @@
         <div class="m-l-10 m-r--100 m-lr-0-xl">
           <div class="wrap-table-shopping-cart">
             <table class="table-shopping-cart">
+              <thead>
               <tr class="table_head">
                 <th class="column-1">Product</th>
                 <th class="column-2"></th>
                 <th class="column-3">Date</th>
-                <th class="column-4">grade</th>
+                <th class="column-4">Grade</th>
                 <th class="column-5">Review</th>
                 <th class="column-6"></th>
                 <th class="column-7">Edit</th>
               </tr>
-              <!-- 리뷰가 동적으로 추가될 곳  -->
-              <tr id="review-list" class="table_row">
+              </thead>
+              <tbody id="review-list">
+              <!-- 리뷰가 동적으로 추가될 곳 -->
+              </tbody>
+            </table>
+
+            <!-- 템플릿 행 -->
+            <table style="display:none;">
+              <tr id="review-template" class="table_row">
                 <td class="column-1">
                   <div class="how-itemcart1">
                     <img src="../images/item-cart-05.jpg" alt="IMG">
@@ -178,38 +185,37 @@
                 </td>
                 <td class="column-2">Lightweight Jacket</td>
                 <td class="column-3">2024-08-01</td>
-
                 <td class="column-4">
-										<span class="fs-18 cl11">
-											<i class="zmdi zmdi-star"></i>
-											<i class="zmdi zmdi-star"></i>
-											<i class="zmdi zmdi-star"></i>
-											<i class="zmdi zmdi-star"></i>
-											<i class="zmdi zmdi-star"></i>
-										</span>
+                  <span class="fs-18 cl11">
+                    <i class="zmdi zmdi-star"></i>
+                    <i class="zmdi zmdi-star"></i>
+                    <i class="zmdi zmdi-star"></i>
+                    <i class="zmdi zmdi-star"></i>
+                    <i class="zmdi zmdi-star"></i>
+                  </span>
                 </td>
                 <td class="column-5">빠른 배송! 품질 좋은 옷 감사합니다.</td>
-
                 <td class="column-6"></td>
                 <td class="column-7">
-                  <button
-                      class="flex-c-m stext-101 cl0 size-103 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+                  <button class="flex-c-m stext-101 cl0 size-103 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
                     Edit
                   </button>
                   <br>
-                  <button
-                      class="flex-c-m stext-101 cl2 size-103 bg8 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+                  <button class="flex-c-m stext-101 cl2 size-103 bg8 bor14 hov-btn3 p-lr-15 trans-04 pointer">
                     Delete
                   </button>
                 </td>
               </tr>
             </table>
+
           </div>
         </div>
       </div>
     </div>
   </div>
 </form>
+
+
 
 <!-- Footer -->
 <footer class="bg3 p-t-75 p-b-32">
@@ -370,7 +376,7 @@
 
     reviews.forEach(function (review) {
       const reviewCard = `
-          <tr class="table_row" data-review-id = ${review.id}>
+          <tr class="table_row" data-review-id="${review.id}">
             <td class="column-1">
               <div class="how-itemcart1">
                 <img src="${review.reviewImageUrl[0]}" alt="IMG">
@@ -386,7 +392,7 @@
             <td class="column-5">${review.review}</td>
             <td class="column-6"></td>
             <td class="column-7">
-              <button class="flex-c-m stext-101 cl0 size-103 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+              <button class="flex-c-m stext-101 cl0 size-103 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer edit-review-btn">
                 Edit
               </button>
               <br>
@@ -399,8 +405,8 @@
       $reviewList.append(reviewCard);
     });
     // 리뷰삭제
-    $('.delete-review-btn').on('click', function(e) {
-      e.preventDefault();
+    $(document).on('click','.delete-review-btn', function() {
+
       let $this = $(this);
       let reviewId = $this.closest('.table_row').data('review-id');
 
@@ -414,7 +420,7 @@
         contentType: 'application/json',
         data: JSON.stringify(reviewDeleteRequestDto),
         success: function(response, textStatus, jqXHR) {
-          if (jqXHR.status === 200) {
+          if (jqXHR.status === 200 && jqXHR.status < 300) {
             swal("Deleted!", "The review has been deleted.", "success");
             location.reload()
           } else {
@@ -427,6 +433,61 @@
       });
     });
   }
+
+  //리뷰 업데이트
+  $(document).on('click', '.edit-review-btn', function() {
+    let $this = $(this);
+    let reviewId = $this.closest('.table_row').data('review-id');
+    let reviewText = $this.closest('.table_row').find('.column-5').text();
+    let reviewRating = $this.closest('.table_row').find('.column-4 span i').length;
+
+    $('#updateReviewId').val(reviewId);
+    $('#updateReviewText').val(reviewText);
+    $('#updateReviewRating').val(reviewRating);
+    $('#updateReviewModal').show();
+  });
+
+  // 리뷰 업데이트 폼 제출
+  $('#updateReviewForm').submit(function(event) {
+    event.preventDefault();
+
+    let reviewUpdateRequestDto = {
+      reviewId: $('#updateReviewId').val(),
+      review: $('#updateReviewText').val(),
+      rating: $('#updateReviewRating').val()
+    };
+
+    $.ajax({
+      url: `/reviews`,
+      type: 'PUT',
+      contentType: 'application/json',
+      data: JSON.stringify(reviewUpdateRequestDto),
+      success: function(response, textStatus, jqXHR) {
+        if (jqXHR.status === 200) {
+          swal("Updated!", "The review has been updated.", "success");
+          location.reload();
+        } else {
+          swal("Failed!", "The review could not be updated.", "error");
+        }
+      },
+      error: function(error) {
+        alert("Error: " + error.message);
+      }
+    });
+  });
+
+  // 모달 닫기
+  $('.close').click(function() {
+    $('#updateReviewModal').hide();
+  });
+
+  // 클릭 시 모달 닫기
+  $(window).click(function(event) {
+    if (event.target.id === 'updateReviewModal') {
+      $('#updateReviewModal').hide();
+    }
+  });
+
 
   // 별점 렌더링
   function renderStars(rating) {

@@ -1,6 +1,5 @@
 package com.supernova.fashionnova.domain.product;
 
-
 import com.supernova.fashionnova.domain.product.dto.ProductResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -36,7 +35,7 @@ public class ProductController {
         @RequestParam(value = "search", required = false) String search,
         @RequestParam(defaultValue = "0", value = "page", required = false) int page) {
 
-        return productService.getProductList(sorted, category, size, color, search, page-1);
+        return productService.getProductList(sorted, category, size, color, search, page - 1);
     }
 
 }
