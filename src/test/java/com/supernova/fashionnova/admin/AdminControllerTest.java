@@ -212,7 +212,7 @@ class AdminControllerTest {
     @WithMockUser(roles = "ADMIN")
     void addMileageTest() throws Exception {
         // given
-        MileageRequestDto requestDto = new MileageRequestDto(1L, 1000);
+        MileageRequestDto requestDto = new MileageRequestDto(1L, 1000L);
 
         doNothing().when(adminService).addMileage(any(MileageRequestDto.class));
 
