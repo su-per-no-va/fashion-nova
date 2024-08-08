@@ -455,10 +455,6 @@
 <script src="/js/common.js"></script>
 <script>
   $(document).ready(function () {
-    // let cartDto = window.common.cartDto;
-    // let wishList = window.common.wishList;
-    // console.log(cartDto)
-    // 	console.log(wishList)
 
     /* 장바구니 아이콘 개수 */
     window.common.getShoppingCart()
@@ -489,26 +485,6 @@
 </script>
 
 <script>
-  let auth;
-  $(document).ready(function () {
-    auth = localStorage.getItem('accessToken');
-    let refreshToken = localStorage.getItem('refreshToken');
-    console.log("엑세스 토큰: " + auth);
-    console.log("리프레시 토큰: " + refreshToken);
-
-    if (auth !== undefined && auth !== null) {
-      $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-        console.log("auth : " + auth);
-        jqXHR.setRequestHeader('Authorization', auth);
-        jqXHR.setRequestHeader('Authorization-refresh', refreshToken);
-      });
-    } else {
-      alert("로그인 후 이용해 주세요");
-      window.location.href = "login.html";
-    }
-
-  });
-
   document.getElementById('submit-button').addEventListener('click', function () {
     const form = document.getElementById('inquiry-form');
     const formData = new FormData(form);
@@ -534,11 +510,6 @@
     }
 
     postQuestion(finalFormData);
-    // formData.forEach((value, key) => {
-    //   if (key !== 'title' && key !== 'type' && key !== 'question') {
-    //     finalFormData.append(key, value);
-    //   }
-    // });
   });
 
   // AJAX 요청
@@ -562,7 +533,6 @@
       },
       error: function (error) {
         alert(error.message);
-        // location.reload();
       },
     });
   }
