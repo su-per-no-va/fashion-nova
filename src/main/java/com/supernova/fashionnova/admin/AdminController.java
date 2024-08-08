@@ -41,7 +41,8 @@ public class AdminController {
      * @return size는 30으로 고정했음
      */
     @GetMapping("/users")
-    public ResponseEntity<List<UserResponseDto>> getAllUserList(@RequestParam(defaultValue = "0") int page) {
+    public ResponseEntity<List<UserResponseDto>> getAllUserList(
+        @RequestParam(defaultValue = "0") int page) {
 
         List<UserResponseDto> responseDtoList = adminService.getAllUserList(page);
 
@@ -55,7 +56,8 @@ public class AdminController {
      * @return "회원 경고 등록 완성"
      */
     @PostMapping("/cautions")
-    public ResponseEntity<String> addCaution(@RequestBody WarnRequestDto requestDto) {
+    public ResponseEntity<String> addCaution(
+        @RequestBody WarnRequestDto requestDto) {
 
         adminService.addCaution(requestDto);
 
@@ -69,7 +71,8 @@ public class AdminController {
      * @return "회원 경고 삭제 완료"
      */
     @DeleteMapping("/cautions")
-    public ResponseEntity<String> deleteCaution(@RequestBody WarnDeleteRequestDto requestDto) {
+    public ResponseEntity<String> deleteCaution(
+        @RequestBody WarnDeleteRequestDto requestDto) {
 
         adminService.deleteCaution(requestDto);
 
@@ -100,7 +103,8 @@ public class AdminController {
      * @return "상품 등록 성공"
      */
     @PostMapping("/products")
-    public ResponseEntity<String> addProduct(@RequestBody ProductRequestDto requestDto) {
+    public ResponseEntity<String> addProduct(
+        @RequestBody ProductRequestDto requestDto) {
 
         adminService.addProduct(requestDto);
 
@@ -114,9 +118,11 @@ public class AdminController {
      * @return "상품 디테일 추가 성공"
      */
     @PostMapping("/products/details")
-    public ResponseEntity<String> addProductDetails(@RequestBody ProductDetailCreateDto requestDto) {
+    public ResponseEntity<String> addProductDetails(
+        @RequestBody ProductDetailCreateDto requestDto) {
 
-        adminService.addProductDetails(requestDto.getProductId(), requestDto.getProductDetailRequestDtoList());
+        adminService.addProductDetails(requestDto.getProductId(),
+            requestDto.getProductDetailRequestDtoList());
 
         return ResponseUtil.of(HttpStatus.OK, "상품 디테일 추가 성공");
     }
@@ -128,7 +134,8 @@ public class AdminController {
      * @return "상품 수정 성공"
      */
     @PutMapping("/products")
-    public ResponseEntity<String> updateProduct(@RequestBody ProductRequestDto requestDto) {
+    public ResponseEntity<String> updateProduct(
+        @RequestBody ProductRequestDto requestDto) {
 
         adminService.updateProduct(requestDto);
 
@@ -142,7 +149,8 @@ public class AdminController {
      * @return "Q&A 답변 등록 완성"
      */
     @PostMapping("/answers")
-    public ResponseEntity<String> addAnswer(@RequestBody AnswerRequestDto requestDto) {
+    public ResponseEntity<String> addAnswer(
+        @RequestBody AnswerRequestDto requestDto) {
 
         adminService.addAnswer(requestDto);
 
@@ -156,7 +164,8 @@ public class AdminController {
      * @return responseDto
      */
     @GetMapping("/answers")
-    public ResponseEntity<List<QuestionResponseDto>> getQuestionList(@RequestParam(defaultValue = "0") int page) {
+    public ResponseEntity<List<QuestionResponseDto>> getQuestionList(
+        @RequestParam(defaultValue = "0") int page) {
 
         List<QuestionResponseDto> responseDto = adminService.getQuestionList(page);
 
@@ -170,7 +179,8 @@ public class AdminController {
      * @return "쿠폰 지급 성공"
      */
     @PostMapping("/coupons")
-    public ResponseEntity<String> addCoupon(@Valid @RequestBody CouponRequestDto requestDto) {
+    public ResponseEntity<String> addCoupon(
+        @Valid @RequestBody CouponRequestDto requestDto) {
 
         adminService.addCoupon(requestDto);
 
@@ -184,7 +194,8 @@ public class AdminController {
      * @return "마일리지 지급 성공"
      */
     @PostMapping("/mileages")
-    public ResponseEntity<String> addMileage(@Valid @RequestBody MileageRequestDto requestDto) {
+    public ResponseEntity<String> addMileage(
+        @Valid @RequestBody MileageRequestDto requestDto) {
 
         adminService.addMileage(requestDto);
 
@@ -218,7 +229,7 @@ public class AdminController {
 
         adminService.updateProductImage(file, productId);
 
-        return ResponseUtil.of(HttpStatus.OK, "사진 등록 성공");
+       return ResponseUtil.of(HttpStatus.OK,"사진 등록 성공");
     }
 
 }

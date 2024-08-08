@@ -8,10 +8,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OrderRequestDto {
 
-  private int totalPrice;
   private int cost;
   private int discount;
-  private int usedMileage;
+  private Long usedMileage;
   @NotBlank
   private String address;
 }

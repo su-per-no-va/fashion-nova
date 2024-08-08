@@ -1,18 +1,21 @@
 package com.supernova.fashionnova.payment;
 
-import com.supernova.fashionnova.global.exception.CustomException;
-import com.supernova.fashionnova.global.exception.ErrorType;
+import com.supernova.fashionnova.domain.cart.Cart;
+import com.supernova.fashionnova.domain.cart.CartRepository;
 import com.supernova.fashionnova.domain.order.Order;
 import com.supernova.fashionnova.domain.order.OrderStatus;
 import com.supernova.fashionnova.domain.order.OrdersRepository;
+import com.supernova.fashionnova.domain.user.User;
+import com.supernova.fashionnova.domain.user.UserRepository;
+import com.supernova.fashionnova.global.exception.CustomException;
+import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.payment.dto.KakaoPayApproveResponseDto;
 import com.supernova.fashionnova.payment.dto.KakaoPayCancelResponseDto;
 import com.supernova.fashionnova.payment.dto.KakaoPayReadyResponseDto;
 import com.supernova.fashionnova.payment.dto.KakaoPayRefundRequestDto;
-import com.supernova.fashionnova.domain.user.User;
-import com.supernova.fashionnova.domain.user.UserRepository;
 import jakarta.transaction.Transactional;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,9 +34,16 @@ public class KakaoPayService {
   private final KakaoPayConfig kakaoPayConfig;
   private final UserRepository userRepository;
   private final OrdersRepository ordersRepository;
+  private final CartRepository cartRepository;
 
   //카카오페이 요청 양식
   public KakaoPayReadyResponseDto kakaoPayReady(User user, Long orderId) {
+    //장바구니가 비워져있으면 결제 시도를 막음(개발자가 이런 짓을 할 수 있음)
+    List<Cart> cartList = cartRepository.findAllByUserId(user.getId());
+    if (cartList.isEmpty()) {
+      throw new CustomException(ErrorType.CART_EMPTY);
+    }
+
     Order order = ordersRepository.findById(orderId).orElseThrow(
         ()-> new CustomException(ErrorType.NOT_FOUND_ORDER));
     Map<String, String> parameters = new HashMap<>();

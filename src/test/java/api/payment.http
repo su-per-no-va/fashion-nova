@@ -1,12 +1,12 @@
-@orderId = 1
+@orderId = 12
 
 ###로그인
 POST http://localhost:8080/users/login
 Content-Type: application/json
 
 {
-  "userName": "juyeon555",
-  "password": "Aa12345678!"
+  "userName": "winner7789",
+  "password": "Fb112233!"
 }
 
 > {% client.global.set("access_token", response.headers.valueOf("Authorization")); %}
@@ -17,7 +17,7 @@ Content-Type: application/json
 Authorization: {{access_token}}
 
 {
-  "taxFreeAmount": 150000
+  "taxFreeAmount": 62000
 }
 
 ### 카카오페이 취소(환불)
@@ -26,6 +26,6 @@ Content-Type: application/json
 Authorization: {{access_token}}
 
 {
-  "cancelAmount": 150000,
-  "cancelTaxFreeAmount": 150000
+  "cancelAmount": 62000,
+  "cancelTaxFreeAmount": 62000
 }

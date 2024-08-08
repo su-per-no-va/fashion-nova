@@ -1,4 +1,4 @@
-@orderId = 1
+@orderId = 3
 
 ###로그인
 POST http://localhost:8080/users/login
@@ -17,11 +17,10 @@ Content-Type: application/json
 Authorization: {{access_token}}
 
 {
-  "totalPrice": 80000,
-  "cost": 80000,
-  "discount": 0,
+  "cost": 68000,
+  "discount": 6000,
   "usedMileage": 0,
-  "address": "영종도 주좌길 16-1"
+  "address": "그만해ㅐㅐㅐ"
 }
 
 ### 결제 후 주문내역 조회

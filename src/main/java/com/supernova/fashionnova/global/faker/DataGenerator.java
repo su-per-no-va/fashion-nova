@@ -93,7 +93,7 @@ public class DataGenerator {
         return IntStream.range(0, count)
             .mapToObj(i -> new MileageRequestDto(
                 faker.number().randomNumber(5, true),
-                faker.number().numberBetween(1, 50) * 10
+                (long)faker.number().numberBetween(1, 50) * 10
             ))
             .collect(Collectors.toList());
 
@@ -143,11 +143,12 @@ public class DataGenerator {
     public List<QuestionRequestDto> generateQuestions(int count) {
 
         return IntStream.range(0, count)
-            .mapToObj(i -> new QuestionRequestDto(
-                faker.lorem().sentence(),
-                faker.lorem().paragraph(),
-                faker.options().option("PRODUCT", "RESTOCK", "DELIVERY", "SYSTEM", "ORDER_PAYMENT", "EXCHANGE_RETURN")
-            ))
+            .mapToObj(i -> QuestionRequestDto.builder()
+                .title(faker.lorem().sentence())
+                .question(faker.lorem().paragraph())
+                .type(faker.options().option("PRODUCT", "RESTOCK", "DELIVERY", "SYSTEM", "ORDER_PAYMENT", "EXCHANGE_RETURN"))
+                .build()
+            )
             .collect(Collectors.toList());
 
     }
