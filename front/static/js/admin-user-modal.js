@@ -55,8 +55,4 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    document.getElementById('submitWarning').onclick = function () {
-        alert('경고가 등록되었습니다.');
-        warningModal.style.display = "none";
-    }
 });
