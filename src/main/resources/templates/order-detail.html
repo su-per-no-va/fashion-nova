@@ -187,7 +187,8 @@
   </div>
 </form>
 
-<!-- Modal -->
+<!-- 결제 금액 계산 -->
+
                     <div class="wrap-table-shopping-cart m-t-30">
                         <table class="table-shopping-cart-price">
                             <tr class="table_head">
@@ -217,7 +218,8 @@
                             </tr>
                         </table>
                     </div>
-                    <!-- 결제 금액 계산 -->
+<!-- Modal -->
+
 <div id="cancelOrderModal" class="modal">
   <div class="modal-content">
     <span class="close">&times;</span>
@@ -235,7 +237,7 @@
         <label for="file">파일 첨부하기</label>
         <input type="file" id="file" name="file" class="form-control-file">
       </div>
-      <input type="hidden" id="type" name="type" value="ORDER_PAYMENT"> <!-- 고정된 문의 타입 -->
+      <input type="hidden" id="type" name="type" value="EXCHANGE_RETURN"> <!-- 고정된 문의 타입 -->
       <input type="hidden" id="orderDetailId" name="orderDetailId"> <!-- 주문 상세 ID -->
       <div class="text-center">
         <button type="submit" class="btn btn-primary">등록</button>
@@ -423,6 +425,10 @@
       $('#orderDetailId').val(orderDetailId);
 
       $('#cancelOrderModal').css('display', 'block');
+    });
+
+    $(document).on('click', '.close, .close-modal', function () {
+      $('#cancelOrderModal').css('display', 'none');
     });
 
     $('#cancel-order-form').on('submit', function (e) {

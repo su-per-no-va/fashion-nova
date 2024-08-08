@@ -477,13 +477,21 @@
             let $this = $(this);
             let reviewId = $this.closest('.table_row').data('review-id');
             let reviewText = $this.closest('.table_row').find('.column-5').text();
-            let reviewRating = $this.closest('.table_row').find('.column-4 span i').length;
+            let reviewRating = $this.closest('.table_row').find('.column-4 span i.zmdi-star').length;
 
             $('#updateReviewId').val(reviewId);
             $('#updateReviewText').val(reviewText);
             $('#updateReviewRating').val(reviewRating);
             $('#updateReviewModal').show();
         });
+
+        // 별점 선택 시
+        $(document).on('click', '.item-rating', function () {
+            let index = $(this).index() + 1;
+            $('input[name="rating"]').val(index);
+            updateStarDisplay(index);
+        });
+
 
         // 리뷰 업데이트 폼 제출
         $('#updateReviewForm').submit(function (event) {
@@ -492,7 +500,7 @@
             let reviewUpdateRequestDto = {
                 reviewId: $('#updateReviewId').val(),
                 review: $('#updateReviewText').val(),
-                rating: $('#updateReviewRating').val()
+                rating: $('input[name="rating"]').val()  // 여기서 rating 값을 가져옵니다.
             };
 
             $.ajax({
@@ -528,7 +536,7 @@
         }
     });
 
-    // 별점 렌더링
+    // 별점 렌더링 함수
     function renderStars(rating) {
         let stars = '';
         for (let i = 0; i < 5; i++) {
@@ -539,6 +547,17 @@
             }
         }
         return stars;
+    }
+
+    // 별점 표시 업데이트
+    function updateStarDisplay(rating) {
+        $('.item-rating').each(function (index) {
+            if (index < rating) {
+                $(this).removeClass('zmdi-star-outline').addClass('zmdi-star');
+            } else {
+                $(this).removeClass('zmdi-star').addClass('zmdi-star-outline');
+            }
+        });
     }
 </script>
 <!--===============================================================================================-->

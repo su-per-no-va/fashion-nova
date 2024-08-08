@@ -202,7 +202,7 @@
                 <label for="file">파일 첨부하기</label>
                 <input type="file" id="file" name="file" class="form-control-file">
             </div>
-            <input type="hidden" id="type" name="type" value="EXCHANGE_RETURN">
+            <input type="hidden" id="type" name="type" value="ORDER_PAYMENT">
             <input type="hidden" id="orderId" name="orderId">
             <div class="text-center">
                 <button type="submit" class="btn btn-primary">등록</button>
@@ -454,7 +454,8 @@
               success: function (response, textStatus, jqXHR) {
                   if (jqXHR.status >= 200 && jqXHR.status < 300) {
                       alert("문의 등록 성공");
-                      location.reload()
+                      // 모달 창 닫기
+                      $('#cancelOrderModal').css('display', 'none');
                   } else {
                       alert("문의 등록 실패");
                   }
