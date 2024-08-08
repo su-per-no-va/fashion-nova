@@ -56,9 +56,13 @@ public enum ErrorType {
 
     // ORDER
     NOT_FOUND_ORDER(HttpStatus.BAD_REQUEST, "주문이 존재하지 않습니다."),
+    NOT_FOUND_SOLD(HttpStatus.BAD_REQUEST, "0원이 판매되었네요, 분발하세요."),
 
     // ORDER_DETAIL
     DENIED_PERMISSION(HttpStatus.UNAUTHORIZED, "권한 없음"),
+
+    // ADMIN
+    WRONG_MONTH(HttpStatus.BAD_REQUEST, "1월 ~ 12월 사이의 월을 입력해주세요."),
 
     // MILEAGE
     MILEAGE_EMPTY(HttpStatus.NOT_FOUND, "마일리지 없음");

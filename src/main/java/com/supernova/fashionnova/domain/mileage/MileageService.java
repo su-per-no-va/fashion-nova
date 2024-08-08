@@ -2,7 +2,6 @@ package com.supernova.fashionnova.domain.mileage;
 
 import com.supernova.fashionnova.domain.mileage.dto.MileageResponseDto;
 import com.supernova.fashionnova.domain.order.Order;
-import com.supernova.fashionnova.domain.order.OrdersRepository;
 import com.supernova.fashionnova.domain.user.User;
 import com.supernova.fashionnova.payment.PayAction;
 import jakarta.transaction.Transactional;
