@@ -4,6 +4,7 @@ import com.supernova.fashionnova.domain.address.AddressRepository;
 import com.supernova.fashionnova.domain.cart.Cart;
 import com.supernova.fashionnova.domain.cart.CartRepository;
 import com.supernova.fashionnova.domain.delivery.DeliveryStatus;
+import com.supernova.fashionnova.domain.mileage.MileageRepository;
 import com.supernova.fashionnova.domain.order.dto.AllOrderResponseDto;
 import com.supernova.fashionnova.domain.order.dto.OrderRequestDto;
 import com.supernova.fashionnova.domain.product.Product;
@@ -32,6 +33,7 @@ public class OrderService {
     private final OrderDetailRepository orderDetailRepository;
     private final ProductRepository productRepository;
     private final ProductDetailRepository productDetailRepository;
+    private final MileageRepository mileageRepository;
 
     @Transactional
     public AllOrderResponseDto createOrder(OrderRequestDto orderRequestDto, User user) {

@@ -375,6 +375,38 @@
 
   });
 
+  // 카트 업데이트
+  $(document).on('click', '.update-cart', function() {
+    let itemId = $(this).data('item-id');
+    let productDetailId = $(this).data('product-detail-id');
+    let count = $(`input[name="num-product${itemId}"]`).val();
+    let size = $(`select[name="size${itemId}"]`).val();
+    let color = $(`select[name="color${itemId}"]`).val();
+
+    let updateData = {
+      productDetailId: productDetailId,
+      count: count,
+      size: size,
+      color: color
+    };
+
+    $.ajax({
+      url: '/carts',
+      type: 'PUT',
+      contentType: 'application/json',
+      data: JSON.stringify(updateData),
+      success: function(response, textStatus, jqXHR) {
+        if (jqXHR.status >= 200 && jqXHR.status < 300) {
+          alert('카트 수정 성공');
+          location.reload();
+        }
+      },
+      error: function(xhr, status, error) {
+        alert('수정 실패:  ' + error.message);
+      }
+    });
+  });
+
   //삭제
   $(document).on('click', '.btn-delete-item', function() {
     var productDetailId = $(this).data('product-detail-id'); // 'data-product-detail-id' 값을 가져옴
@@ -397,8 +429,8 @@
           alert('삭제 실패: ' + response.error);
         }
       },
-      error: function() {
-        alert('삭제 요청에 실패했습니다.');
+      error: function(error) {
+        alert(error.message);
       }
     });
   });
@@ -462,52 +494,68 @@
       let total = item.price * item.count;
       subtotal += total;
 
+      // 색상 옵션 동적 생성
+      let colorOptions = item.colors.map(color =>
+          `<option value="${color}" ${item.color === color ? 'selected' : ''}>${color}</option>`
+      ).join('');
+
+      // 사이즈 옵션 동적 생성
+      let sizeOptions = item.sizes.map(size =>
+          `<option value="${size}" ${item.size === size ? 'selected' : ''}>${size}</option>`
+      ).join('');
+
       let row = `
-                <tr class="table_row" data-item-id="${item.id}">
-                    <td class="column-1">
-                        <div class="how-itemcart1">
-                            <img src="${item.imageUrl}" alt="IMG">
-                        </div>
-                    </td>
-                    <td class="column-2">${item.product}</td>
-                    <td class="column-3">${item.price.toLocaleString()}원</td>
-                    <td class="column-4">
-                        <div class="wrap-num-product flex-w m-l-auto m-r-0">
-                            <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-                                <i class="fs-16 zmdi zmdi-minus"></i>
-                            </div>
-                            <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product${item.id}" value="${item.count}">
-                            <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-                                <i class="fs-16 zmdi zmdi-plus"></i>
-                            </div>
-                        </div>
-                        <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
-                            <select class="js-select2" name="size${item.size}">
-                                <option value="S" ${item.size === 'S' ? 'selected' : ''}>S</option>
-                                <option value="M" ${item.size === 'M' ? 'selected' : ''}>M</option>
-                                <option value="L" ${item.size === 'L' ? 'selected' : ''}>L</option>
-                            </select>
-                            <div class="dropDownSelect2"></div>
-                        </div>
-                    </td>
-                    <td class="column-5">${total.toLocaleString()}원</td>
-               <td class="column-6">
-               <div class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10" style="margin: 15px;">
-               Update Cart
-               </div>
-               <div class="flex-c-m stext-101 cl0 size-119 bg3 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10 btn-delete-item" style="margin: 15px;" data-item-id="${item.id}" data-product-detail-id="${item.productDetailId}">
-               Delete Cart
-               </div>
-               </td>
-                </tr>
-            `;
+    <tr class="table_row" data-item-id="${item.productDetailId}">
+      <td class="column-1">
+        <div class="how-itemcart1">
+          <img src="${item.imageUrl}" alt="IMG">
+        </div>
+      </td>
+      <td class="column-2">${item.product}</td>
+      <td class="column-3">${item.price.toLocaleString()}원</td>
+      <td class="column-4">
+        <div class="wrap-num-product flex-w m-l-auto m-r-0">
+          <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+            <i class="fs-16 zmdi zmdi-minus"></i>
+          </div>
+          <input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product${item.productDetailId}" value="${item.count}">
+          <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+            <i class="fs-16 zmdi zmdi-plus"></i>
+          </div>
+        </div>
+        <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
+          <select class="js-select2" name="size${item.productDetailId}">
+            ${sizeOptions} <!-- 동적으로 생성된 사이즈 옵션 -->
+          </select>
+          <div class="dropDownSelect2"></div>
+        </div>
+      </td>
+      <td class="column-5">${total.toLocaleString()}원</td>
+      <td class="column-6">
+        <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
+          <select class="js-select2" name="color${item.productDetailId}">
+            ${colorOptions} <!-- 동적으로 생성된 색상 옵션 -->
+          </select>
+          <div class="dropDownSelect2"></div>
+        </div>
+      </td>
+      <td class="column-7">
+        <div class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10 update-cart" style="margin: 15px;" data-item-id="${item.productDetailId}" data-product-detail-id="${item.productDetailId}">
+          Update Cart
+        </div>
+        <div class="flex-c-m stext-101 cl0 size-119 bg3 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10 btn-delete-item" style="margin: 15px;" data-item-id="${item.productDetailId}" data-product-detail-id="${item.productDetailId}">
+          Delete Cart
+        </div>
+      </td>
+    </tr>
+  `;
       $cartItems.append(row);
     });
 
     $('#subtotal').text(subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원');
     $('#total').text((subtotal + 2500).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'); // 배송비 포함 총 금액
   }
-</script>
 
+</script>
 </body>
 </html>

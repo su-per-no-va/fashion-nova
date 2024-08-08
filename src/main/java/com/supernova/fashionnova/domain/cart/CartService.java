@@ -92,7 +92,11 @@ public class CartService {
                 cart.getProductDetail().getSize(),
                 cart.getProductDetail().getColor(),
                 cart.getProductDetail().getProduct().getImageUrl(),
-                cart.getProductDetail().getId()
+                cart.getProductDetail().getId(),
+                cart.getProductDetail().getProduct().getProductDetailList().stream()
+                    .map(ProductDetail::getColor).toList(),
+                cart.getProductDetail().getProduct().getProductDetailList().stream()
+                    .map(ProductDetail::getSize).toList()
             ))
             .toList();
 
@@ -119,7 +123,7 @@ public class CartService {
         ProductDetail newProductDetail = productDetailRepository.findByProductAndSizeAndColor(
                 currentProductDetail.getProduct(),
                 dto.getSize(), dto.getColor())
-            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
+            .orElseThrow(() -> new CustomException(ErrorType.CART_NOT_FOUND_COLOR_SIZE));
 
         if (newProductDetail.getQuantity() == 0) {
             throw new CustomException(ErrorType.OUT_OF_STOCK);
@@ -130,7 +134,8 @@ public class CartService {
             .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
 
         // 새로운 상품 상세 정보가 이미 장바구니에 있는지 확인
-        Optional<Cart> existingCartOptional = cartRepository.findByUserAndProductDetail(user, newProductDetail);
+        Optional<Cart> existingCartOptional = cartRepository.findByUserAndProductDetail(user,
+            newProductDetail);
 
         if (existingCartOptional.isPresent()) {
             // 이미 존재하면 수량 증가
@@ -171,7 +176,7 @@ public class CartService {
     /**
      * 장바구니 비우기
      *
-     * @param user 사용자 정보
+     * @param userId 사용자 정보
      * @throws CustomException CART_EMPTY 장바구니에 상품이 존재하지 않을 때
      */
     @Transactional
