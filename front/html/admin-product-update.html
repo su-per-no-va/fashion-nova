@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Product - Admin</title>
+        <title>Product Update - Admin</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="../static/css/admin.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -101,14 +101,14 @@
                 </nav>
             </div>
 
-            <!-- Product Page-->
+            <!-- Product Create Page-->
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Product</h1>
+                        <h1 class="mt-4">Product Update</h1>
                         <div class="card mb-4">
                             <div class="card-body">
-                                상품 검색, 수정, 삭제, 재고관리, 좋아요 수 , 리뷰 수 조회
+                                상품 수정
                             </div>
                         </div>
 
@@ -116,48 +116,86 @@
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
                                 Product Table
-                                <!-- Navbar Search-->
-                                <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                                    <div class="input-group">
-                                        <input class="form-control" type="text" placeholder="상품디테일ID 입력...">
-                                        <button class="btn btn-primary" type="button">단종</button>
-                                    </div>
-                                </form>
                             </div>
                             <div class="card-body">
-                                <table id="datatablesSimple">
-                                    <thead>
-                                        <tr>
-                                            <th>상품ID</th>
-                                            <th>상품디테일ID</th>
-                                            <th>카테고리</th>
-                                            <th>상품명</th>
-                                            <th>사이즈</th>
-                                            <th>컬러</th>
-                                            <th>가격</th>
-                                            <th>수량(재고)</th>
-                                            <th>좋아요 수</th>
-                                            <th>리뷰 수</th>
-                                            <th>등록일</th>
-                                        </tr>
-                                    </thead>
 
-                                    <tbody>
-                                        <tr>
-                                            <td><a href="http://localhost:8080/product-detail.html?id=3">1</td>
-                                            <td>1</td>
-                                            <td>상의</td>
-                                            <td><a href="admin-product-update.html">꽃무늬 기깔 원피스</a></td>
-                                            <td>S</td>
-                                            <td>BLACK</td>
-                                            <td>30,000</td>
-                                            <td>1000</td>
-                                            <td>3</td>
-                                            <td>1</td>
-                                            <td>2024/08/01 13:01</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <form>
+                                    <div class="mb-3">
+                                        <label for="productName" class="form-label">상품 명</label>
+                                        <input type="text" class="form-control" id="productName" placeholder="상품 명을 입력하세요">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="productPrice" class="form-label">가격</label>
+                                        <input type="number" class="form-control" id="productPrice" placeholder="가격을 입력하세요">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="productDescription" class="form-label">설명</label>
+                                        <textarea class="form-control" id="productDescription" rows="3" placeholder="설명을 입력하세요"></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="productImage" class="form-label">이미지</label>
+                                        <input class="form-control" type="file" id="productImage">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">상품 분류</label><br>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="category1" value="option1">
+                                            <label class="form-check-label" for="category1">TOP</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="category2" value="option2">
+                                            <label class="form-check-label" for="category2">BOTTOM</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="category3" value="option3">
+                                            <label class="form-check-label" for="category3">SHOES</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="category4" value="option4">
+                                            <label class="form-check-label" for="category4">GOODS</label>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">사이즈</label><br>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="sizeS" value="S">
+                                            <label class="form-check-label" for="sizeS">S</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="sizeM" value="M">
+                                            <label class="form-check-label" for="sizeM">M</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="sizeL" value="L">
+                                            <label class="form-check-label" for="sizeL">L</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="sizeXL" value="XL">
+                                            <label class="form-check-label" for="sizeXL">XL</label>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">컬러</label><br>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="colorRed" value="Red">
+                                            <label class="form-check-label" for="colorRed">RED</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="colorBlue" value="Blue">
+                                            <label class="form-check-label" for="colorBlue">BLACK</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="colorGreen" value="Green">
+                                            <label class="form-check-label" for="colorGreen">GRAY</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="colorBlack" value="Black">
+                                            <label class="form-check-label" for="colorBlack">WHITE</label>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-primary" id="submitButton">수정</button>
+                                </form>
+
                             </div>
                         </div>
                     </div>
@@ -182,5 +220,6 @@
         <script src="../static/js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="../static/js/datatables.js"></script>
+        <script src="../static/js/admin-product-create.js"></script>
     </body>
 </html>
