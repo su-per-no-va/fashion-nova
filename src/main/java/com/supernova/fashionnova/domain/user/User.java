@@ -128,5 +128,7 @@ public class User extends Timestamped {
         this.kakaoId = kakaoId;
         return this;
     }
-
+    public void updateMileage(Long mileage) {
+        this.mileage = mileage;
+    }
 }

@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 public class MileageRequestDto {
 
     private Long userId;
-    private int mileage;
+    private Long mileage;
 
-    public MileageRequestDto(Long userId, int mileage) {
+    public MileageRequestDto(Long userId, Long mileage) {
         this.userId = userId;
         this.mileage = mileage;
     }
