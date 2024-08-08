@@ -79,4 +79,6 @@ jobs:
                 -e SECRET_KEY=${{secrets.SECRET_KEY}} \
                 -e KAKAO_CID=${{secrets.KAKAO_CID}} \
                 -e KAKAO_SECRET_KEY=${{secrets.KAKAO_SECRET_KEY}} \
+                -e GOOGLE_EMAIL=${{secrets.GOOGLE_EMAIL}} \
+                -e GOOGLE_APP_PW=${{secrets.GOOGLE_APP_PW}} \
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_TAG_NAME }}:latest
