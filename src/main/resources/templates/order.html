@@ -100,15 +100,15 @@
                         <i class="zmdi zmdi-shopping-cart"></i>
                     </a>
 
-                    <a id="wish-icon" href="wish-list.html"
-                       class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
-                       data-notify="">
-                        <i class="zmdi zmdi-favorite-outline"></i>
-                    </a>
-                </div>
-            </nav>
+          <a id="wish-icon" href="wish-list.html"
+             class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
+             data-notify="">
+            <i class="zmdi zmdi-favorite-outline"></i>
+          </a>
         </div>
+      </nav>
     </div>
+  </div>
 
     <!-- Modal Search -->
     <div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
@@ -156,50 +156,32 @@
 
 <!-- Order -->
 <form class="bg0 p-t-75 p-b-85">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-10">
-                <div class="m-l-10 m-r--100 m-lr-0-xl">
-                    <div class="wrap-table-shopping-cart">
-                        <table class="table-shopping-cart">
-                            <tr class="table_head">
-                                <th class="column-1">Order Number</th>
-                                <th class="column-2">Product Name</th>
-                                <th class="column-3">Date</th>
-                                <th class="column-4">Price</th>
-                                <th class="column-5">Order Status</th>
-                                <th class="column-5">Delivery Status</th>
-                                <th class="column-7">Edit</th>
-                            </tr>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-10">
+        <div class="m-l-10 m-r--100 m-lr-0-xl">
+          <div class="wrap-table-shopping-cart">
+            <table class="table-shopping-cart">
+              <tr class="table_head">
+                <th class="column-1">주문 번호</th>
+                <th class="column-2">상품 이름</th>
+                <th class="column-3">주문 날짜</th>
+                <th class="column-4">가격</th>
+                <th class="column-5">주문 상태</th>
+                <th class="column-6">배송 상태</th>
+                <th class="column-7">Edit</th>
+              </tr>
 
-                            <!-- 오더가 동적으로 추가될 곳  -->
-                            <tr id="order-list" class="table_row">
-                                <td class="column-1">
-                                    <a href="order-detail.html">165473</a>
-                                </td>
-                                <td class="column-2">꽃무늬 원피스 외 1종</td>
-                                <td class="column-3">2024-08-01</td>
-
-                                <td class="column-4">
-                                    150000원
-                                </td>
-                                <td class="column-5">주문</td>
-
-                                <td class="column-6">배송 완료</td>
-                                <td class="column-7">
-                                    <button type="button"
-                                            class="btn btn-secondary open-modal flex-c-m stext-101 cl0 size-103 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
-                                        주문 취소
-                                    </button>
-
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
+              <!-- 오더가 동적으로 추가될 곳  -->
+              <tbody id="order-list">
+              <!-- 동적으로 추가된 주문 항목들이 여기에 삽입됩니다. -->
+              </tbody>
+            </table>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </form>
 
 <!-- Modal -->
@@ -325,69 +307,137 @@
 <script src="../js/main.js"></script>
 <!--===============================================================================================-->
 <script>
-    $(document).ready(function () {
+  $(document).ready(function () {
 
-        let auth = localStorage.getItem('accessToken');
-        //로그인 안되어 있으면 로그인으로 옮기기
-        if (!auth) {
-            alert("로그인 후 이용해 주세요");
-            window.location.href = "login.html";
-        }
-
-        /* 장바구니 아이콘 개수 */
-        window.common.getShoppingCart()
-        .done(function (response) {
-            if (response) {
-                $('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
-            } else {
-                // no response
-            }
-        })
-        .fail(function (error) {
-            console.log(error.message)
-        });
-
-        /* 찜 아이콘 개수 */
-        window.common.getWishList()
-        .done(function (response) {
-            if (response) {
-                $('a#wish-icon')[0].dataset.notify = response.length;
-            } else {
-                // no response
-            }
-        })
-        .fail(function (error) {
-            console.log(error.message)
-        });
-        fetchReviews()
+    /* 장바구니 아이콘 개수 */
+    window.common.getShoppingCart()
+    .done(function (response) {
+      if (response) {
+        $('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
+      } else {
+        // no response
+      }
+    })
+    .fail(function (error) {
+      console.log(error.message)
     });
+
+    /* 찜 아이콘 개수 */
+    window.common.getWishList()
+    .done(function (response) {
+      if (response) {
+        $('a#wish-icon')[0].dataset.notify = response.length;
+      } else {
+        // no response
+      }
+    })
+    .fail(function (error) {
+      console.log(error.message)
+    });
+
+    // 서버에서 주문 정보를 가져오는 AJAX 요청
+    $.ajax({
+      url: '/orders', // 주문 정보를 가져올 서버 URL
+      type: 'GET',
+      dataType: 'json',
+      success: function (data) {
+        updateOrderTable(data);
+      },
+      error: function (xhr, status, error) {
+        console.error('주문 정보를 가져오는 데 실패했습니다:', error);
+      }
+    });
+
+    // 테이블에 주문 정보를 동적으로 추가하는 함수
+    function updateOrderTable(orders) {
+      const orderListElement = $('#order-list');
+      orderListElement.empty(); // 기존 행 삭제
+
+      orders.forEach(function (order) {
+        const orderRow = $('<tr>').addClass('table_row');
+
+        // 주문 번호
+        const orderIdCell = $('<td>').addClass('column-1').html(
+            `<a href="order-detail.html?orderId=${order.orderId}">${order.orderId}</a>`);
+        // 상품 이름
+        const itemNameCell = $('<td>').addClass('column-2').text('상품명');
+
+        // 주문 날짜
+        const orderDateCell = $('<td>').addClass('column-3').text(
+            new Date(order.createdAt).toISOString().split('T')[0]);
+
+        // 가격
+        const priceCell = $('<td>').addClass('column-4').text(`${order.totalPrice}원`);
+
+        // 주문 상태
+        const orderStatusCell = $('<td>').addClass('column-5').text(order.orderStatus); // 실제 상태 값으로 수정 필요
+
+        // 배송 상태
+        const deliveryStatusCell = $('<td>').addClass('column-6').text(order.deliveryStatus); // 실제 배송 상태 값으로 수정 필요
+
+        // Edit 버튼
+        const editButtonCell = $('<td>').addClass('column-7').html(`
+                <button type="button"
+                        class="btn btn-secondary open-modal flex-c-m stext-101 cl0 size-103 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+                  주문 취소
+                </button>
+            `);
+
+        // 테이블 행에 셀 추가
+        orderRow.append(orderIdCell, itemNameCell, orderDateCell, priceCell, orderStatusCell,
+            deliveryStatusCell, editButtonCell);
+
+        // 테이블에 행 추가
+        orderListElement.append(orderRow);
+
+        // 주문 상세 정보를 가져와서 itemNameCell을 업데이트
+        fetchOrderDetail(order.orderId, itemNameCell);
+      });
+    }
+  });
 </script>
 <!--===============================================================================================-->
 <script>
     // JavaScript to handle modal
-    document.addEventListener("DOMContentLoaded", function () {
-        var modal = document.getElementById("cancelOrderModal");
-        var openModalBtns = document.querySelectorAll(".open-modal");
-        var closeModalBtns = document.querySelectorAll(".close, .close-modal");
+    $(document).ready(function () {
 
-        openModalBtns.forEach(function (btn) {
-            btn.addEventListener("click", function () {
-                modal.style.display = "block";
-            });
+        // 기존 AJAX 요청 및 테이블 업데이트 코드
+
+        $(document).on('click', '.open-modal', function () {
+            $('#cancelOrderModal').css('display', 'block');
         });
 
-        closeModalBtns.forEach(function (btn) {
-            btn.addEventListener("click", function () {
-                modal.style.display = "none";
-            });
+        $(document).on('click', '.close, .close-modal', function () {
+            $('#cancelOrderModal').css('display', 'none');
         });
 
-        window.addEventListener("click", function (event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
+        window.onclick = function (event) {
+            if (event.target == $('#cancelOrderModal')[0]) {
+                $('#cancelOrderModal').css('display', 'none');
             }
-        });
+        };
     });
 </script>
+<!--===============================================================================================-->
+<script>
+  function fetchOrderDetail(orderId, itemNameCell) {
+    $.ajax({
+      url: `/orderDetails/${orderId}`,
+      type: 'GET',
+      dataType: 'json',
+      success: function(response) {
+        const productName = response.length > 1
+            ? `<b>${response[0].productName}</b> 외 ${response.length - 1} 개`
+            : `<b>${response[0].productName}</b>`;
+        itemNameCell.html(productName);
+      },
+      error: function (xhr, status, error) {
+        console.error('주문 상세 정보를 가져오는 데 실패했습니다:', error);
+      }
+    });
+  }
+
+</script>
+<!--===============================================================================================-->
 </body>
 </html>

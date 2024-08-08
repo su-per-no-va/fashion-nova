@@ -37,8 +37,8 @@ public class QuestionController {
     @PostMapping
     public ResponseEntity<String> addQuestion(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
-        @Valid @RequestPart(value = "request") QuestionRequestDto requestDto,
-        @RequestPart(value = "image", required = false) List<MultipartFile> file) {
+        @Valid @RequestPart QuestionRequestDto requestDto,
+        @RequestPart(required = false) List<MultipartFile> file) {
 
         questionService.addQuestion(userDetails.getUser(), requestDto, file);
 

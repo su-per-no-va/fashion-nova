@@ -16,8 +16,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MileageService {
 
-    private final OrdersRepository ordersRepository;
-
+    private final MileageRepository mileageRepository;
     /**
      * 마일리지 내역 조회
      *
@@ -28,7 +27,7 @@ public class MileageService {
     public List<MileageResponseDto> getMileageHistoryList(User user, int page) {
 
         Pageable pageable = PageRequest.of(page, 10);
-        Page<Order> mileagePage = ordersRepository.findByUser(user, pageable);
+        Page<Mileage> mileagePage = mileageRepository.findByUser(user, pageable);
 
         return mileagePage.stream()
             .map(MileageResponseDto::new)

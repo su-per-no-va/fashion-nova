@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.supernova.fashionnova.domain.mileage.Mileage;
 import com.supernova.fashionnova.domain.mileage.MileageController;
 import com.supernova.fashionnova.domain.mileage.MileageService;
 import com.supernova.fashionnova.domain.mileage.dto.MileageResponseDto;
@@ -73,8 +74,8 @@ class MileageControllerTest {
         // given
         int page = 0;
 
-        Order order = Mockito.mock(Order.class);
-        MileageResponseDto responseDto = new MileageResponseDto(order);
+        Mileage mileage = Mockito.mock(Mileage.class);
+        MileageResponseDto responseDto = new MileageResponseDto(mileage);
 
         List<MileageResponseDto> responseDtoList = List.of(responseDto);
 
