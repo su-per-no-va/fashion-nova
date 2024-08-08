@@ -54,3 +54,27 @@
 #modal-body button {
   margin-top: 10px;
 }
+
+.modal-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.modal-table th, .modal-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.modal-table th {
+  background-color: #f2f2f2;
+  text-align: left;
+}
+
+.modal-buttons {
+  text-align: right;
+  margin-top: 10px;
+}
+
+.modal-buttons .btn {
+  margin-left: 5px;
+}

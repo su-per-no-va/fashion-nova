@@ -1,40 +1,62 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener('DOMContentLoaded', function () {
     const datatablesSimple = document.getElementById('datatablesSimple');
     if (datatablesSimple) {
         new simpleDatatables.DataTable(datatablesSimple);
     }
 
-    // 경고 모달 관련 코드
+    var userModal = document.getElementById("userModal");
     var warningModal = document.getElementById("warningModal");
-    var closeBtn = document.getElementsByClassName("close")[0];
 
-    document.querySelectorAll('.warning-modal-link').forEach(function (element) {
-        element.onclick = function () {
-            // 경고 세부 정보 표시
-            document.querySelector('.modal-reason').textContent = "기존 경고 사유"; // 이 값을 실제 데이터로 변경해야 합니다.
-            document.querySelector('.modal-date').textContent = "경고 생성일"; // 이 값을 실제 데이터로 변경해야 합니다.
+    document.addEventListener('click', function (event) {
+        if (event.target.matches('.name-link')) {
+            event.preventDefault();
+            // 해당 사용자 정보로 모달 업데이트 (데모 데이터를 사용합니다)
+            document.querySelector('.modal-id').textContent = 'nado123';
+            document.querySelector('.modal-name').textContent = '김나도';
+            document.querySelector('.modal-email').textContent = 'nado123@gmail.com';
+            document.querySelector('.modal-type').textContent = 'USER';
+            document.querySelector('.modal-join').textContent = '2024/08/01';
+            document.querySelector('.modal-grade').textContent = 'BRONZE';
+            document.querySelector('.modal-total').textContent = '1,700,000';
+            document.querySelector('.modal-address').innerHTML = '서울특별시 관악구 정포동 905동 301호<br>경기도 고양시 일산동구 301동 402호';
+            document.querySelector('.modal-restriction').innerHTML = '상습 악플로 인한 7일 사용제한 1/3<br>상습 악플로 인한 7일 사용제한 2/3';
+            document.querySelector('.modal-recent').innerHTML = '누가 입어도 개쩌는 반팔티 BLACK S 2<br>둘무니 원피스 BLACK S 2';
 
+            userModal.style.display = "block";
+        }
+
+        if (event.target.matches('.warning-link')) {
+            event.preventDefault();
+            // 경고 내역 업데이트 (데모 데이터를 사용합니다)
+            var warningBody = document.querySelector('.warning-body');
+            warningBody.innerHTML = '<tr><td>상습 악플로 인한 7일 사용제한</td><td>2024-08-01</td></tr><tr><td>재수 없음</td><td>2024-08-01</td></tr>';
             warningModal.style.display = "block";
+        }
+
+        if (event.target.matches('.user-close') || event.target.matches('.warning-close') || event.target.matches('#cancelWarning')) {
+            userModal.style.display = "none";
+            warningModal.style.display = "none";
+        }
+
+        if (event.target == userModal) {
+            userModal.style.display = "none";
+        }
+        if (event.target == warningModal) {
+            warningModal.style.display = "none";
         }
     });
 
-    closeBtn.onclick = function () {
-        warningModal.style.display = "none";
-    }
-
     window.onclick = function (event) {
+        if (event.target == userModal) {
+            userModal.style.display = "none";
+        }
         if (event.target == warningModal) {
             warningModal.style.display = "none";
         }
     }
 
-    document.getElementById("submitWarning").onclick = function() {
-        // 경고 등록 로직 추가
+    document.getElementById('submitWarning').onclick = function () {
         alert('경고가 등록되었습니다.');
-        warningModal.style.display = "none";
-    }
-
-    document.getElementById("cancelWarning").onclick = function() {
         warningModal.style.display = "none";
     }
 });
