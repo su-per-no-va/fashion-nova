@@ -1,10 +1,12 @@
 package com.supernova.fashionnova.domain.product;
 
+import com.supernova.fashionnova.domain.order.Order;
 import com.supernova.fashionnova.domain.order.OrderDetail;
 import com.supernova.fashionnova.domain.order.OrderDetailRepository;
 import com.supernova.fashionnova.domain.product.dto.ProductResponseDto;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
+import com.supernova.fashionnova.payment.PayAction;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -41,13 +43,13 @@ public class ProductService {
     }
 
     @Transactional
-    public void calculateQuantity(String action, Long orderId) {
-      List<OrderDetail> orderDetailList =orderDetailRepository.findAllByOrderId(orderId);
+    public void calculateQuantity(PayAction action, Order order) {
+      List<OrderDetail> orderDetailList =orderDetailRepository.findAllByOrderId(order.getId());
       if(orderDetailList.isEmpty()){
           throw new CustomException(ErrorType.NOT_FOUND_ORDER);
       }
 
-      if("buy".equals(action)){
+      if(PayAction.BUY.equals(action)){
         for(OrderDetail orderDetail:orderDetailList){
           ProductDetail productDetail = productDetailRepository.findById(orderDetail.getProductDetail().getId()).orElseThrow(
               ()-> new CustomException(ErrorType.NOT_FOUND_PRODUCT_DETAIL));

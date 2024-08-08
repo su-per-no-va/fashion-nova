@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class MileageResponseDto {
 
-    private final int usedMileage;
+    private final Long usedMileage;
     private final LocalDateTime createdAt;
 
     public MileageResponseDto(Order order) {

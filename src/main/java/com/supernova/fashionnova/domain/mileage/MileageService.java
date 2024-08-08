@@ -4,6 +4,11 @@ import com.supernova.fashionnova.domain.mileage.dto.MileageResponseDto;
 import com.supernova.fashionnova.domain.order.Order;
 import com.supernova.fashionnova.domain.order.OrdersRepository;
 import com.supernova.fashionnova.domain.user.User;
+import com.supernova.fashionnova.domain.user.UserRepository;
+import com.supernova.fashionnova.global.exception.CustomException;
+import com.supernova.fashionnova.global.exception.ErrorType;
+import com.supernova.fashionnova.payment.PayAction;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +22,7 @@ import org.springframework.stereotype.Service;
 public class MileageService {
 
     private final OrdersRepository ordersRepository;
+    private final MileageRepository mileageRepository;
 
     /**
      * 마일리지 내역 조회
@@ -36,4 +42,18 @@ public class MileageService {
 
     }
 
+    @Transactional
+  public void calculateMileage(PayAction action, Order order, User user) {
+      Mileage mileage = mileageRepository.findByUserId(user.getId()).orElseGet(Mileage::new);
+      if(PayAction.BUY.equals(action)){
+        user.updateMileage(user.getMileage() - order.getUsedMileage());
+        mileage.updateMileage(-order.getUsedMileage());
+        mileageRepository.save(mileage);
+      }
+      else{
+        user.updateMileage(user.getMileage() + order.getUsedMileage());
+        mileage.updateMileage(order.getUsedMileage());
+        mileageRepository.save(mileage);
+      }
+  }
 }

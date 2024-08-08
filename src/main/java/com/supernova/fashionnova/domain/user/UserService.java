@@ -139,5 +139,9 @@ public class UserService {
 
     }
 
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(
+            ()-> new CustomException(ErrorType.NOT_FOUND_USER));
+    }
 
 }

@@ -53,7 +53,10 @@ public enum ErrorType {
     NOT_FOUND_ORDER(HttpStatus.BAD_REQUEST, "주문이 존재하지 않습니다."),
 
     // ORDER_DETAIL
-    DENIED_PERMISSION(HttpStatus.UNAUTHORIZED, "권한 없음");
+    DENIED_PERMISSION(HttpStatus.UNAUTHORIZED, "권한 없음"),
+
+    // MILEAGE
+    MILEAGE_EMPTY(HttpStatus.NOT_FOUND, "마일리지 없음");
 
     private final HttpStatus httpStatus;
     private final String message;

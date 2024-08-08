@@ -26,12 +26,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class OrderService {
 
-  private final AddressRepository addressRepository;
   private final CartRepository cartRepository;
   private final OrdersRepository ordersRepository;
   private final OrderDetailRepository orderDetailRepository;
-  private final ProductRepository productRepository;
-  private final ProductDetailRepository productDetailRepository;
 
   @Transactional
   public AllOrderResponseDto createOrder(
@@ -132,8 +129,12 @@ public class OrderService {
    * 결제 성공 후 주문 상태 변경
    */
   @Transactional
-  public void updateOrderStatus(Long orderId) {
-    Order order = ordersRepository.findById(orderId).orElseThrow(()-> new CustomException(ErrorType.NOT_FOUND_ORDER));
+  public void updateOrderStatus(Order order) {
     order.setOrderStatus(OrderStatus.SUCCESS);
+  }
+
+  public Order getOrderById(Long orderId) {
+    return ordersRepository.findById(orderId).orElseThrow(
+        ()-> new CustomException(ErrorType.NOT_FOUND_ORDER));
   }
 }
