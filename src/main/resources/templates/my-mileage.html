@@ -44,15 +44,15 @@
         </div>
 
         <div class="right-top-bar flex-w h-full">
-          <a href="../../src/main/resources/templates/login.html" class="flex-c-m trans-04 p-lr-25">
+          <a href="login.html" class="flex-c-m trans-04 p-lr-25">
             Login
           </a>
 
-          <a href="../../src/main/resources/templates/question.html" class="flex-c-m trans-04 p-lr-25">
+          <a href="question.html" class="flex-c-m trans-04 p-lr-25">
             Q&A
           </a>
 
-          <a href="../../src/main/resources/templates/my-page.html" class="flex-c-m trans-04 p-lr-25">
+          <a href="my-page.html" class="flex-c-m trans-04 p-lr-25">
             My Page
           </a>
         </div>
@@ -63,7 +63,7 @@
       <nav class="limiter-menu-desktop container">
 
         <!-- Logo desktop -->
-        <a href="../../src/main/resources/templates/index.html" class="logo">
+        <a href="index.html" class="logo">
           <img src="../images/icons/logo-01.png" alt="IMG-LOGO">
         </a>
 
@@ -71,30 +71,30 @@
         <div class="menu-desktop">
           <ul class="main-menu">
             <li>
-              <a href="../../src/main/resources/templates/about.html">About</a>
+              <a href="about.html">About</a>
             </li>
 
             <li class="label1" data-label1="hot">
-              <a href="../../src/main/resources/templates/product.html">Shop</a>
+              <a href="product.html">Shop</a>
             </li>
 
             <li>
-              <a href="../../src/main/resources/templates/contact.html">Contact</a>
+              <a href="contact.html">Contact</a>
             </li>
           </ul>
         </div>
 
         <!-- Icon header -->
         <div class="wrap-icon-header flex-w flex-r-m">
-          <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
+          <div  class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
             <i class="zmdi zmdi-search"></i>
           </div>
 
-          <a href="../../src/main/resources/templates/shoping-cart.html" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="2">
+          <a id="cart-icon" href="shoping-cart.html" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="">
             <i class="zmdi zmdi-shopping-cart"></i>
           </a>
 
-          <a href="../../src/main/resources/templates/wish-list.html" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
+          <a id="wish-icon" href="wish-list.html" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="">
             <i class="zmdi zmdi-favorite-outline"></i>
           </a>
         </div>
@@ -129,12 +129,12 @@
 <!-- breadcrumb -->
 <div class="container">
   <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
-    <a href="../../src/main/resources/templates/index.html" class="stext-109 cl8 hov-cl1 trans-04">
+    <a href="index.html" class="stext-109 cl8 hov-cl1 trans-04">
       Home
       <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
     </a>
 
-    <a href="../../src/main/resources/templates/my-page.html" class="stext-109 cl8 hov-cl1 trans-04">
+    <a href="my-page.html" class="stext-109 cl8 hov-cl1 trans-04">
       My Page
       <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
     </a>
@@ -150,38 +150,20 @@
 
   <div class="container">
 
-    <h5 class="ltext-105 txt-center">
-      나의 적립금액 : 200원
+    <h5 class="ltext-105 txt-center" id="total-mileage">
+      나의 적립금액 :
     </h5>
     <br>
     <div class="row">
       <div class="col-lg-10">
         <div class="m-l-10 m-r--100 m-lr-0-xl">
           <div class="wrap-table-shopping-cart">
-            <table class="table-shopping-cart">
-              <tr class="table_head">
-                <th class="column-1">마일리지 유형</th>
-                <th class="column-2">쿠폰 명</th>
-                <th class="column-3">유효기간</th>
-              </tr>
-
-              <tr class="table_row">
-                <td class="column-1">구매 적립</td>
-                <td class="column-2">+ 500원</td>
-                <td class="column-3">2024-08-01 ~ 2024-09-01</td>
-              </tr>
-
-              <tr class="table_row">
-                <td class="column-1">구매 사용</td>
-                <td class="column-2">- 300원</td>
-                <td class="column-3">2024-08-01 ~ 2024-09-01</td>
-              </tr>
+            <table class="table-shopping-cart" id="mileage-table">
+              <!-- JavaScript에서 행을 추가합니다 -->
             </table>
-
           </div>
-          <p>*마일리지 유효기간은 적립일로 부터 한달 주기로 초기화 됩니다</p>
+          <p>*마일리지 유효기간은 적립일로부터 한달 주기로 초기화 됩니다</p>
         </div>
-
       </div>
     </div>
 
@@ -278,52 +260,96 @@
 </script>
 <!--===============================================================================================-->
 <script src="../js/main.js"></script>
+<script src="/js/common.js"></script>
 <!--===============================================================================================-->
 <script>
   $(document).ready(function () {
-    // 기존 쿠키 삭제 (필요에 따라 유지)
-    Cookies.remove('Authorization', {path: '/'});
-
-    // AJAX 요청에 Authorization 헤더 추가
-    $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-      const token = Cookies.get('Authorization');
-      if (token) {
-        jqXHR.setRequestHeader('Authorization', token);
-      }
-    });
-  });
-
-  const host = 'http://' + window.location.host;
-
-  function onLogin() {
-    let username = $('#username').val();
-    let password = $('#password').val();
-
-    $.ajax({
-      type: "POST",
-      url: `/api/user/login`,
-      contentType: "application/json",
-      data: JSON.stringify({username: username, password: password}),
-    })
-    .done(function (res, status, xhr) {
-      const token = xhr.getResponseHeader('Authorization');
-      console.log("Token: ", token);  // 토큰 값 확인
-
-      if (token) {
-        // 쿠키에 토큰 저장
-        Cookies.set('Authorization', token, {path: '/'});
-        console.log("Token set in cookie: ", Cookies.get('Authorization'));  // 쿠키 설정 확인
-
-        window.location.href = host;
+    let auth = localStorage.getItem('accessToken');
+    //로그인 안되어 있으면 로그인으로 옮기기
+    if (!auth) {
+      alert("로그인 후 이용해 주세요");
+      window.location.href = "login.html";
+    }
+    /* 장바구니 아이콘 개수 */
+    window.common.getShoppingCart()
+    .done(function (response) {
+      if (response) {
+        $('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
       } else {
-        console.error("Token is null or undefined");
-        alert("Login Fail: Token is null or undefined");
+        // no response
       }
     })
-    .fail(function (jqXHR, textStatus) {
-      alert("Login Fail");
-      window.location.href = host + '/api/user/login-page?error';
+    .fail(function (error) {
+      console.log(error.message)
     });
+
+    /* 찜 아이콘 개수 */
+    window.common.getWishList()
+    .done(function (response) {
+      if (response) {
+        $('a#wish-icon')[0].dataset.notify = response.length;
+      } else {
+        // no response
+      }
+    });
+    fetchMileage()
+  });
+</script>
+
+<script>
+  // 마일리지 데이터를 서버에서 가져오는 함수
+  function fetchMileage() {
+    $.ajax({
+      type: 'GET',
+      url: '/mileages',
+      success: function(response) {
+        updateMileageTable(response);
+      },
+      error: function(error) {
+        console.error('Error fetching mileage:', error);
+      }
+    });
+  }
+
+  // 마일리지 테이블 업데이트
+  function updateMileageTable(mileageResponseDtos) {
+    let $mileageTable = $('#mileage-table'); // 마일리지 테이블을 표시할 div
+    $mileageTable.empty(); // 기존 내용을 지우고 새로 추가
+
+    // 총 마일리지 계산
+    let totalMileage = mileageResponseDtos.reduce((sum, mileage) => sum + mileage.usedMileage, 0);
+
+    // 총 마일리지를 업데이트
+    $('#total-mileage').text('나의 적립금액 : ' + totalMileage + '원');
+
+    // 테이블 헤더 추가
+    let initRow = `
+<tr class="table_head">
+  <th class="column-1">마일리지 유형</th>
+  <th class="column-2">마일리지</th>
+  <th class="column-3">생성 날짜</th>
+</tr>`;
+
+    $mileageTable.append(initRow);
+
+    // 마일리지 목록 추가
+    mileageResponseDtos.forEach(function(mileage) {
+      let type = mileage.usedMileage < 0 ? "사용" : "적립";
+      let color = mileage.usedMileage < 0 ? "red" : "black";
+      let row = `
+        <tr class="table_row">
+          <td class="column-1">${type}</td>
+          <td class="column-2" style="color: ${color};">${Math.abs(mileage.usedMileage)}원</td>
+          <td class="column-3">${formatDate(mileage.createdAt)}</td>
+        </tr>`;
+      $mileageTable.append(row);
+    });
+  }
+
+  // 날짜 포맷팅 함수 (필요에 따라 수정)
+  function formatDate(dateTime) {
+    const date = new Date(dateTime);
+    return date.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 반환
   }
 </script>
 </body>

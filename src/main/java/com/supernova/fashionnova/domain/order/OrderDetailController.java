@@ -1,8 +1,8 @@
 package com.supernova.fashionnova.domain.order;
 
-import com.supernova.fashionnova.global.util.ResponseUtil;
 import com.supernova.fashionnova.domain.order.dto.OrderDetailResponseDto;
 import com.supernova.fashionnova.global.security.UserDetailsImpl;
+import com.supernova.fashionnova.global.util.ResponseUtil;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,14 +18,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/orderDetails")
 public class OrderDetailController {
 
-  private final OrderDetailService orderDetailService;
+    private final OrderDetailService orderDetailService;
 
-  /**
-   * 주문상세내역 조회
-   * */
-  @GetMapping("/{orderId}")
-  public ResponseEntity<List<OrderDetailResponseDto>> getOrderDetailList(@PathVariable Long orderId, @AuthenticationPrincipal
-      UserDetailsImpl userDetails) {
-    return ResponseUtil.of(HttpStatus.OK, orderDetailService.getOrderDetail(orderId, userDetails.getUser()).stream().map(orderDetail -> new OrderDetailResponseDto(orderDetail.getId(), orderDetail.getCount(), orderDetail.getProductName(), orderDetail.getPrice())).toList());
-  }
+    /**
+     * 주문상세내역 조회
+     */
+    @GetMapping("/{orderId}")
+    public ResponseEntity<List<OrderDetailResponseDto>> getOrderDetailList(
+        @PathVariable Long orderId,
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        return ResponseUtil.of(HttpStatus.OK, orderDetailService.getOrderDetail(orderId, userDetails.getUser())
+            .stream()
+            .map(orderDetail ->
+                new OrderDetailResponseDto(
+                orderDetail.getId(),
+                orderDetail.getCount(),
+                orderDetail.getProductName(),
+                orderDetail.getPrice()))
+            .toList());
+    }
 }

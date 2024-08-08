@@ -53,7 +53,7 @@ function onLogin() {
   })
   .fail(function (jqXHR, textStatus) {
     alert("로그인 실패");
-    window.location.href = host + '/users/login'
+    window.location.href = host + '/login.html'
   });
 
 

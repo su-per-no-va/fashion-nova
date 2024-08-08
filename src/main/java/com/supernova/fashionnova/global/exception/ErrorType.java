@@ -18,6 +18,7 @@ public enum ErrorType {
     NOT_FOUND_USER(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다."),
     NOT_FOUND_TID(HttpStatus.NOT_FOUND, "tid를 찾을 수 없습니다."),
     NOT_FOUND_REFRESH_TOKEN(HttpStatus.NOT_FOUND, "리프레쉬토큰을 찾을 수 없습니다."),
+
     // ADDRESS
     NOT_FOUND_ADDRESS(HttpStatus.NOT_FOUND, "배송지를 찾을 수 없습니다."),
     INVALID_ADDRESS(HttpStatus.BAD_REQUEST, "유저의 배송지가 아닙니다."),
@@ -29,6 +30,10 @@ public enum ErrorType {
 
     // QUESTION
     NOT_FOUND_QUESTION(HttpStatus.NOT_FOUND, "문의를 찾을 수 없습니다."),
+    INVALID_QUESTION_REQUEST(HttpStatus.BAD_REQUEST, "오더의 정보가 없습니다."),
+
+    // ANSWER
+    ANSWER_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "이미 답변이 존재합니다."),
 
     // PRODUCT
     NOT_FOUND_PRODUCT(HttpStatus.NOT_FOUND, "상품을 찾을 수 없습니다."),
@@ -39,7 +44,7 @@ public enum ErrorType {
 
     // CART
     CART_EMPTY(HttpStatus.BAD_REQUEST, "장바구니에 상품이 존재하지 않습니다."),
-
+    CART_NOT_FOUND_COLOR_SIZE(HttpStatus.BAD_REQUEST,"수정하려는 사이즈나 색상이 존재하지 않습니다"),
     // REVIEW
     NOT_FOUND_REVIEW(HttpStatus.BAD_REQUEST, "리뷰가 존재하지 않습니다."),
 

@@ -17,6 +17,7 @@ import com.supernova.fashionnova.domain.product.dto.ProductDetailRequestDto;
 import com.supernova.fashionnova.domain.product.dto.ProductRequestDto;
 import com.supernova.fashionnova.domain.question.Question;
 import com.supernova.fashionnova.domain.question.QuestionRepository;
+import com.supernova.fashionnova.domain.question.QuestionStatus;
 import com.supernova.fashionnova.domain.question.dto.QuestionResponseDto;
 import com.supernova.fashionnova.domain.review.Review;
 import com.supernova.fashionnova.domain.review.ReviewRepository;
@@ -246,9 +247,14 @@ public class AdminService {
      * @param requestDto
      * @throws CustomException NOT_FOUND_QUESTION 문의Id로 문의를 찾을 수 없을 때
      */
+    @Transactional
     public void addAnswer(AnswerRequestDto requestDto) {
 
         Question question = getQuestion(requestDto.getQuestionId());
+
+        if (question.getStatus().equals(QuestionStatus.COMPLETED)) {
+            throw new CustomException(ErrorType.ANSWER_ALREADY_EXISTS);
+        }
 
         Answer answer = Answer.builder()
             .question(question)
@@ -256,6 +262,8 @@ public class AdminService {
             .build();
 
         answerRepository.save(answer);
+
+        question.updateQuestionStatus();
     }
 
     /**
@@ -324,6 +332,18 @@ public class AdminService {
         mileageRepository.deleteAll();
     }
 
+    /**
+     * 상품 이미지 등록
+     *
+     * @param file
+     * @param productId
+     */
+    public void updateProductImage(MultipartFile file, Long productId) {
+        Product product = getProduct(productId);
+        List<MultipartFile> files = List.of(file);
+        fileUploadUtil.uploadImage(files, ImageType.PRODUCT, productId);
+    }
+
     private User getUser(Long userId) {
         return userRepository.findById(userId)
             .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
@@ -342,12 +362,6 @@ public class AdminService {
     private Question getQuestion(Long questionId) {
         return questionRepository.findById(questionId)
             .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_QUESTION));
-    }
-
-    public void updateProductImage(MultipartFile file, Long productId) {
-        Product product = getProduct(productId);
-        List<MultipartFile> files = List.of(file);
-        fileUploadUtil.uploadImage(files, ImageType.PRODUCT, productId);
     }
 
 }

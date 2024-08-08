@@ -1,5 +1,7 @@
 package com.supernova.fashionnova.domain.question.dto;
 
+import com.supernova.fashionnova.domain.answer.dto.AnswerResponseDto;
+import com.supernova.fashionnova.domain.order.dto.OrderDetailResponseDto;
 import com.supernova.fashionnova.domain.question.Question;
 import com.supernova.fashionnova.domain.question.QuestionImage;
 import com.supernova.fashionnova.domain.question.QuestionStatus;
@@ -8,7 +10,7 @@ import java.util.List;
 import lombok.Getter;
 
 @Getter
-public class QuestionResponseDto {
+public class QuestionDetailResponseDto {
 
     private final Long id;
     private final String title;
@@ -16,8 +18,10 @@ public class QuestionResponseDto {
     private final QuestionType type;
     private final QuestionStatus status;
     private final List<String> questionUrls;
+    private OrderDetailResponseDto orderDetail;
+    private AnswerResponseDto answer;
 
-    public QuestionResponseDto(Question question) {
+    public QuestionDetailResponseDto(Question question) {
         this.id = question.getId();
         this.title = question.getTitle();
         this.question = question.getQuestion();
@@ -25,8 +29,12 @@ public class QuestionResponseDto {
         this.status = question.getStatus();
         this.questionUrls = question.getQuestionImageUrls().stream()
             .map(QuestionImage::getQuestionImageUrl).toList();
+        if (this.type.equals(QuestionType.ORDER_PAYMENT)) {
+            this.orderDetail = new OrderDetailResponseDto(question.getOrderDetail());
+        }
+        if (question.getAnswer() != null) {
+            this.answer = new AnswerResponseDto(question.getAnswer());
+        }
     }
 
 }
-
-

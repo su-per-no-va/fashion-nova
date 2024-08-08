@@ -2,7 +2,7 @@ package com.supernova.fashionnova.domain.order;
 
 public enum OrderStatus {
     Progress,
-    Fail,
+    FAIL,
     SUCCESS,
     REFUND,
     EXCHANGE,

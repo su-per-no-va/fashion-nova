@@ -4,9 +4,6 @@ import com.supernova.fashionnova.domain.mileage.dto.MileageResponseDto;
 import com.supernova.fashionnova.domain.order.Order;
 import com.supernova.fashionnova.domain.order.OrdersRepository;
 import com.supernova.fashionnova.domain.user.User;
-import com.supernova.fashionnova.domain.user.UserRepository;
-import com.supernova.fashionnova.global.exception.CustomException;
-import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.payment.PayAction;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -21,7 +18,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MileageService {
 
-    private final OrdersRepository ordersRepository;
     private final MileageRepository mileageRepository;
 
     /**
@@ -34,7 +30,7 @@ public class MileageService {
     public List<MileageResponseDto> getMileageHistoryList(User user, int page) {
 
         Pageable pageable = PageRequest.of(page, 10);
-        Page<Order> mileagePage = ordersRepository.findByUser(user, pageable);
+        Page<Mileage> mileagePage = mileageRepository.findByUser(user, pageable);
 
         return mileagePage.stream()
             .map(MileageResponseDto::new)
