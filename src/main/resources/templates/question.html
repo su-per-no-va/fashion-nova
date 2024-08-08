@@ -566,43 +566,6 @@
       },
     });
   }
-
-
-</script>
-
-<script>
-  $(document).ready(function () {
-    // let cartDto = window.common.cartDto;
-    // let wishList = window.common.wishList;
-    // console.log(cartDto)
-    // 	console.log(wishList)
-
-    /* 장바구니 아이콘 개수 */
-    window.common.getShoppingCart()
-    .done(function (response) {
-      if (response) {
-        $('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
-      } else {
-        // no response
-      }
-    })
-    .fail(function (error) {
-      console.log(error.message)
-    });
-
-    /* 찜 아이콘 개수 */
-    window.common.getWishList()
-    .done(function (response) {
-      if (response) {
-        $('a#wish-icon')[0].dataset.notify = response.length;
-      } else {
-        // no response
-      }
-    })
-    .fail(function (error) {
-      console.log(error.message)
-    });
-  });
 </script>
 </body>
 </html>
