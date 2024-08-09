@@ -93,7 +93,7 @@ public class DataGenerator {
         return IntStream.range(0, count)
             .mapToObj(i -> new MileageRequestDto(
                 faker.number().randomNumber(5, true),
-                faker.number().numberBetween(1, 50) * 10
+                (long)faker.number().numberBetween(1, 50) * 10
             ))
             .collect(Collectors.toList());
 

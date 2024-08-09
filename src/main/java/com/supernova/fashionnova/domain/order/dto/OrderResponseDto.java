@@ -14,13 +14,13 @@ public class OrderResponseDto {
   private Long totalPrice;
   private Long cost;
   private int discount;
-  private int usedMileage;
+  private Long usedMileage;
   private String address;
   private LocalDateTime createdAt;
   private DeliveryStatus deliveryStatus;
   private OrderStatus orderStatus;
 
-  public OrderResponseDto(Long orderId, OrderStatus orderStatus, String address, Long cost, DeliveryStatus deliveryStatus, int discount, Long totalPrice, int usedMileage, LocalDateTime createdAt) {
+  public OrderResponseDto(Long orderId, OrderStatus orderStatus, String address, Long cost, DeliveryStatus deliveryStatus, int discount, Long totalPrice, Long usedMileage, LocalDateTime createdAt) {
     this.orderId = orderId;
     this.orderStatus = orderStatus;
     this.address = address;

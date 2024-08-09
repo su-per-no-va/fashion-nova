@@ -1,12 +1,12 @@
-@orderId = 1
+@orderId = 3
 
 ###로그인
 POST http://localhost:8080/users/login
 Content-Type: application/json
 
 {
-  "userName": "winner7789",
-  "password": "Fb112233!"
+  "userName": "juyeon555",
+  "password": "Aa12345678!"
 }
 
 > {% client.global.set("access_token", response.headers.valueOf("Authorization")); %}
@@ -19,8 +19,8 @@ Authorization: {{access_token}}
 {
   "cost": 68000,
   "discount": 6000,
-  "usedMileage": 0,
-  "address": "영종도는 멋진곳??"
+  "usedMileage": 1000,
+  "address": "그만해ㅐㅐㅐ"
 }
 
 ### 결제 후 주문내역 조회

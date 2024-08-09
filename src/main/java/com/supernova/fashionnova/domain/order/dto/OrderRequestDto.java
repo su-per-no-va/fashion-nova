@@ -10,7 +10,7 @@ public class OrderRequestDto {
 
   private int cost;
   private int discount;
-  private int usedMileage;
+  private Long usedMileage;
   @NotBlank
   private String address;
 }

@@ -1,16 +1,12 @@
 package com.supernova.fashionnova.domain.order;
 
-import com.supernova.fashionnova.domain.address.AddressRepository;
 import com.supernova.fashionnova.domain.cart.Cart;
 import com.supernova.fashionnova.domain.cart.CartRepository;
 import com.supernova.fashionnova.domain.delivery.DeliveryStatus;
-import com.supernova.fashionnova.domain.mileage.MileageRepository;
 import com.supernova.fashionnova.domain.order.dto.AllOrderResponseDto;
 import com.supernova.fashionnova.domain.order.dto.OrderRequestDto;
 import com.supernova.fashionnova.domain.product.Product;
 import com.supernova.fashionnova.domain.product.ProductDetail;
-import com.supernova.fashionnova.domain.product.ProductDetailRepository;
-import com.supernova.fashionnova.domain.product.ProductRepository;
 import com.supernova.fashionnova.domain.user.User;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
@@ -27,13 +23,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class OrderService {
 
-    private final AddressRepository addressRepository;
-    private final CartRepository cartRepository;
-    private final OrdersRepository ordersRepository;
-    private final OrderDetailRepository orderDetailRepository;
-    private final ProductRepository productRepository;
-    private final ProductDetailRepository productDetailRepository;
-    private final MileageRepository mileageRepository;
+  private final CartRepository cartRepository;
+  private final OrdersRepository ordersRepository;
+  private final OrderDetailRepository orderDetailRepository;
 
     @Transactional
     public AllOrderResponseDto createOrder(OrderRequestDto orderRequestDto, User user) {
@@ -138,14 +130,16 @@ public class OrderService {
         return showOrder;
     }
 
-    /**
-     * 결제 성공 후 주문 상태 변경
-     */
-    @Transactional
-    public void updateOrderStatus(Long orderId) {
-        Order order = ordersRepository.findById(orderId)
-            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_ORDER));
-        order.setOrderStatus(OrderStatus.SUCCESS);
-    }
+  /**
+   * 결제 성공 후 주문 상태 변경
+   */
+  @Transactional
+  public void updateOrderStatus(Order order) {
+    order.setOrderStatus(OrderStatus.SUCCESS);
+  }
 
+  public Order getOrderById(Long orderId) {
+    return ordersRepository.findById(orderId).orElseThrow(
+        ()-> new CustomException(ErrorType.NOT_FOUND_ORDER));
+  }
 }
