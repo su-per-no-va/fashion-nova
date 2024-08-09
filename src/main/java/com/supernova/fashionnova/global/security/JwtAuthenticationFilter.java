@@ -127,9 +127,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         jwtUtil.addJwtToHeader(response,refreshToken, JwtConstants.REFRESH_TOKEN_HEADER);
 
         // 쿠키에 전달
-        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, accessToken.substring(7));
-        cookie.setPath("/");
-        response.addCookie(cookie);
+//        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, accessToken.substring(7));
+//        cookie.setPath("/");
+//        response.addCookie(cookie);
 
         // 헤더에 userId 전달
         response.setHeader("userName", user.getUserName());
@@ -137,12 +137,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         // refresh 토큰을 Entity 에 저장
         user.updateRefreshToken(jwtUtil.substringToken(refreshToken));
         userRepository.save(user);
-
-        log.info("accessToken : " + accessToken);
-        log.info("refreshToken : " + refreshToken);
-        log.info("userName : " + user.getUserName());
-
-
 
         // 로그인 메세지 띄우기
         response.setContentType("application/json");
