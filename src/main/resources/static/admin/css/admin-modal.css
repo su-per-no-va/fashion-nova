@@ -2,7 +2,7 @@
 .modal {
   display: none; /* 기본적으로 모달을 숨김 */
   position: fixed; /* 고정 위치 */
-  z-index: 1; /* 다른 콘텐츠보다 앞에 표시 */
+  z-index: 1600; /* 다른 콘텐츠보다 앞에 표시 */
   left: 0;
   top: 0;
   width: 100%; /* 전체 너비 */
