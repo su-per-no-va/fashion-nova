@@ -181,18 +181,26 @@
 </div>
 
 <!-- Modal -->
-<div id="myModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <h3 class="modal-title"></h3>
-        <p>문의 종류: <span class="modal-category"></span></p>
-        <p>작성자: <span class="modal-author"></span></p>
-        <p>문의 내용: <span class="modal-text"></span></p>
-        <p>첨부 파일: <span class="modal-attachment"></span></p>
-        <p>운영자 답변</p>
-        <textarea id="adminReply" rows="4" placeholder="답변을 작성하세요"></textarea>
-        <button id="submitReply" class="btn btn-primary">등록</button>
-        <button id="cancelReply" class="btn btn-secondary">취소</button>
+<div id="myModal" class="modal fade" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>문의 종류: <span class="modal-category"></span></p>
+                <p>작성자: <span class="modal-author"></span></p>
+                <p>문의 내용: <span class="modal-text"></span></p>
+                <p>첨부 파일: <span class="modal-attachment"></span></p>
+                <p>운영자 답변</p>
+                <textarea id="adminReply" rows="4" placeholder="답변을 작성하세요" class="form-control"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button id="submitReply" class="btn btn-primary">등록</button>
+                <button id="cancelReply" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -203,7 +211,17 @@
 <script src="../admin/js/admin-modal.js"></script>
 <script>
     $(document).ready(function() {
+        // 답변 등록 버튼 클릭 시
+        $('#submitReply').on('click', function() {
+
+        });
+
+        // 모달에서 취소 버튼 클릭 시
+        $('#cancelReply').on('click', function() {
+            $('#myModal').hide(); // 모달 닫기
+        });
         fetchQuestions(0); // 페이지 로드 시 첫 번째 페이지 데이터 로드
+
     });
 
     function fetchQuestions(page) {
@@ -225,7 +243,7 @@
         var $tbody = $('#datatablesSimple tbody');
         $tbody.empty(); // 기존 내용을 비웁니다.
 
-        $.each(questions, function(index, question) {
+        $.each(questions, function (index, question) {
             var $tr = $('<tr></tr>');
 
             $tr.append('<td>' + question.id + '</td>');
@@ -233,9 +251,9 @@
             $tr.append('<td>' + question.userId + '</td>');
             $tr.append('<td>' + question.userName + '</td>');
             $tr.append('<td>' + question.type + '</td>');
-            $tr.append('<td><a href="#" class="modal-link" data-category="' + question.type + '" data-author="' + question.userName + '" data-content="' + question.question + '" data-attachment="' + question.questionUrls.join(', ') + '">' + question.title + '</a></td>');
+            $tr.append('<td><a href="#" class="modal-link" data-id="' + question.id + '" data-category="' + question.type + '" data-author="' + question.userName + '" data-content="' + question.question + '" data-attachment="' + question.questionUrls.join(', ') + '">' + question.title + '</a></td>');
             $tr.append('<td>' + formatDate(question.createdAt) + '</td>');
-            // $tr.append('<td>' + formatDate(question.answeredDate) + '</td>');
+            $tr.append('<td>' + formatDate(question.answeredDate) + '</td>'); // 답변 등록일 추가
 
             $tbody.append($tr);
         });
@@ -247,37 +265,50 @@
         return date.getFullYear() + '/' + (date.getMonth() + 1).toString().padStart(2, '0') + '/' + date.getDate().toString().padStart(2, '0') + ' ' + date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0');
     }
 
-    $(document).on('click', '.modal-link', function(event) {
+    $(document).on('click', '.modal-link', function (event) {
         event.preventDefault();
 
+        var questionId = $(this).data('id');
         var category = $(this).data('category');
         var author = $(this).data('author');
         var content = $(this).data('content');
         var attachment = $(this).data('attachment');
 
-        showModal(category, author, content, attachment);
+        showModal(questionId, category, author, content, attachment);
     });
 
-    function showModal(category, author, content, attachment) {
-        var $modal = $('#myModal'); // 모달 ID를 실제 ID로 수정
+    function showModal(questionId, category, author, content, attachment) {
+        var $modal = $('#myModal'); // 모달 ID
+        $modal.find('.modal-title').text('Q&A ID: ' + questionId);
         $modal.find('.modal-category').text(category);
         $modal.find('.modal-author').text(author);
-        $modal.find('.modal-text').text(content);  // 수정: .modal-content -> .modal-text
+        $modal.find('.modal-text').text(content);
         $modal.find('.modal-attachment').text(attachment);
 
-        $modal.show(); // 모달을 보여줌
+        $modal.data('questionId', questionId); // 모달에 questionId 저장
+        $modal.modal('show');
     }
 
-    $(document).on('click', '.page-link', function(event) {
-        event.preventDefault();
-        var page = $(this).data('page');
-        fetchQuestions(page);
-    });
+    $(document).on('click', '#submitReply', function () {
+        var $modal = $('#myModal');
+        var questionId = $modal.data('questionId');
+        var answer = $('#adminReply').val();
 
-    $(document).on('click', '.close', function() {
-        $('#myModal').hide(); // 모달을 숨김
+        $.ajax({
+            url: '/api/admin/answers',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ questionId: questionId, answer: answer }),
+            success: function (response) {
+                alert('답변이 성공적으로 등록되었습니다.');
+                $modal.modal('hide');
+                fetchQuestions(0); // 첫 번째 페이지의 질문 목록을 다시 로드
+            },
+            error: function (error) {
+                alert('답변 등록에 실패했습니다.');
+            }
+        });
     });
-
 </script>
 
 <nav aria-label="Page navigation">
