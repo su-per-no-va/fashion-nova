@@ -10,12 +10,14 @@ import com.supernova.fashionnova.domain.review.dto.ReviewResponseDto;
 import com.supernova.fashionnova.domain.user.dto.UserResponseDto;
 import com.supernova.fashionnova.domain.warn.dto.WarnDeleteRequestDto;
 import com.supernova.fashionnova.domain.warn.dto.WarnRequestDto;
+import com.supernova.fashionnova.global.security.UserDetailsImpl;
 import com.supernova.fashionnova.global.util.ResponseUtil;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +35,27 @@ import org.springframework.web.multipart.MultipartFile;
 public class AdminController {
 
     private final AdminService adminService;
-
+    /**
+     * 판몌통계(일별)
+     * */
+    @GetMapping("/sold/day")
+    public ResponseEntity<String> dailySoldStatistics(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return ResponseUtil.of(HttpStatus.OK, adminService.dailySoldStatistics(userDetails.getUser())) ;
+    }
+    /**
+     * 판몌통계(주별)
+     * */
+    @GetMapping("/sold/week")
+    public ResponseEntity<String> weeklySoldStatistics(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return ResponseUtil.of(HttpStatus.OK, adminService.weeklySoldStatistics(userDetails.getUser())) ;
+    }
+    /**
+     * 판몌통계(월별)
+     * */
+    @GetMapping("/sold/moth/{month}")
+    public ResponseEntity<String > monthlySoldStatistics(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable int month){
+        return ResponseUtil.of(HttpStatus.OK, adminService.monthlySoldStatistics(userDetails.getUser(), month)) ;
+    }
     /**
      * 유저 전체 조회
      *

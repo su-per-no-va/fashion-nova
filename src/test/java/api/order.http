@@ -19,7 +19,7 @@ Authorization: {{access_token}}
 {
   "cost": 68000,
   "discount": 6000,
-  "usedMileage": 0,
+  "usedMileage": 1000,
   "address": "그만해ㅐㅐㅐ"
 }
 
