@@ -177,8 +177,12 @@
                                             <option value="Green">Green</option>
                                             <option value="Black">Black</option>
                                         </select>
-                                        <button type="button" class="btn btn-secondary mt-2" id="addSizeColorButton">추가</button>
                                     </div>
+                                    <div class="mb-3">
+                                        <label for="quantityInput" class="form-label">수량</label>
+                                        <input type="number" class="form-control" id="quantityInput" placeholder="수량을 입력하세요" min="1">
+                                    </div>
+                                    <button type="button" class="btn btn-secondary mt-2" id="addSizeColorButton">추가</button>
                                     <div class="mb-3" id="sizeColorQuantityContainer"></div>
                                     <div class="mb-3" id="colorContainer">
                                         <button type="button" class="btn btn-secondary mt-2" onclick="addNewColor()">Add New Color</button>
@@ -250,15 +254,10 @@
 
             function submitForm() {
                 const formData = new FormData();
-                const productName = document.getElementById('productName').value;
-                const productPrice = document.getElementById('productPrice').value;
-                const productDescription = document.getElementById('productDescription').value;
+                const productName = $('#productName').val();
+                const productPrice = $('#productPrice').val();
+                const productDescription = $('#productDescription').val();
 
-                formData.append('product', productName);
-                formData.append('price', productPrice);
-                formData.append('explanation', productDescription);
-
-                // Append product details
                 const sizes = $('input[name="sizes[]"]').map(function() { return $(this).val(); }).get();
                 const colors = $('input[name="colors[]"]').map(function() { return $(this).val(); }).get();
                 const quantities = $('input[name="quantities[]"]').map(function() { return $(this).val(); }).get();
@@ -271,15 +270,17 @@
 
                 const selectedCategory = $('input[name="category"]:checked').val();
 
-                formData.append('requestDto', JSON.stringify({
+                const requestDto = {
                     product: productName,
                     price: productPrice,
                     explanation: productDescription,
-                    category: selectedCategory,
+                    category: selectedCategory, // Add category to requestDto
                     productDetailList: productDetails
-                }));
+                };
 
-                const files = document.getElementById('productImage').files;
+                formData.append('requestDto', JSON.stringify(requestDto));
+
+                const files = $('#productImage')[0].files;
                 for (let i = 0; i < files.length; i++) {
                     formData.append('files', files[i]);
                 }
