@@ -106,6 +106,7 @@ public class WebSecurityConfig {
             authorizeHttpRequests
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
                 .permitAll() // resources 접근 허용 설정
+                .requestMatchers("/images/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/mails/**").permitAll() // 이메일 인증 허용
                 .requestMatchers(HttpMethod.POST, "/users/signup").permitAll() // 회원가입 허용
                 .requestMatchers(HttpMethod.POST, "/users/login").permitAll() // 로그인 허용
