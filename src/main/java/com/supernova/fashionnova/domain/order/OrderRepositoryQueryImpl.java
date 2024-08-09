@@ -3,6 +3,8 @@ package com.supernova.fashionnova.domain.order;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.supernova.fashionnova.global.exception.CustomException;
+import com.supernova.fashionnova.global.exception.ErrorType;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -53,6 +55,9 @@ public class OrderRepositoryQueryImpl implements OrderRepositoryQuery {
     setEndOfDay(calendar);
     LocalDateTime endDate = LocalDateTime.ofInstant(calendar.toInstant(), ZoneId.systemDefault());
 
+    if(month > startDate.getMonth().getValue()) {
+      throw new CustomException(ErrorType.NOT_YET);
+    }
     return calculateTotalPriceSum(startDate, endDate);
   }
 

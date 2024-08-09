@@ -63,7 +63,7 @@ public enum ErrorType {
 
     // ADMIN
     WRONG_MONTH(HttpStatus.BAD_REQUEST, "1월 ~ 12월 사이의 월을 입력해주세요."),
-
+    NOT_YET(HttpStatus.BAD_REQUEST, "아직 조회할 수 없습니다"),
     // MILEAGE
     MILEAGE_EMPTY(HttpStatus.NOT_FOUND, "마일리지 없음");
 

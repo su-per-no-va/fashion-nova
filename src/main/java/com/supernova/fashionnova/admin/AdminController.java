@@ -39,21 +39,21 @@ public class AdminController {
      * 판몌통계(일별)
      * */
     @GetMapping("/sold/day")
-    public ResponseEntity<Long> dailySoldStatistics(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseEntity<String> dailySoldStatistics(@AuthenticationPrincipal UserDetailsImpl userDetails){
         return ResponseUtil.of(HttpStatus.OK, adminService.dailySoldStatistics(userDetails.getUser())) ;
     }
     /**
      * 판몌통계(주별)
      * */
     @GetMapping("/sold/week")
-    public ResponseEntity<Long> weeklySoldStatistics(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseEntity<String> weeklySoldStatistics(@AuthenticationPrincipal UserDetailsImpl userDetails){
         return ResponseUtil.of(HttpStatus.OK, adminService.weeklySoldStatistics(userDetails.getUser())) ;
     }
     /**
      * 판몌통계(월별)
      * */
     @GetMapping("/sold/moth/{month}")
-    public ResponseEntity<Long> monthlySoldStatistics(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable int month){
+    public ResponseEntity<String > monthlySoldStatistics(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable int month){
         return ResponseUtil.of(HttpStatus.OK, adminService.monthlySoldStatistics(userDetails.getUser(), month)) ;
     }
     /**

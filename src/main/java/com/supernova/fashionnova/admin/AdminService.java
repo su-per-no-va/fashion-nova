@@ -367,27 +367,27 @@ public class AdminService {
             .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_QUESTION));
     }
 
-    public Long dailySoldStatistics(User user) {
+    public String dailySoldStatistics(User user) {
         if(!UserRole.ADMIN.equals(user.getUserRole())){
             throw new CustomException(ErrorType.DENIED_PERMISSION);
         }
-       return ordersRepository.findTodayOrderTotalPriceSum().orElseThrow(()-> new CustomException(ErrorType.NOT_FOUND_SOLD));
+       return ordersRepository.findTodayOrderTotalPriceSum().map(total -> total + " 원 입니다").orElse("0원 입니다.");
     }
 
-    public Long weeklySoldStatistics(User user) {
+    public String weeklySoldStatistics(User user) {
         if(!UserRole.ADMIN.equals(user.getUserRole())){
             throw new CustomException(ErrorType.DENIED_PERMISSION);
         }
-        return ordersRepository.findWeekOrderTotalPriceSum().orElseThrow(()-> new CustomException(ErrorType.NOT_FOUND_SOLD));
+        return ordersRepository.findWeekOrderTotalPriceSum().map(total -> total + " 원 입니다").orElse("0원 입니다.");
     }
 
-    public Long monthlySoldStatistics(User user, int month) {
+    public String monthlySoldStatistics(User user, int month) {
         if(!UserRole.ADMIN.equals(user.getUserRole())){
             throw new CustomException(ErrorType.DENIED_PERMISSION);
         }
         if(month < 0 || month > 12){
             throw new CustomException(ErrorType.WRONG_MONTH);
         }
-        return ordersRepository.findMonthOrderTotalPriceSum(month).orElseThrow(()-> new CustomException(ErrorType.NOT_FOUND_SOLD));
+        return ordersRepository.findMonthOrderTotalPriceSum(month).map(total -> total + " 원 입니다").orElse("0원 입니다.");
     }
 }
