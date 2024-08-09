@@ -159,5 +159,21 @@
 <script src="../admin/js/scripts.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
 <script src="../admin/js/chart-area.js"></script>
+<script>
+    $(document).ready(function () {
+        const auth = localStorage.getItem('accessToken');
+
+        if (auth === null || auth === "null") {
+            alert("어드민 로그인 후 이용해 주세요");
+            window.location.href = 'admin-login.html'
+        }
+
+        if (auth) {
+            $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+                jqXHR.setRequestHeader('Authorization', auth);
+            })
+        }
+    })
+</script>
 </body>
 </html>
