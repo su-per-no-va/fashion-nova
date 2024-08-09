@@ -33,7 +33,8 @@ public class WishController {
      * @return "위시리스트 추가"
      */
     @PostMapping
-    public ResponseEntity<String> addWish(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<String> addWish(
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
         @RequestBody WishRequestDto requestDto) {
 
         wishService.addWish(userDetails.getUser(), requestDto);
@@ -49,7 +50,8 @@ public class WishController {
      * @return List<ProductResponseDto>
      */
     @GetMapping
-    public ResponseEntity<List<WishResponseDto>> getWishProductList(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<List<WishResponseDto>> getWishProductList(
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
         @RequestParam(defaultValue = "0") int page) {
 
         List<WishResponseDto> responseDto = wishService.getWishProductList(userDetails.getUser(), page);
@@ -65,7 +67,8 @@ public class WishController {
      * @return "위시리스트 삭제"
      */
     @DeleteMapping
-    public ResponseEntity<String> deleteWish(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public ResponseEntity<String> deleteWish(
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
         @RequestBody WishDeleteRequestDto requestDto) {
 
         wishService.deleteWish(userDetails.getUser(), requestDto);

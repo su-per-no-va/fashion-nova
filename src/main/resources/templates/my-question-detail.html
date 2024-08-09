@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>My Q&A Detail</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--===============================================================================================-->
+  <link rel="icon" type="image/png" href="../images/icons/favicon.png"/>
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../vendor/bootstrap/css/bootstrap.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css"
+        href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css"
+        href="../fonts/iconic/css/material-design-iconic-font.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css"
+        href="../fonts/linearicons-v1.0.0/icon-font.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../vendor/animate/animate.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../vendor/css-hamburgers/hamburgers.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../vendor/animsition/css/animsition.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../vendor/select2/select2.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css"
+        href="../vendor/daterangepicker/daterangepicker.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../vendor/slick/slick.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../vendor/MagnificPopup/magnific-popup.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css"
+        href="../vendor/perfect-scrollbar/perfect-scrollbar.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../css/util.css">
+  <link rel="stylesheet" type="text/css" href="../css/main.css">
+  <link rel="stylesheet" type="text/css" href="../css/my-info.css">
+  <link rel="stylesheet" type="text/css" href="../css/my-question-detail.css">
+  <!--===============================================================================================-->
+</head>
+<body class="animsition">
+
+<!-- Header -->
+<header>
+  <!-- Header desktop -->
+  <div class="container-menu-desktop">
+    <!-- Topbar -->
+    <div class="top-bar">
+      <div class="content-topbar flex-sb-m h-full container">
+        <div class="left-top-bar">
+          패셔니스타들을 위한, 패셔니스타들에 의한 패션노바
+        </div>
+
+        <div class="right-top-bar flex-w h-full">
+          <a href="login.html" id="auth-btn" class="flex-c-m trans-04 p-lr-25">
+            Login
+          </a>
+
+          <a href="question.html" class="flex-c-m trans-04 p-lr-25">
+            Q&A
+          </a>
+
+          <a href="my-page.html" class="flex-c-m trans-04 p-lr-25">
+            My Page
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap-menu-desktop">
+      <nav class="limiter-menu-desktop container">
+
+        <!-- Logo desktop -->
+        <a href="index.html" class="logo">
+          <img src="images/icons/logo-01.png" alt="IMG-LOGO">
+        </a>
+
+        <!-- Menu desktop -->
+        <div class="menu-desktop">
+          <ul class="main-menu">
+            <li>
+              <a href="about.html">About</a>
+            </li>
+
+            <li class="label1" data-label1="hot">
+              <a href="product.html">Shop</a>
+            </li>
+
+            <li>
+              <a href="contact.html">Contact</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Icon header -->
+        <div class="wrap-icon-header flex-w flex-r-m">
+          <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
+            <i class="zmdi zmdi-search"></i>
+          </div>
+
+          <a id="cart-icon" href="shoping-cart.html"
+             class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
+             data-notify="">
+            <i class="zmdi zmdi-shopping-cart"></i>
+          </a>
+
+          <a id="wish-icon" href="wish-list.html"
+             class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
+             data-notify="">
+            <i class="zmdi zmdi-favorite-outline"></i>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Modal Search -->
+  <div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
+    <div class="container-search-header">
+      <button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
+        <img src="images/icons/icon-close2.png" alt="CLOSE">
+      </button>
+
+      <form class="wrap-search-header flex-w p-l-15">
+        <button class="flex-c-m trans-04">
+          <i class="zmdi zmdi-search"></i>
+        </button>
+        <input class="plh3" type="text" name="search" placeholder="Search...">
+      </form>
+    </div>
+  </div>
+</header>
+
+<!-- Title page -->
+<section class="bg-img1 txt-center p-lr-15 p-tb-92"
+         style="background-image: url(/images/bg-01.jpg);">
+  <h2 class="ltext-105 cl0 txt-center">
+    My Q&A Detail
+  </h2>
+</section>
+
+<!-- breadcrumb -->
+<div class="container">
+  <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+    <a href="index.html" class="stext-109 cl8 hov-cl1 trans-04">
+      Home
+      <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+    </a>
+
+    <a href="my-page.html" class="stext-109 cl8 hov-cl1 trans-04">
+      My Page
+      <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+    </a>
+
+    <a href="my-question.html" class="stext-109 cl8 hov-cl1 trans-04">
+      My Q&A
+      <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+    </a>
+
+    <span class="stext-109 cl4">
+				My Q&A Detail
+			</span>
+  </div>
+</div>
+
+<!-- My Q&A Detail page -->
+<!-- My Q&A Detail page -->
+<section class="bg0 p-t-104 p-b-116">
+  <div class="container">
+    <div class="size-300 bor10 p-lr-70 p-t-55 p-b-70 p-lr-15-lg w-full-md">
+      <form>
+        <!-- 문의유형 -->
+        <div class="form-group">
+          <label for="type">문의유형</label>
+          <div class="fixed-text" id="type">--</div>
+        </div>
+
+        <!-- 제목 -->
+        <div class="form-group">
+          <label for="title">제목</label>
+          <div class="fixed-text" id="title">--</div>
+        </div>
+
+        <!-- 문의 내용 -->
+        <div class="bor8 m-b-30">
+          <div class="fixed-text size-120" id="question">--</div>
+        </div>
+
+        <!-- 문의 이미지 -->
+        <div class="form-group file-upload" id="question-images">
+          <!-- 이미지들은 JavaScript를 통해 추가됩니다 -->
+        </div>
+
+        <!-- 운영자 답변 -->
+        <h5 class="mtext-105 cl2 p-t-30 p-b-20">운영자 답변</h5>
+        <div class="bor8 m-b-30">
+          <div class="fixed-text size-120" id="answer">--</div>
+        </div>
+
+        <!-- 주문 상세 정보 (조건부 표시) -->
+        <div id="order-detail" style="display: none;">
+          <!-- 주문 상세 내용이 여기에 표시됩니다 -->
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg3 p-t-75 p-b-32">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-sm-6 col-lg-3 p-b-50">
+        <h4 class="stext-301 cl0 p-b-30">
+          FEEDBACK
+        </h4>
+
+        <p class="stext-107 cl7 size-201">
+          언제나 고객님들의 피드백을 반영하여 항상 더욱 발전하는 패션 노바가 되겠습니다. - 피드백링크~~
+        </p>
+
+        <div class="p-t-27">
+          <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+            <i class="fa fa-facebook"></i>
+          </a>
+
+          <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+            <i class="fa fa-instagram"></i>
+          </a>
+
+          <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+            <i class="fa fa-pinterest-p"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="p-t-40">
+        <div class="flex-c-m flex-w p-b-18">
+          <a href="#" class="m-all-1">
+            <img src="../images/icons/icon-pay-01.png" alt="ICON-PAY">
+          </a>
+        </div>
+
+        <p class="stext-107 cl6 txt-center">
+          <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+          이 홈페이지는 상업적으로 이용되지 않습니다.
+          <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<!-- Back to top -->
+<div class="btn-back-to-top" id="myBtn">
+		<span class="symbol-btn-back-to-top">
+			<i class="zmdi zmdi-chevron-up"></i>
+		</span>
+</div>
+
+<!--===============================================================================================-->
+<script src="../vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+<script src="../vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+<script src="../vendor/bootstrap/js/popper.js"></script>
+<script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+<script src="../vendor/select2/select2.min.js"></script>
+<script>
+  $(".js-select2").each(function () {
+    $(this).select2({
+      minimumResultsForSearch: 20,
+      dropdownParent: $(this).next('.dropDownSelect2')
+    });
+  })
+</script>
+<!--===============================================================================================-->
+<script src="../vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
+<!--===============================================================================================-->
+<script src="../vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script>
+  $('.js-pscroll').each(function () {
+    $(this).css('position', 'relative');
+    $(this).css('overflow', 'hidden');
+    var ps = new PerfectScrollbar(this, {
+      wheelSpeed: 1,
+      scrollingThreshold: 1000,
+      wheelPropagation: false,
+    });
+
+    $(window).on('resize', function () {
+      ps.update();
+    })
+  });
+</script>
+<!--===============================================================================================-->
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKFWBqlKAGCeS1rMVoaNlwyayu0e0YRes"></script>
+<script src="../js/map-custom.js"></script>
+<!--===============================================================================================-->
+<script src="../js/main.js"></script>
+<script src="/js/common.js"></script>
+<!--===============================================================================================-->
+<script>
+  $(document).ready(function () {
+
+    // URL에서 질문 ID를 가져옵니다.
+    const urlParams = new URLSearchParams(window.location.search);
+    const questionId = urlParams.get('id');
+
+    /* 장바구니 아이콘 개수 */
+    window.common.getShoppingCart()
+    .done(function (response) {
+      if (response) {
+        $('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
+      } else {
+        // no response
+      }
+    })
+    .fail(function (error) {
+      console.log(error.message)
+    });
+
+    /* 찜 아이콘 개수 */
+    window.common.getWishList()
+    .done(function (response) {
+      if (response) {
+        $('a#wish-icon')[0].dataset.notify = response.length;
+      } else {
+        // no response
+      }
+    });
+
+  $.ajax({
+      type: 'GET',
+      url: `/questions/${questionId}`, // 실제 API 엔드포인트에 맞게 수정
+      success: function(response) {
+        // HTML 요소에 데이터 삽입
+        $('#type').text(response.type);
+        $('#title').text(response.title);
+        $('#question').text(response.question);
+
+        // 이미지 표시
+        const $imageContainer = $('#question-images');
+        $imageContainer.empty(); // 기존 이미지를 비웁니다
+        response.questionUrls.forEach(function(url) {
+          $imageContainer.append(`<img src="${url}" alt="Question Image" width="100">`);
+        });
+
+        // 답변 표시
+        if (response.answer) {
+          $('#answer').text(response.answer.answer);
+        } else {
+          $('#answer').text('답변이 없습니다.');
+        }
+      },
+      error: function(error) {
+        console.error('질문 상세 정보를 불러오는 데 실패했습니다:', error);
+        // 오류 처리 로직 (예: 사용자에게 오류 메시지 표시)
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

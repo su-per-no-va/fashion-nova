@@ -49,7 +49,7 @@
 				</div>
 
 				<div class="right-top-bar flex-w h-full">
-					<a href="login.html" class="flex-c-m trans-04 p-lr-25">
+					<a href="login.html" id="auth-btn"  class="flex-c-m trans-04 p-lr-25">
 						Login
 					</a>
 
@@ -60,9 +60,15 @@
 					<a href="my-page.html" class="flex-c-m trans-04 p-lr-25">
 						My Page
 					</a>
+
+					<!-- 로그아웃 버튼 -->
+					<a href="#" id="logout-btn" class="flex-c-m trans-04 p-lr-25" style="display: none;">
+						Logout
+					</a>
 				</div>
 			</div>
 		</div>
+
 
 		<div class="wrap-menu-desktop">
 			<nav class="limiter-menu-desktop container">
@@ -1004,45 +1010,58 @@
 	});
 </script>
 <!--===============================================================================================-->
-<script src="/js/common.js"></script>
 <script src="../js/main.js"></script>
 <script>
 	$(document).ready(function () {
-		// let cartDto = window.common.cartDto;
-		// let wishList = window.common.wishList;
-		// console.log(cartDto)
-		// 	console.log(wishList)
-		/* 장바구니 아이콘 개수 */
-		window.common.getShoppingCart()
-		.done(function (response) {
-			if (response) {
-				$('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
-			} else {
-				// no response
-			}
-		})
-		.fail(function (error) {
-			console.log(error.message)
-		});
+		const auth = localStorage.getItem('accessToken');
 
-		/* 찜 아이콘 개수 */
-		window.common.getWishList()
-		.done(function (response) {
-			if (response) {
-				$('a#wish-icon')[0].dataset.notify = response.length;
-			} else {
-				// no response
-			}
-		})
-		.fail(function (error) {
-			console.log(error.message)
-		});
+		if (auth) {
+			// 로그인 상태일 때
+			$('#auth-btn').attr("href", "#").text("Logout");
+
+			$.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+				jqXHR.setRequestHeader('Authorization', auth);
+			});
+
+			$.ajax({
+				type: 'GET',
+				url: '/carts',
+				success: function (response) {
+					if (response) {
+						$('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
+					}
+				},
+				error: function (error) {
+					console.log("에러: " + error.message)
+				}
+			});
+
+			$.ajax({
+				type: 'GET',
+				url: '/wishlists',
+				success: function (response) {
+					if (response) {
+						$('a#wish-icon')[0].dataset.notify = response.length;
+					}
+				},
+				error: function (error) {
+					console.log("에러: " + error.message)
+				}
+			});
+
+			// 로그아웃 버튼 클릭 시 로컬스토리지에서 토큰 삭제 후 리로드
+			$('#auth-btn').on('click', function (e) {
+				e.preventDefault();
+				localStorage.removeItem('accessToken'); // 토큰 삭제
+				window.location.reload(); // 페이지 리로드
+			});
+
+		} else {
+			// 로그인이 안되어 있을 때
+			$('#auth-btn').attr("href", "login.html").text("Login");
+		}
 	});
-</script>
-<script>
-	window.common.postWishList()
-	.done(function (response) {
-	});
+
 
 </script>
 

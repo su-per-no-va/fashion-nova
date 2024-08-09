@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>My Mileage</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--===============================================================================================-->
+  <link rel="icon" type="image/png" href="../images/icons/favicon.png"/>
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../vendor/bootstrap/css/bootstrap.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../fonts/iconic/css/material-design-iconic-font.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../fonts/linearicons-v1.0.0/icon-font.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../vendor/animate/animate.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../vendor/css-hamburgers/hamburgers.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../vendor/animsition/css/animsition.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../vendor/select2/select2.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../vendor/perfect-scrollbar/perfect-scrollbar.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../css/util.css">
+  <link rel="stylesheet" type="text/css" href="../css/main.css">
+  <link rel="stylesheet" type="text/css" href="../css/review.css">
+  <!--===============================================================================================-->
+</head>
+<body class="animsition">
+
+<!-- Header -->
+<header>
+  <!-- Header desktop -->
+  <div class="container-menu-desktop">
+    <!-- Topbar -->
+    <div class="top-bar">
+      <div class="content-topbar flex-sb-m h-full container">
+        <div class="left-top-bar">
+          패셔니스타들을 위한, 패셔니스타들에 의한 패션노바
+        </div>
+
+        <div class="right-top-bar flex-w h-full">
+          <a href="login.html" id="auth-btn" class="flex-c-m trans-04 p-lr-25">
+            Login
+          </a>
+
+          <a href="question.html" class="flex-c-m trans-04 p-lr-25">
+            Q&A
+          </a>
+
+          <a href="my-page.html" class="flex-c-m trans-04 p-lr-25">
+            My Page
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap-menu-desktop">
+      <nav class="limiter-menu-desktop container">
+
+        <!-- Logo desktop -->
+        <a href="index.html" class="logo">
+          <img src="../images/icons/logo-01.png" alt="IMG-LOGO">
+        </a>
+
+        <!-- Menu desktop -->
+        <div class="menu-desktop">
+          <ul class="main-menu">
+            <li>
+              <a href="about.html">About</a>
+            </li>
+
+            <li class="label1" data-label1="hot">
+              <a href="product.html">Shop</a>
+            </li>
+
+            <li>
+              <a href="contact.html">Contact</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Icon header -->
+        <div class="wrap-icon-header flex-w flex-r-m">
+          <div  class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
+            <i class="zmdi zmdi-search"></i>
+          </div>
+
+          <a id="cart-icon" href="shoping-cart.html" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="">
+            <i class="zmdi zmdi-shopping-cart"></i>
+          </a>
+
+          <a id="wish-icon" href="wish-list.html" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="">
+            <i class="zmdi zmdi-favorite-outline"></i>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Modal Search -->
+  <div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
+    <div class="container-search-header">
+      <button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
+        <img src="../images/icons/icon-close2.png" alt="CLOSE">
+      </button>
+
+      <form class="wrap-search-header flex-w p-l-15">
+        <button class="flex-c-m trans-04">
+          <i class="zmdi zmdi-search"></i>
+        </button>
+        <input class="plh3" type="text" name="search" placeholder="Search...">
+      </form>
+    </div>
+  </div>
+</header>
+
+<!-- Title page -->
+<section class="bg-img1 txt-center p-lr-15 p-tb-92" style="background-image: url('/images/bg-01.jpg');">
+  <h2 class="ltext-105 cl0 txt-center">
+    My Mileage
+  </h2>
+</section>
+
+<!-- breadcrumb -->
+<div class="container">
+  <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+    <a href="index.html" class="stext-109 cl8 hov-cl1 trans-04">
+      Home
+      <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+    </a>
+
+    <a href="my-page.html" class="stext-109 cl8 hov-cl1 trans-04">
+      My Page
+      <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+    </a>
+
+    <span class="stext-109 cl4">
+				My Mileage
+			</span>
+  </div>
+</div>
+
+<!-- My Coupon -->
+<form class="bg0 p-t-75 p-b-85">
+
+  <div class="container">
+
+    <h5 class="ltext-105 txt-center" id="total-mileage">
+      나의 적립금액 :
+    </h5>
+    <br>
+    <div class="row">
+      <div class="col-lg-10">
+        <div class="m-l-10 m-r--100 m-lr-0-xl">
+          <div class="wrap-table-shopping-cart">
+            <table class="table-shopping-cart" id="mileage-table">
+              <!-- JavaScript에서 행을 추가합니다 -->
+            </table>
+          </div>
+          <p>*마일리지 유효기간은 적립일로부터 한달 주기로 초기화 됩니다</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</form>
+
+<!-- Footer -->
+<footer class="bg3 p-t-75 p-b-32">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-sm-6 col-lg-3 p-b-50">
+        <h4 class="stext-301 cl0 p-b-30">
+          FEEDBACK
+        </h4>
+
+        <p class="stext-107 cl7 size-201">
+          언제나 고객님들의 피드백을 반영하여 항상 더욱 발전하는 패션 노바가 되겠습니다. - 피드백링크~~
+        </p>
+
+        <div class="p-t-27">
+          <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+            <i class="fa fa-facebook"></i>
+          </a>
+
+          <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+            <i class="fa fa-instagram"></i>
+          </a>
+
+          <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+            <i class="fa fa-pinterest-p"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="p-t-40">
+        <div class="flex-c-m flex-w p-b-18">
+          <a href="#" class="m-all-1">
+            <img src="../images/icons/icon-pay-01.png" alt="ICON-PAY">
+          </a>
+        </div>
+
+        <p class="stext-107 cl6 txt-center">
+          이 홈페이지는 상업적으로 이용되지 않습니다.
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<!-- Back to top -->
+<div class="btn-back-to-top" id="myBtn">
+		<span class="symbol-btn-back-to-top">
+			<i class="zmdi zmdi-chevron-up"></i>
+		</span>
+</div>
+
+<!--===============================================================================================-->
+<script src="../vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+<script src="../vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+<script src="../vendor/bootstrap/js/popper.js"></script>
+<script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+<script src="../vendor/select2/select2.min.js"></script>
+<script>
+  $(".js-select2").each(function () {
+    $(this).select2({
+      minimumResultsForSearch: 20,
+      dropdownParent: $(this).next('.dropDownSelect2')
+    });
+  })
+</script>
+<!--===============================================================================================-->
+<script src="../vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
+<!--===============================================================================================-->
+<script src="../vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script>
+  $('.js-pscroll').each(function () {
+    $(this).css('position', 'relative');
+    $(this).css('overflow', 'hidden');
+    var ps = new PerfectScrollbar(this, {
+      wheelSpeed: 1,
+      scrollingThreshold: 1000,
+      wheelPropagation: false,
+    });
+
+    $(window).on('resize', function () {
+      ps.update();
+    })
+  });
+</script>
+<!--===============================================================================================-->
+<script src="../js/main.js"></script>
+<script src="/js/common.js"></script>
+<!--===============================================================================================-->
+<script>
+  $(document).ready(function () {
+    let auth = localStorage.getItem('accessToken');
+    //로그인 안되어 있으면 로그인으로 옮기기
+    if (!auth) {
+      alert("로그인 후 이용해 주세요");
+      window.location.href = "login.html";
+    }
+    /* 장바구니 아이콘 개수 */
+    window.common.getShoppingCart()
+    .done(function (response) {
+      if (response) {
+        $('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
+      } else {
+        // no response
+      }
+    })
+    .fail(function (error) {
+      console.log(error.message)
+    });
+
+    /* 찜 아이콘 개수 */
+    window.common.getWishList()
+    .done(function (response) {
+      if (response) {
+        $('a#wish-icon')[0].dataset.notify = response.length;
+      } else {
+        // no response
+      }
+    });
+    fetchMileage()
+  });
+</script>
+
+<script>
+  // 마일리지 데이터를 서버에서 가져오는 함수
+  function fetchMileage() {
+    $.ajax({
+      type: 'GET',
+      url: '/mileages',
+      success: function(response) {
+        updateMileageTable(response);
+      },
+      error: function(error) {
+        console.error('Error fetching mileage:', error);
+      }
+    });
+  }
+
+  // 마일리지 테이블 업데이트
+  function updateMileageTable(mileageResponseDtos) {
+    let $mileageTable = $('#mileage-table'); // 마일리지 테이블을 표시할 div
+    $mileageTable.empty(); // 기존 내용을 지우고 새로 추가
+
+    // 총 마일리지 계산
+    let totalMileage = mileageResponseDtos.reduce((sum, mileage) => sum + mileage.usedMileage, 0);
+
+    // 총 마일리지를 업데이트
+    $('#total-mileage').text('나의 적립금액 : ' + totalMileage + '원');
+
+    // 테이블 헤더 추가
+    let initRow = `
+<tr class="table_head">
+  <th class="column-1">마일리지 유형</th>
+  <th class="column-2">마일리지</th>
+  <th class="column-3">생성 날짜</th>
+</tr>`;
+
+    $mileageTable.append(initRow);
+
+    // 마일리지 목록 추가
+    mileageResponseDtos.forEach(function(mileage) {
+      let type = mileage.usedMileage < 0 ? "사용" : "적립";
+      let color = mileage.usedMileage < 0 ? "red" : "black";
+      let row = `
+        <tr class="table_row">
+          <td class="column-1">${type}</td>
+          <td class="column-2" style="color: ${color};">${Math.abs(mileage.usedMileage)}원</td>
+          <td class="column-3">${formatDate(mileage.createdAt)}</td>
+        </tr>`;
+      $mileageTable.append(row);
+    });
+  }
+
+  // 날짜 포맷팅 함수 (필요에 따라 수정)
+  function formatDate(dateTime) {
+    const date = new Date(dateTime);
+    return date.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 반환
+  }
+</script>
+</body>
+</html>

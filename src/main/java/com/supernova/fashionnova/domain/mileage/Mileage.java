@@ -31,12 +31,14 @@ public class Mileage extends Timestamped {
     private User user;
 
     @Column(nullable = false)
-    private int mileage;
+    private Long mileage;
 
     @Builder
-    public Mileage(User user, int mileage) {
+    public Mileage(User user, Long mileage) {
         this.user = user;
         this.mileage = mileage;
     }
-
+    public void updateMileage(Long mileage) {
+        this.mileage = mileage;
+    }
 }
