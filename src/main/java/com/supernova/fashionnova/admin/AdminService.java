@@ -14,6 +14,7 @@ import com.supernova.fashionnova.domain.order.OrdersRepository;
 import com.supernova.fashionnova.domain.product.Product;
 import com.supernova.fashionnova.domain.product.ProductDetail;
 import com.supernova.fashionnova.domain.product.ProductRepository;
+import com.supernova.fashionnova.domain.product.ProductStatus;
 import com.supernova.fashionnova.domain.product.dto.ProductDetailRequestDto;
 import com.supernova.fashionnova.domain.product.dto.ProductRequestDto;
 import com.supernova.fashionnova.domain.question.Question;
@@ -148,16 +149,17 @@ public class AdminService {
      * 상품등록
      *
      * @param requestDto
+     * @param files
      */
     @Transactional
-    public void addProduct(ProductRequestDto requestDto) {
+    public void addProduct(ProductRequestDto requestDto, List<MultipartFile> files) {
 
         Product product = Product.builder()
             .product(requestDto.getProduct())
             .price(requestDto.getPrice())
             .explanation(requestDto.getExplanation())
             .category(requestDto.getCategory())
-            .productStatus(requestDto.getProductStatus())
+            .productStatus(ProductStatus.ACTIVE)
             .build();
 
         List<ProductDetail> productDetailList = (requestDto.getProductDetailList().stream()
@@ -173,6 +175,9 @@ public class AdminService {
 
         product.addDetailList(productDetailList);
         productRepository.save(product);
+
+        // 파일 업로드
+        fileUploadUtil.uploadImage(files,ImageType.PRODUCT,product.getId());
     }
 
     /**

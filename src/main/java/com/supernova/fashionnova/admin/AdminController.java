@@ -1,5 +1,7 @@
 package com.supernova.fashionnova.admin;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.supernova.fashionnova.domain.answer.dto.AnswerRequestDto;
 import com.supernova.fashionnova.domain.coupon.dto.CouponRequestDto;
 import com.supernova.fashionnova.domain.mileage.dto.MileageRequestDto;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -121,14 +124,18 @@ public class AdminController {
     /**
      * 상품 등록
      *
-     * @param requestDto
+     * @param requestDtoJson
      * @return "상품 등록 성공"
      */
     @PostMapping("/products")
     public ResponseEntity<String> addProduct(
-        @RequestBody ProductRequestDto requestDto) {
+        @RequestPart("requestDto") String requestDtoJson,
+        @RequestPart List<MultipartFile> files) throws JsonProcessingException {
 
-        adminService.addProduct(requestDto);
+        ObjectMapper objectMapper = new ObjectMapper();
+        ProductRequestDto requestDto = objectMapper.readValue(requestDtoJson, ProductRequestDto.class);
+
+        adminService.addProduct(requestDto,files);
 
         return ResponseUtil.of(HttpStatus.CREATED, "상품 등록 성공");
     }
