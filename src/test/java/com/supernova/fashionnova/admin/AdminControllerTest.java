@@ -58,7 +58,7 @@ class AdminControllerTest {
     @MockBean
     private AdminService adminService;
 
-    private final String baseUrl = "/admin";
+    private final String baseUrl = "/api/admin";
 
     private User user;
 
