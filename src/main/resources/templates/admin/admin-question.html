@@ -246,8 +246,14 @@
         $.each(questions, function (index, question) {
             var $tr = $('<tr></tr>');
 
+            // 상태가 "COMPLETED"일 때 텍스트에 빨간색 스타일 적용
+            var statusText = question.status;
+            if (statusText === 'COMPLETED') {
+                statusText = '<span style="color: red;">' + statusText + '</span>';
+            }
+
             $tr.append('<td>' + question.id + '</td>');
-            $tr.append('<td>' + question.status + '</td>');
+            $tr.append('<td>' + statusText + '</td>');
             $tr.append('<td>' + question.userId + '</td>');
             $tr.append('<td>' + question.userName + '</td>');
             $tr.append('<td>' + question.type + '</td>');
