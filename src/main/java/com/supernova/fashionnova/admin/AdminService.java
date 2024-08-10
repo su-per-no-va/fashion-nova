@@ -1,6 +1,9 @@
 package com.supernova.fashionnova.admin;
 
 import com.supernova.fashionnova.admin.dto.UserProfileResponseDto;
+import com.supernova.fashionnova.domain.address.Address;
+import com.supernova.fashionnova.domain.address.AddressRepository;
+import com.supernova.fashionnova.domain.address.dto.AddressResponseDto;
 import com.supernova.fashionnova.domain.answer.Answer;
 import com.supernova.fashionnova.domain.answer.AnswerRepository;
 import com.supernova.fashionnova.domain.answer.dto.AnswerRequestDto;
@@ -11,6 +14,7 @@ import com.supernova.fashionnova.domain.coupon.dto.CouponRequestDto;
 import com.supernova.fashionnova.domain.mileage.Mileage;
 import com.supernova.fashionnova.domain.mileage.MileageRepository;
 import com.supernova.fashionnova.domain.mileage.dto.MileageRequestDto;
+import com.supernova.fashionnova.domain.order.Order;
 import com.supernova.fashionnova.domain.order.OrdersRepository;
 import com.supernova.fashionnova.domain.product.Product;
 import com.supernova.fashionnova.domain.product.ProductDetail;
@@ -33,6 +37,7 @@ import com.supernova.fashionnova.domain.warn.Warn;
 import com.supernova.fashionnova.domain.warn.WarnRepository;
 import com.supernova.fashionnova.domain.warn.dto.WarnDeleteRequestDto;
 import com.supernova.fashionnova.domain.warn.dto.WarnRequestDto;
+import com.supernova.fashionnova.domain.warn.dto.WarnResponseDto;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.global.upload.FileUploadUtil;
@@ -66,13 +71,13 @@ public class AdminService {
     private final QuestionRepository questionRepository;
     private final MileageRepository mileageRepository;
     private final OrdersRepository ordersRepository;
+    private final AddressRepository addressRepository;
 
     /**
      * 유저 전체 조회
      *
      * @param page
-     * @return List<UserResponseDto>
-     * 사이즈는 30으로 고정해놨음
+     * @return List<UserResponseDto> 사이즈는 30으로 고정해놨음
      */
     @Transactional(readOnly = true)
     public List<UserResponseDto> getAllUserList(int page) {
@@ -134,7 +139,8 @@ public class AdminService {
         List<Long> reviewIds = reviews.stream().map(Review::getId).toList();
 
         // 리뷰 이미지 다운로드
-        Map<Long, List<String>> reviewImages = fileUploadUtil.downloadImages(ImageType.REVIEW, reviewIds);
+        Map<Long, List<String>> reviewImages = fileUploadUtil.downloadImages(ImageType.REVIEW,
+            reviewIds);
 
         // ReviewResponseDto 객체 생성 및 설정
         List<ReviewResponseDto> reviewResponseDtos = new ArrayList<>();
@@ -178,7 +184,7 @@ public class AdminService {
         productRepository.save(product);
 
         // 파일 업로드
-        fileUploadUtil.uploadImage(files,ImageType.PRODUCT,product.getId());
+        fileUploadUtil.uploadImage(files, ImageType.PRODUCT, product.getId());
     }
 
     /**
@@ -188,7 +194,8 @@ public class AdminService {
      * @throws CustomException NOT_FOUND_PRODUCT 상품 정보가 존재하지 않을 때
      */
     @Transactional
-    public void addProductDetails(Long productId, List<ProductDetailRequestDto> productDetailRequestDto) {
+    public void addProductDetails(Long productId,
+        List<ProductDetailRequestDto> productDetailRequestDto) {
 
         Product product = getProduct(productId);
 
@@ -333,7 +340,6 @@ public class AdminService {
 
     /**
      * 마일리지 초기화
-     *
      */
     @Transactional
     public void deleteMileage() {
@@ -354,7 +360,7 @@ public class AdminService {
     }
 
     /**
-     *  유저 프로필 조회
+     * 유저 프로필 조회
      *
      * @param userId
      * @return UserProfileResponseDto
@@ -362,9 +368,43 @@ public class AdminService {
     public UserProfileResponseDto getUserProfile(Long userId) {
 
         User user = getUser(userId);
-        List<Warn> warnList = warnRepository.findByUser(user);
 
-        return new UserProfileResponseDto(user,warnList);
+        // 경고리스트 -> WarnResponseDto 형태로변환
+        List<Warn> warnList = warnRepository.findByUser(user);
+        List<WarnResponseDto> warnResponseDtoList = warnList.stream().map(WarnResponseDto::new)
+            .toList();
+
+        // 주소리스트 -> AddressResponseDto 형태로변환
+        List<Address> addressList = addressRepository.findByUser(user);
+        List<AddressResponseDto> addressResponseDtoList = addressList.stream()
+            .map(AddressResponseDto::new).toList();
+
+        // 오더 찾아오기
+        List<Order> orderList = ordersRepository.findAllByUserId(userId);
+
+        // 누적금액과 최근 주문 ID 초기화
+        Long totalPrice = 0L;
+        Long recentOrderId = 0L;
+
+        // 최근 주문을 찾기 위한 변수
+        Order recentOrder = null;
+
+        for (Order order : orderList) {
+            // 누적금액 더하기
+            totalPrice += order.getTotalPrice();
+
+            // 최근 주문 찾기
+            if (recentOrder == null || order.getCreatedAt().isAfter(recentOrder.getCreatedAt())) {
+                recentOrder = order;
+            }
+        }
+
+        // 최근 주문의 ID 가져오기 (최근 주문이 있을 경우)
+        if (recentOrder != null) {
+            recentOrderId = recentOrder.getId();
+        }
+        return new UserProfileResponseDto(user, warnResponseDtoList, addressResponseDtoList,
+            totalPrice, recentOrderId);
     }
 
     private User getUser(Long userId) {
@@ -388,27 +428,30 @@ public class AdminService {
     }
 
     public String dailySoldStatistics(User user) {
-        if(!UserRole.ADMIN.equals(user.getUserRole())){
+        if (!UserRole.ADMIN.equals(user.getUserRole())) {
             throw new CustomException(ErrorType.DENIED_PERMISSION);
         }
-       return ordersRepository.findTodayOrderTotalPriceSum().map(total -> total + " 원 입니다").orElse("0원 입니다.");
+        return ordersRepository.findTodayOrderTotalPriceSum().map(total -> total + " 원 입니다")
+            .orElse("0원 입니다.");
     }
 
     public String weeklySoldStatistics(User user) {
-        if(!UserRole.ADMIN.equals(user.getUserRole())){
+        if (!UserRole.ADMIN.equals(user.getUserRole())) {
             throw new CustomException(ErrorType.DENIED_PERMISSION);
         }
-        return ordersRepository.findWeekOrderTotalPriceSum().map(total -> total + " 원 입니다").orElse("0원 입니다.");
+        return ordersRepository.findWeekOrderTotalPriceSum().map(total -> total + " 원 입니다")
+            .orElse("0원 입니다.");
     }
 
     public String monthlySoldStatistics(User user, int month) {
-        if(!UserRole.ADMIN.equals(user.getUserRole())){
+        if (!UserRole.ADMIN.equals(user.getUserRole())) {
             throw new CustomException(ErrorType.DENIED_PERMISSION);
         }
-        if(month < 0 || month > 12){
+        if (month < 0 || month > 12) {
             throw new CustomException(ErrorType.WRONG_MONTH);
         }
-        return ordersRepository.findMonthOrderTotalPriceSum(month).map(total -> total + " 원 입니다").orElse("0원 입니다.");
+        return ordersRepository.findMonthOrderTotalPriceSum(month).map(total -> total + " 원 입니다")
+            .orElse("0원 입니다.");
     }
 
 
