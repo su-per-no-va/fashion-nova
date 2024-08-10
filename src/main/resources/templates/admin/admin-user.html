@@ -132,7 +132,7 @@
                                 <th>회원유형</th>
                                 <th>상태</th>
                                 <th>경고</th>
-                                <th>결제금액</th>
+                                <th>휴대폰 번호</th>
                                 <th>등급</th>
                                 <th>가입일</th>
                             </tr>
@@ -268,7 +268,6 @@
                 const userTableBody = $('#datatablesSimple tbody');
                 userTableBody.empty();
                 response.forEach(function(user) {
-                    const warnCount = user.warnList ? user.warnList.length : 0;  // warnList의 길이를 계산, 없으면 0
                     userTableBody.append(`
                             <tr>
                                 <td>${user.id}</td> <!-- 회원ID (순번) -->
@@ -277,8 +276,8 @@
                                 <td><a href="#" class="name-link" data-user-id="${user.id}">${user.name}</a></td> <!-- 이름 -->
                                 <td>${user.status}</td> <!-- 회원유형 -->
                                 <td>${user.grade || 'N/A'}</td> <!-- 등급 -->
-                                <td><a href="#" class="modal-link" data-user-id="${user.id}">${warnCount}</a></td> <!-- 경고 -->
-                                <td>${user.mileage}</td> <!-- 결제금액 -->
+                                <td><a href="#" class="modal-link" data-user-id="${user.id}">${user.warnCount}</a></td> <!-- 경고 -->
+                                <td>${user.phone}</td> <!-- 결제금액 -->
                                 <td>${user.grade || 'N/A'}</td> <!-- 등급 -->
                                 <td>${new Date(user.createdAt).toLocaleString()}</td> <!-- 가입일 -->
                             </tr>
