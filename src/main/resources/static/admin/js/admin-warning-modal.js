@@ -35,11 +35,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        // 등록 버튼 클릭 시 알림 표시
-        document.getElementById("submitWarning").addEventListener('click', function () {
-            alert("경고가 등록되었습니다.");
-            modal.style.display = "none";
-        });
 
         // 취소 버튼 클릭 시 모달 닫기
         document.getElementById("cancelWarning").addEventListener('click', function () {

@@ -309,10 +309,13 @@
             });
         });
 
+        let currentUserId = null; // 전역 변수 선언
+
         // 경고 내역 모달
         $(document).on('click', '.modal-link', function(event) {
             event.preventDefault();
             const userId = $(this).data('user-id');
+            currentUserId = userId;
             $.ajax({
                 url: `/api/admin/users/${userId}`,
                 type: 'GET',
@@ -351,12 +354,30 @@
 
         // 경고 등록
         $('#submitWarning').on('click', function() {
-            const newWarningReason = $('#newWarningReason').val();
-            if (newWarningReason) {
-                // 경고 등록 API 호출 로직 추가
-                // 등록 후 경고 리스트 새로고침
+            const newWarningReason = $('#newWarningReason').val().trim();
+
+            if (currentUserId && newWarningReason) {
+                $.ajax({
+                    url: '/api/admin/cautions',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        userId: currentUserId,
+                        detail: newWarningReason
+                    }),
+                    success: function() {
+                        alert('경고가 성공적으로 등록되었습니다.');
+                        $('#warningModal').hide();
+                        $('#newWarningReason').val('');
+                        window.location.reload(); // 페이지 새로 고침
+                    },
+                    error: function() {
+                        alert('경고 등록에 실패했습니다.');
+                    }
+                });
+            } else {
+                alert('경고 사유를 입력해 주세요.');
             }
         });
     });
-
 </script>

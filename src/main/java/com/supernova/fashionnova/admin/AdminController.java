@@ -76,7 +76,7 @@ public class AdminController {
     }
 
     /**
-     * 유저 조회 등록
+     * 유저 경고 등록
      *
      * @param requestDto
      * @return "회원 경고 등록 완성"
