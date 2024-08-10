@@ -228,6 +228,7 @@
             <tr>
                 <th>경고 사유</th>
                 <th>경고 생성일</th>
+                <th>삭제</th> <!-- 삭제 버튼 추가 -->
             </tr>
             </thead>
             <tbody class="warning-body">
@@ -248,7 +249,7 @@
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
 <script src="../admin/js/datatables.js"></script>
 <!--<script src="../admin/js/admin-user-modal.js"></script>-->
-<script src="../admin/js/admin-warning-modal.js"></script>
+<!--<script src="../admin/js/admin-warning-modal.js"></script>-->
 </body>
 </html>
 
@@ -327,6 +328,7 @@
                                 <tr>
                                     <td>${warn.detail}</td>
                                     <td>${warn.createdAt}</td>
+                                    <td><button class="btn btn-danger delete-warning" data-warn-id="${warn.id}">삭제</button></td> <!-- 삭제 버튼 추가 -->
                                 </tr>
                             `);
                     });
@@ -379,5 +381,30 @@
                 alert('경고 사유를 입력해 주세요.');
             }
         });
+
+        // 경고 삭제
+        $(document).on('click', '.delete-warning', function() {
+            const warnId = $(this).data('warn-id');
+
+            if (confirm('정말로 이 경고를 삭제하시겠습니까?')) {
+                $.ajax({
+                    url: '/api/admin/cautions',
+                    type: 'DELETE',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        warnId: warnId
+                    }),
+                    success: function() {
+                        alert('경고가 성공적으로 삭제되었습니다.');
+                        $('#warningModal').hide();
+                        window.location.reload(); // 페이지 새로 고침
+                    },
+                    error: function() {
+                        alert('경고 삭제에 실패했습니다.');
+                    }
+                });
+            }
+        });
+
     });
 </script>
