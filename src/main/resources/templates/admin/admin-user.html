@@ -251,3 +251,92 @@
 <script src="../admin/js/admin-warning-modal.js"></script>
 </body>
 </html>
+
+<script>
+    // 유저 전체 조회
+    $(document).ready(function() {
+        $.ajax({
+            url: '/api/admin/users',
+            type: 'GET',
+            data: { page: 0 },
+            success: function(response) {
+                const userTableBody = $('#datatablesSimple tbody');
+                userTableBody.empty();
+                response.forEach(function(user) {
+                    const warnCount = user.warnList ? user.warnList.length : 0;  // warnList의 길이를 계산, 없으면 0
+                    userTableBody.append(`
+                    <tr>
+                        <td>${user.id}</td> <!-- 회원ID (순번) -->
+                        <td>${user.userName}</td> <!-- ID -->
+                        <td>${user.email}</td> <!-- 이메일 -->
+                        <td><a href="#" class="name-link" data-user-id="${user.id}">${user.name}</a></td> <!-- 이름 -->
+                        <td>${user.status}</td> <!-- 회원유형 -->
+                        <td>${user.grade || 'N/A'}</td> <!-- 등급 -->
+                        <td><a href="#" class="modal-link" data-user-id="${user.id}">${warnCount}</a></td> <!-- 경고 -->
+                        <td>${user.mileage}</td> <!-- 결제금액 -->
+                        <td>${user.grade || 'N/A'}</td> <!-- 등급 -->
+                        <td>${new Date(user.createdAt).toLocaleString()}</td> <!-- 가입일 -->
+                    </tr>
+                `);
+                });
+            }
+        });
+    });
+    // 우자 프로필 조회
+    $(document).on('click', '.name-link', function(event) {
+        event.preventDefault();
+        const userId = $(this).data('user-id');
+        $.ajax({
+            url: `/api/admin/users/${userId}`,
+            type: 'GET',
+            success: function(response) {
+                $('#userModal .modal-id').text(response.userName);
+                $('#userModal .modal-name').text(response.name);
+                $('#userModal .modal-email').text(response.email);
+                $('#userModal .modal-type').text(response.userRole);
+                $('#userModal .modal-join').text(response.createdAt);
+                $('#userModal .modal-grade').text(response.grade);  // grade를 사용
+                $('#userModal .modal-total').text(response.mileage);
+                // 배송지와 제재 내역 등을 처리
+                let addressContent = response.addressList.map(addr => addr.fullAddress).join('<br>');
+                $('#userModal .modal-address').html(addressContent);
+                let warnContent = response.warnList.map(warn => `${warn.reason} (${warn.date})`).join('<br>');
+                $('#userModal .modal-restriction').html(warnContent);
+
+                // 모달 띄우기
+                $('#userModal').show();
+            }
+        });
+    });
+    // 경고조히
+    $(document).on('click', '.modal-link', function(event) {
+        event.preventDefault();
+        const userId = $(this).data('user-id');
+        $.ajax({
+            url: `/api/admin/users/${userId}`,
+            type: 'GET',
+            success: function(response) {
+                const warningBody = $('.warning-body');
+                warningBody.empty();
+                response.warnList.forEach(function(warn) {
+                    warningBody.append(`
+                    <tr>
+                        <td>${warn.reason}</td>
+                        <td>${warn.date}</td>
+                    </tr>
+                `);
+                });
+                $('#warningModal').show();
+            }
+        });
+    });
+    // 경고 등록
+    $('#submitWarning').on('click', function() {
+        const newWarningReason = $('#newWarningReason').val();
+        if (newWarningReason) {
+            // 경고 등록 API 호출 로직 추가
+            // 등록 후 경고 리스트 새로고침
+        }
+    });
+
+</script>

@@ -2,6 +2,7 @@ package com.supernova.fashionnova.admin;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.supernova.fashionnova.admin.dto.UserProfileResponseDto;
 import com.supernova.fashionnova.domain.answer.dto.AnswerRequestDto;
 import com.supernova.fashionnova.domain.coupon.dto.CouponRequestDto;
 import com.supernova.fashionnova.domain.mileage.dto.MileageRequestDto;
@@ -259,6 +260,20 @@ public class AdminController {
         adminService.updateProductImage(file, productId);
 
        return ResponseUtil.of(HttpStatus.OK,"사진 등록 성공");
+    }
+
+    /**
+     * 유저 프로필 조회
+     *
+     * @param userId
+     * @return UserProfileResponseDto
+     */
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<UserProfileResponseDto> getUserProfile(@PathVariable Long userId) {
+
+       UserProfileResponseDto responseDto =  adminService.getUserProfile(userId);
+
+       return  ResponseUtil.of(HttpStatus.OK,responseDto);
     }
 
 }

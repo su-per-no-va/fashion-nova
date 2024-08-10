@@ -157,12 +157,24 @@
                                 <td>2024/08/02 13:01</td>
                                 <td></td>
                             </tr>
+
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </main>
+
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="#" id="prevPage">Previous</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#" id="nextPage">Next</a>
+                </li>
+            </ul>
+        </nav>
 
         <!-- Footer-->
         <footer class="py-4 bg-light mt-auto">
@@ -179,6 +191,8 @@
         </footer>
     </div>
 </div>
+
+
 
 <!-- Modal -->
 <div id="myModal" class="modal fade" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
@@ -210,7 +224,26 @@
 <script src="../admin/js/datatables.js"></script>
 <script src="../admin/js/admin-modal.js"></script>
 <script>
+    var currentPage = 0; // 현재 페이지 번호
     $(document).ready(function() {
+        // 페이지가 로드될 때 첫 번째 페이지를 로드
+        fetchQuestions(currentPage);
+
+        // 다음 페이지 버튼 클릭 이벤트
+        $('#nextPage').on('click', function(event) {
+            event.preventDefault();
+            currentPage++;
+            fetchQuestions(currentPage);
+        });
+
+        // 이전 페이지 버튼 클릭 이벤트
+        $('#prevPage').on('click', function(event) {
+            event.preventDefault();
+            if (currentPage > 0) {
+                currentPage--;
+                fetchQuestions(currentPage);
+            }
+        });
         // 답변 등록 버튼 클릭 시
         $('#submitReply').on('click', function() {
 
@@ -220,8 +253,6 @@
         $('#cancelReply').on('click', function() {
             $('#myModal').hide(); // 모달 닫기
         });
-        fetchQuestions(0); // 페이지 로드 시 첫 번째 페이지 데이터 로드
-
     });
 
     function fetchQuestions(page) {
@@ -257,7 +288,8 @@
             $tr.append('<td>' + question.userId + '</td>');
             $tr.append('<td>' + question.userName + '</td>');
             $tr.append('<td>' + question.type + '</td>');
-            $tr.append('<td><a href="#" class="modal-link" data-id="' + question.id + '" data-category="' + question.type + '" data-author="' + question.userName + '" data-content="' + question.question + '" data-attachment="' + question.questionUrls.join(', ') + '">' + question.title + '</a></td>');
+            $tr.append('<td><a href="#" class="modal-link" data-id="' + question.id + '" data-category="' + question.type + '" data-author="' + question.userName +
+                '" data-content="' + question.question + '" data-attachment="' + question.questionUrls.join(', ') + '">' + question.title + '</a></td>');
             $tr.append('<td>' + formatDate(question.createdAt) + '</td>');
             $tr.append('<td>' + formatDate(question.answeredDate) + '</td>'); // 답변 등록일 추가
 
@@ -268,7 +300,8 @@
     function formatDate(dateString) {
         if (!dateString) return '';
         var date = new Date(dateString);
-        return date.getFullYear() + '/' + (date.getMonth() + 1).toString().padStart(2, '0') + '/' + date.getDate().toString().padStart(2, '0') + ' ' + date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0');
+        return date.getFullYear() + '/' + (date.getMonth() + 1).toString().padStart(2, '0') + '/' + date.getDate().toString().padStart(2, '0') + ' ' + date.getHours().toString().padStart(2, '0') +
+            ':' + date.getMinutes().toString().padStart(2, '0');
     }
 
     $(document).on('click', '.modal-link', function (event) {

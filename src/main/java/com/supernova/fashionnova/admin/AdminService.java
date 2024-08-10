@@ -1,5 +1,6 @@
 package com.supernova.fashionnova.admin;
 
+import com.supernova.fashionnova.admin.dto.UserProfileResponseDto;
 import com.supernova.fashionnova.domain.answer.Answer;
 import com.supernova.fashionnova.domain.answer.AnswerRepository;
 import com.supernova.fashionnova.domain.answer.dto.AnswerRequestDto;
@@ -352,6 +353,20 @@ public class AdminService {
         fileUploadUtil.uploadImage(files, ImageType.PRODUCT, productId);
     }
 
+    /**
+     *  유저 프로필 조회
+     *
+     * @param userId
+     * @return UserProfileResponseDto
+     */
+    public UserProfileResponseDto getUserProfile(Long userId) {
+
+        User user = getUser(userId);
+        List<Warn> warnList = warnRepository.findByUser(user);
+
+        return new UserProfileResponseDto(user,warnList);
+    }
+
     private User getUser(Long userId) {
         return userRepository.findById(userId)
             .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
@@ -395,4 +410,6 @@ public class AdminService {
         }
         return ordersRepository.findMonthOrderTotalPriceSum(month).map(total -> total + " 원 입니다").orElse("0원 입니다.");
     }
+
+
 }
