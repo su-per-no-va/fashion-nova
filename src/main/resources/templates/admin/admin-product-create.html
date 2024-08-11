@@ -176,6 +176,8 @@
                                             <option value="Blue">Blue</option>
                                             <option value="Green">Green</option>
                                             <option value="Black">Black</option>
+                                            <option value="Yellow">Yellow</option>
+                                            <option value="Purple">Purple</option>
                                         </select>
                                     </div>
                                     <div class="mb-3">
@@ -185,7 +187,6 @@
                                     <button type="button" class="btn btn-secondary mt-2" id="addSizeColorButton">추가</button>
                                     <div class="mb-3" id="sizeColorQuantityContainer"></div>
                                     <div class="mb-3" id="colorContainer">
-                                        <button type="button" class="btn btn-secondary mt-2" onclick="addNewColor()">Add New Color</button>
                                     </div>
                                     <button type="button" class="btn btn-primary" id="submitButton">등록</button>
                                 </form>
@@ -242,14 +243,6 @@
                 } else {
                     alert('Please enter size, color, and quantity.');
                 }
-            }
-
-            function addNewColor() {
-                const colorContainer = $('#colorContainer');
-                const newColorInput = $(`
-        <input type="text" class="form-control mt-2" placeholder="Enter additional color" name="additionalColors[]">
-    `);
-                colorContainer.append(newColorInput);
             }
 
             function submitForm() {
