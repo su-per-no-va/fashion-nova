@@ -273,6 +273,175 @@
         <script src="../admin/js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="../admin/js/datatables.js"></script>
-        <script src="../admin/js/admin-coupon-modal.js"></script>
+<!--        <script src="../admin/js/admin-coupon-modal.js"></script>-->
     </body>
 </html>
+
+<script>
+    $(document).ready(function() {
+        // 페이지가 처음 로드될 때 데이터 가져오기
+        fetchUserData();
+
+        // 페이지 초기화
+        initializeModals();
+        initializeDataTable();
+    });
+
+    // Ajax를 사용해 서버에서 데이터 가져오기
+    function fetchUserData(page = 0) {
+        $.ajax({
+            url: '/api/admin/users/coupons/mileages',
+            method: 'GET',
+            data: { page: page },
+            success: function(response) {
+                renderUserTable(response);
+            },
+            error: function(error) {
+                console.error('Error fetching user data:', error);
+            }
+        });
+    }
+
+    // 동적 데이터 처리
+    function renderUserTable(data) {
+        const tbody = document.querySelector('#datatablesSimple tbody');
+        tbody.innerHTML = ''; // 기존 데이터를 지우기
+
+        data.forEach((user, index) => {
+            const couponHtml = user.couponResponseDtoList.map(coupon => `
+                <span>${coupon.name} (${coupon.sale})</span><br />
+            `).join('');
+
+            const couponPeriods = user.couponResponseDtoList.map(coupon => `
+                <span>${formatDate(coupon.period)}</span><br />
+            `).join('');
+
+            const couponCreatedAt = user.couponResponseDtoList.map(coupon => `
+                <span>${formatDate(coupon.createdAt)}</span><br />
+            `).join('');
+
+            const rowHtml = `
+                <tr>
+                    <td>${user.id}</td>
+                    <td>${user.userName}</td>
+                    <td>${user.email}</td>
+                    <td>${user.name}</td>
+                    <td>${user.userRole}</td>
+                    <td>${user.userStatus}</td>
+                    <td><a href="#" class="modal-link" data-userid="${user.id}">
+                        ${couponHtml}
+                    </a></td>
+                    <td>${couponCreatedAt}</td>
+                    <td>${couponPeriods}</td>
+                    <td><a href="#" class="mileage-modal-link" data-userid="${user.id}">${user.mileage}</a></td>
+                </tr>
+            `;
+            tbody.insertAdjacentHTML('beforeend', rowHtml);
+        });
+
+        // 모달 링크에 이벤트 리스너 바인딩
+        bindCouponModalLinks();
+        bindMileageModalLinks();
+    }
+
+    // 날짜 형식 변환 함수 (예시)
+    function formatDate(date) {
+        const d = new Date(date);
+        let month = '' + (d.getMonth() + 1);
+        let day = '' + d.getDate();
+        const year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('/');
+    }
+
+    // 모달 관련 초기화
+    function initializeModals() {
+        const couponModal = document.getElementById("myModal");
+        const mileageModal = document.getElementById("mileageModal");
+        const spanCoupon = document.getElementsByClassName("close")[0];
+        const spanMileage = document.getElementsByClassName("close-mileage")[0];
+
+        // 쿠폰 모달 링크에 이벤트 리스너 바인딩 함수
+        window.bindCouponModalLinks = function() {
+            document.querySelectorAll('.modal-link').forEach(function(element) {
+                element.onclick = function() {
+                    couponModal.style.display = "block";
+                }
+            });
+        }
+
+        // 마일리지 모달 링크에 이벤트 리스너 바인딩 함수
+        window.bindMileageModalLinks = function() {
+            document.querySelectorAll('.mileage-modal-link').forEach(function(element) {
+                element.onclick = function() {
+                    mileageModal.style.display = "block";
+                }
+            });
+        }
+
+        // 쿠폰 모달 닫기 버튼 이벤트 리스너
+        spanCoupon.onclick = function() {
+            couponModal.style.display = "none";
+        }
+
+        // 마일리지 모달 닫기 버튼 이벤트 리스너
+        spanMileage.onclick = function() {
+            mileageModal.style.display = "none";
+        }
+
+        // 모달 외부 클릭 시 모달 닫기
+        window.onclick = function(event) {
+            if (event.target == couponModal) {
+                couponModal.style.display = "none";
+            }
+            if (event.target == mileageModal) {
+                mileageModal.style.display = "none";
+            }
+        }
+
+        document.getElementById("cancelReply").onclick = function() {
+            couponModal.style.display = "none";
+        }
+
+        document.getElementById("cancelMileage").onclick = function() {
+            mileageModal.style.display = "none";
+        }
+
+        // 등록 버튼 클릭 시 알림 표시
+        document.getElementById("submitReply").onclick = function() {
+            alert('쿠폰이 지급되었습니다.');
+            couponModal.style.display = "none";
+        }
+
+        document.getElementById("submitMileage").onclick = function() {
+            alert('마일리지가 지급되었습니다.');
+            mileageModal.style.display = "none";
+        }
+    }
+
+    // DataTable 초기화 및 이벤트 리스너 바인딩
+    function initializeDataTable() {
+        const datatablesSimple = document.getElementById('datatablesSimple');
+        if (datatablesSimple) {
+            var dataTable = new simpleDatatables.DataTable(datatablesSimple);
+
+            // DataTable 이벤트에 바인딩
+            dataTable.on('datatable.page', function() {
+                bindCouponModalLinks();
+                bindMileageModalLinks();
+            });
+            dataTable.on('datatable.sort', function() {
+                bindCouponModalLinks();
+                bindMileageModalLinks();
+            });
+            dataTable.on('datatable.search', function() {
+                bindCouponModalLinks();
+                bindMileageModalLinks();
+            });
+        }
+    }
+</script>
+

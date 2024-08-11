@@ -3,6 +3,7 @@ package com.supernova.fashionnova.admin;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.supernova.fashionnova.admin.dto.UserProfileResponseDto;
+import com.supernova.fashionnova.admin.dto.UsersCouponAndMileageResponseDto;
 import com.supernova.fashionnova.domain.answer.dto.AnswerRequestDto;
 import com.supernova.fashionnova.domain.coupon.dto.CouponRequestDto;
 import com.supernova.fashionnova.domain.mileage.dto.MileageRequestDto;
@@ -275,5 +276,22 @@ public class AdminController {
 
        return  ResponseUtil.of(HttpStatus.OK,responseDto);
     }
+
+    /**
+     * 유저리스트(마일리지,쿠폰을 기준으로) 조회
+     *
+     * @param page
+     * @return
+     */
+    @GetMapping("/users/coupons/mileages")
+    public ResponseEntity<List<UsersCouponAndMileageResponseDto>> getAllUsersCouponAndMileages(
+        @RequestParam(defaultValue = "0") int page
+    ) {
+
+       List<UsersCouponAndMileageResponseDto> responseDtoList = adminService.getAllUsersCouponAndMileages(page);
+
+       return ResponseUtil.of(HttpStatus.OK,responseDtoList);
+    }
+
 
 }

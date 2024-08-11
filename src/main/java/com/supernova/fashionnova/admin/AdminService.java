@@ -1,6 +1,7 @@
 package com.supernova.fashionnova.admin;
 
 import com.supernova.fashionnova.admin.dto.UserProfileResponseDto;
+import com.supernova.fashionnova.admin.dto.UsersCouponAndMileageResponseDto;
 import com.supernova.fashionnova.domain.address.Address;
 import com.supernova.fashionnova.domain.address.AddressRepository;
 import com.supernova.fashionnova.domain.address.dto.AddressResponseDto;
@@ -407,6 +408,28 @@ public class AdminService {
             totalPrice, recentOrderId);
     }
 
+    /**
+     * 유저 쿠폰 & 마일리지 조회
+     *
+     * @return UsersCouponAndMileageResponseDto
+     */
+    public List<UsersCouponAndMileageResponseDto> getAllUsersCouponAndMileages(int page) {
+
+        // 유저 찾기
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+        Page<User> userPage = userRepository.findAll(pageable);
+
+        return userPage.stream()
+            .map(UsersCouponAndMileageResponseDto::new)
+            .collect(Collectors.toList());
+    }
+
+
+
+
+
+
+
     private User getUser(Long userId) {
         return userRepository.findById(userId)
             .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
@@ -453,6 +476,7 @@ public class AdminService {
         return ordersRepository.findMonthOrderTotalPriceSum(month).map(total -> total + " 원 입니다")
             .orElse("0원 입니다.");
     }
+
 
 
 }
