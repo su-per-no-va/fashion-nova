@@ -218,9 +218,11 @@
                     <div class="form-group">
                         <label for="couponName">쿠폰명</label>
                         <select id="couponName" class="form-control">
-                            <option value="브론즈 5% 할인쿠폰">브론즈 5% 할인쿠폰</option>
-                            <option value="실버 10% 할인쿠폰">실버 10% 할인쿠폰</option>
-                            <option value="골드 15% 할인쿠폰">골드 15% 할인쿠폰</option>
+                            <option value="브론즈 5% 할인쿠폰">브론즈(5% 할인쿠폰)</option>
+                            <option value="실버 10% 할인쿠폰">실버(10% 할인쿠폰)</option>
+                            <option value="골드 15% 할인쿠폰">골드(15% 할인쿠폰)</option>
+                            <option value="생일 축하 쿠폰">생일 축하 쿠폰</option>
+                            <option value="웰컴 쿠폰">웰컴 쿠폰</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -230,17 +232,17 @@
                     <div class="form-group">
                         <label for="couponRate">할인율</label>
                         <select id="couponRate" class="form-control">
-                            <option value="5%">5%</option>
-                            <option value="10%">10%</option>
-                            <option value="15%">15%</option>
+                            <option value="5">5%</option>
+                            <option value="10">10%</option>
+                            <option value="15">15%</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="couponType">쿠폰유형</label>
                         <select id="couponType" class="form-control">
-                            <option value="회원가입">웰컴쿠폰</option>
-                            <option value="생일축하">등급쿠폰</option>
-                            <option value="첫구매">생일쿠폰</option>
+                            <option value="WELCOME">웰컴쿠폰</option>
+                            <option value="REGULAR">생일쿠폰</option>
+                            <option value="GRADE_UP">등급상승쿠폰</option>
                         </select>
                     </div>
                     <div class="modal-buttons">
@@ -307,11 +309,12 @@
         const tbody = document.querySelector('#datatablesSimple tbody');
         tbody.innerHTML = ''; // 기존 데이터를 지우기
 
-        data.forEach((user, index) => {
-            const couponHtml = user.couponResponseDtoList.map(coupon => `
+        data.forEach((user) => {
+            const couponHtml = user.couponResponseDtoList.length > 0
+                ? user.couponResponseDtoList.map(coupon => `
                 <span>${coupon.name} (${coupon.sale})</span><br />
-            `).join('');
-
+            `).join('')
+                : '<span>쿠폰 없음</span>';
             const couponPeriods = user.couponResponseDtoList.map(coupon => `
                 <span>${formatDate(coupon.period)}</span><br />
             `).join('');
@@ -344,7 +347,7 @@
         bindMileageModalLinks();
     }
 
-    // 날짜 형식 변환 함수 (예시)
+    // 날짜 형식 변환 함수
     function formatDate(date) {
         const d = new Date(date);
         let month = '' + (d.getMonth() + 1);
@@ -368,7 +371,8 @@
         window.bindCouponModalLinks = function() {
             document.querySelectorAll('.modal-link').forEach(function(element) {
                 element.onclick = function() {
-                    couponModal.style.display = "block";
+                    const userId = this.getAttribute('data-userid');
+                    openCouponModal(userId); // 사용자 ID를 모달에 전달
                 }
             });
         }
@@ -377,7 +381,8 @@
         window.bindMileageModalLinks = function() {
             document.querySelectorAll('.mileage-modal-link').forEach(function(element) {
                 element.onclick = function() {
-                    mileageModal.style.display = "block";
+                    const userId = this.getAttribute('data-userid');
+                    openMileageModal(userId); // 사용자 ID를 모달에 전달
                 }
             });
         }
@@ -394,54 +399,117 @@
 
         // 모달 외부 클릭 시 모달 닫기
         window.onclick = function(event) {
-            if (event.target == couponModal) {
+            if (event.target === couponModal) {
                 couponModal.style.display = "none";
             }
-            if (event.target == mileageModal) {
+            if (event.target === mileageModal) {
                 mileageModal.style.display = "none";
             }
         }
 
+        // 쿠폰 모달 취소 버튼 클릭 시 모달 닫기
         document.getElementById("cancelReply").onclick = function() {
             couponModal.style.display = "none";
         }
 
+        // 마일리지 모달 취소 버튼 클릭 시 모달 닫기
         document.getElementById("cancelMileage").onclick = function() {
             mileageModal.style.display = "none";
         }
 
-        // 등록 버튼 클릭 시 알림 표시
+        // 쿠폰 등록 버튼 클릭 시 요청
         document.getElementById("submitReply").onclick = function() {
-            alert('쿠폰이 지급되었습니다.');
-            couponModal.style.display = "none";
-        }
+            const userId = $('#myModal').data('userid');
+            handleCouponSubmission(userId);
+        };
 
+        // 마일리지 지급 버튼 클릭 시 요청
         document.getElementById("submitMileage").onclick = function() {
-            alert('마일리지가 지급되었습니다.');
-            mileageModal.style.display = "none";
-        }
+            const userId = $('#mileageModal').data('userid');
+            handleMileageSubmission(userId);
+        };
+    }
+
+    // 쿠폰 모달에서 쿠폰 지급 요청
+    function handleCouponSubmission(userId) {
+        const couponName = document.getElementById('couponName').value;
+        const couponPeriod = document.getElementById('couponPeriod').value;
+        const couponRate = document.getElementById('couponRate').value;
+        const couponType = document.getElementById('couponType').value;
+
+        const requestData = {
+            userId: userId,
+            name: couponName,
+            period: couponPeriod,
+            sale: couponRate,
+            type: couponType
+        };
+
+        $.ajax({
+            url: '/api/admin/coupons',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+            success: function(response) {
+                alert('쿠폰이 지급되었습니다.');
+                $('#myModal').hide();
+                fetchUserData(); // 사용자 데이터 새로고침
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                alert('쿠폰 지급에 실패했습니다.');
+            }
+        });
+    }
+
+    // 마일리지 지급 요청
+    function handleMileageSubmission(userId) {
+        const mileageAmount = document.getElementById('mileageAmount').value;
+
+        const requestData = {
+            userId: userId,
+            mileage: mileageAmount
+        };
+
+        $.ajax({
+            url: '/api/admin/mileages',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+            success: function(response) {
+                alert('마일리지가 지급되었습니다.');
+                $('#mileageModal').hide();
+                fetchUserData(); // 사용자 데이터 새로고침
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                alert('마일리지 지급에 실패했습니다.');
+            }
+        });
+    }
+
+    // 쿠폰 모달 열기 및 사용자 ID 저장
+    function openCouponModal(userId) {
+        $('#myModal').show();
+        $('#myModal').data('userid', userId); // 사용자 ID 저장
+    }
+
+    // 마일리지 모달 열기 및 사용자 ID 저장
+    function openMileageModal(userId) {
+        $('#mileageModal').show();
+        $('#mileageModal').data('userid', userId); // 사용자 ID 저장
     }
 
     // DataTable 초기화 및 이벤트 리스너 바인딩
     function initializeDataTable() {
         const datatablesSimple = document.getElementById('datatablesSimple');
         if (datatablesSimple) {
-            var dataTable = new simpleDatatables.DataTable(datatablesSimple);
+            const dataTable = new simpleDatatables.DataTable(datatablesSimple);
 
             // DataTable 이벤트에 바인딩
-            dataTable.on('datatable.page', function() {
-                bindCouponModalLinks();
-                bindMileageModalLinks();
-            });
-            dataTable.on('datatable.sort', function() {
-                bindCouponModalLinks();
-                bindMileageModalLinks();
-            });
-            dataTable.on('datatable.search', function() {
-                bindCouponModalLinks();
-                bindMileageModalLinks();
-            });
+            dataTable.on('datatable.page', bindCouponModalLinks);
+            dataTable.on('datatable.sort', bindCouponModalLinks);
+            dataTable.on('datatable.search', bindCouponModalLinks);
         }
     }
 </script>
-
