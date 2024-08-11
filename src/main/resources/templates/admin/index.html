@@ -168,3 +168,80 @@
 </script>
 </body>
 </html>
+
+<script>
+    // document.ready로 DOM이 준비된 후 코드 실행
+    $(document).ready(function() {
+        fetchChartData();
+    });
+
+    function fetchChartData() {
+        $.ajax({
+            url: '/api/admin/sold/day',
+            method: 'GET',
+            success: function(response) {
+                renderChart('dailyChart', response.total, '일별 판매 통계');
+            },
+            error: function(error) {
+                console.error('Error fetching daily sales data:', error);
+            }
+        });
+
+        $.ajax({
+            url: '/api/admin/sold/week',
+            method: 'GET',
+            success: function(response) {
+                renderChart('weeklyChart', response.total, '주별 판매 통계');
+            },
+            error: function(error) {
+                console.error('Error fetching weekly sales data:', error);
+            }
+        });
+
+        $.ajax({
+            url: '/api/admin/sold/month/8',  // 예시로 8월을 사용. 실제 월 값으로 변경
+            method: 'GET',
+            success: function(response) {
+                renderChart('monthlyChart', response.total, '월별 판매 통계');
+            },
+            error: function(error) {
+                console.error('Error fetching monthly sales data:', error);
+            }
+        });
+    }
+
+    function renderChart(chartId, data, label) {
+        var ctx = document.getElementById(chartId).getContext('2d');
+        new Chart(ctx, {
+            type: 'bar', // 또는 'line', 'pie', 등
+            data: {
+                labels: [label],
+                datasets: [{
+                    label: '총 판매량',
+                    data: [data], // 총 판매량 데이터
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '판매량'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: label
+                        }
+                    }
+                }
+            }
+        });
+    }
+</script>

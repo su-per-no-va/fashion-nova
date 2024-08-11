@@ -40,27 +40,37 @@ import org.springframework.web.multipart.MultipartFile;
 public class AdminController {
 
     private final AdminService adminService;
+
     /**
      * 판몌통계(일별)
-     * */
+     */
     @GetMapping("/sold/day")
-    public ResponseEntity<String> dailySoldStatistics(@AuthenticationPrincipal UserDetailsImpl userDetails){
-        return ResponseUtil.of(HttpStatus.OK, adminService.dailySoldStatistics(userDetails.getUser())) ;
+    public ResponseEntity<String> dailySoldStatistics(
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseUtil.of(HttpStatus.OK,
+            adminService.dailySoldStatistics(userDetails.getUser()));
     }
+
     /**
      * 판몌통계(주별)
-     * */
+     */
     @GetMapping("/sold/week")
-    public ResponseEntity<String> weeklySoldStatistics(@AuthenticationPrincipal UserDetailsImpl userDetails){
-        return ResponseUtil.of(HttpStatus.OK, adminService.weeklySoldStatistics(userDetails.getUser())) ;
+    public ResponseEntity<String> weeklySoldStatistics(
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseUtil.of(HttpStatus.OK,
+            adminService.weeklySoldStatistics(userDetails.getUser()));
     }
+
     /**
      * 판몌통계(월별)
-     * */
+     */
     @GetMapping("/sold/moth/{month}")
-    public ResponseEntity<String > monthlySoldStatistics(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable int month){
-        return ResponseUtil.of(HttpStatus.OK, adminService.monthlySoldStatistics(userDetails.getUser(), month)) ;
+    public ResponseEntity<String> monthlySoldStatistics(
+        @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable int month) {
+        return ResponseUtil.of(HttpStatus.OK,
+            adminService.monthlySoldStatistics(userDetails.getUser(), month));
     }
+
     /**
      * 유저 전체 조회
      *
@@ -135,9 +145,10 @@ public class AdminController {
         @RequestPart List<MultipartFile> files) throws JsonProcessingException {
 
         ObjectMapper objectMapper = new ObjectMapper();
-        ProductRequestDto requestDto = objectMapper.readValue(requestDtoJson, ProductRequestDto.class);
+        ProductRequestDto requestDto = objectMapper.readValue(requestDtoJson,
+            ProductRequestDto.class);
 
-        adminService.addProduct(requestDto,files);
+        adminService.addProduct(requestDto, files);
 
         return ResponseUtil.of(HttpStatus.CREATED, "상품 등록 성공");
     }
@@ -260,7 +271,7 @@ public class AdminController {
 
         adminService.updateProductImage(file, productId);
 
-       return ResponseUtil.of(HttpStatus.OK,"사진 등록 성공");
+        return ResponseUtil.of(HttpStatus.OK, "사진 등록 성공");
     }
 
     /**
@@ -272,9 +283,9 @@ public class AdminController {
     @GetMapping("/users/{userId}")
     public ResponseEntity<UserProfileResponseDto> getUserProfile(@PathVariable Long userId) {
 
-       UserProfileResponseDto responseDto =  adminService.getUserProfile(userId);
+        UserProfileResponseDto responseDto = adminService.getUserProfile(userId);
 
-       return  ResponseUtil.of(HttpStatus.OK,responseDto);
+        return ResponseUtil.of(HttpStatus.OK, responseDto);
     }
 
     /**
@@ -288,9 +299,10 @@ public class AdminController {
         @RequestParam(defaultValue = "0") int page
     ) {
 
-       List<UsersCouponAndMileageResponseDto> responseDtoList = adminService.getAllUsersCouponAndMileages(page);
+        List<UsersCouponAndMileageResponseDto> responseDtoList = adminService.getAllUsersCouponAndMileages(
+            page);
 
-       return ResponseUtil.of(HttpStatus.OK,responseDtoList);
+        return ResponseUtil.of(HttpStatus.OK, responseDtoList);
     }
 
 
