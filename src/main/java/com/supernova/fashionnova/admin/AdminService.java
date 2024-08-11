@@ -1,5 +1,6 @@
 package com.supernova.fashionnova.admin;
 
+import com.supernova.fashionnova.admin.dto.AllReviewResponseDto;
 import com.supernova.fashionnova.admin.dto.UserProfileResponseDto;
 import com.supernova.fashionnova.admin.dto.UsersCouponAndMileageResponseDto;
 import com.supernova.fashionnova.domain.address.Address;
@@ -422,6 +423,19 @@ public class AdminService {
         return userPage.stream()
             .map(UsersCouponAndMileageResponseDto::new)
             .collect(Collectors.toList());
+    }
+
+    /**
+     *  전체 리뷰 조회
+     *
+     * @param page
+     * @return AllReviewResponseDto
+     */
+    public List<AllReviewResponseDto> getAllRevivewList(int page) {
+
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+        Page<Review> reviewPage = reviewRepository.findAll(pageable);
+        return reviewPage.stream().map(AllReviewResponseDto::new).toList();
     }
 
 

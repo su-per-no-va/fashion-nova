@@ -2,6 +2,7 @@ package com.supernova.fashionnova.admin;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.supernova.fashionnova.admin.dto.AllReviewResponseDto;
 import com.supernova.fashionnova.admin.dto.UserProfileResponseDto;
 import com.supernova.fashionnova.admin.dto.UsersCouponAndMileageResponseDto;
 import com.supernova.fashionnova.domain.answer.dto.AnswerRequestDto;
@@ -301,6 +302,22 @@ public class AdminController {
 
         List<UsersCouponAndMileageResponseDto> responseDtoList = adminService.getAllUsersCouponAndMileages(
             page);
+
+        return ResponseUtil.of(HttpStatus.OK, responseDtoList);
+    }
+
+    /**
+     * 리뷰 전체 조회
+     *
+     * @param page
+     * @return List<AllReviewResponseDto>
+     */
+    @GetMapping("/reviews")
+    public ResponseEntity<List<AllReviewResponseDto>> getAllReviews(
+        @RequestParam(defaultValue = "0") int page
+    ) {
+
+        List<AllReviewResponseDto> responseDtoList = adminService.getAllRevivewList(page);
 
         return ResponseUtil.of(HttpStatus.OK, responseDtoList);
     }

@@ -116,7 +116,6 @@
                             </div>
                         </div>
 
-
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
@@ -130,46 +129,59 @@
                                 </form>
                             </div>
                             <div class="card-body">
-                                <table id="datatablesSimple">
+                                <table id="datatablesSimple" class="table table-bordered">
                                     <thead>
-                                        <tr>
-                                            <th>리뷰ID</th>
-                                            <th>회원ID</th>
-                                            <th>이름</th>
-                                            <th>상품ID</th>
-                                            <th>상품명</th>
-                                            <th>별점</th>
-                                            <th>내용</th>
-                                            <th>사진</th>
-                                            <th>작성일</th>
-                                        </tr>
+                                    <tr>
+                                        <th>리뷰ID</th>
+                                        <th>회원ID</th>
+                                        <th>이름</th>
+                                        <th>상품ID</th>
+                                        <th>상품명</th>
+                                        <th>별점</th>
+                                        <th>내용</th>
+                                        <th>사진</th>
+                                        <th>작성일</th>
+                                        <th>액션</th>
+                                    </tr>
                                     </thead>
-
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>1</td>
-                                            <td>김나도</td>
-                                            <td>1</td>
-                                            <td>꽃무늬 기깔 원피스</td>
-                                            <td>⭐⭐⭐⭐⭐</td>
-                                            <td>샤랄라 너무 예뻐요</td>
-
-                                            <td>
-                                                <a href="https://fashion-s3.s3.ap-northeast-2.amazonaws.com/4685aa0a-5198b7b543f3b84374fca820d91263778.jpg">
-                                                <span>4685aa0a-5198b7b543f3b84374fca820d91263778.jpg</span></a><br />
-                                                <a href="https://fashion-s3.s3.ap-northeast-2.amazonaws.com/4685aa0a-5198b7b543f3b84374fca820d91263778.jpg">
-                                                <span>4685aa0a-5198b7b543f3b84374fca820d91263778.jpg</span></a><br />
-                                            </td>
-                                            <td>2024/08/01 13:01</td>
-                                        </tr>
+                                    <!-- 데이터가 동적으로 추가될 위치 -->
+                                    <tr>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>김나도</td>
+                                        <td>1</td>
+                                        <td>꽃무늬 기깔 원피스</td>
+                                        <td>⭐⭐⭐⭐⭐</td>
+                                        <td>샤랄라 너무 예뻐요</td>
+                                        <td>
+                                            <a href="https://fashion-s3.s3.ap-northeast-2.amazonaws.com/4685aa0a-5198b7b543f3b84374fca820d91263778.jpg">
+                                                <span>4685aa0a-5198b7b543f3b84374fca820d91263778.jpg</span>
+                                            </a><br />
+                                            <a href="https://fashion-s3.s3.ap-northeast-2.amazonaws.com/4685aa0a-5198b7b543f3b84374fca820d91263778.jpg">
+                                                <span>4685aa0a-5198b7b543f3b84374fca820d91263778.jpg</span>
+                                            </a><br />
+                                        </td>
+                                        <td>2024/08/01 13:01</td>
+                                        <td>
+                                            <button class="btn btn-danger delete-review-btn" data-review-id="1">삭제</button>
+                                        </td>
+                                    </tr>
                                     </tbody>
                                 </table>
+
+                                <!-- 페이지 네비게이션 추가 -->
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination">
+                                        <li class="page-item" id="prevPage"><a class="page-link" href="#">Previous</a></li>
+                                        <li class="page-item" id="nextPage"><a class="page-link" href="#">Next</a></li>
+                                    </ul>
+                                </nav>
                             </div>
                         </div>
                     </div>
                 </main>
-
+            </div>
                 <!-- Footer-->
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
@@ -191,3 +203,102 @@
         <script src="../admin/js/datatables.js"></script>
     </body>
 </html>
+
+<script>
+    $(document).ready(function() {
+        let currentPage = 0;
+
+        // 페이지 로드 시 리뷰 데이터 가져오기
+        fetchReviews(currentPage);
+
+        function fetchReviews(page) {
+            $.ajax({
+                url: `/api/admin/reviews?page=${page}`,
+                method: 'GET',
+                success: function(data) {
+                    const reviews = data
+                    const tableBody = $("#datatablesSimple tbody");
+
+                    // 테이블 초기화
+                    tableBody.empty();
+
+                    // 리뷰 데이터를 테이블에 추가
+                    reviews.forEach(review => {
+                        const row = `
+                    <tr>
+                        <td>${review.reviewId || 'N/A'}</td>
+                        <td>${review.userId || 'N/A'}</td>
+                        <td>${review.name || 'N/A'}</td>
+                        <td>${review.productId || 'N/A'}</td>
+                        <td>${review.productName || 'N/A'}</td>
+                        <td>${'⭐'.repeat(review.rating)}</td>
+                        <td>${review.content || 'N/A'}</td>
+                       <td>
+                          ${Array.isArray(review.reviewImageUrls) && review.reviewImageUrls.length > 0 ?
+                            review.reviewImageUrls.map(url =>
+                                `<a href="${url}" target="_blank">
+                                        <img src="${url}" alt="${url.split('/').pop()}" style="width: 100px; height: auto;" />
+                                        <span>${url.split('/').pop()}</span>
+                                    </a><br />`
+                            ).join('')
+                            : 'No images'
+                        }
+                     </td>
+                        <td><button class="btn btn-danger delete-review-btn" data-review-id="${review.reviewId}">삭제</button></td>
+                    </tr>`;
+
+                        tableBody.append(row);
+                    });
+
+                    // 삭제 버튼 클릭 이벤트 등록
+                    $('.delete-review-btn').off('click').on('click', function() {
+                        const reviewId = $(this).data('review-id');
+                        deleteReview(reviewId);
+                    });
+
+                    // 페이지 네비게이션 설정
+                    $('#prevPage').toggleClass('disabled', page === 0);
+                    $('#nextPage').toggleClass('disabled', data.totalPages <= page + 1);
+
+                    $('#prevPage').off('click').on('click', () => fetchReviews(page - 1));
+                    $('#nextPage').off('click').on('click', () => fetchReviews(page + 1));
+                },
+                error: function(error) {
+                    console.error('Error fetching reviews:', error);
+                }
+            });
+        }
+
+        function deleteReview(reviewId) {
+            if (confirm("정말로 이 리뷰를 삭제하시겠습니까?")) {
+                $.ajax({
+                    url: `/reviews`,
+                    method: 'DELETE',
+                    contentType: 'application/json',
+                    data: JSON.stringify({reviewId: reviewId}),
+                    success: function() {
+                        alert('리뷰가 삭제되었습니다.');
+                        fetchReviews(currentPage); // 삭제 후 현재 페이지 다시 로드
+                    },
+                    error: function(error) {
+                        console.error('Error deleting review:', error);
+                        alert('리뷰 삭제에 실패했습니다.');
+                    }
+                });
+            }
+        }
+
+        // 검색 버튼 클릭 이벤트 등록
+        $('#deleteReviewButton').on('click', function() {
+            const reviewId = $('.form-control').val();
+            if (reviewId) {
+                deleteReview(reviewId);
+            } else {
+                alert('삭제할 리뷰 ID를 입력하세요.');
+            }
+        });
+    });
+
+
+</script>
+
