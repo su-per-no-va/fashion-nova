@@ -454,21 +454,39 @@
       updateCartTotals(); // 총 금액을 다시 계산하고 업데이트
 
     });
-    fetchMileage();
-    fetchCoupons();
 
-  });
+    // 쿠폰 선택 시 할인 금액을 계산하고 업데이트하는 함수
+    $('#coupon-select').change(function() {
+      const selectedOption = $(this).find('option:selected');
 
-  // 장바구니 항목을 렌더링하는 함수
-  function renderCartItems(cartItems) {
-    const $cartTable = $('.table-shopping-cart'); // tbody 선택
+      const discountRate = parseFloat(selectedOption.data('sale')); // 할인률을 숫자로 변환
+      const couponName = selectedOption.data('name'); // 쿠폰 이름 가져오기
 
-    // 테이블 초기화
-    $cartTable.empty();
 
-    // 각 장바구니 항목을 테이블에 추가
-    cartItems.forEach(function (item) {
-      const row = `
+      if (!isNaN(discountRate) && discountRate > 0) {
+        // 할인 금액 계산
+        const discountAmount = productTotal * (discountRate / 100);
+        couponDiscount = discountAmount;
+        // 할인 금액을 업데이트
+        $('#coupon-discount').text(`${couponName}:`);
+        $('#coupon-discount-amount').text(`- ${discountAmount.toLocaleString()}원`);
+        updateCartTotals()
+      } else {
+        // 쿠폰 이름과 할인 금액을 초기화
+        $('#coupon-discount').text('쿠폰 선택:');
+        $('#coupon-discount-amount').text(`- 0원`);
+      }
+    });
+    // 장바구니 항목을 렌더링하는 함수
+    function renderCartItems(cartItems) {
+      const $cartTable = $('.table-shopping-cart'); // tbody 선택
+
+      // 테이블 초기화
+      $cartTable.empty();
+
+      // 각 장바구니 항목을 테이블에 추가
+      cartItems.forEach(function (item) {
+        const row = `
     <tr class="table_row">
       <td class="column-1">
         <div class="how-itemcart1">
@@ -499,13 +517,22 @@
     </tr>
   `;
 
-      // 생성된 행을 테이블에 추가
-      $cartTable.append(row);
-      productTotal += item.price * item.count
-    });
-    // 상품 총 금액을 HTML에 업데이트
-    $('#product-total').text(`+ ${productTotal.toLocaleString()}원`);
-  }
+        // 생성된 행을 테이블에 추가
+        $cartTable.append(row);
+        productTotal += item.price * item.count
+      });
+      // 상품 총 금액을 HTML에 업데이트
+      $('#product-total').text(`+ ${productTotal.toLocaleString()}원`);
+      updateCartTotals()
+    }
+
+    fetchMileage();
+    fetchCoupons();
+    updateCartTotals()
+
+  });
+
+
 
   function fetchMileage() {
     $.ajax({
@@ -568,29 +595,6 @@
     // 드롭다운 새로 고침 (필요에 따라)
     $('.js-select2').select2();
   }
-
-  // 쿠폰 선택 시 할인 금액을 계산하고 업데이트하는 함수
-  $('#coupon-select').change(function() {
-    const selectedOption = $(this).find('option:selected');
-
-    const discountRate = parseFloat(selectedOption.data('sale')); // 할인률을 숫자로 변환
-    const couponName = selectedOption.data('name'); // 쿠폰 이름 가져오기
-
-
-    if (!isNaN(discountRate) && discountRate > 0) {
-      // 할인 금액 계산
-      const discountAmount = productTotal * (discountRate / 100);
-      couponDiscount = discountAmount;
-      // 할인 금액을 업데이트
-      $('#coupon-discount').text(`${couponName}:`);
-      $('#coupon-discount-amount').text(`- ${discountAmount.toLocaleString()}원`);
-    } else {
-      // 쿠폰 이름과 할인 금액을 초기화
-      $('#coupon-discount').text('쿠폰 선택:');
-      $('#coupon-discount-amount').text(`- 0원`);
-    }
-  });
-
 </script>
 
 </body>
