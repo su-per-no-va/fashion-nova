@@ -136,34 +136,6 @@ public class AdminService {
     }
 
     /**
-     * 유저 경고 등록
-     *
-     * @param requestDto
-     * @throws CustomException NOT_FOUND_USER 유저Id로 유저를 찾을 수 없을 때
-     */
-    public void addCaution(WarnRequestDto requestDto) {
-
-        User user = getUser(requestDto.getUserId());
-        Warn warn = new Warn(requestDto.getDetail(), user);
-
-        warnRepository.save(warn);
-    }
-
-    /**
-     * 유저 경고 삭제
-     *
-     * @param requestDto
-     * @throws CustomException NOT_FOUND_WARN 경고ID로 경고를 찾을 수 없을 때
-     */
-    @Transactional
-    public void deleteCaution(WarnDeleteRequestDto requestDto) {
-
-        Warn warn = getWarn(requestDto.getWarnId());
-
-        warnRepository.delete(warn);
-    }
-
-    /**
      * 유저 프로필 조회
      *
      * @param userId
@@ -225,6 +197,34 @@ public class AdminService {
         return userPage.stream()
             .map(UsersCouponAndMileageResponseDto::new)
             .collect(Collectors.toList());
+    }
+
+    /**
+     * 유저 경고 등록
+     *
+     * @param requestDto
+     * @throws CustomException NOT_FOUND_USER 유저Id로 유저를 찾을 수 없을 때
+     */
+    public void addCaution(WarnRequestDto requestDto) {
+
+        User user = getUser(requestDto.getUserId());
+        Warn warn = new Warn(requestDto.getDetail(), user);
+
+        warnRepository.save(warn);
+    }
+
+    /**
+     * 유저 경고 삭제
+     *
+     * @param requestDto
+     * @throws CustomException NOT_FOUND_WARN 경고ID로 경고를 찾을 수 없을 때
+     */
+    @Transactional
+    public void deleteCaution(WarnDeleteRequestDto requestDto) {
+
+        Warn warn = getWarn(requestDto.getWarnId());
+
+        warnRepository.delete(warn);
     }
 
     /**
@@ -394,7 +394,7 @@ public class AdminService {
     }
 
     /**
-     * Q&A 답변 등록
+     * 답변 등록
      *
      * @param requestDto
      * @throws CustomException NOT_FOUND_QUESTION 문의Id로 문의를 찾을 수 없을 때
@@ -419,7 +419,7 @@ public class AdminService {
     }
 
     /**
-     * Q&A 문의 전체 조회
+     * 문의 전체 조회
      *
      * @param page
      * @return List<QuestionResponseDto>

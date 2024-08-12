@@ -109,6 +109,23 @@ public class UserController {
     }
 
     /**
+     * 유저 정보 수정(본인만 가능)
+     *
+     * @param requestDto
+     * @param userDetails
+     * @return
+     */
+    @PutMapping
+    public ResponseEntity<UserResponseDto> updateUser(
+        @Valid @RequestBody UserUpdateRequestDto requestDto,
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        UserResponseDto responseDto = userService.updateUser(requestDto, userDetails.getUser());
+
+        return ResponseUtil.of(HttpStatus.OK, responseDto);
+    }
+
+    /**
      * 유저 경고 조회(자신만 가능)
      *
      * @param userDetails
@@ -124,20 +141,17 @@ public class UserController {
     }
 
     /**
-     * 유저 정보 수정(본인만 가능)
+     * 유저 롤 가져오기
      *
-     * @param requestDto
      * @param userDetails
      * @return
      */
-    @PutMapping
-    public ResponseEntity<UserResponseDto> updateUser(
-        @Valid @RequestBody UserUpdateRequestDto requestDto,
+    @GetMapping("/role")
+    public ResponseEntity<UserRoleResponseDto> getUserRole(
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        UserResponseDto responseDto = userService.updateUser(requestDto, userDetails.getUser());
-
-        return ResponseUtil.of(HttpStatus.OK, responseDto);
+        UserRoleResponseDto responseDto = userService.getUserRole(userDetails.getUser());
+        return ResponseUtil.of(HttpStatus.OK,responseDto);
     }
 
     /**
@@ -160,20 +174,6 @@ public class UserController {
         response.addCookie(cookie2);
 
         response.sendRedirect("/index.html");
-    }
-
-    /**
-     * 유저 롤 가져오기
-     *
-     * @param userDetails
-     * @return
-     */
-    @GetMapping("/role")
-    public ResponseEntity<UserRoleResponseDto> getUserRole(
-        @AuthenticationPrincipal UserDetailsImpl userDetails) {
-
-        UserRoleResponseDto responseDto = userService.getUserRole(userDetails.getUser());
-        return ResponseUtil.of(HttpStatus.OK,responseDto);
     }
 
 }

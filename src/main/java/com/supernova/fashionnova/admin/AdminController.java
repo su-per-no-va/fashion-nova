@@ -95,36 +95,6 @@ public class AdminController {
     }
 
     /**
-     * 유저 경고 등록
-     *
-     * @param requestDto
-     * @return "회원 경고 등록 완성"
-     */
-    @PostMapping("/cautions")
-    public ResponseEntity<String> addCaution(
-        @RequestBody WarnRequestDto requestDto) {
-
-        adminService.addCaution(requestDto);
-
-        return ResponseUtil.of(HttpStatus.CREATED, "회원 경고 등록 완성");
-    }
-
-    /**
-     * 유저 경고 삭제
-     *
-     * @param requestDto
-     * @return "회원 경고 삭제 완료"
-     */
-    @DeleteMapping("/cautions")
-    public ResponseEntity<String> deleteCaution(
-        @RequestBody WarnDeleteRequestDto requestDto) {
-
-        adminService.deleteCaution(requestDto);
-
-        return ResponseUtil.of(HttpStatus.OK, "회원 경고 삭제 완료");
-    }
-
-    /**
      * 유저 프로필 조회
      *
      * @param userId
@@ -152,6 +122,36 @@ public class AdminController {
         List<UsersCouponAndMileageResponseDto> responseDtoList = adminService.getAllUsersCouponAndMileages(page);
 
         return ResponseUtil.of(HttpStatus.OK, responseDtoList);
+    }
+
+    /**
+     * 유저 경고 등록
+     *
+     * @param requestDto
+     * @return "회원 경고 등록 완성"
+     */
+    @PostMapping("/cautions")
+    public ResponseEntity<String> addCaution(
+        @RequestBody WarnRequestDto requestDto) {
+
+        adminService.addCaution(requestDto);
+
+        return ResponseUtil.of(HttpStatus.CREATED, "회원 경고 등록 완성");
+    }
+
+    /**
+     * 유저 경고 삭제
+     *
+     * @param requestDto
+     * @return "회원 경고 삭제 완료"
+     */
+    @DeleteMapping("/cautions")
+    public ResponseEntity<String> deleteCaution(
+        @RequestBody WarnDeleteRequestDto requestDto) {
+
+        adminService.deleteCaution(requestDto);
+
+        return ResponseUtil.of(HttpStatus.OK, "회원 경고 삭제 완료");
     }
 
     /**
@@ -255,7 +255,7 @@ public class AdminController {
     }
 
     /**
-     * Q&A 답변 등록
+     * 답변 등록
      *
      * @param requestDto
      * @return "Q&A 답변 등록 완성"
@@ -270,7 +270,7 @@ public class AdminController {
     }
 
     /**
-     * Q&A 문의 전체 조회
+     * 문의 전체 조회
      *
      * @param page
      * @return responseDto
