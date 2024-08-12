@@ -171,6 +171,11 @@
               <!-- 여기서부터 동적으로 질문 카드가 추가됩니다 -->
             </table>
           </div>
+          <!-- "이전" 및 "다음" 버튼 추가 -->
+          <div class="flex-c-m m-t-20">
+            <button id="prev-page" class="btn btn-secondary" disabled>이전</button>
+            <button id="next-page" class="btn btn-primary m-l-20">다음</button>
+          </div>
         </div>
       </div>
     </div>
@@ -275,7 +280,9 @@
 <script>
   let currentPage = 0;
   const pageSize = 10; // 페이지당 아이템 수 (서버와 일치해야 함)
+
   $(document).ready(function () {
+    console.log('Document is ready');
 
     /* 장바구니 아이콘 개수 */
     window.common.getShoppingCart()
@@ -296,6 +303,20 @@
       }
     });
 
+    $('#next-page').on('click', function (event) {
+      event.preventDefault(); // 기본 동작 방지
+      currentPage++;
+      fetchQuestions();
+    });
+
+    $('#prev-page').on('click', function (event) {
+      event.preventDefault(); // 기본 동작 방지
+      if (currentPage > 0) {
+        currentPage--;
+        fetchQuestions();
+      }
+    });
+
     // 질문 데이터 가져오기
     fetchQuestions();
 
@@ -308,19 +329,14 @@
 
   // 질문 데이터를 가져오는 함수
   function fetchQuestions() {
+    console.log(`현재 페이지: ${currentPage}`);
     $.ajax({
       type: 'GET',
       url: `/questions?page=${currentPage}`,
       success: function(response) {
-        if (response.length > 0) {
-          updateQuestionTable(response);
-
-          // 다음 페이지 데이터 요청 (현재 페이지의 데이터 수가 페이지 사이즈와 같으면)
-          if (response.length === pageSize ) {
-            currentPage++;
-            fetchQuestions(); // 재귀적으로 호출하여 다음 페이지 데이터 요청
-          }
-        }
+        console.log('AJAX 요청 성공:', response);
+        updateQuestionTable(response);
+        updateButtons(response.length);
       },
       error: function(error) {
         console.error('질문 불러오기 실패:', error);
@@ -330,10 +346,9 @@
 
   // 질문 테이블 업데이트
   function updateQuestionTable(questionResponseDtos) {
-    let $questionTable = $('#question-table'); // 질문 테이블을 표시할 div
-    if (currentPage === 0) {
-      $questionTable.find('.table_row').remove(); // 기존 내용을 지우고 새로 추가
-    }
+    let $questionTable = $('#question-table');
+    $questionTable.find('.table_row').remove(); // 기존 질문 목록 삭제
+
     questionResponseDtos.forEach(function(question) {
       let imageUrl = question.questionUrls.length > 0 ? question.questionUrls[0] : '../images/no-image.png';
       let row = `
@@ -352,7 +367,17 @@
       $questionTable.append(row);
     });
   }
-</script>
 
+  // "이전" 및 "다음" 버튼 상태 업데이트
+  function updateButtons(dataLength) {
+    console.log(`Updating buttons with dataLength: ${dataLength}`);
+
+    // "이전" 버튼 상태
+    $('#prev-page').prop('disabled', currentPage === 0);
+
+    // "다음" 버튼 상태
+    $('#next-page').prop('disabled', dataLength < pageSize);
+  }
+</script>
 </body>
 </html>

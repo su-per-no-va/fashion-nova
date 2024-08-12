@@ -340,8 +340,8 @@
   <th class="column-3">생성 날짜</th>
 </tr>`;
 
-      $mileageTable.append(initRow);
-    }
+    $mileageTable.append(initRow);
+}
     // 마일리지 목록 추가
     mileageResponseDtos.forEach(function(mileage) {
       let type = mileage.usedMileage < 0 ? "사용" : "적립";
