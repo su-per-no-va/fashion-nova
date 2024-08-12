@@ -180,12 +180,11 @@
           <form class="info-form">
             <div class="form-group">
               <div class="member-info">
-                <label for="name">사용 쿠폰</label>
+                <label for="coupon-select">사용 쿠폰</label>
                 <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
-                  <select class="js-select2" name="time">
-                    <option>Coupon</option>
-                    <option>웰컴 10% 쿠폰</option>
-                    <option>브론즈 5% 쿠폰</option>
+                  <select class="js-select2" name="coupon" id="coupon-select">
+                    <option value="">Coupon</option>
+                    <!-- 쿠폰이 동적으로 추가됩니다 -->
                   </select>
                   <div class="dropDownSelect2"></div>
                 </div>
@@ -240,13 +239,13 @@
 
           <div class="flex-w flex-t bor12 p-t-15 p-b-30">
             <div class="size-208 w-full-ssm">
-								<span class="stext-110 cl2">
+								<span id="coupon-discount" class="stext-110 cl2">
 									브론즈 5% 쿠폰:
 								</span>
             </div>
 
             <div class="size-209">
-								<span class="mtext-110 cl2">
+								<span id="coupon-discount-amount" class="mtext-110 cl2">
 									- 3,500원
 								</span>
             </div>
@@ -554,24 +553,59 @@
     });
   }
 
+  function fetchCoupons() {
+    $.ajax({
+      type: 'GET',
+      url: '/coupons', // 서버에서 쿠폰 데이터를 제공하는 엔드포인트
+      success: function(response) {
+        updateCouponTable(response);
+      },
+      error: function(error) {
+        console.error('쿠폰 불러오기 실패 :', error);
+      }
+    });
+  }
+
+  // 쿠폰 테이블을 업데이트하는 함수
   function updateCouponTable(coupons) {
-    // 쿠폰 선택 요소
-    const $couponSelect = $('select[name="time"]');
+
+    const $couponSelect = $('#coupon-select');
 
     // 기존 옵션을 비웁니다
     $couponSelect.empty();
-
-    // 기본 옵션 추가
     $couponSelect.append('<option value="">Coupon</option>');
 
     // 각 쿠폰을 선택 항목으로 추가
     coupons.forEach(coupon => {
-      $couponSelect.append(`<option value="${coupon.id}">${coupon.name}</option>`);
+      $couponSelect.append(`<option value="${coupon.id}" data-sale="${coupon.sale}" data-name="${coupon.name}">${coupon.name}</option>`);
     });
 
-    // 드롭다운 새로 고침 (만약 select2 플러그인을 사용하는 경우)
-    $('.js-select2').select2(); // select2 초기화 (필요에 따라)
+    // 드롭다운 새로 고침 (필요에 따라)
+    $('.js-select2').select2();
   }
+
+  // 쿠폰 선택 시 할인 금액을 계산하고 업데이트하는 함수
+  $('#coupon-select').change(function() {
+    const selectedOption = $(this).find('option:selected');
+
+    const discountRate = parseFloat(selectedOption.data('sale')); // 할인률을 숫자로 변환
+    const couponName = selectedOption.data('name'); // 쿠폰 이름 가져오기
+
+
+    if (!isNaN(discountRate) && discountRate > 0) {
+      // 할인 금액 계산
+      const discountAmount = productTotal * (discountRate / 100);
+      couponDiscount = discountAmount;
+      // 할인 금액을 업데이트
+      $('#coupon-discount').text(`${couponName}:`);
+      $('#coupon-discount-amount').text(`- ${discountAmount.toLocaleString()}원`);
+
+    } else {
+      // 쿠폰 이름과 할인 금액을 초기화
+      $('#coupon-discount').text('쿠폰 선택:');
+      $('#coupon-discount-amount').text(`- 0원`);
+    }
+  });
 
 </script>
 
