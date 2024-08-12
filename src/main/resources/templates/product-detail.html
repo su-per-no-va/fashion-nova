@@ -37,58 +37,6 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body class="animsition">
-<script>
-  $(document).ready(function () {
-    const queryString = window.location.search; // 주소 가져오기
-    const urlParams = new URLSearchParams(queryString); // URL 파싱하기
-    const productId = urlParams.get('id');
-    fetchAndDisplayProductImage(productId);
-
-    $('.js-addwish-b2, .js-addwish-detail').on('click', function (e) {
-      e.preventDefault();
-    });
-
-    $('.js-addwish-b2').each(function () {
-      var nameProduct = $(this).parent().parent().find('.js-name-b2').html();
-      $(this).on('click', function () {
-        swal(nameProduct, "위시리스트 담기 완료 !", "success");
-
-        $(this).addClass('js-addedwish-b2');
-        $(this).off('click');
-      });
-    });
-
-    $('.js-addwish-detail').each(function () {
-      var nameProduct = $(this).parent().parent().parent().find('.js-name-detail').html();
-
-      $(this).on('click', function () {
-        swal(nameProduct, "위시리스트 담기 완료 !", "success");
-
-        $(this).addClass('js-addedwish-detail');
-        $(this).off('click');
-
-      });
-    });
-
-    /*---------------------------------------------*/
-
-    $('.js-addcart-detail').each(function () {
-      var nameProduct = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
-      $(this).on('click', function () {
-        swal(nameProduct, "장바구니 담기 완료 !", "success");
-      });
-    });
-
-
-
-    // Add this code for the icon-heart1 click event
-    $('.icon-heart1').on('click', function (e) {
-      e.preventDefault();
-      var nameProduct = $(this).closest('.block2-txt').find('.js-name-b2').html();
-      swal(nameProduct, "위시리스트 담기 완료 !", "success");
-    });
-  });
-</script>
 
 <!-- Header -->
 <header class="header-v4">
@@ -270,13 +218,13 @@
               </div>
               <button
                   class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail"
-                  style="margin: 30px;">
+                  style="margin: 30px;" data-item-id="27">
                 Add to cart
               </button>
 
               <button
                   class="flex-c-m stext-101 cl2 size-101 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10">
-                Bye Now
+                Buy Now
               </button>
             </div>
           </div>
