@@ -26,8 +26,13 @@ public class UserProfileResponseDto {
     private final Long totalPrice;
     private final Long recentOrderId;
 
-    public UserProfileResponseDto(User user, List<WarnResponseDto> warnList,
-        List<AddressResponseDto> addressList, Long totalPrice, Long recentOrderId) {
+    public UserProfileResponseDto(
+        User user,
+        List<WarnResponseDto> warnList,
+        List<AddressResponseDto> addressList,
+        Long totalPrice,
+        Long recentOrderId) {
+
         this.userId = user.getId();
         this.userName = user.getUserName();
         this.name = user.getName();
@@ -41,4 +46,5 @@ public class UserProfileResponseDto {
         this.totalPrice = totalPrice;
         this.recentOrderId = recentOrderId;
     }
+
 }
