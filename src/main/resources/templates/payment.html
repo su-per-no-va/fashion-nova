@@ -29,6 +29,18 @@
   <link rel="stylesheet" type="text/css" href="../css/main.css">
   <link rel="stylesheet" type="text/css" href="../css/my-info.css">
   <!--===============================================================================================-->
+  <style>
+    #apply-mileage {
+      padding: 10px 20px;
+      background-color: #007bff; /* 파란색 배경 */
+      color: white;
+      border: 2px solid #000; /* 검은색 테두리 */
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+  </style>
+
 </head>
 <body class="animsition">
 
@@ -184,17 +196,17 @@
           <form class="info-form">
             <div class="form-group">
               <div class="member-info">
-                <label for="name">사용 마일리지</label>
-              <input type="text" id="name" placeholder="사용 금액을 입력하세요." required>
-                <label for="name">사용 가능 마일리지 : 500원</label>
+                <label for="mileage-input">사용 마일리지</label>
+                <input type="text" id="mileage-input" placeholder="사용 금액을 입력하세요." required>
+                <label for="available-mileage">사용 가능 마일리지 : <span id="available-mileage">500원</span></label>
               </div>
             </div>
+            <button type="button" id="apply-mileage">마일리지 적용</button>
           </form>
-
           <form class="info-form">
             <div class="form-group">
               <div class="member-info">
-                <label for="name">결제 수단</label>
+                <label for="radio1">결제 수단</label>
                 <label for="radio1"><input type="radio" id="radio1" name="radio1">
                   <img src="../images/icons/icon-kakaopay.png" alt="ICON-PAY" width="100" height="100">
                 </label>
@@ -240,12 +252,10 @@
             </div>
 
             <div class="size-208 w-full-ssm">
-								<span class="stext-110 cl2">
-									사용 마일리지:
-								</span>
+              <span id="mileage-used-label" class="stext-110 cl2">사용 마일리지:</span>
             </div>
             <div class="size-209">
-								<span class="mtext-110 cl2">
+								<span id="mileage-used" class="mtext-110 cl2">
 									- 300원
 								</span>
             </div>
@@ -416,6 +426,38 @@
     .fail(function (error) {
       console.log(error.message)
     });
+
+    // 총 금액을 계산하고 페이지에 업데이트
+    function updateCartTotals() {
+      const totalAmount = productTotal - couponDiscount - mileageUsed + shippingCost;
+      $('#coupon-discount').text(`- ${couponDiscount.toLocaleString()}원`);
+      $('#mileage-used').text(`- ${mileageUsed.toLocaleString()}원`);
+      $('#shipping-cost').text(`+ ${shippingCost.toLocaleString()}원`);
+      $('#total-amount').text(`${totalAmount.toLocaleString()}원`);
+    }
+
+    // 사용자가 입력한 마일리지 값을 가져와서 검증하고 업데이트하는 함수
+    $('#apply-mileage').on('click', function () {
+      const inputMileage = parseInt($('#mileage-input').val(), 10);
+
+      // 유효성 검사
+      if (isNaN(inputMileage) || inputMileage <= 0) {
+        alert('유효한 마일리지 금액을 입력하세요.');
+        return;
+      }
+
+      if (inputMileage > totalMileage) {
+        alert('사용 가능 마일리지를 초과했습니다. 다시 입력해 주세요.');
+        return;
+      }
+
+      mileageUsed = inputMileage; // 변수에 입력된 값 저장
+
+      updateCartTotals(); // 총 금액을 다시 계산하고 업데이트
+
+    });
+
+
     fetchMileage();
     fetchCoupons();
 
@@ -496,7 +538,7 @@
 
   // 마일리지 값을 페이지에 업데이트하는 함수
   function updateMileageDisplay() {
-    $('#name').next('label').text(`사용 가능 마일리지 : ${totalMileage.toLocaleString()}원`);
+    $('#available-mileage').text(`사용 가능 마일리지 : ${totalMileage.toLocaleString()}원`);
   }
 
   function fetchCoupons() {
