@@ -220,7 +220,7 @@
             </div>
 
             <div class="size-209">
-								<span class="mtext-110 cl2">
+								<span id="product-total" class="mtext-110 cl2">
 									+ 150,000원
 								</span>
             </div>
@@ -385,6 +385,11 @@
 <script>
   let currentPage = 0; // 페이지 0부터 시작
   let totalMileage = 0; // 총 마일리지를 저장할 변수
+  let productTotal = 0; // 상품 총 금액
+  const shippingCost = 2500; // 배송비
+  let couponDiscount = 0; // 쿠폰 할인 금액
+  let mileageUsed = 0; // 사용자가 입력한 마일리지
+
   $(document).ready(function () {
     // 장바구니 데이터를 가져오는 함수 호출
     window.common.getShoppingCart()
@@ -413,6 +418,7 @@
     });
     fetchMileage();
     fetchCoupons();
+
   });
 
   // 장바구니 항목을 렌더링하는 함수
@@ -457,7 +463,10 @@
 
       // 생성된 행을 테이블에 추가
       $cartTable.append(row);
+      productTotal += item.price * item.count
     });
+    // 상품 총 금액을 HTML에 업데이트
+    $('#product-total').text(`+ ${productTotal.toLocaleString()}원`);
   }
 
   function fetchMileage() {
