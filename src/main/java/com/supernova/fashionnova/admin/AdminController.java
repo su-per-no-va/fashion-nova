@@ -48,8 +48,10 @@ public class AdminController {
     @GetMapping("/sold/day")
     public ResponseEntity<String> dailySoldStatistics(
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseUtil.of(HttpStatus.OK,
-            adminService.dailySoldStatistics(userDetails.getUser()));
+
+        String message = adminService.dailySoldStatistics(userDetails.getUser());
+
+        return ResponseUtil.of(HttpStatus.OK, message);
     }
 
     /**
@@ -58,18 +60,23 @@ public class AdminController {
     @GetMapping("/sold/week")
     public ResponseEntity<String> weeklySoldStatistics(
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseUtil.of(HttpStatus.OK,
-            adminService.weeklySoldStatistics(userDetails.getUser()));
+
+        String message = adminService.weeklySoldStatistics(userDetails.getUser());
+
+        return ResponseUtil.of(HttpStatus.OK, message);
     }
 
     /**
      * 판몌통계(월별)
      */
-    @GetMapping("/sold/moth/{month}")
+    @GetMapping("/sold/month/{month}")
     public ResponseEntity<String> monthlySoldStatistics(
-        @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable int month) {
-        return ResponseUtil.of(HttpStatus.OK,
-            adminService.monthlySoldStatistics(userDetails.getUser(), month));
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        @PathVariable int month) {
+
+        String message = adminService.monthlySoldStatistics(userDetails.getUser(), month);
+
+        return ResponseUtil.of(HttpStatus.OK, message);
     }
 
     /**
@@ -282,7 +289,8 @@ public class AdminController {
      * @return UserProfileResponseDto
      */
     @GetMapping("/users/{userId}")
-    public ResponseEntity<UserProfileResponseDto> getUserProfile(@PathVariable Long userId) {
+    public ResponseEntity<UserProfileResponseDto> getUserProfile(
+        @PathVariable Long userId) {
 
         UserProfileResponseDto responseDto = adminService.getUserProfile(userId);
 
@@ -297,11 +305,9 @@ public class AdminController {
      */
     @GetMapping("/users/coupons/mileages")
     public ResponseEntity<List<UsersCouponAndMileageResponseDto>> getAllUsersCouponAndMileages(
-        @RequestParam(defaultValue = "0") int page
-    ) {
+        @RequestParam(defaultValue = "0") int page) {
 
-        List<UsersCouponAndMileageResponseDto> responseDtoList = adminService.getAllUsersCouponAndMileages(
-            page);
+        List<UsersCouponAndMileageResponseDto> responseDtoList = adminService.getAllUsersCouponAndMileages(page);
 
         return ResponseUtil.of(HttpStatus.OK, responseDtoList);
     }
@@ -314,13 +320,11 @@ public class AdminController {
      */
     @GetMapping("/reviews")
     public ResponseEntity<List<AllReviewResponseDto>> getAllReviews(
-        @RequestParam(defaultValue = "0") int page
-    ) {
+        @RequestParam(defaultValue = "0") int page) {
 
         List<AllReviewResponseDto> responseDtoList = adminService.getAllRevivewList(page);
 
         return ResponseUtil.of(HttpStatus.OK, responseDtoList);
     }
-
 
 }
