@@ -51,7 +51,7 @@
         </div>
 
         <div class="right-top-bar flex-w h-full">
-          <a href="login.html" class="flex-c-m trans-04 p-lr-25">
+          <a href="login.html" id="auth-btn" class="flex-c-m trans-04 p-lr-25">
             Login
           </a>
 
@@ -162,10 +162,11 @@
               <option value="EXCHANGE_RETURN">교환/환불 문의</option>
             </select>
           </div>
-          <div class="form-group">
+          <div class="bor8 m-b-30 form-group">
             <label for="inquiry-content">문의내용</label>
-            <textarea id="inquiry-content" name="question" rows="10" required></textarea>
+            <textarea class="stext-111 cl2 plh3 size-120 p-lr-28 p-tb-25" id="inquiry-content" name="question" rows="10" placeholder="문의하실 내용을 적어주세요" required></textarea>
           </div>
+
           <div class="form-group file-upload">
             <label for="file-upload" class="file-upload-label">파일첨부</label>
             <input type="file" id="file-upload" name="image" multiple>
@@ -455,10 +456,6 @@
 <script src="/js/common.js"></script>
 <script>
   $(document).ready(function () {
-    // let cartDto = window.common.cartDto;
-    // let wishList = window.common.wishList;
-    // console.log(cartDto)
-    // 	console.log(wishList)
 
     /* 장바구니 아이콘 개수 */
     window.common.getShoppingCart()
@@ -489,26 +486,6 @@
 </script>
 
 <script>
-  let auth;
-  $(document).ready(function () {
-    auth = localStorage.getItem('accessToken');
-    let refreshToken = localStorage.getItem('refreshToken');
-    console.log("엑세스 토큰: " + auth);
-    console.log("리프레시 토큰: " + refreshToken);
-
-    if (auth !== undefined && auth !== null) {
-      $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-        console.log("auth : " + auth);
-        jqXHR.setRequestHeader('Authorization', auth);
-        jqXHR.setRequestHeader('Authorization-refresh', refreshToken);
-      });
-    } else {
-      alert("로그인 후 이용해 주세요");
-      window.location.href = "login.html";
-    }
-
-  });
-
   document.getElementById('submit-button').addEventListener('click', function () {
     const form = document.getElementById('inquiry-form');
     const formData = new FormData(form);
@@ -534,11 +511,6 @@
     }
 
     postQuestion(finalFormData);
-    // formData.forEach((value, key) => {
-    //   if (key !== 'title' && key !== 'type' && key !== 'question') {
-    //     finalFormData.append(key, value);
-    //   }
-    // });
   });
 
   // AJAX 요청
@@ -554,6 +526,7 @@
           // alert("문의 등록 성공");
           console.log("문의 등록 성공");
           alert("문의 등록 성공")
+          location.reload()
         } else {
           // alert("문의 등록 실패");
           console.log("문의 등록 실패");
@@ -562,47 +535,9 @@
       },
       error: function (error) {
         alert(error.message);
-        // location.reload();
       },
     });
   }
-
-
-</script>
-
-<script>
-  $(document).ready(function () {
-    // let cartDto = window.common.cartDto;
-    // let wishList = window.common.wishList;
-    // console.log(cartDto)
-    // 	console.log(wishList)
-
-    /* 장바구니 아이콘 개수 */
-    window.common.getShoppingCart()
-    .done(function (response) {
-      if (response) {
-        $('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
-      } else {
-        // no response
-      }
-    })
-    .fail(function (error) {
-      console.log(error.message)
-    });
-
-    /* 찜 아이콘 개수 */
-    window.common.getWishList()
-    .done(function (response) {
-      if (response) {
-        $('a#wish-icon')[0].dataset.notify = response.length;
-      } else {
-        // no response
-      }
-    })
-    .fail(function (error) {
-      console.log(error.message)
-    });
-  });
 </script>
 </body>
 </html>

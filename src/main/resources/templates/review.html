@@ -1,191 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Review</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!--===============================================================================================-->
-  <link rel="icon" type="image/png" href="../images/icons/favicon.png"/>
-  <!--===============================================================================================-->
-  <link rel="stylesheet" type="text/css" href="../vendor/bootstrap/css/bootstrap.min.css">
-  <!--===============================================================================================-->
-  <link rel="stylesheet" type="text/css"
-        href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-  <!--===============================================================================================-->
-  <link rel="stylesheet" type="text/css"
-        href="../fonts/iconic/css/material-design-iconic-font.min.css">
-  <!--===============================================================================================-->
-  <link rel="stylesheet" type="text/css" href="../fonts/linearicons-v1.0.0/icon-font.min.css">
-  <!--===============================================================================================-->
-  <link rel="stylesheet" type="text/css" href="../vendor/animate/animate.css">
-  <!--===============================================================================================-->
-  <link rel="stylesheet" type="text/css" href="../vendor/css-hamburgers/hamburgers.min.css">
-  <!--===============================================================================================-->
-  <link rel="stylesheet" type="text/css" href="../vendor/animsition/css/animsition.min.css">
-  <!--===============================================================================================-->
-  <link rel="stylesheet" type="text/css" href="../vendor/select2/select2.min.css">
-  <!--===============================================================================================-->
-  <link rel="stylesheet" type="text/css" href="../vendor/perfect-scrollbar/perfect-scrollbar.css">
-  <!--===============================================================================================-->
-  <link rel="stylesheet" type="text/css" href="../css/util.css">
-  <link rel="stylesheet" type="text/css" href="../css/main.css">
-  <link rel="stylesheet" type="text/css" href="/css/review.css">
-  <!--===============================================================================================-->
+    <title>Review</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="../images/icons/favicon.png"/>
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css"
+          href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css"
+          href="../fonts/iconic/css/material-design-iconic-font.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../fonts/linearicons-v1.0.0/icon-font.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../vendor/animsition/css/animsition.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../vendor/perfect-scrollbar/perfect-scrollbar.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../css/util.css">
+    <link rel="stylesheet" type="text/css" href="../css/main.css">
+    <link rel="stylesheet" type="text/css" href="/css/review.css">
+    <link rel="stylesheet" type="text/css" href="/css/order.css">
+    <!--===============================================================================================-->
 </head>
 <body class="animsition">
 
 <!-- Header -->
 <header>
-  <!-- Header desktop -->
-  <div class="container-menu-desktop">
-    <!-- Topbar -->
-    <div class="top-bar">
-      <div class="content-topbar flex-sb-m h-full container">
-        <div class="left-top-bar">
-          패셔니스타들을 위한, 패셔니스타들에 의한 패션노바
+    <!-- Header desktop -->
+    <div class="container-menu-desktop">
+        <!-- Topbar -->
+        <div class="top-bar">
+            <div class="content-topbar flex-sb-m h-full container">
+                <div class="left-top-bar">
+                    패셔니스타들을 위한, 패셔니스타들에 의한 패션노바
+                </div>
+
+                <div class="right-top-bar flex-w h-full">
+                    <a href="login.html" id="auth-btn" class="flex-c-m trans-04 p-lr-25">
+                        Login
+                    </a>
+
+                    <a href="question.html" class="flex-c-m trans-04 p-lr-25">
+                        Q&A
+                    </a>
+
+                    <a href="my-page.html" class="flex-c-m trans-04 p-lr-25">
+                        My Page
+                    </a>
+                </div>
+            </div>
         </div>
 
-        <div class="right-top-bar flex-w h-full">
-          <a href="login.html" class="flex-c-m trans-04 p-lr-25">
-            Login
-          </a>
+        <div class="wrap-menu-desktop">
+            <nav class="limiter-menu-desktop container">
 
-          <a href="question.html" class="flex-c-m trans-04 p-lr-25">
-            Q&A
-          </a>
+                <!-- Logo desktop -->
+                <a href="index.html" class="logo">
+                    <img src="../images/icons/logo-01.png" alt="IMG-LOGO">
+                </a>
 
-          <a href="my-page.html" class="flex-c-m trans-04 p-lr-25">
-            My Page
-          </a>
+                <!-- Menu desktop -->
+                <div class="menu-desktop">
+                    <ul class="main-menu">
+                        <li>
+                            <a href="about.html">About</a>
+                        </li>
+
+                        <li class="label1" data-label1="hot">
+                            <a href="product.html">Shop</a>
+                        </li>
+
+                        <li>
+                            <a href="contact.html">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Icon header -->
+                <div class="wrap-icon-header flex-w flex-r-m">
+                    <div
+                        class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
+                        <i class="zmdi zmdi-search"></i>
+                    </div>
+
+                    <a id="cart-icon" href="shoping-cart.html"
+                       class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
+                       data-notify="">
+                        <i class="zmdi zmdi-shopping-cart"></i>
+                    </a>
+
+                    <a id="wish-icon" href="wish-list.html"
+                       class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
+                       data-notify="">
+                        <i class="zmdi zmdi-favorite-outline"></i>
+                    </a>
+                </div>
+            </nav>
         </div>
-      </div>
     </div>
 
-    <div class="wrap-menu-desktop">
-      <nav class="limiter-menu-desktop container">
+    <!-- Modal Search -->
+    <div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
+        <div class="container-search-header">
+            <button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
+                <img src="../images/icons/icon-close2.png" alt="CLOSE">
+            </button>
 
-        <!-- Logo desktop -->
-        <a href="index.html" class="logo">
-          <img src="../images/icons/logo-01.png" alt="IMG-LOGO">
-        </a>
-
-        <!-- Menu desktop -->
-        <div class="menu-desktop">
-          <ul class="main-menu">
-            <li>
-              <a href="about.html">About</a>
-            </li>
-
-            <li class="label1" data-label1="hot">
-              <a href="product.html">Shop</a>
-            </li>
-
-            <li>
-              <a href="contact.html">Contact</a>
-            </li>
-          </ul>
+            <form class="wrap-search-header flex-w p-l-15">
+                <button class="flex-c-m trans-04">
+                    <i class="zmdi zmdi-search"></i>
+                </button>
+                <input class="plh3" type="text" name="search" placeholder="Search...">
+            </form>
         </div>
-
-        <!-- Icon header -->
-        <div class="wrap-icon-header flex-w flex-r-m">
-          <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
-            <i class="zmdi zmdi-search"></i>
-          </div>
-
-          <a id="cart-icon" href="shoping-cart.html"
-             class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
-             data-notify="">
-            <i class="zmdi zmdi-shopping-cart"></i>
-          </a>
-
-          <a id="wish-icon" href="wish-list.html"
-             class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
-             data-notify="">
-            <i class="zmdi zmdi-favorite-outline"></i>
-          </a>
-        </div>
-      </nav>
     </div>
-  </div>
-
-  <!-- Modal Search -->
-  <div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
-    <div class="container-search-header">
-      <button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
-        <img src="../images/icons/icon-close2.png" alt="CLOSE">
-      </button>
-
-      <form class="wrap-search-header flex-w p-l-15">
-        <button class="flex-c-m trans-04">
-          <i class="zmdi zmdi-search"></i>
-        </button>
-        <input class="plh3" type="text" name="search" placeholder="Search...">
-      </form>
-    </div>
-  </div>
 </header>
 
 <!-- Title page -->
-<section class="bg-img1 txt-center p-lr-15 p-tb-92" style="background-image: url('/images/bg-01.jpg');">
-  <h2 class="ltext-105 cl0 txt-center">
-    My Review
-  </h2>
+<section class="bg-img1 txt-center p-lr-15 p-tb-92"
+         style="background-image: url('/images/bg-01.jpg');">
+    <h2 class="ltext-105 cl0 txt-center">
+        My Review
+    </h2>
 </section>
 
 <!-- breadcrumb -->
 <div class="container">
-  <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
-    <a href="index.html" class="stext-109 cl8 hov-cl1 trans-04">
-      Home
-      <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
-    </a>
+    <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+        <a href="index.html" class="stext-109 cl8 hov-cl1 trans-04">
+            Home
+            <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+        </a>
 
-    <a href="my-page.html" class="stext-109 cl8 hov-cl1 trans-04">
-      My Page
-      <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
-    </a>
+        <a href="my-page.html" class="stext-109 cl8 hov-cl1 trans-04">
+            My Page
+            <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+        </a>
 
-    <span class="stext-109 cl4">
+        <span class="stext-109 cl4">
 				My Review
 			</span>
-  </div>
+    </div>
 </div>
 
 <!-- My Review -->
 <form class="bg0 p-t-75 p-b-85">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-10">
-        <div class="m-l-10 m-r--100 m-lr-0-xl">
-          <div class="wrap-table-shopping-cart">
-            <table class="table-shopping-cart">
-              <thead>
-              <tr class="table_head">
-                <th class="column-1">Product</th>
-                <th class="column-2"></th>
-                <th class="column-3">Date</th>
-                <th class="column-4">Grade</th>
-                <th class="column-5">Review</th>
-                <th class="column-6"></th>
-                <th class="column-7">Edit</th>
-              </tr>
-              </thead>
-              <tbody id="review-list">
-              <!-- 리뷰가 동적으로 추가될 곳 -->
-              </tbody>
-            </table>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10">
+                <div class="m-l-10 m-r--100 m-lr-0-xl">
+                    <div class="wrap-table-shopping-cart">
+                        <table class="table-shopping-cart">
+                            <thead>
+                            <tr class="table_head">
+                                <th class="column-1">Product</th>
+                                <th class="column-2"></th>
+                                <th class="column-3">Date</th>
+                                <th class="column-4">Grade</th>
+                                <th class="column-5">Review</th>
+                                <th class="column-6"></th>
+                                <th class="column-7">Edit</th>
+                            </tr>
+                            </thead>
+                            <tbody id="review-list">
+                            <!-- 리뷰가 동적으로 추가될 곳 -->
+                            </tbody>
+                        </table>
 
-            <!-- 템플릿 행 -->
-            <table style="display:none;">
-              <tr id="review-template" class="table_row">
-                <td class="column-1">
-                  <div class="how-itemcart1">
-                    <img src="../images/item-cart-05.jpg" alt="IMG">
-                  </div>
-                </td>
-                <td class="column-2">Lightweight Jacket</td>
-                <td class="column-3">2024-08-01</td>
-                <td class="column-4">
+                        <!-- 템플릿 행 -->
+                        <table style="display:none;">
+                            <tr id="review-template" class="table_row">
+                                <td class="column-1">
+                                    <div class="how-itemcart1">
+                                        <img src="../images/item-cart-05.jpg" alt="IMG">
+                                    </div>
+                                </td>
+                                <td class="column-2">Lightweight Jacket</td>
+                                <td class="column-3">2024-08-01</td>
+                                <td class="column-4">
                   <span class="fs-18 cl11">
                     <i class="zmdi zmdi-star"></i>
                     <i class="zmdi zmdi-star"></i>
@@ -193,77 +196,113 @@
                     <i class="zmdi zmdi-star"></i>
                     <i class="zmdi zmdi-star"></i>
                   </span>
-                </td>
-                <td class="column-5">빠른 배송! 품질 좋은 옷 감사합니다.</td>
-                <td class="column-6"></td>
-                <td class="column-7">
-                  <button class="flex-c-m stext-101 cl0 size-103 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
-                    Edit
-                  </button>
-                  <br>
-                  <button class="flex-c-m stext-101 cl2 size-103 bg8 bor14 hov-btn3 p-lr-15 trans-04 pointer">
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            </table>
+                                </td>
+                                <td class="column-5">빠른 배송! 품질 좋은 옷 감사합니다.</td>
+                                <td class="column-6"></td>
+                                <td class="column-7">
+                                    <button type="button"
+                                            class="flex-c-m stext-101 cl0 size-103 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer edit-review-btn">
+                                        Edit
+                                    </button>
+                                    <br>
+                                    <button type="button"
+                                            class="flex-c-m stext-101 cl2 size-103 bg8 bor14 hov-btn3 p-lr-15 trans-04 pointer delete-review-btn">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
 
-          </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </form>
 
-
+<!-- Edit Review Modal -->
+<div id="updateReviewModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h4 class="mtext-105 cl2 txt-center p-b-30">리뷰 수정</h4>
+        <form id="updateReviewForm">
+            <div class="form-group">
+                <label for="updateReviewText">리뷰 내용</label>
+                <textarea id="updateReviewText" class="form-control" rows="5"
+                          placeholder="리뷰 내용을 입력하세요"></textarea>
+            </div>
+            <div class="form-group">
+                <span class="stext-102 cl3 m-r-16">
+                    별점
+                </span>
+                <span class="wrap-rating fs-18 cl11 pointer">
+                    <i class="item-rating pointer zmdi zmdi-star-outline"></i>
+                    <i class="item-rating pointer zmdi zmdi-star-outline"></i>
+                    <i class="item-rating pointer zmdi zmdi-star-outline"></i>
+                    <i class="item-rating pointer zmdi zmdi-star-outline"></i>
+                    <i class="item-rating pointer zmdi zmdi-star-outline"></i>
+                    <input class="dis-none" type="number" name="rating">
+                </span>
+            </div>
+            <div class="form-group">
+                <label for="updateReviewFile">파일 첨부하기</label>
+                <input type="file" id="updateReviewFile" class="form-control-file">
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">수정</button>
+                <button type="button" class="btn btn-secondary close-modal">취소</button>
+            </div>
+            <input type="hidden" id="updateReviewId">
+        </form>
+    </div>
+</div>
 
 <!-- Footer -->
 <footer class="bg3 p-t-75 p-b-32">
-  <div class="container">
-    <div class="row">
+    <div class="container">
+        <div class="row">
 
-      <div class="col-sm-6 col-lg-3 p-b-50">
-        <h4 class="stext-301 cl0 p-b-30">
-          FEEDBACK
-        </h4>
+            <div class="col-sm-6 col-lg-3 p-b-50">
+                <h4 class="stext-301 cl0 p-b-30">
+                    FEEDBACK
+                </h4>
 
-        <p class="stext-107 cl7 size-201">
-          언제나 고객님들의 피드백을 반영하여 항상 더욱 발전하는 패션 노바가 되겠습니다. - 피드백링크~~
-        </p>
+                <p class="stext-107 cl7 size-201">
+                    언제나 고객님들의 피드백을 반영하여 항상 더욱 발전하는 패션 노바가 되겠습니다. - 피드백링크~~
+                </p>
 
-        <div class="p-t-27">
-          <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-            <i class="fa fa-facebook"></i>
-          </a>
+                <div class="p-t-27">
+                    <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+                        <i class="fa fa-facebook"></i>
+                    </a>
 
-          <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-            <i class="fa fa-instagram"></i>
-          </a>
+                    <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+                        <i class="fa fa-instagram"></i>
+                    </a>
 
-          <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-            <i class="fa fa-pinterest-p"></i>
-          </a>
+                    <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+                        <i class="fa fa-pinterest-p"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="p-t-40">
+                <div class="flex-c-m flex-w p-b-18">
+                    <a href="#" class="m-all-1">
+                        <img src="../images/icons/icon-pay-01.png" alt="ICON-PAY">
+                    </a>
+                </div>
+
+                <p class="stext-107 cl6 txt-center">
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    이 홈페이지는 상업적으로 이용되지 않습니다.
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+
+                </p>
+            </div>
         </div>
-      </div>
-
-      <div class="p-t-40">
-        <div class="flex-c-m flex-w p-b-18">
-          <a href="#" class="m-all-1">
-            <img src="../images/icons/icon-pay-01.png" alt="ICON-PAY">
-          </a>
-        </div>
-
-        <p class="stext-107 cl6 txt-center">
-          <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-          이 홈페이지는 상업적으로 이용되지 않습니다.
-          <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-
-        </p>
-      </div>
     </div>
-  </div>
 </footer>
-
 
 <!-- Back to top -->
 <div class="btn-back-to-top" id="myBtn">
@@ -282,31 +321,31 @@
 <!--===============================================================================================-->
 <script src="../vendor/select2/select2.min.js"></script>
 <script>
-  $(".js-select2").each(function () {
-    $(this).select2({
-      minimumResultsForSearch: 20,
-      dropdownParent: $(this).next('.dropDownSelect2')
-    });
-  })
+    $(".js-select2").each(function () {
+        $(this).select2({
+            minimumResultsForSearch: 20,
+            dropdownParent: $(this).next('.dropDownSelect2')
+        });
+    })
 </script>
 <!--===============================================================================================-->
 <script src="../vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
 <!--===============================================================================================-->
 <script src="../vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 <script>
-  $('.js-pscroll').each(function () {
-    $(this).css('position', 'relative');
-    $(this).css('overflow', 'hidden');
-    var ps = new PerfectScrollbar(this, {
-      wheelSpeed: 1,
-      scrollingThreshold: 1000,
-      wheelPropagation: false,
-    });
+    $('.js-pscroll').each(function () {
+        $(this).css('position', 'relative');
+        $(this).css('overflow', 'hidden');
+        var ps = new PerfectScrollbar(this, {
+            wheelSpeed: 1,
+            scrollingThreshold: 1000,
+            wheelPropagation: false,
+        });
 
-    $(window).on('resize', function () {
-      ps.update();
-    })
-  });
+        $(window).on('resize', function () {
+            ps.update();
+        })
+    });
 </script>
 <!--===============================================================================================-->
 <script src="/js/common.js"></script>
@@ -314,68 +353,68 @@
 <!--===============================================================================================-->
 
 <script>
-  $(document).ready(function () {
+    $(document).ready(function () {
 
-    let auth = localStorage.getItem('accessToken');
-    //로그인 안되어 있으면 로그인으로 옮기기
-    if (!auth) {
-      alert("로그인 후 이용해 주세요");
-      window.location.href = "login.html";
-    }
+        let auth = localStorage.getItem('accessToken');
+        //로그인 안되어 있으면 로그인으로 옮기기
+        if (!auth) {
+            alert("로그인 후 이용해 주세요");
+            window.location.href = "login.html";
+        }
 
-    /* 장바구니 아이콘 개수 */
-    window.common.getShoppingCart()
-    .done(function (response) {
-      if (response) {
-        $('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
-      } else {
-        // no response
-      }
-    })
-    .fail(function (error) {
-      console.log(error.message)
+        /* 장바구니 아이콘 개수 */
+        window.common.getShoppingCart()
+        .done(function (response) {
+            if (response) {
+                $('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
+            } else {
+                // no response
+            }
+        })
+        .fail(function (error) {
+            console.log(error.message)
+        });
+
+        /* 찜 아이콘 개수 */
+        window.common.getWishList()
+        .done(function (response) {
+            if (response) {
+                $('a#wish-icon')[0].dataset.notify = response.length;
+            } else {
+                // no response
+            }
+        })
+        .fail(function (error) {
+            console.log(error.message)
+        });
+        fetchReviews()
     });
-
-    /* 찜 아이콘 개수 */
-    window.common.getWishList()
-    .done(function (response) {
-      if (response) {
-        $('a#wish-icon')[0].dataset.notify = response.length;
-      } else {
-        // no response
-      }
-    })
-    .fail(function (error) {
-      console.log(error.message)
-    });
-    fetchReviews()
-  });
 </script>
 <!--===============================================================================================-->
 /* 찜 페이지에 리뷰 추가 */
 <script src="../vendor/sweetalert/sweetalert.min.js"></script>
 <script>
-  function fetchReviews() {
-    $.ajax({
-      url: '/reviews',
-      type: 'GET',
-      success: function (response) {
-        const reviews = response.content; // 응답에서 리뷰 리스트 가져오기
-        renderReviews(reviews);
-      },
-      error: function () {
-        console.error("Failed to fetch reviews.");
-      }
-    });
-  }
+    function fetchReviews() {
+        $.ajax({
+            url: '/reviews',
+            type: 'GET',
+            success: function (response) {
+                const reviews = response.content; // 응답에서 리뷰 리스트 가져오기
+                renderReviews(reviews);
+            },
+            error: function () {
+                console.error("Failed to fetch reviews.");
+            }
+        });
+    }
 
-  // 리뷰 데이터를 기반으로 HTML 카드 생성
-  function renderReviews(reviews) {
-    const $reviewList = $('#review-list');
-    $reviewList.empty(); // 기존 내용을 지우고 새로 추가
+    // 리뷰 데이터를 기반으로 HTML 카드 생성
+    function renderReviews(reviews) {
+        const $reviewList = $('#review-list');
+        $reviewList.empty(); // 기존 내용을 지우고 새로 추가
 
-    reviews.forEach(function (review) {
-      const reviewCard = `
+        reviews.forEach(function (review) {
+            const reviewCard = `
           <tr class="table_row" data-review-id="${review.id}">
             <td class="column-1">
               <div class="how-itemcart1">
@@ -392,115 +431,134 @@
             <td class="column-5">${review.review}</td>
             <td class="column-6"></td>
             <td class="column-7">
-              <button class="flex-c-m stext-101 cl0 size-103 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer edit-review-btn">
+              <button type="button" class="flex-c-m stext-101 cl0 size-103 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer edit-review-btn">
                 Edit
               </button>
               <br>
-              <button class="flex-c-m stext-101 cl2 size-103 bg8 bor14 hov-btn3 p-lr-15 trans-04 pointer delete-review-btn">
+              <button type="button" class="flex-c-m stext-101 cl2 size-103 bg8 bor14 hov-btn3 p-lr-15 trans-04 pointer delete-review-btn">
                 Delete
               </button>
             </td>
           </tr>
         `;
-      $reviewList.append(reviewCard);
-    });
-    // 리뷰삭제
-    $(document).on('click','.delete-review-btn', function() {
+            $reviewList.append(reviewCard);
+        });
 
-      let $this = $(this);
-      let reviewId = $this.closest('.table_row').data('review-id');
+        // 리뷰 삭제
+        $(document).on('click', '.delete-review-btn', function () {
+            let $this = $(this);
+            let reviewId = $this.closest('.table_row').data('review-id');
 
-      var reviewDeleteRequestDto = {
-        reviewId : reviewId
-      }
+            var reviewDeleteRequestDto = {
+                reviewId: reviewId
+            };
 
-      $.ajax({
-        url: `/reviews`,
-        type: 'DELETE',
-        contentType: 'application/json',
-        data: JSON.stringify(reviewDeleteRequestDto),
-        success: function(response, textStatus, jqXHR) {
-          if (jqXHR.status === 200 && jqXHR.status < 300) {
-            swal("Deleted!", "The review has been deleted.", "success");
-            location.reload()
-          } else {
-            swal("Failed!", "The review could not be deleted.", "error");
-          }
-        },
-        error: function(error) {
-          alert("에러: " + error.message)
-        }
-      });
-    });
-  }
+            $.ajax({
+                url: `/reviews`,
+                type: 'DELETE',
+                contentType: 'application/json',
+                data: JSON.stringify(reviewDeleteRequestDto),
+                success: function (response, textStatus, jqXHR) {
+                    if (jqXHR.status === 200 && jqXHR.status < 300) {
+                        swal("Deleted!", "리뷰가 삭제되었습니다.", "success");
+                        fetchReviews(); // 업데이트 후에 다시 리뷰를 가져옴
+                    } else {
+                        swal("Failed!", "리뷰를 삭제할 수 없습니다.", "error");
+                    }
+                },
+                error: function (error) {
+                    alert("에러: " + error.message);
+                }
+            });
+        });
 
-  //리뷰 업데이트
-  $(document).on('click', '.edit-review-btn', function() {
-    let $this = $(this);
-    let reviewId = $this.closest('.table_row').data('review-id');
-    let reviewText = $this.closest('.table_row').find('.column-5').text();
-    let reviewRating = $this.closest('.table_row').find('.column-4 span i').length;
+        // 리뷰 업데이트 모달 표시
+        $(document).on('click', '.edit-review-btn', function () {
+            let $this = $(this);
+            let reviewId = $this.closest('.table_row').data('review-id');
+            let reviewText = $this.closest('.table_row').find('.column-5').text();
+            let reviewRating = $this.closest('.table_row').find('.column-4 span i.zmdi-star').length;
 
-    $('#updateReviewId').val(reviewId);
-    $('#updateReviewText').val(reviewText);
-    $('#updateReviewRating').val(reviewRating);
-    $('#updateReviewModal').show();
-  });
+            $('#updateReviewId').val(reviewId);
+            $('#updateReviewText').val(reviewText);
+            $('#updateReviewRating').val(reviewRating);
+            $('#updateReviewModal').show();
+        });
 
-  // 리뷰 업데이트 폼 제출
-  $('#updateReviewForm').submit(function(event) {
-    event.preventDefault();
+        // 별점 선택 시
+        $(document).on('click', '.item-rating', function () {
+            let index = $(this).index() + 1;
+            $('input[name="rating"]').val(index);
+            updateStarDisplay(index);
+        });
 
-    let reviewUpdateRequestDto = {
-      reviewId: $('#updateReviewId').val(),
-      review: $('#updateReviewText').val(),
-      rating: $('#updateReviewRating').val()
-    };
 
-    $.ajax({
-      url: `/reviews`,
-      type: 'PUT',
-      contentType: 'application/json',
-      data: JSON.stringify(reviewUpdateRequestDto),
-      success: function(response, textStatus, jqXHR) {
-        if (jqXHR.status === 200) {
-          swal("Updated!", "The review has been updated.", "success");
-          location.reload();
-        } else {
-          swal("Failed!", "The review could not be updated.", "error");
-        }
-      },
-      error: function(error) {
-        alert("Error: " + error.message);
-      }
-    });
-  });
+        // 리뷰 업데이트 폼 제출
+        $('#updateReviewForm').submit(function (event) {
+            event.preventDefault();
 
-  // 모달 닫기
-  $('.close').click(function() {
-    $('#updateReviewModal').hide();
-  });
+            let reviewUpdateRequestDto = {
+                reviewId: $('#updateReviewId').val(),
+                review: $('#updateReviewText').val(),
+                rating: $('input[name="rating"]').val()  // 여기서 rating 값을 가져옵니다.
+            };
 
-  // 클릭 시 모달 닫기
-  $(window).click(function(event) {
-    if (event.target.id === 'updateReviewModal') {
-      $('#updateReviewModal').hide();
+            $.ajax({
+                url: `/reviews`,
+                type: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(reviewUpdateRequestDto),
+                success: function (response, textStatus, jqXHR) {
+                    if (jqXHR.status === 200) {
+                        swal("Updated!", "리뷰가 수정되었습니다.", "success");
+                        $('#updateReviewModal').hide(); // 모달 닫기
+                        fetchReviews(); // 업데이트 후에 다시 리뷰를 가져옴
+                    } else {
+                        swal("Failed!", "리뷰를 수정할 수 없습니다.", "error");
+                    }
+                },
+                error: function (error) {
+                    alert("Error: " + error.message);
+                }
+            });
+        });
     }
-  });
 
+    // 모달 닫기
+    $(document).on('click', '.close-modal, .close', function () {
+        $('#updateReviewModal').hide();
+    });
 
-  // 별점 렌더링
-  function renderStars(rating) {
-    let stars = '';
-    for (let i = 0; i < 5; i++) {
-      if (i < rating) {
-        stars += '<i class="zmdi zmdi-star"></i>';
-      } else {
-        stars += '<i class="zmdi zmdi-star-outline"></i>';
-      }
+    // 클릭 시 모달 닫기
+    $(window).click(function (event) {
+        if (event.target.id === 'updateReviewModal') {
+            $('#updateReviewModal').hide();
+        }
+    });
+
+    // 별점 렌더링 함수
+    function renderStars(rating) {
+        let stars = '';
+        for (let i = 0; i < 5; i++) {
+            if (i < rating) {
+                stars += '<i class="zmdi zmdi-star"></i>';
+            } else {
+                stars += '<i class="zmdi zmdi-star-outline"></i>';
+            }
+        }
+        return stars;
     }
-    return stars;
-  }
+
+    // 별점 표시 업데이트
+    function updateStarDisplay(rating) {
+        $('.item-rating').each(function (index) {
+            if (index < rating) {
+                $(this).removeClass('zmdi-star-outline').addClass('zmdi-star');
+            } else {
+                $(this).removeClass('zmdi-star').addClass('zmdi-star-outline');
+            }
+        });
+    }
 </script>
 <!--===============================================================================================-->
 </body>

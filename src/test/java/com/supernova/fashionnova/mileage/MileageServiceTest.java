@@ -4,6 +4,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
+import com.supernova.fashionnova.domain.mileage.Mileage;
+import com.supernova.fashionnova.domain.mileage.MileageRepository;
 import com.supernova.fashionnova.domain.mileage.MileageService;
 import com.supernova.fashionnova.domain.mileage.dto.MileageResponseDto;
 import com.supernova.fashionnova.domain.order.Order;
@@ -26,7 +28,7 @@ import org.springframework.data.domain.Pageable;
 class MileageServiceTest {
 
     @Mock
-    private OrdersRepository ordersRepository;
+    private MileageRepository mileageRepository;
 
     @InjectMocks
     private MileageService mileageService;
@@ -38,13 +40,13 @@ class MileageServiceTest {
         int page = 0;
 
         User mockUser = Mockito.mock(User.class);
-        Order order = Mockito.mock(Order.class);
+        Mileage mileage = Mockito.mock(Mileage.class);
 
-        List<Order> orderList = Collections.singletonList(order);
-        Page<Order> ordersPage = new PageImpl<>(orderList);
+        List<Mileage> mileageList = Collections.singletonList(mileage);
+        Page<Mileage> mileagePage = new PageImpl<>(mileageList);
 
-        given(ordersRepository.findByUser(any(User.class), any(Pageable.class)))
-            .willReturn(ordersPage);
+        given(mileageRepository.findByUser(any(User.class), any(Pageable.class)))
+            .willReturn(mileagePage);
 
         // when
         List<MileageResponseDto> responseDtoList =

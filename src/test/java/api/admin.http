@@ -1,5 +1,22 @@
+@month = 11
+
 ### 회원 전체 조회 (admin)
 GET http://localhost:8080/admin/users
+Content-Type: application/json
+Authorization: {{access_token}}
+
+### 판매 통계 조회(일별)
+GET http://localhost:8080/admin/sold/day
+Content-Type: application/json
+Authorization: {{access_token}}
+
+### 판매 통계 조회(주별)
+GET http://localhost:8080/admin/sold/week
+Content-Type: application/json
+Authorization: {{access_token}}
+
+### 판매 통계 조회(월별)
+GET http://localhost:8080/admin/sold/moth/{{month}}
 Content-Type: application/json
 Authorization: {{access_token}}
 
@@ -68,7 +85,7 @@ Authorization: {{access_token}}
   "category": "TOP",
   "productStatus": "ACTIVE",
   "productDetailList": [{
-    "size" : "LARGE",
+    "size" : "S",
     "color" : "BLACK",
     "quantity": 123
   }]

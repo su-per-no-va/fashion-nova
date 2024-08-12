@@ -2,6 +2,7 @@ package com.supernova.fashionnova.domain.user;
 
 import com.supernova.fashionnova.domain.user.dto.SignupRequestDto;
 import com.supernova.fashionnova.domain.user.dto.UserResponseDto;
+import com.supernova.fashionnova.domain.user.dto.UserRoleResponseDto;
 import com.supernova.fashionnova.domain.user.dto.UserUpdateRequestDto;
 import com.supernova.fashionnova.domain.warn.dto.WarnResponseDto;
 import com.supernova.fashionnova.global.security.JwtUtil;
@@ -33,6 +34,11 @@ public class UserController {
 
     private final UserService userService;
     private final KakaoService kakaoService;
+
+    @GetMapping("/healthcheck")
+    public String healthcheck() {
+	    return "OK";
+    }
 
     @GetMapping("/test")
     public ResponseEntity<TestResponseDto> test() {
@@ -109,7 +115,8 @@ public class UserController {
      * @return
      */
     @GetMapping("/caution")
-    public ResponseEntity<List<WarnResponseDto>> getCautionList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<List<WarnResponseDto>> getCautionList(
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         List<WarnResponseDto> responseDtoList = userService.getCautionList(userDetails.getUser());
 
@@ -153,6 +160,20 @@ public class UserController {
         response.addCookie(cookie2);
 
         response.sendRedirect("/index.html");
+    }
+
+    /**
+     * 유저 롤 가져오기
+     *
+     * @param userDetails
+     * @return
+     */
+    @GetMapping("/role")
+    public ResponseEntity<UserRoleResponseDto> getUserRole(
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        UserRoleResponseDto responseDto = userService.getUserRole(userDetails.getUser());
+        return ResponseUtil.of(HttpStatus.OK,responseDto);
     }
 
 }

@@ -16,7 +16,7 @@ public class AllOrderResponseDto {
   private Long totalPrice;
   private Long cost;
   private int discount;
-  private int usedMileage;
+  private Long usedMileage;
   private String address;
   private LocalDateTime createdAt;
   private DeliveryStatus deliveryStatus;
@@ -33,7 +33,7 @@ public class AllOrderResponseDto {
       DeliveryStatus deliveryStatus,
       int discount,
       Long totalPrice,
-      int usedMileage,
+      Long usedMileage,
       LocalDateTime createdAt,
       List<OrderDetail> savedOrderDetailList,
       String orderName,
@@ -53,7 +53,10 @@ public class AllOrderResponseDto {
             orderDetail.getId(),
             orderDetail.getCount(),
             orderDetail.getProductName(),
-            orderDetail.getPrice()
+            orderDetail.getPrice(),
+            orderDetail.getProductDetail().getSize(),
+            orderDetail.getProductDetail().getColor(),
+            orderDetail.getOrder().getOrderStatus()
         ))
         .toList();
     this.orderName = orderName;

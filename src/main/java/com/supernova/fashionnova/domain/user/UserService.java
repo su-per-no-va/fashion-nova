@@ -2,6 +2,7 @@ package com.supernova.fashionnova.domain.user;
 
 import com.supernova.fashionnova.domain.user.dto.SignupRequestDto;
 import com.supernova.fashionnova.domain.user.dto.UserResponseDto;
+import com.supernova.fashionnova.domain.user.dto.UserRoleResponseDto;
 import com.supernova.fashionnova.domain.user.dto.UserUpdateRequestDto;
 import com.supernova.fashionnova.domain.warn.Warn;
 import com.supernova.fashionnova.domain.warn.WarnRepository;
@@ -123,6 +124,17 @@ public class UserService {
         return new UserResponseDto(user);
     }
 
+    /**
+     * 유저 롤 가져오기
+     *
+     * @param user
+     * @return UserRoleResponseDto
+     */
+    public UserRoleResponseDto getUserRole(User user) {
+
+        return new UserRoleResponseDto(user.getUserRole());
+    }
+
     private void checkDuplicate(SignupRequestDto requestDto) {
 
         // userName 중복체크
@@ -136,5 +148,11 @@ public class UserService {
         }
 
     }
+
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(
+            ()-> new CustomException(ErrorType.NOT_FOUND_USER));
+    }
+
 
 }
