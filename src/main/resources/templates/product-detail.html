@@ -218,7 +218,7 @@
               </div>
               <button
                   class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail"
-                  style="margin: 30px;" data-item-id="27">
+                  style="margin: 30px;" data-item-id="">
                 Add to cart
               </button>
 
@@ -296,47 +296,47 @@
               <div class="col-sm-10 col-md-8 col-lg-6 m-lr-auto">
                 <div class="p-b-30 m-lr-15-sm">
                   <!-- Review -->
-                  <div class="flex-w flex-t p-b-68">
-                    <div class="wrap-pic-s size-109 bor0 of-hidden m-r-18 m-t-6">
-                      <img src="images/avatar-01.jpg" alt="AVATAR">
-                    </div>
+                  <!-- <div class="flex-w flex-t p-b-68">
+                     <div class="wrap-pic-s size-109 bor0 of-hidden m-r-18 m-t-6">
+                       <img src="images/avatar-01.jpg" alt="AVATAR">
+                     </div>
 
-                    <div class="size-207">
-                      <div class="flex-w flex-sb-m p-b-17">
-													<span id="reviewName" class="mtext-107 cl2 p-r-20">
-														아리아나 그란데
-													</span>
+                     <div class="size-207">
+                       <div class="flex-w flex-sb-m p-b-17">
+                           <span id="reviewName" class="mtext-107 cl2 p-r-20">
+                             아리아나 그란데
+                           </span>
 
-                        <span class="fs-18 cl11">
-														<i class="zmdi zmdi-star"></i>
-														<i class="zmdi zmdi-star"></i>
-														<i class="zmdi zmdi-star"></i>
-														<i class="zmdi zmdi-star"></i>
-														<i class="zmdi zmdi-star"></i>
-													</span>
-                        <td class="column-3">2024-08-01</td>
-                      </div>
+                         <span class="fs-18 cl11">
+                             <i class="zmdi zmdi-star"></i>
+                             <i class="zmdi zmdi-star"></i>
+                             <i class="zmdi zmdi-star"></i>
+                             <i class="zmdi zmdi-star"></i>
+                             <i class="zmdi zmdi-star"></i>
+                           </span>
+                         <td class="column-3">2024-08-01</td>
+                       </div>
 
-                      <p class="stext-102 cl6">
-                        이거 입고 남친 생겼어요
-                      </p>
+                       <p class="stext-102 cl6">
+                         이거 입고 남친 생겼어요
+                       </p>
 
-                      <div class="form-group file-upload">
-                        <td class="column-1">
-                          <img src="../images/item-cart-05.jpg" alt="IMG">
-                        </td>
-                        <td class="column-1">
-                          <img src="../images/item-cart-05.jpg" alt="IMG">
-                        </td>
-                        <td class="column-1">
-                          <img src="../images/item-cart-05.jpg" alt="IMG">
-                        </td>
-                        <td class="column-1">
-                          <img src="../images/item-cart-05.jpg" alt="IMG">
-                        </td>
-                      </div>
+                       <div class="form-group file-upload">
+                         <td class="column-1">
+                           <img src="../images/item-cart-05.jpg" alt="IMG">
+                         </td>
+                         <td class="column-1">
+                           <img src="../images/item-cart-05.jpg" alt="IMG">
+                         </td>
+                         <td class="column-1">
+                           <img src="../images/item-cart-05.jpg" alt="IMG">
+                         </td>
+                         <td class="column-1">
+                           <img src="../images/item-cart-05.jpg" alt="IMG">
+                         </td>
+                       </div>
 
-                    </div>
+                     </div>-->
                   </div>
 
                   <!-- Add review -->
@@ -366,7 +366,7 @@
                         <div class="form-group file-upload">
                           <input type="file" id="file-upload" multiple>
                           <p class="file-upload-text">파일 첨부는 최대 4장까지 가능하며, 5MB 이하의 GIF, JPG, JPEG,
-                            PNG, PDF 형탤로 업로드 해주세요.</p>
+                            PNG, PDF 형태로 업로드 해주세요.</p>
                         </div>
                       </div>
                     </div>
@@ -668,6 +668,56 @@
             }
           });
 
+          $('.item-rating').on('click', function () {
+            const index = $(this).index() + 1;
+            $('input[name="rating"]').val(index);
+
+            $(this).siblings('.item-rating').removeClass('zmdi-star').addClass('zmdi-star-outline');
+            $(this).prevAll().addBack().removeClass('zmdi-star-outline').addClass('zmdi-star');
+          });
+
+          $('form.w-full').on('submit', function (e) {
+            e.preventDefault();
+
+            const review = $('#review').val();
+            const rating = $('input[name="rating"]').val();
+            const productId = $('.js-addcart-detail').data('item-id');
+            const formData = new FormData();
+
+            const requestDto = {
+              review: review,
+              rating:rating,
+              productId:productId
+            }
+
+            // formData.append('review', review);
+            // formData.append('rating', rating);
+            // formData.append('productId', productId);
+
+            formData.append('reviewRequestDto',
+            new Blob([JSON.stringify(requestDto)],{type:'application/json'}))
+
+            const files = $('#file-upload')[0].files;
+            for (let i = 0; i < files.length; i++) {
+              formData.append('images', files[i]);
+            }
+
+            $.ajax({
+              url: '/reviews', // 리뷰를 제출할 API 엔드포인트
+              type: 'POST',
+              contentType: false,
+              processData: false,
+              data: formData,
+              success: function (response) {
+                alert("리뷰 등록 완료!!");
+                // 리뷰 등록 후 새로고침 또는 등록된 리뷰를 동적으로 추가하는 로직
+              },
+              error: function () {
+                swal("리뷰 등록 실패", '요청 처리에 실패했습니다.', "error");
+              }
+            });
+          });
+
           let sizesText = Array.from(uniqueSizes).join(', ');
 
           uniqueSizes.forEach(size => {
@@ -696,8 +746,7 @@
 
           $('#colorText').text(colorsText);
 
-          let reviewContainer = $('#reviews'); // 리뷰가 표시될 컨테이너를 선택합니다.
-          reviewContainer.empty(); // 기존 리뷰를 비웁니다.
+          let reviewContainer = $('#reviews .p-b-30'); // 리뷰가 표시될 컨테이너를 선택합니다.
           console.log(productReview);
           if (Array.isArray(response.reviews) && productReview.length > 0) {
             productReview.forEach(review => {
@@ -720,10 +769,22 @@
                                 <p class="stext-102 cl6">
                                     ${review.review}
                                 </p>
+                                <div class="form-group file-upload">
                             </div>
                         </div>
-                    `;
+                   `;
+
+              review.imageUrls.forEach(imageUrl => {
+                reviewHtml += `
+                                    <td class="column-1">
+                                        <img src="${imageUrl}" alt="IMG" class="size-109">
+                                    </td>`;
+              });
+
+              reviewHtml += `</div>`;
+
               reviewContainer.append(reviewHtml);
+
             });
           } else {
             reviewContainer.append('<p>No reviews available.</p>');

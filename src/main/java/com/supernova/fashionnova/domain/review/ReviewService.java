@@ -45,7 +45,7 @@ public class ReviewService {
     @Transactional
     public void addReview(User user, ReviewRequestDto reviewRequestDto, List<MultipartFile> images) {
         // 주문 내역 확인
-        existsOrder(user.getId(), reviewRequestDto.getProductId());
+        /*existsOrder(user.getId(), reviewRequestDto.getProductId());*/
 
         Product product = getProduct(reviewRequestDto.getProductId());
 
