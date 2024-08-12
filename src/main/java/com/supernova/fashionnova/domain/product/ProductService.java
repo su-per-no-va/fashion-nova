@@ -21,6 +21,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final OrderDetailRepository orderDetailRepository;
     private final ProductDetailRepository productDetailRepository;
+    private final ProductImageRepository productImageRepository;
 
     /**
      * 조건별 상품 검색
@@ -69,5 +70,13 @@ public class ProductService {
         }
       }
 
+    }
+
+    public ProductResponseDto getProduct(Long productId) {
+        Product product = productRepository.findById(productId).orElseThrow(
+            ()-> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
+        List<String> imageUrlList = productImageRepository.findAllByProductId(productId).stream()
+            .map(ProductImage::getProductImageUrl).toList();
+        return new ProductResponseDto(product, imageUrlList);
     }
 }
