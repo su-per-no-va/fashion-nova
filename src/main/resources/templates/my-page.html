@@ -92,7 +92,7 @@
 
           <a id="cart-icon" href="shoping-cart.html"
              class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
-             data-notify="2">
+             data-notify="">
             <i class="zmdi zmdi-shopping-cart"></i>
           </a>
 
@@ -375,29 +375,11 @@
 <script>
   let auth;
   $(document).ready(function () {
-    auth = localStorage.getItem('accessToken');
-    let refreshToken = localStorage.getItem('refreshToken');
-    console.log("엑세스 토큰: " + auth);
-    console.log("리프레시 토큰: " + refreshToken);
-
-    if (auth !== undefined && auth !== null) {
-      $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-        console.log("auth : " + auth);
-        jqXHR.setRequestHeader('Authorization', auth);
-        jqXHR.setRequestHeader('Authorization-refresh', refreshToken);
-      });
-    } else {
-      alert("로그인 후 이용해 주세요");
-      window.location.href = "login.html";
-    }
-
     /* 장바구니 아이콘 개수 */
     window.common.getShoppingCart()
     .done(function (response) {
       if (response) {
         $('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
-      } else {
-        // no response
       }
     })
     .fail(function (error) {
@@ -409,15 +391,12 @@
     .done(function (response) {
       if (response) {
         $('a#wish-icon')[0].dataset.notify = response.length;
-      } else {
-        // no response
       }
     })
     .fail(function (error) {
       console.log(error.message)
     });
   });
-
 </script>
 </body>
 </html>

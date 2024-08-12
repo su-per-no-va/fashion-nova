@@ -55,7 +55,7 @@ public class QuestionController {
     @GetMapping
     public ResponseEntity<List<QuestionResponseDto>> getUserQuestionList(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
-        @RequestParam(defaultValue = "0") int page) {
+        @RequestParam(value = "page", defaultValue = "0") int page) {
 
         List<QuestionResponseDto> responseDto = questionService.getUserQuestionList(userDetails.getUser(), page);
 
