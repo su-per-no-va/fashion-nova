@@ -232,7 +232,7 @@
 
             <div class="size-209">
 								<span id="product-total" class="mtext-110 cl2">
-									+ 150,000원
+									+ 0원
 								</span>
             </div>
           </div>
@@ -240,13 +240,13 @@
           <div class="flex-w flex-t bor12 p-t-15 p-b-30">
             <div class="size-208 w-full-ssm">
 								<span id="coupon-discount" class="stext-110 cl2">
-									브론즈 5% 쿠폰:
+									쿠폰없음:
 								</span>
             </div>
 
             <div class="size-209">
 								<span id="coupon-discount-amount" class="mtext-110 cl2">
-									- 3,500원
+									- 0원
 								</span>
             </div>
 
@@ -255,7 +255,7 @@
             </div>
             <div class="size-209">
 								<span id="mileage-used" class="mtext-110 cl2">
-									- 300원
+									- 0원
 								</span>
             </div>
           </div>
@@ -282,7 +282,7 @@
             </div>
 
             <div class="size-209 p-t-1">
-								<span class="mtext-110 cl2">
+								<span id="total-amount" class="mtext-110 cl2">
 									144,700원
 								</span>
             </div>
@@ -398,6 +398,7 @@
   const shippingCost = 2500; // 배송비
   let couponDiscount = 0; // 쿠폰 할인 금액
   let mileageUsed = 0; // 사용자가 입력한 마일리지
+  let totalCost = 0;
 
   $(document).ready(function () {
     // 장바구니 데이터를 가져오는 함수 호출
@@ -428,11 +429,9 @@
 
     // 총 금액을 계산하고 페이지에 업데이트
     function updateCartTotals() {
-      const totalAmount = productTotal - couponDiscount - mileageUsed + shippingCost;
-      $('#coupon-discount').text(`- ${couponDiscount.toLocaleString()}원`);
-      $('#mileage-used').text(`- ${mileageUsed.toLocaleString()}원`);
-      $('#shipping-cost').text(`+ ${shippingCost.toLocaleString()}원`);
-      $('#total-amount').text(`${totalAmount.toLocaleString()}원`);
+      totalCost = productTotal - couponDiscount - mileageUsed + shippingCost;
+      $('#total-amount').text(`${totalCost.toLocaleString()}원`);
+      $('#mileage-used').text(`-${mileageUsed.toLocaleString()}원`);
     }
 
     // 사용자가 입력한 마일리지 값을 가져와서 검증하고 업데이트하는 함수
@@ -455,8 +454,6 @@
       updateCartTotals(); // 총 금액을 다시 계산하고 업데이트
 
     });
-
-
     fetchMileage();
     fetchCoupons();
 
@@ -553,18 +550,6 @@
     });
   }
 
-  function fetchCoupons() {
-    $.ajax({
-      type: 'GET',
-      url: '/coupons', // 서버에서 쿠폰 데이터를 제공하는 엔드포인트
-      success: function(response) {
-        updateCouponTable(response);
-      },
-      error: function(error) {
-        console.error('쿠폰 불러오기 실패 :', error);
-      }
-    });
-  }
 
   // 쿠폰 테이블을 업데이트하는 함수
   function updateCouponTable(coupons) {
@@ -599,7 +584,6 @@
       // 할인 금액을 업데이트
       $('#coupon-discount').text(`${couponName}:`);
       $('#coupon-discount-amount').text(`- ${discountAmount.toLocaleString()}원`);
-
     } else {
       // 쿠폰 이름과 할인 금액을 초기화
       $('#coupon-discount').text('쿠폰 선택:');
