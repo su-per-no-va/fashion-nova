@@ -35,6 +35,11 @@ public class UserController {
     private final UserService userService;
     private final KakaoService kakaoService;
 
+    @GetMapping("/healthcheck")
+    public String healthcheck() {
+	    return "OK";
+    }
+
     @GetMapping("/test")
     public ResponseEntity<TestResponseDto> test() {
         log.info("In test");
