@@ -642,6 +642,35 @@
   });
 </script>
 <!--===============================================================================================-->
+<script src="/js/common.js"></script>
 <script src="../js/main.js"></script>
+<script>
+  let auth;
+  $(document).ready(function () {
+    /* 장바구니 아이콘 개수 */
+    window.common.getShoppingCart()
+    .done(function (response) {
+      if (response) {
+        $('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
+      }
+    })
+    .fail(function (error) {
+      console.log(error.message)
+    });
+
+    /* 찜 아이콘 개수 */
+    window.common.getWishList()
+    .done(function (response) {
+      if (response) {
+        $('a#wish-icon')[0].dataset.notify = response.length;
+      }
+    })
+    .fail(function (error) {
+      console.log(error.message)
+    });
+  });
+</script>
+
+
 </body>
 </html>
