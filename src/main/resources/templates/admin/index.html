@@ -9,6 +9,10 @@
     <title>Charts - Admin</title>
     <link href="../admin/css/admin.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- jQuery 라이브러리 추가 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- 공용 자바스크립트 파일 추가 -->
+    <script src="/admin/js/admin-check.js"></script>
 </head>
 <body class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -160,20 +164,84 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
 <script src="../admin/js/chart-area.js"></script>
 <script>
-    $(document).ready(function () {
-        const auth = localStorage.getItem('accessToken');
 
-        if (auth === null || auth === "null") {
-            alert("어드민 로그인 후 이용해 주세요");
-            window.location.href = 'admin-login.html'
-        }
-
-        if (auth) {
-            $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-                jqXHR.setRequestHeader('Authorization', auth);
-            })
-        }
-    })
 </script>
 </body>
 </html>
+
+<script>
+    // document.ready로 DOM이 준비된 후 코드 실행
+    $(document).ready(function() {
+        fetchChartData();
+    });
+
+    function fetchChartData() {
+        $.ajax({
+            url: '/api/admin/sold/day',
+            method: 'GET',
+            success: function(response) {
+                renderChart('dailyChart', response.total, '일별 판매 통계');
+            },
+            error: function(error) {
+                console.error('Error fetching daily sales data:', error);
+            }
+        });
+
+        $.ajax({
+            url: '/api/admin/sold/week',
+            method: 'GET',
+            success: function(response) {
+                renderChart('weeklyChart', response.total, '주별 판매 통계');
+            },
+            error: function(error) {
+                console.error('Error fetching weekly sales data:', error);
+            }
+        });
+
+        $.ajax({
+            url: '/api/admin/sold/month/8',  // 예시로 8월을 사용. 실제 월 값으로 변경
+            method: 'GET',
+            success: function(response) {
+                renderChart('monthlyChart', response.total, '월별 판매 통계');
+            },
+            error: function(error) {
+                console.error('Error fetching monthly sales data:', error);
+            }
+        });
+    }
+
+    function renderChart(chartId, data, label) {
+        var ctx = document.getElementById(chartId).getContext('2d');
+        new Chart(ctx, {
+            type: 'bar', // 또는 'line', 'pie', 등
+            data: {
+                labels: [label],
+                datasets: [{
+                    label: '총 판매량',
+                    data: [data], // 총 판매량 데이터
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '판매량'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: label
+                        }
+                    }
+                }
+            }
+        });
+    }
+</script>

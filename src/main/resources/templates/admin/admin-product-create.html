@@ -10,6 +10,10 @@
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="../admin/css/admin.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- jQuery 라이브러리 추가 -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <!-- 공용 자바스크립트 파일 추가 -->
+        <script src="/admin/js/admin-check.js"></script>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -118,84 +122,74 @@
                                 Product Table
                             </div>
                             <div class="card-body">
-
-                                <form>
+                                <form id="productForm" enctype="multipart/form-data">
                                     <div class="mb-3">
                                         <label for="productName" class="form-label">상품 명</label>
-                                        <input type="text" class="form-control" id="productName" placeholder="상품 명을 입력하세요">
+                                        <input type="text" class="form-control" id="productName" name="product" placeholder="상품 명을 입력하세요">
                                     </div>
                                     <div class="mb-3">
                                         <label for="productPrice" class="form-label">가격</label>
-                                        <input type="number" class="form-control" id="productPrice" placeholder="가격을 입력하세요">
+                                        <input type="number" class="form-control" id="productPrice" name="price" placeholder="가격을 입력하세요">
                                     </div>
                                     <div class="mb-3">
                                         <label for="productDescription" class="form-label">설명</label>
-                                        <textarea class="form-control" id="productDescription" rows="3" placeholder="설명을 입력하세요"></textarea>
+                                        <textarea class="form-control" id="productDescription" name="explanation" rows="3" placeholder="설명을 입력하세요"></textarea>
                                     </div>
                                     <div class="mb-3">
                                         <label for="productImage" class="form-label">이미지</label>
-                                        <input class="form-control" type="file" id="productImage">
+                                        <input class="form-control" type="file" id="productImage" name="files[]" multiple>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">상품 분류</label><br>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="category1" value="option1">
+                                            <input class="form-check-input" type="radio" id="category1" name="category" value="TOP">
                                             <label class="form-check-label" for="category1">TOP</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="category2" value="option2">
+                                            <input class="form-check-input" type="radio" id="category2" name="category" value="BOTTOM">
                                             <label class="form-check-label" for="category2">BOTTOM</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="category3" value="option3">
+                                            <input class="form-check-input" type="radio" id="category3" name="category" value="SHOES">
                                             <label class="form-check-label" for="category3">SHOES</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="category4" value="option4">
+                                            <input class="form-check-input" type="radio" id="category4" name="category" value="GOODS">
                                             <label class="form-check-label" for="category4">GOODS</label>
                                         </div>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">사이즈</label><br>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="sizeS" value="S">
-                                            <label class="form-check-label" for="sizeS">S</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="sizeM" value="M">
-                                            <label class="form-check-label" for="sizeM">M</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="sizeL" value="L">
-                                            <label class="form-check-label" for="sizeL">L</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="sizeXL" value="XL">
-                                            <label class="form-check-label" for="sizeXL">XL</label>
-                                        </div>
+                                        <select id="sizeSelect" class="form-select">
+                                            <option value="">Select Size</option>
+                                            <option value="S">S</option>
+                                            <option value="M">M</option>
+                                            <option value="L">L</option>
+                                            <option value="XL">XL</option>
+                                        </select>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">컬러</label><br>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="colorRed" value="Red">
-                                            <label class="form-check-label" for="colorRed">RED</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="colorBlue" value="Blue">
-                                            <label class="form-check-label" for="colorBlue">BLACK</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="colorGreen" value="Green">
-                                            <label class="form-check-label" for="colorGreen">GRAY</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="colorBlack" value="Black">
-                                            <label class="form-check-label" for="colorBlack">WHITE</label>
-                                        </div>
+                                        <select id="colorSelect" class="form-select">
+                                            <option value="">Select Color</option>
+                                            <option value="Red">Red</option>
+                                            <option value="Blue">Blue</option>
+                                            <option value="Green">Green</option>
+                                            <option value="Black">Black</option>
+                                            <option value="Yellow">Yellow</option>
+                                            <option value="Purple">Purple</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="quantityInput" class="form-label">수량</label>
+                                        <input type="number" class="form-control" id="quantityInput" placeholder="수량을 입력하세요" min="1">
+                                    </div>
+                                    <button type="button" class="btn btn-secondary mt-2" id="addSizeColorButton">추가</button>
+                                    <div class="mb-3" id="sizeColorQuantityContainer"></div>
+                                    <div class="mb-3" id="colorContainer">
                                     </div>
                                     <button type="button" class="btn btn-primary" id="submitButton">등록</button>
                                 </form>
-
                             </div>
                         </div>
                     </div>
@@ -221,5 +215,86 @@
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="../admin/js/datatables.js"></script>
         <script src="../admin/js/admin-product-create.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                $('#addSizeColorButton').on('click', addSizeColorQuantity);
+                $('#submitButton').on('click', submitForm);
+            });
+
+            function addSizeColorQuantity() {
+                const size = $('#sizeSelect').val();
+                const color = $('#colorSelect').val();
+                const quantity = $('#quantityInput').val() || 1; // Default quantity if input is not present
+
+                if (size && color && quantity) {
+                    const container = $('#sizeColorQuantityContainer');
+                    const newDiv = $(`
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <input type="hidden" name="sizes[]" value="${size}">
+                    <input type="hidden" name="colors[]" value="${color}">
+                    <input type="hidden" name="quantities[]" value="${quantity}">
+                    <span>Size: ${size}, Color: ${color}, Quantity: ${quantity}</span>
+                </div>
+            </div>
+        `);
+                    container.append(newDiv);
+                } else {
+                    alert('Please enter size, color, and quantity.');
+                }
+            }
+
+            function submitForm() {
+                const formData = new FormData();
+                const productName = $('#productName').val();
+                const productPrice = $('#productPrice').val();
+                const productDescription = $('#productDescription').val();
+
+                const sizes = $('input[name="sizes[]"]').map(function() { return $(this).val(); }).get();
+                const colors = $('input[name="colors[]"]').map(function() { return $(this).val(); }).get();
+                const quantities = $('input[name="quantities[]"]').map(function() { return $(this).val(); }).get();
+
+                const productDetails = sizes.map((size, index) => ({
+                    size: size,
+                    color: colors[index],
+                    quantity: quantities[index]
+                }));
+
+                const selectedCategory = $('input[name="category"]:checked').val();
+
+                const requestDto = {
+                    product: productName,
+                    price: productPrice,
+                    explanation: productDescription,
+                    category: selectedCategory, // Add category to requestDto
+                    productDetailList: productDetails
+                };
+
+                formData.append('requestDto', JSON.stringify(requestDto));
+
+                const files = $('#productImage')[0].files;
+                for (let i = 0; i < files.length; i++) {
+                    formData.append('files', files[i]);
+                }
+
+
+                $.ajax({
+                    url: '/api/admin/products',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        alert('상품이 성공적으로 등록되었습니다.');
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                        alert('상품 등록에 실패하였습니다.');
+                    }
+                });
+            }
+        </script>
+
     </body>
 </html>
