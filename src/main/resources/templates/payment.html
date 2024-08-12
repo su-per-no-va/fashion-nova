@@ -383,6 +383,8 @@
 <script src="/js/common.js"></script>
 <script src="../js/main.js"></script>
 <script>
+  let currentPage = 0; // 페이지 0부터 시작
+  let totalMileage = 0; // 총 마일리지를 저장할 변수
   $(document).ready(function () {
     // 장바구니 데이터를 가져오는 함수 호출
     window.common.getShoppingCart()
@@ -409,6 +411,7 @@
     .fail(function (error) {
       console.log(error.message)
     });
+    fetchMileage();
   });
 
   // 장바구니 항목을 렌더링하는 함수
@@ -455,6 +458,38 @@
       $cartTable.append(row);
     });
   }
+
+  function fetchMileage() {
+    $.ajax({
+      type: 'GET',
+      url: `/mileages?page=${currentPage}`,
+      success: function(response) {
+        if (response.length > 0) {
+          // 각 페이지의 마일리지를 합산
+          response.forEach(item => {
+            totalMileage += item.usedMileage;
+          });
+
+          // 다음 페이지 데이터 요청
+          currentPage++;
+          fetchMileage(); // 재귀적으로 호출하여 다음 페이지 데이터 요청
+        } else {
+          // 응답 길이가 0인 경우, 모든 페이지의 데이터를 다 가져온 상태입니다.
+          updateMileageDisplay();
+        }
+      },
+      error: function(error) {
+        console.error('마일리지 불러오기 실패', error);
+      }
+    });
+  }
+
+  // 마일리지 값을 페이지에 업데이트하는 함수
+  function updateMileageDisplay() {
+    $('#name').next('label').text(`사용 가능 마일리지 : ${totalMileage.toLocaleString()}원`);
+  }
+
+  // 페이지 로드 시 마일리지 데이터를 가져옵니다.
 </script>
 
 </body>
