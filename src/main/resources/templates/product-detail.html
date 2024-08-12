@@ -752,9 +752,9 @@
             productReview.forEach(review => {
               let reviewHtml = `
                         <div class="flex-w flex-t p-b-68">
-                            <div class="wrap-pic-s size-109 bor0 of-hidden m-r-18 m-t-6">
-                                <img src="${review.imageUrls[0]}" alt="Review Image">
-                            </div>
+                             <div class="wrap-pic-s size-109 bor0 of-hidden m-r-18 m-t-6">
+                                 <img src="${review.imageUrls[0]}" alt="Review Image">
+                             </div>
 
                             <div class="size-207">
                                 <div class="flex-w flex-sb-m p-b-17">
@@ -774,14 +774,7 @@
                         </div>
                    `;
 
-              review.imageUrls.forEach(imageUrl => {
-                reviewHtml += `
-                                    <td class="column-1">
-                                        <img src="${imageUrl}" alt="IMG" class="size-109">
-                                    </td>`;
-              });
 
-              reviewHtml += `</div>`;
 
               reviewContainer.append(reviewHtml);
 
