@@ -43,7 +43,7 @@ public class AdminController {
     private final AdminService adminService;
 
     /**
-     * 판몌통계(일별)
+     * 판매 통계 (일별)
      */
     @GetMapping("/sold/day")
     public ResponseEntity<String> dailySoldStatistics(
@@ -55,7 +55,7 @@ public class AdminController {
     }
 
     /**
-     * 판몌통계(주별)
+     * 판매 통계 (주별)
      */
     @GetMapping("/sold/week")
     public ResponseEntity<String> weeklySoldStatistics(
@@ -67,7 +67,7 @@ public class AdminController {
     }
 
     /**
-     * 판몌통계(월별)
+     * 판매 통계 (월별)
      */
     @GetMapping("/sold/month/{month}")
     public ResponseEntity<String> monthlySoldStatistics(

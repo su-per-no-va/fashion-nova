@@ -76,7 +76,7 @@ public class AdminService {
     private final AddressRepository addressRepository;
 
     /**
-     * 판몌통계(일별)
+     * 판매 통계 (일별)
      */
     public String dailySoldStatistics(User user) {
 
@@ -89,7 +89,7 @@ public class AdminService {
     }
 
     /**
-     * 판몌통계(주별)
+     * 판매 통계 (주별)
      */
     public String weeklySoldStatistics(User user) {
 
@@ -102,7 +102,7 @@ public class AdminService {
     }
 
     /**
-     * 판몌통계(월별)
+     * 판매 통계 (월별)
      */
     public String monthlySoldStatistics(User user, int month) {
 
