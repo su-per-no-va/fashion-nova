@@ -42,7 +42,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         //AccessToken 가져온후 가공
         String accessToken = req.getHeader(ACCESS_TOKEN_HEADER);
 
-        log.info("Authorization Header : " + req.getHeader("Authorization"));
+        log.info("Authorization Header : " + req.getHeader(ACCESS_TOKEN_HEADER));
 
         if (accessToken == null || accessToken.isBlank() || "null".equals(accessToken)) {
             filterChain.doFilter(req, res);

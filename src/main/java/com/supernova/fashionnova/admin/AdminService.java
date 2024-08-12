@@ -76,6 +76,49 @@ public class AdminService {
     private final AddressRepository addressRepository;
 
     /**
+     * 판매 통계 (일별)
+     */
+    public String dailySoldStatistics(User user) {
+
+        if (!UserRole.ADMIN.equals(user.getUserRole())) {
+            throw new CustomException(ErrorType.DENIED_PERMISSION);
+        }
+
+        return ordersRepository.findTodayOrderTotalPriceSum().map(total -> total + " 원 입니다")
+            .orElse("0원 입니다.");
+    }
+
+    /**
+     * 판매 통계 (주별)
+     */
+    public String weeklySoldStatistics(User user) {
+
+        if (!UserRole.ADMIN.equals(user.getUserRole())) {
+            throw new CustomException(ErrorType.DENIED_PERMISSION);
+        }
+
+        return ordersRepository.findWeekOrderTotalPriceSum().map(total -> total + " 원 입니다")
+            .orElse("0원 입니다.");
+    }
+
+    /**
+     * 판매 통계 (월별)
+     */
+    public String monthlySoldStatistics(User user, int month) {
+
+        if (!UserRole.ADMIN.equals(user.getUserRole())) {
+            throw new CustomException(ErrorType.DENIED_PERMISSION);
+        }
+
+        if (month < 0 || month > 12) {
+            throw new CustomException(ErrorType.WRONG_MONTH);
+        }
+
+        return ordersRepository.findMonthOrderTotalPriceSum(month).map(total -> total + " 원 입니다")
+            .orElse("0원 입니다.");
+    }
+
+    /**
      * 유저 전체 조회
      *
      * @param page
@@ -93,6 +136,70 @@ public class AdminService {
     }
 
     /**
+     * 유저 프로필 조회
+     *
+     * @param userId
+     * @return UserProfileResponseDto
+     */
+    public UserProfileResponseDto getUserProfile(Long userId) {
+
+        User user = getUser(userId);
+
+        // 경고리스트 -> WarnResponseDto 형태로변환
+        List<Warn> warnList = warnRepository.findByUser(user);
+        List<WarnResponseDto> warnResponseDtoList =
+            warnList.stream().map(WarnResponseDto::new).toList();
+
+        // 주소리스트 -> AddressResponseDto 형태로변환
+        List<Address> addressList = addressRepository.findByUser(user);
+        List<AddressResponseDto> addressResponseDtoList =
+            addressList.stream().map(AddressResponseDto::new).toList();
+
+        // 오더 찾아오기
+        List<Order> orderList = ordersRepository.findAllByUserId(userId);
+
+        // 누적금액과 최근 주문 ID 초기화
+        Long totalPrice = 0L;
+        Long recentOrderId = 0L;
+
+        // 최근 주문을 찾기 위한 변수
+        Order recentOrder = null;
+
+        for (Order order : orderList) {
+            // 누적금액 더하기
+            totalPrice += order.getTotalPrice();
+
+            // 최근 주문 찾기
+            if (recentOrder == null || order.getCreatedAt().isAfter(recentOrder.getCreatedAt())) {
+                recentOrder = order;
+            }
+        }
+
+        // 최근 주문의 ID 가져오기 (최근 주문이 있을 경우)
+        if (recentOrder != null) {
+            recentOrderId = recentOrder.getId();
+        }
+
+        return new UserProfileResponseDto(user, warnResponseDtoList, addressResponseDtoList, totalPrice, recentOrderId);
+    }
+
+    /**
+     * 유저 쿠폰 & 마일리지 조회
+     *
+     * @return UsersCouponAndMileageResponseDto
+     */
+    public List<UsersCouponAndMileageResponseDto> getAllUsersCouponAndMileages(int page) {
+
+        // 유저 찾기
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+        Page<User> userPage = userRepository.findAll(pageable);
+
+        return userPage.stream()
+            .map(UsersCouponAndMileageResponseDto::new)
+            .collect(Collectors.toList());
+    }
+
+    /**
      * 유저 경고 등록
      *
      * @param requestDto
@@ -101,8 +208,8 @@ public class AdminService {
     public void addCaution(WarnRequestDto requestDto) {
 
         User user = getUser(requestDto.getUserId());
-
         Warn warn = new Warn(requestDto.getDetail(), user);
+
         warnRepository.save(warn);
     }
 
@@ -118,6 +225,20 @@ public class AdminService {
         Warn warn = getWarn(requestDto.getWarnId());
 
         warnRepository.delete(warn);
+    }
+
+    /**
+     *  전체 리뷰 조회
+     *
+     * @param page
+     * @return AllReviewResponseDto
+     */
+    public List<AllReviewResponseDto> getAllRevivewList(int page) {
+
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+        Page<Review> reviewPage = reviewRepository.findAll(pageable);
+
+        return reviewPage.stream().map(AllReviewResponseDto::new).toList();
     }
 
     /**
@@ -196,8 +317,7 @@ public class AdminService {
      * @throws CustomException NOT_FOUND_PRODUCT 상품 정보가 존재하지 않을 때
      */
     @Transactional
-    public void addProductDetails(Long productId,
-        List<ProductDetailRequestDto> productDetailRequestDto) {
+    public void addProductDetails(Long productId, List<ProductDetailRequestDto> productDetailRequestDto) {
 
         Product product = getProduct(productId);
 
@@ -260,7 +380,21 @@ public class AdminService {
     }
 
     /**
-     * Q&A 답변 등록
+     * 상품 이미지 등록
+     *
+     * @param file
+     * @param productId
+     */
+    public void updateProductImage(MultipartFile file, Long productId) {
+
+        Product product = getProduct(productId);
+        List<MultipartFile> files = List.of(file);
+
+        fileUploadUtil.uploadImage(files, ImageType.PRODUCT, productId);
+    }
+
+    /**
+     * 답변 등록
      *
      * @param requestDto
      * @throws CustomException NOT_FOUND_QUESTION 문의Id로 문의를 찾을 수 없을 때
@@ -285,7 +419,7 @@ public class AdminService {
     }
 
     /**
-     * Q&A 문의 전체 조회
+     * 문의 전체 조회
      *
      * @param page
      * @return List<QuestionResponseDto>
@@ -349,101 +483,6 @@ public class AdminService {
         mileageRepository.deleteAll();
     }
 
-    /**
-     * 상품 이미지 등록
-     *
-     * @param file
-     * @param productId
-     */
-    public void updateProductImage(MultipartFile file, Long productId) {
-        Product product = getProduct(productId);
-        List<MultipartFile> files = List.of(file);
-        fileUploadUtil.uploadImage(files, ImageType.PRODUCT, productId);
-    }
-
-    /**
-     * 유저 프로필 조회
-     *
-     * @param userId
-     * @return UserProfileResponseDto
-     */
-    public UserProfileResponseDto getUserProfile(Long userId) {
-
-        User user = getUser(userId);
-
-        // 경고리스트 -> WarnResponseDto 형태로변환
-        List<Warn> warnList = warnRepository.findByUser(user);
-        List<WarnResponseDto> warnResponseDtoList = warnList.stream().map(WarnResponseDto::new)
-            .toList();
-
-        // 주소리스트 -> AddressResponseDto 형태로변환
-        List<Address> addressList = addressRepository.findByUser(user);
-        List<AddressResponseDto> addressResponseDtoList = addressList.stream()
-            .map(AddressResponseDto::new).toList();
-
-        // 오더 찾아오기
-        List<Order> orderList = ordersRepository.findAllByUserId(userId);
-
-        // 누적금액과 최근 주문 ID 초기화
-        Long totalPrice = 0L;
-        Long recentOrderId = 0L;
-
-        // 최근 주문을 찾기 위한 변수
-        Order recentOrder = null;
-
-        for (Order order : orderList) {
-            // 누적금액 더하기
-            totalPrice += order.getTotalPrice();
-
-            // 최근 주문 찾기
-            if (recentOrder == null || order.getCreatedAt().isAfter(recentOrder.getCreatedAt())) {
-                recentOrder = order;
-            }
-        }
-
-        // 최근 주문의 ID 가져오기 (최근 주문이 있을 경우)
-        if (recentOrder != null) {
-            recentOrderId = recentOrder.getId();
-        }
-        return new UserProfileResponseDto(user, warnResponseDtoList, addressResponseDtoList,
-            totalPrice, recentOrderId);
-    }
-
-    /**
-     * 유저 쿠폰 & 마일리지 조회
-     *
-     * @return UsersCouponAndMileageResponseDto
-     */
-    public List<UsersCouponAndMileageResponseDto> getAllUsersCouponAndMileages(int page) {
-
-        // 유저 찾기
-        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
-        Page<User> userPage = userRepository.findAll(pageable);
-
-        return userPage.stream()
-            .map(UsersCouponAndMileageResponseDto::new)
-            .collect(Collectors.toList());
-    }
-
-    /**
-     *  전체 리뷰 조회
-     *
-     * @param page
-     * @return AllReviewResponseDto
-     */
-    public List<AllReviewResponseDto> getAllRevivewList(int page) {
-
-        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
-        Page<Review> reviewPage = reviewRepository.findAll(pageable);
-        return reviewPage.stream().map(AllReviewResponseDto::new).toList();
-    }
-
-
-
-
-
-
-
     private User getUser(Long userId) {
         return userRepository.findById(userId)
             .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
@@ -463,34 +502,5 @@ public class AdminService {
         return questionRepository.findById(questionId)
             .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_QUESTION));
     }
-
-    public String dailySoldStatistics(User user) {
-        if (!UserRole.ADMIN.equals(user.getUserRole())) {
-            throw new CustomException(ErrorType.DENIED_PERMISSION);
-        }
-        return ordersRepository.findTodayOrderTotalPriceSum().map(total -> total + " 원 입니다")
-            .orElse("0원 입니다.");
-    }
-
-    public String weeklySoldStatistics(User user) {
-        if (!UserRole.ADMIN.equals(user.getUserRole())) {
-            throw new CustomException(ErrorType.DENIED_PERMISSION);
-        }
-        return ordersRepository.findWeekOrderTotalPriceSum().map(total -> total + " 원 입니다")
-            .orElse("0원 입니다.");
-    }
-
-    public String monthlySoldStatistics(User user, int month) {
-        if (!UserRole.ADMIN.equals(user.getUserRole())) {
-            throw new CustomException(ErrorType.DENIED_PERMISSION);
-        }
-        if (month < 0 || month > 12) {
-            throw new CustomException(ErrorType.WRONG_MONTH);
-        }
-        return ordersRepository.findMonthOrderTotalPriceSum(month).map(total -> total + " 원 입니다")
-            .orElse("0원 입니다.");
-    }
-
-
 
 }

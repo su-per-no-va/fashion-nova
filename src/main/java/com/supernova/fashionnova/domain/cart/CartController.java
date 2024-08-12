@@ -97,6 +97,12 @@ public class CartController {
         return ResponseUtil.of(HttpStatus.OK, "장바구니 상품 삭제 완료");
     }
 
+    /**
+     * 장바구니 비우기
+     *
+     * @param userDetails
+     * @return "장바구니 비우기 완료" 메시지
+     */
     @DeleteMapping("/delete")
     public ResponseEntity<String> clearCart(@AuthenticationPrincipal UserDetailsImpl userDetails) {
 
