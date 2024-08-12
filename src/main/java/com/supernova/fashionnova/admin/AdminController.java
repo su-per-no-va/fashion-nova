@@ -125,6 +125,51 @@ public class AdminController {
     }
 
     /**
+     * 유저 프로필 조회
+     *
+     * @param userId
+     * @return UserProfileResponseDto
+     */
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<UserProfileResponseDto> getUserProfile(
+        @PathVariable Long userId) {
+
+        UserProfileResponseDto responseDto = adminService.getUserProfile(userId);
+
+        return ResponseUtil.of(HttpStatus.OK, responseDto);
+    }
+
+    /**
+     * 유저리스트(마일리지,쿠폰을 기준으로) 조회
+     *
+     * @param page
+     * @return
+     */
+    @GetMapping("/users/coupons/mileages")
+    public ResponseEntity<List<UsersCouponAndMileageResponseDto>> getAllUsersCouponAndMileages(
+        @RequestParam(defaultValue = "0") int page) {
+
+        List<UsersCouponAndMileageResponseDto> responseDtoList = adminService.getAllUsersCouponAndMileages(page);
+
+        return ResponseUtil.of(HttpStatus.OK, responseDtoList);
+    }
+
+    /**
+     * 리뷰 전체 조회
+     *
+     * @param page
+     * @return List<AllReviewResponseDto>
+     */
+    @GetMapping("/reviews")
+    public ResponseEntity<List<AllReviewResponseDto>> getAllReviews(
+        @RequestParam(defaultValue = "0") int page) {
+
+        List<AllReviewResponseDto> responseDtoList = adminService.getAllRevivewList(page);
+
+        return ResponseUtil.of(HttpStatus.OK, responseDtoList);
+    }
+
+    /**
      * 작성자별 리뷰 조회
      *
      * @param userId
@@ -190,6 +235,23 @@ public class AdminController {
         adminService.updateProduct(requestDto);
 
         return ResponseUtil.of(HttpStatus.OK, "상품 수정 성공");
+    }
+
+    /**
+     * 상품 이미지 등록
+     *
+     * @param file
+     * @param productId
+     * @return "사진 등록 성공"
+     */
+    @PostMapping("/products/image/{productId}")
+    public ResponseEntity<String> updateProductImage(
+        @RequestParam(value = "image") MultipartFile file,
+        @PathVariable Long productId) {
+
+        adminService.updateProductImage(file, productId);
+
+        return ResponseUtil.of(HttpStatus.OK, "사진 등록 성공");
     }
 
     /**
@@ -263,68 +325,6 @@ public class AdminController {
         adminService.deleteMileage();
 
         return ResponseUtil.of(HttpStatus.OK, "마일리지 초기화 성공");
-    }
-
-    /**
-     * 상품 이미지 등록
-     *
-     * @param file
-     * @param productId
-     * @return "사진 등록 성공"
-     */
-    @PostMapping("/products/image/{productId}")
-    public ResponseEntity<String> updateProductImage(
-        @RequestParam(value = "image") MultipartFile file,
-        @PathVariable Long productId) {
-
-        adminService.updateProductImage(file, productId);
-
-        return ResponseUtil.of(HttpStatus.OK, "사진 등록 성공");
-    }
-
-    /**
-     * 유저 프로필 조회
-     *
-     * @param userId
-     * @return UserProfileResponseDto
-     */
-    @GetMapping("/users/{userId}")
-    public ResponseEntity<UserProfileResponseDto> getUserProfile(
-        @PathVariable Long userId) {
-
-        UserProfileResponseDto responseDto = adminService.getUserProfile(userId);
-
-        return ResponseUtil.of(HttpStatus.OK, responseDto);
-    }
-
-    /**
-     * 유저리스트(마일리지,쿠폰을 기준으로) 조회
-     *
-     * @param page
-     * @return
-     */
-    @GetMapping("/users/coupons/mileages")
-    public ResponseEntity<List<UsersCouponAndMileageResponseDto>> getAllUsersCouponAndMileages(
-        @RequestParam(defaultValue = "0") int page) {
-
-        List<UsersCouponAndMileageResponseDto> responseDtoList = adminService.getAllUsersCouponAndMileages(page);
-
-        return ResponseUtil.of(HttpStatus.OK, responseDtoList);
-    }
-
-    /**
-     * 리뷰 전체 조회
-     *
-     * @param page
-     * @return List<AllReviewResponseDto>
-     */
-    @GetMapping("/reviews")
-    public ResponseEntity<List<AllReviewResponseDto>> getAllReviews(
-        @RequestParam(defaultValue = "0") int page) {
-
-        List<AllReviewResponseDto> responseDtoList = adminService.getAllRevivewList(page);
-
-        return ResponseUtil.of(HttpStatus.OK, responseDtoList);
     }
 
 }

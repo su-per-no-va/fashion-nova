@@ -164,6 +164,84 @@ public class AdminService {
     }
 
     /**
+     * 유저 프로필 조회
+     *
+     * @param userId
+     * @return UserProfileResponseDto
+     */
+    public UserProfileResponseDto getUserProfile(Long userId) {
+
+        User user = getUser(userId);
+
+        // 경고리스트 -> WarnResponseDto 형태로변환
+        List<Warn> warnList = warnRepository.findByUser(user);
+        List<WarnResponseDto> warnResponseDtoList =
+            warnList.stream().map(WarnResponseDto::new).toList();
+
+        // 주소리스트 -> AddressResponseDto 형태로변환
+        List<Address> addressList = addressRepository.findByUser(user);
+        List<AddressResponseDto> addressResponseDtoList =
+            addressList.stream().map(AddressResponseDto::new).toList();
+
+        // 오더 찾아오기
+        List<Order> orderList = ordersRepository.findAllByUserId(userId);
+
+        // 누적금액과 최근 주문 ID 초기화
+        Long totalPrice = 0L;
+        Long recentOrderId = 0L;
+
+        // 최근 주문을 찾기 위한 변수
+        Order recentOrder = null;
+
+        for (Order order : orderList) {
+            // 누적금액 더하기
+            totalPrice += order.getTotalPrice();
+
+            // 최근 주문 찾기
+            if (recentOrder == null || order.getCreatedAt().isAfter(recentOrder.getCreatedAt())) {
+                recentOrder = order;
+            }
+        }
+
+        // 최근 주문의 ID 가져오기 (최근 주문이 있을 경우)
+        if (recentOrder != null) {
+            recentOrderId = recentOrder.getId();
+        }
+
+        return new UserProfileResponseDto(user, warnResponseDtoList, addressResponseDtoList, totalPrice, recentOrderId);
+    }
+
+    /**
+     * 유저 쿠폰 & 마일리지 조회
+     *
+     * @return UsersCouponAndMileageResponseDto
+     */
+    public List<UsersCouponAndMileageResponseDto> getAllUsersCouponAndMileages(int page) {
+
+        // 유저 찾기
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+        Page<User> userPage = userRepository.findAll(pageable);
+
+        return userPage.stream()
+            .map(UsersCouponAndMileageResponseDto::new)
+            .collect(Collectors.toList());
+    }
+
+    /**
+     *  전체 리뷰 조회
+     *
+     * @param page
+     * @return AllReviewResponseDto
+     */
+    public List<AllReviewResponseDto> getAllRevivewList(int page) {
+
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+        Page<Review> reviewPage = reviewRepository.findAll(pageable);
+
+        return reviewPage.stream().map(AllReviewResponseDto::new).toList();
+    }
+
+    /**
      * 작성자별 리뷰 조회
      *
      * @param userId
@@ -302,6 +380,20 @@ public class AdminService {
     }
 
     /**
+     * 상품 이미지 등록
+     *
+     * @param file
+     * @param productId
+     */
+    public void updateProductImage(MultipartFile file, Long productId) {
+
+        Product product = getProduct(productId);
+        List<MultipartFile> files = List.of(file);
+
+        fileUploadUtil.uploadImage(files, ImageType.PRODUCT, productId);
+    }
+
+    /**
      * Q&A 답변 등록
      *
      * @param requestDto
@@ -389,98 +481,6 @@ public class AdminService {
     public void deleteMileage() {
 
         mileageRepository.deleteAll();
-    }
-
-    /**
-     * 상품 이미지 등록
-     *
-     * @param file
-     * @param productId
-     */
-    public void updateProductImage(MultipartFile file, Long productId) {
-
-        Product product = getProduct(productId);
-        List<MultipartFile> files = List.of(file);
-
-        fileUploadUtil.uploadImage(files, ImageType.PRODUCT, productId);
-    }
-
-    /**
-     * 유저 프로필 조회
-     *
-     * @param userId
-     * @return UserProfileResponseDto
-     */
-    public UserProfileResponseDto getUserProfile(Long userId) {
-
-        User user = getUser(userId);
-
-        // 경고리스트 -> WarnResponseDto 형태로변환
-        List<Warn> warnList = warnRepository.findByUser(user);
-        List<WarnResponseDto> warnResponseDtoList =
-            warnList.stream().map(WarnResponseDto::new).toList();
-
-        // 주소리스트 -> AddressResponseDto 형태로변환
-        List<Address> addressList = addressRepository.findByUser(user);
-        List<AddressResponseDto> addressResponseDtoList =
-            addressList.stream().map(AddressResponseDto::new).toList();
-
-        // 오더 찾아오기
-        List<Order> orderList = ordersRepository.findAllByUserId(userId);
-
-        // 누적금액과 최근 주문 ID 초기화
-        Long totalPrice = 0L;
-        Long recentOrderId = 0L;
-
-        // 최근 주문을 찾기 위한 변수
-        Order recentOrder = null;
-
-        for (Order order : orderList) {
-            // 누적금액 더하기
-            totalPrice += order.getTotalPrice();
-
-            // 최근 주문 찾기
-            if (recentOrder == null || order.getCreatedAt().isAfter(recentOrder.getCreatedAt())) {
-                recentOrder = order;
-            }
-        }
-
-        // 최근 주문의 ID 가져오기 (최근 주문이 있을 경우)
-        if (recentOrder != null) {
-            recentOrderId = recentOrder.getId();
-        }
-
-        return new UserProfileResponseDto(user, warnResponseDtoList, addressResponseDtoList, totalPrice, recentOrderId);
-    }
-
-    /**
-     * 유저 쿠폰 & 마일리지 조회
-     *
-     * @return UsersCouponAndMileageResponseDto
-     */
-    public List<UsersCouponAndMileageResponseDto> getAllUsersCouponAndMileages(int page) {
-
-        // 유저 찾기
-        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
-        Page<User> userPage = userRepository.findAll(pageable);
-
-        return userPage.stream()
-            .map(UsersCouponAndMileageResponseDto::new)
-            .collect(Collectors.toList());
-    }
-
-    /**
-     *  전체 리뷰 조회
-     *
-     * @param page
-     * @return AllReviewResponseDto
-     */
-    public List<AllReviewResponseDto> getAllRevivewList(int page) {
-
-        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
-        Page<Review> reviewPage = reviewRepository.findAll(pageable);
-
-        return reviewPage.stream().map(AllReviewResponseDto::new).toList();
     }
 
     private User getUser(Long userId) {
