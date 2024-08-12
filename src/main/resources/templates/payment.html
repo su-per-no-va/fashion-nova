@@ -412,6 +412,7 @@
       console.log(error.message)
     });
     fetchMileage();
+    fetchCoupons();
   });
 
   // 장바구니 항목을 렌더링하는 함수
@@ -489,7 +490,38 @@
     $('#name').next('label').text(`사용 가능 마일리지 : ${totalMileage.toLocaleString()}원`);
   }
 
-  // 페이지 로드 시 마일리지 데이터를 가져옵니다.
+  function fetchCoupons() {
+    $.ajax({
+      type: 'GET',
+      url: '/coupons', // 서버에서 쿠폰 데이터를 제공하는 엔드포인트
+      success: function(response) {
+        updateCouponTable(response);
+      },
+      error: function(error) {
+        console.error('쿠폰 불러오기 실패 :', error);
+      }
+    });
+  }
+
+  function updateCouponTable(coupons) {
+    // 쿠폰 선택 요소
+    const $couponSelect = $('select[name="time"]');
+
+    // 기존 옵션을 비웁니다
+    $couponSelect.empty();
+
+    // 기본 옵션 추가
+    $couponSelect.append('<option value="">Coupon</option>');
+
+    // 각 쿠폰을 선택 항목으로 추가
+    coupons.forEach(coupon => {
+      $couponSelect.append(`<option value="${coupon.id}">${coupon.name}</option>`);
+    });
+
+    // 드롭다운 새로 고침 (만약 select2 플러그인을 사용하는 경우)
+    $('.js-select2').select2(); // select2 초기화 (필요에 따라)
+  }
+
 </script>
 
 </body>
