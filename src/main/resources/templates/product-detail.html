@@ -727,6 +727,21 @@
 
           let uniqueColors = new Set();
 
+
+          $('#sizeSelect').on('change', function () {
+            const selectedSize = $(this).val();
+            const availableColors = productDetails
+            .filter(detail => detail.size === selectedSize)
+            .map(detail => detail.color);
+
+            $('#colorSelect').empty();
+            $('#colorSelect').append('<option>Choose an option</option>');
+
+            availableColors.forEach(color => {
+              $('#colorSelect').append(`<option value="${color}">${color}</option>`);
+            });
+          });
+
           $('#colorSelect').empty();
           $('#colorSelect').append('<option>Choose an option</option>');
           productDetails.forEach(product => {
@@ -773,8 +788,6 @@
                             </div>
                         </div>
                    `;
-
-
 
               reviewContainer.append(reviewHtml);
 
