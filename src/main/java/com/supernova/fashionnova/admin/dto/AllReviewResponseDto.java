@@ -27,7 +27,9 @@ public class AllReviewResponseDto {
         this.productName = review.getProduct().getProduct();
         this.rating = review.getRating();
         this.content = review.getReview();
-        this.imageUrls = review.getReviewImageList().stream().map(ReviewImage::getReviewImageUrl)
+        this.imageUrls = review.getReviewImageList()
+            .stream()
+            .map(ReviewImage::getReviewImageUrl)
             .toList();
         this.createdAt = review.getCreatedAt();
 

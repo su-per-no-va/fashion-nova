@@ -43,33 +43,40 @@ public class AdminController {
     private final AdminService adminService;
 
     /**
-     * 판몌통계(일별)
+     * 판매 통계 (일별)
      */
     @GetMapping("/sold/day")
     public ResponseEntity<String> dailySoldStatistics(
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseUtil.of(HttpStatus.OK,
-            adminService.dailySoldStatistics(userDetails.getUser()));
+
+        String message = adminService.dailySoldStatistics(userDetails.getUser());
+
+        return ResponseUtil.of(HttpStatus.OK, message);
     }
 
     /**
-     * 판몌통계(주별)
+     * 판매 통계 (주별)
      */
     @GetMapping("/sold/week")
     public ResponseEntity<String> weeklySoldStatistics(
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseUtil.of(HttpStatus.OK,
-            adminService.weeklySoldStatistics(userDetails.getUser()));
+
+        String message = adminService.weeklySoldStatistics(userDetails.getUser());
+
+        return ResponseUtil.of(HttpStatus.OK, message);
     }
 
     /**
-     * 판몌통계(월별)
+     * 판매 통계 (월별)
      */
-    @GetMapping("/sold/moth/{month}")
+    @GetMapping("/sold/month/{month}")
     public ResponseEntity<String> monthlySoldStatistics(
-        @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable int month) {
-        return ResponseUtil.of(HttpStatus.OK,
-            adminService.monthlySoldStatistics(userDetails.getUser(), month));
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        @PathVariable int month) {
+
+        String message = adminService.monthlySoldStatistics(userDetails.getUser(), month);
+
+        return ResponseUtil.of(HttpStatus.OK, message);
     }
 
     /**
@@ -83,6 +90,36 @@ public class AdminController {
         @RequestParam(defaultValue = "0") int page) {
 
         List<UserResponseDto> responseDtoList = adminService.getAllUserList(page);
+
+        return ResponseUtil.of(HttpStatus.OK, responseDtoList);
+    }
+
+    /**
+     * 유저 프로필 조회
+     *
+     * @param userId
+     * @return UserProfileResponseDto
+     */
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<UserProfileResponseDto> getUserProfile(
+        @PathVariable Long userId) {
+
+        UserProfileResponseDto responseDto = adminService.getUserProfile(userId);
+
+        return ResponseUtil.of(HttpStatus.OK, responseDto);
+    }
+
+    /**
+     * 유저리스트(마일리지,쿠폰을 기준으로) 조회
+     *
+     * @param page
+     * @return
+     */
+    @GetMapping("/users/coupons/mileages")
+    public ResponseEntity<List<UsersCouponAndMileageResponseDto>> getAllUsersCouponAndMileages(
+        @RequestParam(defaultValue = "0") int page) {
+
+        List<UsersCouponAndMileageResponseDto> responseDtoList = adminService.getAllUsersCouponAndMileages(page);
 
         return ResponseUtil.of(HttpStatus.OK, responseDtoList);
     }
@@ -115,6 +152,21 @@ public class AdminController {
         adminService.deleteCaution(requestDto);
 
         return ResponseUtil.of(HttpStatus.OK, "회원 경고 삭제 완료");
+    }
+
+    /**
+     * 리뷰 전체 조회
+     *
+     * @param page
+     * @return List<AllReviewResponseDto>
+     */
+    @GetMapping("/reviews")
+    public ResponseEntity<List<AllReviewResponseDto>> getAllReviews(
+        @RequestParam(defaultValue = "0") int page) {
+
+        List<AllReviewResponseDto> responseDtoList = adminService.getAllRevivewList(page);
+
+        return ResponseUtil.of(HttpStatus.OK, responseDtoList);
     }
 
     /**
@@ -186,7 +238,24 @@ public class AdminController {
     }
 
     /**
-     * Q&A 답변 등록
+     * 상품 이미지 등록
+     *
+     * @param file
+     * @param productId
+     * @return "사진 등록 성공"
+     */
+    @PostMapping("/products/image/{productId}")
+    public ResponseEntity<String> updateProductImage(
+        @RequestParam(value = "image") MultipartFile file,
+        @PathVariable Long productId) {
+
+        adminService.updateProductImage(file, productId);
+
+        return ResponseUtil.of(HttpStatus.OK, "사진 등록 성공");
+    }
+
+    /**
+     * 답변 등록
      *
      * @param requestDto
      * @return "Q&A 답변 등록 완성"
@@ -201,7 +270,7 @@ public class AdminController {
     }
 
     /**
-     * Q&A 문의 전체 조회
+     * 문의 전체 조회
      *
      * @param page
      * @return responseDto
@@ -257,70 +326,5 @@ public class AdminController {
 
         return ResponseUtil.of(HttpStatus.OK, "마일리지 초기화 성공");
     }
-
-    /**
-     * 상품 이미지 등록
-     *
-     * @param file
-     * @param productId
-     * @return "사진 등록 성공"
-     */
-    @PostMapping("/products/image/{productId}")
-    public ResponseEntity<String> updateProductImage(
-        @RequestParam(value = "image") MultipartFile file,
-        @PathVariable Long productId) {
-
-        adminService.updateProductImage(file, productId);
-
-        return ResponseUtil.of(HttpStatus.OK, "사진 등록 성공");
-    }
-
-    /**
-     * 유저 프로필 조회
-     *
-     * @param userId
-     * @return UserProfileResponseDto
-     */
-    @GetMapping("/users/{userId}")
-    public ResponseEntity<UserProfileResponseDto> getUserProfile(@PathVariable Long userId) {
-
-        UserProfileResponseDto responseDto = adminService.getUserProfile(userId);
-
-        return ResponseUtil.of(HttpStatus.OK, responseDto);
-    }
-
-    /**
-     * 유저리스트(마일리지,쿠폰을 기준으로) 조회
-     *
-     * @param page
-     * @return
-     */
-    @GetMapping("/users/coupons/mileages")
-    public ResponseEntity<List<UsersCouponAndMileageResponseDto>> getAllUsersCouponAndMileages(
-        @RequestParam(defaultValue = "0") int page
-    ) {
-
-        List<UsersCouponAndMileageResponseDto> responseDtoList = adminService.getAllUsersCouponAndMileages(
-            page);
-
-        return ResponseUtil.of(HttpStatus.OK, responseDtoList);
-    }
-
-    /**
-     * 리뷰 전체 조회
-     *
-     * @param page
-     * @return List<AllReviewResponseDto>
-     */
-    @GetMapping("/reviews")
-    public ResponseEntity<List<AllReviewResponseDto>> getAllReviews(
-        @RequestParam(defaultValue = "0") int page
-    ) {
-
-        List<AllReviewResponseDto> responseDtoList = adminService.getAllRevivewList(page);
-
-        return ResponseUtil.of(HttpStatus.OK, responseDtoList);
-    }
-
 
 }

@@ -20,14 +20,15 @@ public class UsersCouponAndMileageResponseDto {
     private final Long mileage;
 
     public UsersCouponAndMileageResponseDto(User user) {
-
         this.id = user.getId();
         this.UserName = user.getUserName();
         this.name = user.getName();
         this.userRole = user.getUserRole();
         this.email = user.getEmail();
         this.userStatus = user.getUserStatus();
-        this.couponResponseDtoList = user.getCouponList().stream().map(CouponResponseDto::new)
+        this.couponResponseDtoList = user.getCouponList()
+            .stream()
+            .map(CouponResponseDto::new)
             .toList();
         this.mileage = user.getMileage();
     }

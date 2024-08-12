@@ -46,7 +46,7 @@ public class QuestionController {
     }
 
     /**
-     * 내 문의 조회
+     * 내 문의 목록 조회
      *
      * @param userDetails
      * @param page

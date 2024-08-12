@@ -84,27 +84,6 @@ public class UserService {
     }
 
     /**
-     * 유저 경고 조회
-     *
-     * @param user
-     * @return List<WarnResponseDto>
-     */
-    @Transactional
-    public List<WarnResponseDto> getCautionList(User user) {
-
-        // 테스트 경고 작성
-//        Warn warn1 = new Warn("님 블랙 컨슈머임", user);
-//         Warn warn2 = new Warn("님 엄청난 블랙 컨슈머임", user);
-//        warnRepository.save(warn1);
-//        warnRepository.save(warn2);
-        List<Warn> warnList = warnRepository.findByUser(user);
-
-        return warnList.stream()
-            .map(WarnResponseDto::new)
-            .collect(Collectors.toList());
-    }
-
-    /**
      * 유저 정보 수정
      *
      * @param requestDto
@@ -122,6 +101,22 @@ public class UserService {
         updateUser.updateUser(requestDto,encodedPassword);
 
         return new UserResponseDto(user);
+    }
+
+    /**
+     * 유저 경고 조회
+     *
+     * @param user
+     * @return List<WarnResponseDto>
+     */
+    @Transactional
+    public List<WarnResponseDto> getCautionList(User user) {
+
+        List<Warn> warnList = warnRepository.findByUser(user);
+
+        return warnList.stream()
+            .map(WarnResponseDto::new)
+            .collect(Collectors.toList());
     }
 
     /**
