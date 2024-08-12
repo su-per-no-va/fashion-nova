@@ -273,25 +273,19 @@
 <script src="../js/main.js"></script>
 <!--===============================================================================================-->
 <script>
+  let currentPage = 0;
+  const pageSize = 10; // 페이지당 아이템 수 (서버와 일치해야 함)
   $(document).ready(function () {
 
-    let auth = localStorage.getItem('accessToken');
-    //로그인 안되어 있으면 로그인으로 옮기기
-    if (!auth) {
-      alert("로그인 후 이용해 주세요");
-      window.location.href = "login.html";
-    }
     /* 장바구니 아이콘 개수 */
     window.common.getShoppingCart()
     .done(function (response) {
       if (response) {
         $('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
-      } else {
-        // no response
       }
     })
     .fail(function (error) {
-      console.log(error.message)
+      console.log(error.message);
     });
 
     /* 찜 아이콘 개수 */
@@ -299,30 +293,34 @@
     .done(function (response) {
       if (response) {
         $('a#wish-icon')[0].dataset.notify = response.length;
-      } else {
-        // no response
       }
     });
-    fetchQuestions()
+
+    // 질문 데이터 가져오기
+    fetchQuestions();
 
     // 클릭 이벤트 추가
-    $questionTable.find('.question-title, .question-text').on('click', function() {
+    $(document).on('click', '.question-title', function() {
       let questionId = $(this).closest('.table_row').data('question-id');
       window.location.href = `my-question-detail.html?id=${questionId}`;
     });
   });
-  <!--===============================================================================================-->
-</script>
-
-<script>
 
   // 질문 데이터를 가져오는 함수
   function fetchQuestions() {
     $.ajax({
       type: 'GET',
-      url: '/questions', // 서버에서 질문 데이터를 제공하는 엔드포인트
+      url: `/questions?page=${currentPage}`,
       success: function(response) {
-        updateQuestionTable(response);
+        if (response.length > 0) {
+          updateQuestionTable(response);
+
+          // 다음 페이지 데이터 요청 (현재 페이지의 데이터 수가 페이지 사이즈와 같으면)
+          if (response.length === pageSize ) {
+            currentPage++;
+            fetchQuestions(); // 재귀적으로 호출하여 다음 페이지 데이터 요청
+          }
+        }
       },
       error: function(error) {
         console.error('질문 불러오기 실패:', error);
@@ -333,8 +331,9 @@
   // 질문 테이블 업데이트
   function updateQuestionTable(questionResponseDtos) {
     let $questionTable = $('#question-table'); // 질문 테이블을 표시할 div
-    $questionTable.find('.table_row').remove(); // 기존 내용을 지우고 새로 추가
-
+    if (currentPage === 0) {
+      $questionTable.find('.table_row').remove(); // 기존 내용을 지우고 새로 추가
+    }
     questionResponseDtos.forEach(function(question) {
       let imageUrl = question.questionUrls.length > 0 ? question.questionUrls[0] : '../images/no-image.png';
       let row = `
@@ -344,7 +343,7 @@
         </td>
         <td class="column-2">${new Date().toISOString().split('T')[0]}</td>
         <td class="column-3">
-        <a href="my-question-detail.html?id=${question.id}" class="question-title">${question.title}</a>
+          <a href="my-question-detail.html?id=${question.id}" class="question-title">${question.title}</a>
         </td>
         <td class="column-4">${question.type}</td>
         <td class="column-5">${question.question}</td>
@@ -352,8 +351,8 @@
       </tr>`;
       $questionTable.append(row);
     });
-
   }
 </script>
+
 </body>
 </html>
