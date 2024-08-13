@@ -35,6 +35,8 @@ function onLogin() {
     localStorage.setItem('accessToken', token);
     localStorage.setItem('refreshToken', refreshToken);
 
+
+
     if (token) {
       // Cookies.set('Authorization', token, {path: '/'});
 
@@ -45,8 +47,14 @@ function onLogin() {
         jqXHR.setRequestHeader('Authorization', token);
       });
 
+      // 현재 페이지 URL을 확인하여 리디렉션 결정
+      const currentPage = window.location.pathname;
+      if (currentPage.includes('admin-login.html')) {
+        window.location.href = '/admin/index.html';
+      } else {
+        window.location.href = '/index.html';
+      }
       alert("로그인 성공!");
-      window.location.href = host;
     } else {
       alert("로그인 실패!!");
     }

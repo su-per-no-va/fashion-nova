@@ -81,7 +81,6 @@ public class FileUploadUtil {
                 for (Map.Entry<String, String> entry : imageUrls.entrySet()) {
                     ReviewImage reviewImage =
                         new ReviewImage(review, entry.getKey(), entry.getValue());
-                    review.getReviewImageList().add(reviewImage); // 리뷰 이미지 리스트에 추가
                     reviewImageRepository.save(reviewImage);
                 }
 
@@ -108,7 +107,7 @@ public class FileUploadUtil {
                     QuestionImage questionImage =
                         new QuestionImage(question, entry.getKey(), entry.getValue());
                     questionImageRepository.save(questionImage);
-                    question.getQuestionImageUrls().add(questionImage);
+//                    question.getQuestionImageUrls().add(questionImage);
                 }
 
             }

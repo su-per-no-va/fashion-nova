@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>User - Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+    <link href="../admin/css/admin.css" rel="stylesheet" />
+    <link href="../admin/css/admin-modal.css" rel="stylesheet" />
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- jQuery 라이브러리 추가 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- 공용 자바스크립트 파일 추가 -->
+    <script src="/admin/js/admin-check.js"></script>
+</head>
+<body class="sb-nav-fixed">
+<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+    <!-- Navbar Brand-->
+    <a class="navbar-brand ps-3" href="index.html">슈퍼노바 관리자 페이지</a>
+    <!-- Sidebar Toggle-->
+    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+    <!-- Navbar Search-->
+    <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+    </form>
+
+    <!-- Header-->
+    <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="#!">설정</a></li>
+                <li><a class="dropdown-item" href="#!">활동 로그</a></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li><a class="dropdown-item" href="admin-login.html">로그아웃</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+
+<!-- Menu-->
+<div id="layoutSidenav">
+    <div id="layoutSidenav_nav">
+        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+            <div class="sb-sidenav-menu">
+                <div class="nav">
+                    <div class="sb-sidenav-menu-heading">통계</div>
+                    <a class="nav-link" href="index.html">
+                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        판매 통계
+                    </a>
+                    <div class="sb-sidenav-menu-heading">상품</div>
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts1" aria-expanded="false" aria-controls="collapseLayouts1">
+                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        상품 관리
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseLayouts1" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="admin-product-create.html">상품 등록</a>
+                            <a class="nav-link" href="admin-product.html">상품 관리</a>
+                        </nav>
+                    </div>
+
+                    <div class="sb-sidenav-menu-heading">회원</div>
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts2" aria-expanded="false" aria-controls="collapseLayouts2">
+                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        회원 관리
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseLayouts2" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="admin-user.html">회원 조회</a>
+                            <a class="nav-link" href="admin-coupon-mileage.html">회원 쿠폰, 마일리지</a>
+                        </nav>
+                    </div>
+
+                    <div class="sb-sidenav-menu-heading">리뷰</div>
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts3" aria-expanded="false" aria-controls="collapseLayouts3">
+                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        리뷰 관리
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseLayouts3" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="admin-review.html">리뷰 삭제</a>
+                        </nav>
+                    </div>
+
+                    <div class="sb-sidenav-menu-heading">Q&A</div>
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts4" aria-expanded="false" aria-controls="collapseLayouts4">
+                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        Q&A 관리
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseLayouts4" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="admin-question.html">Q&A 답변 등록</a>
+                        </nav>
+                    </div>
+
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!-- User Page-->
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">User</h1>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        회원 조회, 경고 등록 삭제
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                        User Table
+                    </div>
+                    <div class="card-body">
+                        <table id="datatablesSimple">
+                            <thead>
+                            <tr>
+                                <th>회원ID</th>
+                                <th>ID</th>
+                                <th>이메일</th>
+                                <th>이름</th>
+                                <th>회원유형</th>
+                                <th>상태</th>
+                                <th>경고</th>
+                                <th>휴대폰 번호</th>
+                                <th>등급</th>
+                                <th>가입일</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+                            <tr>
+                                <td>-1</td>
+                                <td>nado123</td>
+                                <td>nado123@gmail.com</td>
+                                <td><a href="#" class="name-link">김나도</a></td>
+                                <td>USER</td>
+                                <td>MEMBER</td>
+                                <td><a href="#" class="modal-link">-1</a></td>
+                                <td>150,000</td>
+                                <td>BRONZE</td>
+                                <td>2024/08/01 13:01</td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer-->
+        <footer class="py-4 bg-light mt-auto">
+            <div class="container-fluid px-4">
+                <div class="d-flex align-items-center justify-content-between small">
+                    <div class="text-muted">(주)패션노바 2024</div>
+                    <div>
+                        <a href="#">개인정보 보호정책</a>
+                        &middot;
+                        <a href="#">이용약관</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+
+<!-- User Modal -->
+<div id="userModal" class="modal">
+    <div class="modal-content">
+        <span class="close user-close">&times;</span>
+        <h3>회원 정보</h3>
+        <table class="modal-table">
+            <tr>
+                <th>아이디</th>
+                <td class="modal-id"></td>
+                <th>이름</th>
+                <td class="modal-name"></td>
+                <th>이메일</th>
+                <td class="modal-email"></td>
+            </tr>
+            <tr>
+                <th>회원 유형</th>
+                <td class="modal-type"></td>
+                <th>가입일</th>
+                <td class="modal-join"></td>
+                <th>등급</th>
+                <td class="modal-grade"></td>
+            </tr>
+            <tr>
+                <th>누적 금액</th>
+                <td class="modal-total" colspan="5"></td>
+            </tr>
+            <tr>
+                <th>배송지 정보</th>
+                <td class="modal-address" colspan="5"></td>
+            </tr>
+            <tr>
+                <th>제재 내역</th>
+                <td class="modal-restriction" colspan="5"></td>
+            </tr>
+            <tr>
+                <th>최근 주문 내역</th>
+                <td class="modal-recent" colspan="5"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- Warning Modal -->
+<div id="warningModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3>경고 등록</h3>
+        <table class="modal-table">
+            <thead>
+            <tr>
+                <th>경고 사유</th>
+                <th>경고 생성일</th>
+                <th>삭제</th> <!-- 삭제 버튼 추가 -->
+            </tr>
+            </thead>
+            <tbody class="warning-body">
+            <!-- 경고 데이터는 동적으로 추가 -->
+            </tbody>
+        </table>
+        <label for="newWarningReason">새 경고 사유:</label>
+        <textarea id="newWarningReason" rows="4" placeholder="새 경고 사유를 입력하세요"></textarea>
+        <div class="modal-buttons">
+            <button id="submitWarning" class="btn btn-primary">등록</button>
+            <button id="cancelWarning" class="btn btn-secondary">취소</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="../admin/js/scripts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+<script src="../admin/js/datatables.js"></script>
+<!--<script src="../admin/js/admin-user-modal.js"></script>-->
+<!--<script src="../admin/js/admin-warning-modal.js"></script>-->
+</body>
+</html>
+
+<script>
+    $(document).ready(function() {
+        const datatablesSimple = document.getElementById('datatablesSimple');
+        if (datatablesSimple) {
+            new simpleDatatables.DataTable(datatablesSimple);
+        }
+
+        // 유저 전체 조회
+        $.ajax({
+            url: '/api/admin/users',
+            type: 'GET',
+            data: { page: 0 },
+            success: function(response) {
+                const userTableBody = $('#datatablesSimple tbody');
+                userTableBody.empty();
+                response.forEach(function(user) {
+                    userTableBody.append(`
+                            <tr>
+                                <td>${user.id}</td> <!-- 회원ID (순번) -->
+                                <td>${user.userName}</td> <!-- ID -->
+                                <td>${user.email}</td> <!-- 이메일 -->
+                                <td><a href="#" class="name-link" data-user-id="${user.id}">${user.name}</a></td> <!-- 이름 -->
+                                <td>${user.status}</td> <!-- 회원유형 -->
+                                <td>${user.grade || 'N/A'}</td> <!-- 등급 -->
+                                <td><a href="#" class="modal-link" data-user-id="${user.id}">${user.warnCount}</a></td> <!-- 경고 -->
+                                <td>${user.phone}</td> <!-- 결제금액 -->
+                                <td>${user.grade || 'N/A'}</td> <!-- 등급 -->
+                                <td>${new Date(user.createdAt).toLocaleString()}</td> <!-- 가입일 -->
+                            </tr>
+                        `);
+                });
+            }
+        });
+
+        // 유저 정보 모달
+        $(document).on('click', '.name-link', function(event) {
+            event.preventDefault();
+            const userId = $(this).data('user-id');
+            $.ajax({
+                url: `/api/admin/users/${userId}`,
+                type: 'GET',
+                success: function(response) {
+                    $('.modal-id').text(response.userName);
+                    $('.modal-name').text(response.name);
+                    $('.modal-email').text(response.email);
+                    $('.modal-type').text(response.status);
+                    $('.modal-join').text(new Date(response.createdAt).toLocaleString());
+                    $('.modal-grade').text(response.userGrade || 'N/A');
+                    $('.modal-total').text(response.totalPrice !== null ? response.totalPrice.toLocaleString() : '정보 없음'); // totalPrice를 천 단위로 구분
+                    $('.modal-address').html(response.addressList ? response.addressList.map(addr => addr.address).join('<br>') : '정보 없음');
+                    $('.modal-restriction').html(response.warnList ? response.warnList.map(warn => `${warn.detail} (${warn.createdAt})`).join('<br>') : '정보 없음');
+                    $('.modal-recent').html(response.recentOrderId ? `최근 주문 번호: ${response.recentOrderId}` : '정보 없음'); // recentOrderId를 표시
+                    $('#userModal').show();
+                }
+            });
+        });
+
+        let currentUserId = null; // 전역 변수 선언
+
+        // 경고 내역 모달
+        $(document).on('click', '.modal-link', function(event) {
+            event.preventDefault();
+            const userId = $(this).data('user-id');
+            currentUserId = userId;
+            $.ajax({
+                url: `/api/admin/users/${userId}`,
+                type: 'GET',
+                success: function(response) {
+                    const warningBody = $('.warning-body');
+                    warningBody.empty();
+                    response.warnList.forEach(function(warn) {
+                        warningBody.append(`
+                                <tr>
+                                    <td>${warn.detail}</td>
+                                    <td>${warn.createdAt}</td>
+                                    <td><button class="btn btn-danger delete-warning" data-warn-id="${warn.id}">삭제</button></td> <!-- 삭제 버튼 추가 -->
+                                </tr>
+                            `);
+                    });
+                    $('#warningModal').show();
+                }
+            });
+        });
+
+        // 모달 닫기
+        $(document).on('click', function(event) {
+            if ($(event.target).is('.user-close, .warning-close, #cancelWarning')) {
+                $('#userModal').hide();
+                $('#warningModal').hide();
+            }
+        });
+
+        $(window).on('click', function(event) {
+            if ($(event.target).is('#userModal')) {
+                $('#userModal').hide();
+            }
+            if ($(event.target).is('#warningModal')) {
+                $('#warningModal').hide();
+            }
+        });
+
+        // 경고 등록
+        $('#submitWarning').on('click', function() {
+            const newWarningReason = $('#newWarningReason').val().trim();
+
+            if (currentUserId && newWarningReason) {
+                $.ajax({
+                    url: '/api/admin/cautions',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        userId: currentUserId,
+                        detail: newWarningReason
+                    }),
+                    success: function() {
+                        alert('경고가 성공적으로 등록되었습니다.');
+                        $('#warningModal').hide();
+                        $('#newWarningReason').val('');
+                        window.location.reload(); // 페이지 새로 고침
+                    },
+                    error: function() {
+                        alert('경고 등록에 실패했습니다.');
+                    }
+                });
+            } else {
+                alert('경고 사유를 입력해 주세요.');
+            }
+        });
+
+        // 경고 삭제
+        $(document).on('click', '.delete-warning', function() {
+            const warnId = $(this).data('warn-id');
+
+            if (confirm('정말로 이 경고를 삭제하시겠습니까?')) {
+                $.ajax({
+                    url: '/api/admin/cautions',
+                    type: 'DELETE',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        warnId: warnId
+                    }),
+                    success: function() {
+                        alert('경고가 성공적으로 삭제되었습니다.');
+                        $('#warningModal').hide();
+                        window.location.reload(); // 페이지 새로 고침
+                    },
+                    error: function() {
+                        alert('경고 삭제에 실패했습니다.');
+                    }
+                });
+            }
+        });
+
+    });
+</script>

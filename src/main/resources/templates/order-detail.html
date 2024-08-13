@@ -49,7 +49,7 @@
                 </div>
 
                 <div class="right-top-bar flex-w h-full">
-                    <a href="login.html" class="flex-c-m trans-04 p-lr-25">
+                    <a href="login.html" id="auth-btn" class="flex-c-m trans-04 p-lr-25">
                         Login
                     </a>
 
@@ -167,13 +167,14 @@
                     <div class="wrap-table-shopping-cart">
                         <table class="table-shopping-cart">
                             <tr class="table_head">
-                                <th class="column-1">Product</th>
-                                <th class="column-2">Product Name</th>
-                                <th class="column-3">Count</th>
-                                <th class="column-4">Price</th>
-                                <th class="column-5">Order Status</th>
-                                <th class="column-6"></th>
-                                <th class="column-7">Edit</th>
+                              <th class="column-1">Product</th>
+                              <th class="column-2">Product Name</th>
+                              <th class="column-3">Count</th>
+                              <th class="column-4">Price</th>
+                              <th class="column-5">Size</th>
+                              <th class="column-6">Color</th>
+                              <th class="column-7">Order Status</th> <!-- 주문 상태 추가 -->
+                              <th class="column-8">Edit</th>
                             </tr>
 
               <!-- Order details will be dynamically inserted here -->
@@ -187,36 +188,8 @@
   </div>
 </form>
 
-                    <!-- Modal -->
-                    <div id="cancelOrderModal" class="modal">
-                        <div class="modal-content">
-                            <span class="close">&times;</span>
-                            <h4 class="mtext-105 cl2 txt-center p-b-30">환불/교환 신청</h4>
-                            <form>
-                                <div class="form-group">
-                                    <label for="title">제목</label>
-                                    <input type="text" id="title" class="form-control"
-                                           placeholder="제목을 입력하세요">
-                                </div>
-                                <div class="form-group">
-                                    <label for="reason">사유</label>
-                                    <textarea id="reason" class="form-control" rows="5"
-                                              placeholder="사유를 입력하세요"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="file">파일 첨부하기</label>
-                                    <input type="file" id="file" class="form-control-file">
-                                </div>
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-primary">등록</button>
-                                    <button type="button" class="btn btn-secondary close-modal">취소
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+<!-- 결제 금액 계산 -->
 
-                    <!-- 결제 금액 계산 -->
                     <div class="wrap-table-shopping-cart m-t-30">
                         <table class="table-shopping-cart-price">
                             <tr class="table_head">
@@ -246,7 +219,35 @@
                             </tr>
                         </table>
                     </div>
-                </div>
+<!-- Modal -->
+
+<div id="cancelOrderModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h4 class="mtext-105 cl2 txt-center p-b-30">환불/교환 신청</h4>
+    <form id="cancel-order-form">
+      <div class="form-group">
+        <label for="title">제목</label>
+        <input type="text" id="title" name="title" class="form-control" placeholder="제목을 입력하세요">
+      </div>
+      <div class="form-group">
+        <label for="reason">사유</label>
+        <textarea id="reason" name="reason" class="form-control" rows="5" placeholder="사유를 입력하세요"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="file">파일 첨부하기</label>
+        <input type="file" id="file" name="file" class="form-control-file">
+      </div>
+      <input type="hidden" id="type" name="type" value="EXCHANGE_RETURN"> <!-- 고정된 문의 타입 -->
+      <input type="hidden" id="orderDetailId" name="orderDetailId"> <!-- 주문 상세 ID -->
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary">등록</button>
+        <button type="button" class="btn btn-secondary close-modal">취소</button>
+      </div>
+    </form>
+  </div>
+</div>
+</div>
             </div>
         </div>
     </div>
@@ -391,24 +392,26 @@
 
         // 주문 상세 정보로 테이블 채우기
         orderDetails.forEach(function(detail) {
-          var rowHtml = `
-                    <tr class="table_row">
-                        <td class="column-1">
-                            <img src="/images/item-cart-05.jpg" alt="IMG"> <!-- 필요에 따라 업데이트 -->
-                        </td>
-                        <td class="column-2">${detail.productName}</td>
-                        <td class="column-3">${detail.count}</td>
-                        <td class="column-4">${detail.price.toLocaleString()} 원</td>
-                        <td class="column-5">주문</td>
-                        <td class="column-6"></td>
-                        <td class="column-7">
-                            <button type="button"
-                                    class="btn btn-secondary open-modal flex-c-m stext-101 cl0 size-103 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
-                                환불/교환
-                            </button>
-                        </td>
-                    </tr>
-                `;
+          var rowHtml =`
+        <tr class="table_row">
+          <td class="column-1">
+            <img src="/images/item-cart-05.jpg" alt="IMG"> <!-- 필요에 따라 업데이트 -->
+          </td>
+          <td class="column-2">${detail.productName}</td>
+          <td class="column-3">${detail.count}</td>
+          <td class="column-4">${detail.price.toLocaleString()} 원</td>
+          <td class="column-5">${detail.size}</td> <!-- 사이즈 추가 -->
+          <td class="column-6">${detail.color}</td> <!-- 컬러 추가 -->
+          <td class="column-7">${detail.orderStatus}</td> <!-- 주문 상태 추가 -->
+          <td class="column-8">
+            <button type="button"
+                    class="btn btn-secondary open-modal flex-c-m stext-101 cl0 size-103 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer"
+                    data-order-detail-id="${detail.id}">
+              환불/교환
+            </button>
+          </td>
+        </tr>
+      `;
           $orderDetailList.append(rowHtml); // 테이블에 행 추가
         });
       },
@@ -416,48 +419,73 @@
         console.error('주문 상세 정보를 가져오는 데 실패했습니다:', error);
       }
     });
-      // 이벤트 위임을 사용하여 동적으로 추가된 버튼에 이벤트 리스너 연결
-      $(document).on('click', '.open-modal', function () {
-          $('#cancelOrderModal').css('display', 'block');
-      });
+    // 이벤트 위임을 사용하여 동적으로 추가된 버튼에 이벤트 리스너 연결
+    $(document).on('click', '.open-modal', function () {
+      const orderDetailId = $(this).data('order-detail-id');
 
-      $('.close, .close-modal').on('click', function () {
-          $('#cancelOrderModal').css('display', 'none');
-      });
+      // 주문 상세 ID를 hidden input에 설정
+      $('#orderDetailId').val(orderDetailId);
 
-      window.onclick = function (event) {
-          if (event.target == $('#cancelOrderModal')[0]) {
-              $('#cancelOrderModal').css('display', 'none');
-          }
+      $('#cancelOrderModal').css('display', 'block');
+    });
+
+    $(document).on('click', '.close, .close-modal', function () {
+      $('#cancelOrderModal').css('display', 'none');
+    });
+
+    $('#cancel-order-form').on('submit', function (e) {
+      e.preventDefault();
+
+      const form = document.getElementById('cancel-order-form');
+      const formData = new FormData(form);
+
+      // JSON 데이터 생성
+      const requestDto = {
+        title: formData.get('title'),
+        type: formData.get('type'),
+        question: formData.get('reason'),
+        orderDetailId: formData.get('orderDetailId') // 주문 상세 ID 추가
       };
+
+      // FormData에 QuestionRequestDto requestDto, List<MultipartFile> file 추가
+      const finalFormData = new FormData();
+      finalFormData.append('requestDto', new Blob([JSON.stringify(requestDto)], {type: 'application/json'}));
+
+      // 파일을 FormData에 추가
+      const fileInput = document.getElementById('file');
+      if (fileInput.files.length > 0) {
+        for (let i = 0; i < fileInput.files.length; i++) {
+          finalFormData.append('file', fileInput.files[i]);
+        }
+      }
+
+      postQuestion(finalFormData);
+    });
+
+    // AJAX 요청
+    function postQuestion(finalFormData) {
+      $.ajax({
+        type: 'POST',
+        url: '/questions',
+        data: finalFormData,
+        processData: false, // FormData를 있는 그대로 전송하도록 설정
+        contentType: false, // multipart/form-data로 전송되도록 설정
+        success: function (response, textStatus, jqXHR) {
+          if (jqXHR.status >= 200 && jqXHR.status < 300) {
+            alert("문의 등록 성공");
+            location.reload()
+          } else {
+            alert("문의 등록 실패");
+          }
+        },
+        error: function (error) {
+          alert(error.message);
+        },
+      });
+    }
   });
 </script>
 <!--===============================================================================================-->
-<script>
-    // // JavaScript to handle modal
-    // document.addEventListener("DOMContentLoaded", function () {
-    //     var modal = document.getElementById("cancelOrderModal");
-    //     var openModalBtns = document.querySelectorAll(".open-modal");
-    //     var closeModalBtns = document.querySelectorAll(".close, .close-modal");
-    //
-    //     openModalBtns.forEach(function (btn) {
-    //         btn.addEventListener("click", function () {
-    //             modal.style.display = "block";
-    //         });
-    //     });
-    //
-    //     closeModalBtns.forEach(function (btn) {
-    //         btn.addEventListener("click", function () {
-    //             modal.style.display = "none";
-    //         });
-    //     });
-    //
-    //     window.addEventListener("click", function (event) {
-    //         if (event.target == modal) {
-    //             modal.style.display = "none";
-    //         }
-    //     });
-    // });
-</script>
+
 </body>
 </html>

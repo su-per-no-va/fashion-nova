@@ -44,7 +44,7 @@
         </div>
 
         <div class="right-top-bar flex-w h-full">
-          <a href="login.html" class="flex-c-m trans-04 p-lr-25">
+          <a href="login.html" id="auth-btn" class="flex-c-m trans-04 p-lr-25">
             Login
           </a>
 
@@ -263,13 +263,19 @@
 <script src="/js/common.js"></script>
 <!--===============================================================================================-->
 <script>
+  let currentPage = 0;
+  const pageSize = 10; // 페이지당 아이템 수 (서버와 일치해야 함)
+  let totalMileage = 0;
+
   $(document).ready(function () {
+
     let auth = localStorage.getItem('accessToken');
     //로그인 안되어 있으면 로그인으로 옮기기
     if (!auth) {
       alert("로그인 후 이용해 주세요");
       window.location.href = "login.html";
     }
+
     /* 장바구니 아이콘 개수 */
     window.common.getShoppingCart()
     .done(function (response) {
@@ -292,21 +298,29 @@
         // no response
       }
     });
-    fetchMileage()
-  });
-</script>
 
-<script>
+    // 마일리지 데이터 초기 로드
+    fetchMileage();
+  });
+
   // 마일리지 데이터를 서버에서 가져오는 함수
   function fetchMileage() {
     $.ajax({
       type: 'GET',
-      url: '/mileages',
+      url: `/mileages?page=${currentPage}`,
       success: function(response) {
-        updateMileageTable(response);
+        if (response.length > 0) {
+          updateMileageTable(response);
+
+          // 다음 페이지 데이터 요청 (현재 페이지의 데이터 수가 페이지 사이즈와 같으면)
+          if (response.length === pageSize ) {
+            currentPage++;
+            fetchMileage(); // 재귀적으로 호출하여 다음 페이지 데이터 요청
+          }
+        }
       },
       error: function(error) {
-        console.error('Error fetching mileage:', error);
+        console.error('마일리지 불러오기 실패', error);
       }
     });
   }
@@ -314,16 +328,20 @@
   // 마일리지 테이블 업데이트
   function updateMileageTable(mileageResponseDtos) {
     let $mileageTable = $('#mileage-table'); // 마일리지 테이블을 표시할 div
-    $mileageTable.empty(); // 기존 내용을 지우고 새로 추가
+    if (currentPage === 0) {
+      $mileageTable.empty(); // 기존 내용을 지우고 새로 추가
+    }
 
     // 총 마일리지 계산
-    let totalMileage = mileageResponseDtos.reduce((sum, mileage) => sum + mileage.usedMileage, 0);
+    let pageTotal = mileageResponseDtos.reduce((sum, mileage) => sum + mileage.usedMileage, 0);
+    totalMileage += pageTotal; // 누적하여 총 마일리지 계산
 
     // 총 마일리지를 업데이트
     $('#total-mileage').text('나의 적립금액 : ' + totalMileage + '원');
 
-    // 테이블 헤더 추가
-    let initRow = `
+    // 테이블 헤더 추가 (첫 페이지일 경우에만 추가)
+    if (currentPage === 0) {
+      let initRow = `
 <tr class="table_head">
   <th class="column-1">마일리지 유형</th>
   <th class="column-2">마일리지</th>
@@ -331,7 +349,7 @@
 </tr>`;
 
     $mileageTable.append(initRow);
-
+}
     // 마일리지 목록 추가
     mileageResponseDtos.forEach(function(mileage) {
       let type = mileage.usedMileage < 0 ? "사용" : "적립";

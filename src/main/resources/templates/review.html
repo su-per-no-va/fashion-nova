@@ -47,7 +47,7 @@
                 </div>
 
                 <div class="right-top-bar flex-w h-full">
-                    <a href="login.html" class="flex-c-m trans-04 p-lr-25">
+                    <a href="login.html" id="auth-btn" class="flex-c-m trans-04 p-lr-25">
                         Login
                     </a>
 
@@ -178,40 +178,11 @@
                             </tbody>
                         </table>
 
-                        <!-- 템플릿 행 -->
-                        <table style="display:none;">
-                            <tr id="review-template" class="table_row">
-                                <td class="column-1">
-                                    <div class="how-itemcart1">
-                                        <img src="../images/item-cart-05.jpg" alt="IMG">
-                                    </div>
-                                </td>
-                                <td class="column-2">Lightweight Jacket</td>
-                                <td class="column-3">2024-08-01</td>
-                                <td class="column-4">
-                  <span class="fs-18 cl11">
-                    <i class="zmdi zmdi-star"></i>
-                    <i class="zmdi zmdi-star"></i>
-                    <i class="zmdi zmdi-star"></i>
-                    <i class="zmdi zmdi-star"></i>
-                    <i class="zmdi zmdi-star"></i>
-                  </span>
-                                </td>
-                                <td class="column-5">빠른 배송! 품질 좋은 옷 감사합니다.</td>
-                                <td class="column-6"></td>
-                                <td class="column-7">
-                                    <button type="button"
-                                            class="flex-c-m stext-101 cl0 size-103 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer edit-review-btn">
-                                        Edit
-                                    </button>
-                                    <br>
-                                    <button type="button"
-                                            class="flex-c-m stext-101 cl2 size-103 bg8 bor14 hov-btn3 p-lr-15 trans-04 pointer delete-review-btn">
-                                        Delete
-                                    </button>
-                                </td>
-                            </tr>
-                        </table>
+                        <!-- 페이지 네비게이션 버튼 -->
+                        <div class="flex-c-m m-t-20">
+                            <button id="prev-page" class="btn btn-secondary" disabled>이전</button>
+                            <button id="next-page" class="btn btn-primary m-l-20">다음</button>
+                        </div>
 
                     </div>
                 </div>
@@ -353,6 +324,9 @@
 <!--===============================================================================================-->
 
 <script>
+    let currentPage = 0;
+    const pageSize = 10; // 페이지당 아이템 수
+
     $(document).ready(function () {
 
         let auth = localStorage.getItem('accessToken');
@@ -361,6 +335,7 @@
             alert("로그인 후 이용해 주세요");
             window.location.href = "login.html";
         }
+
 
         /* 장바구니 아이콘 개수 */
         window.common.getShoppingCart()
@@ -387,6 +362,21 @@
         .fail(function (error) {
             console.log(error.message)
         });
+
+        $('#next-page').on('click', function (event) {
+            event.preventDefault(); // 기본 동작 방지
+            currentPage++;
+            fetchQuestions();
+        });
+
+        $('#prev-page').on('click', function (event) {
+            event.preventDefault(); // 기본 동작 방지
+            if (currentPage > 0) {
+                currentPage--;
+                fetchQuestions();
+            }
+        });
+
         fetchReviews()
     });
 </script>
@@ -394,16 +384,18 @@
 /* 찜 페이지에 리뷰 추가 */
 <script src="../vendor/sweetalert/sweetalert.min.js"></script>
 <script>
+    // 리뷰 데이터 가져오기 함수
     function fetchReviews() {
+        console.log(`Fetching reviews for page ${currentPage}`);
         $.ajax({
-            url: '/reviews',
             type: 'GET',
+            url: `/reviews?page=${currentPage}`, // 서버에서 페이지와 페이지 크기를 쿼리 파라미터로 받는 경우
             success: function (response) {
-                const reviews = response.content; // 응답에서 리뷰 리스트 가져오기
-                renderReviews(reviews);
+                renderReviews(response.content);
+                updatePagination(response.totalPages);
             },
-            error: function () {
-                console.error("Failed to fetch reviews.");
+            error: function (error) {
+                console.error('Failed to load reviews:', error);
             }
         });
     }
@@ -477,13 +469,21 @@
             let $this = $(this);
             let reviewId = $this.closest('.table_row').data('review-id');
             let reviewText = $this.closest('.table_row').find('.column-5').text();
-            let reviewRating = $this.closest('.table_row').find('.column-4 span i').length;
+            let reviewRating = $this.closest('.table_row').find('.column-4 span i.zmdi-star').length;
 
             $('#updateReviewId').val(reviewId);
             $('#updateReviewText').val(reviewText);
             $('#updateReviewRating').val(reviewRating);
             $('#updateReviewModal').show();
         });
+
+        // 별점 선택 시
+        $(document).on('click', '.item-rating', function () {
+            let index = $(this).index() + 1;
+            $('input[name="rating"]').val(index);
+            updateStarDisplay(index);
+        });
+
 
         // 리뷰 업데이트 폼 제출
         $('#updateReviewForm').submit(function (event) {
@@ -492,7 +492,7 @@
             let reviewUpdateRequestDto = {
                 reviewId: $('#updateReviewId').val(),
                 review: $('#updateReviewText').val(),
-                rating: $('#updateReviewRating').val()
+                rating: $('input[name="rating"]').val()  // 여기서 rating 값을 가져옵니다.
             };
 
             $.ajax({
@@ -528,7 +528,7 @@
         }
     });
 
-    // 별점 렌더링
+    // 별점 렌더링 함수
     function renderStars(rating) {
         let stars = '';
         for (let i = 0; i < 5; i++) {
@@ -540,6 +540,26 @@
         }
         return stars;
     }
+
+    // 별점 표시 업데이트
+    function updateStarDisplay(rating) {
+        $('.item-rating').each(function (index) {
+            if (index < rating) {
+                $(this).removeClass('zmdi-star-outline').addClass('zmdi-star');
+            } else {
+                $(this).removeClass('zmdi-star').addClass('zmdi-star-outline');
+            }
+        });
+    }
+
+    // 페이지 네비게이션 업데이트
+    function updatePagination(totalPages) {
+        $('#page-info').text(`Page ${currentPage + 1}`);
+
+        $('#prev-page').attr('disabled', currentPage === 0);
+        $('#next-page').attr('disabled', currentPage >= totalPages - 1);
+    }
+
 </script>
 <!--===============================================================================================-->
 </body>

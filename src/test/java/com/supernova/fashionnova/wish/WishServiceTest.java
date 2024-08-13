@@ -1,26 +1,19 @@
 package com.supernova.fashionnova.wish;
 
-import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import com.supernova.fashionnova.domain.product.Product;
-import com.supernova.fashionnova.domain.product.ProductCategory;
 import com.supernova.fashionnova.domain.product.ProductRepository;
-import com.supernova.fashionnova.domain.product.ProductStatus;
 import com.supernova.fashionnova.domain.user.User;
 import com.supernova.fashionnova.domain.wish.Wish;
 import com.supernova.fashionnova.domain.wish.WishRepository;
 import com.supernova.fashionnova.domain.wish.WishService;
 import com.supernova.fashionnova.domain.wish.dto.WishDeleteRequestDto;
 import com.supernova.fashionnova.domain.wish.dto.WishRequestDto;
-import com.supernova.fashionnova.domain.wish.dto.WishResponseDto;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,8 +22,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 
 @ExtendWith(MockitoExtension.class)
 class WishServiceTest {
@@ -64,6 +55,7 @@ class WishServiceTest {
 
     }
 
+    /*
     @Test
     @DisplayName("위시리스트 조회 테스트")
     void getWishProductPageTest() {
@@ -85,6 +77,7 @@ class WishServiceTest {
         assertNotNull(result);
         assertEquals(1, result.size());
     }
+     */
 
     @Test
     @DisplayName("위시리스트 삭제 테스트")

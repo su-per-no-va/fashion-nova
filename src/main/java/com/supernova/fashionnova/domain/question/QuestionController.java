@@ -46,7 +46,7 @@ public class QuestionController {
     }
 
     /**
-     * 내 문의 조회
+     * 내 문의 목록 조회
      *
      * @param userDetails
      * @param page
@@ -55,7 +55,7 @@ public class QuestionController {
     @GetMapping
     public ResponseEntity<List<QuestionResponseDto>> getUserQuestionList(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
-        @RequestParam(defaultValue = "0") int page) {
+        @RequestParam(value = "page", defaultValue = "0") int page) {
 
         List<QuestionResponseDto> responseDto = questionService.getUserQuestionList(userDetails.getUser(), page);
 

@@ -4,12 +4,14 @@ import com.supernova.fashionnova.domain.address.Address;
 import com.supernova.fashionnova.domain.coupon.Coupon;
 import com.supernova.fashionnova.domain.mileage.Mileage;
 import com.supernova.fashionnova.domain.user.dto.UserUpdateRequestDto;
+import com.supernova.fashionnova.domain.warn.Warn;
 import com.supernova.fashionnova.global.common.Timestamped;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -76,6 +78,9 @@ public class User extends Timestamped {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Coupon> couponList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    private List<Warn> warnList = new ArrayList<>();
 
     @Builder
     public User(String userName, String password, String name, String email, String phone) {

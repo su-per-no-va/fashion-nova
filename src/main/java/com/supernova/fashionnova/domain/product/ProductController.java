@@ -4,6 +4,7 @@ import com.supernova.fashionnova.domain.product.dto.ProductResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,8 +35,13 @@ public class ProductController {
         @RequestParam(value = "color", required = false) String color,
         @RequestParam(value = "search", required = false) String search,
         @RequestParam(defaultValue = "0", value = "page", required = false) int page) {
-
         return productService.getProductList(sorted, category, size, color, search, page - 1);
     }
 
+    @GetMapping("/{productId}")
+    public ProductResponseDto getProduct(
+        @PathVariable Long productId
+    ) {
+        return productService.getProduct(productId);
+    }
 }
