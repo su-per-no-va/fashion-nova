@@ -465,11 +465,11 @@
 
       if (!isNaN(discountRate) && discountRate > 0) {
         // 할인 금액 계산
-        const discountAmount = productTotal * (discountRate / 100);
-        couponDiscount = discountAmount;
+        const discountAmount = productTotal * (discountRate / 100) ;
+        couponDiscount =  Math.floor(discountAmount / 10) * 10;
         // 할인 금액을 업데이트
         $('#coupon-discount').text(`${couponName}:`);
-        $('#coupon-discount-amount').text(`- ${discountAmount.toLocaleString()}원`);
+        $('#coupon-discount-amount').text(`- ${couponDiscount.toLocaleString()}원`);
         updateCartTotals()
       } else {
         // 쿠폰 이름과 할인 금액을 초기화
