@@ -191,4 +191,9 @@ public class HomeController {
         return "admin/index";
     }
 
+    @GetMapping("kakaopay.html")
+    public String kakaoPay() {
+        return "kakaopay";
+    }
+
 }
