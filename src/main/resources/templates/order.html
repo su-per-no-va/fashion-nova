@@ -187,6 +187,7 @@
                 <th class="column-3">주문 날짜</th>
                 <th class="column-4">가격</th>
                 <th class="column-5">주문 상태</th>
+                <th class="column-5.5">배송지</th>
                 <th class="column-6">배송 상태</th>
                 <th class="column-7">Edit</th>
               </tr>
@@ -411,6 +412,9 @@
               // 주문 상태
               const orderStatusCell = $('<td>').addClass('column-5').text(order.orderStatus);
 
+              // 배송지
+              const orderAddress = $('<td>').addClass('column-5.5').text(order.address);
+
               // 배송 상태
               const deliveryStatusCell = $('<td>').addClass('column-6').text(order.deliveryStatus);
 
@@ -425,7 +429,7 @@
 
               // 테이블 행에 셀 추가
               orderRow.append(orderIdCell, itemNameCell, orderDateCell, priceCell, orderStatusCell,
-                  deliveryStatusCell, editButtonCell);
+              orderAddress,deliveryStatusCell, editButtonCell);
 
               // 테이블에 행 추가
               orderListElement.append(orderRow);
