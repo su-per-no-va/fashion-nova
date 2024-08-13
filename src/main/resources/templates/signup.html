@@ -41,7 +41,7 @@
       <label for="email">E-MAIL</label>
     </div>
     <div id="authCodeArea" class="int-area" style="display: none;">
-      <input type="text" name="authCode" id="authCode" autocomplete="off">
+      <input type="text" name="authCode" id="authCode" autocomplete="off" required>
       <label for="authCode">Number</label>
       <div class="btn-area">
         <button id="auth_check" type="button" onclick="checkEmailAuthentication()">CHECK NUMBER</button>
@@ -60,6 +60,35 @@
 </body>
 <!--============================================================================================-->
 <script>
+  // 인풋박스 css 복원 js
+  document.addEventListener("DOMContentLoaded", function () {
+    const inputs = document.querySelectorAll('.int-area input');
+
+    inputs.forEach(input => {
+      const parentDiv = input.closest('.int-area');
+      const originalDisplay = parentDiv.style.display;
+
+      // style="display: none;" 일 때도 css 유지
+      parentDiv.style.display = 'block';
+
+      // 페이지를 불러올 때 이미 값이 입력되어있는지 확인
+      if (input.value.trim() !== "") {
+        input.classList.add('has-value');
+      }
+
+      // 원래 css 복원
+      parentDiv.style.display = originalDisplay;
+
+      input.addEventListener('input', function () {
+        if (this.value.trim() !== "") {
+          this.classList.add('has-value');
+        } else {
+          this.classList.remove('has-value');
+        }
+      });
+    });
+  });
+
   let isChekeEmail = false;
 
   function sendEmailAuthentication() {
