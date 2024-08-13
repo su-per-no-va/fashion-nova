@@ -13,9 +13,9 @@ import lombok.NoArgsConstructor;
 public class AllOrderResponseDto {
 
   private Long orderId;
-  private double totalPrice;
-  private double cost;
-  private double discount;
+  private Long totalPrice;
+  private Long cost;
+  private int discount;
   private Long usedMileage;
   private String address;
   private LocalDateTime createdAt;
