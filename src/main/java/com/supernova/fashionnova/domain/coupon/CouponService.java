@@ -1,9 +1,7 @@
 package com.supernova.fashionnova.domain.coupon;
 
 import com.supernova.fashionnova.domain.coupon.dto.CouponResponseDto;
-import com.supernova.fashionnova.domain.order.Order;
 import com.supernova.fashionnova.domain.user.User;
-import com.supernova.fashionnova.domain.user.UserGrade;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.payment.PayAction;
@@ -12,7 +10,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
