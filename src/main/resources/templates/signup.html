@@ -87,6 +87,23 @@
         }
       });
     });
+
+    // 이메일 입력 필드에서 엔터키를 누르면 CHECK E-MAIL 버튼 클릭
+    document.getElementById('email').addEventListener('keypress', function (event) {
+      if (event.which === 13) {  // event.which == 13 엔터키를 눌렀을 때
+        event.preventDefault();  // 기본 엔터키 동작 막기
+        document.getElementById('auth_check_btn').click();  // CHECK E-MAIL 버튼 클릭
+      }
+    });
+
+    // 인증번호 입력 필드에서 엔터키를 누르면 CHECK NUMBER 버튼 클릭
+    document.getElementById('authCode').addEventListener('keypress', function (event) {
+      if (event.which === 13) {  // event.which == 13 엔터키를 눌렀을 때
+        event.preventDefault();  // 기본 엔터키 동작 막기
+        document.getElementById('auth_check').click();  // CHECK NUMBER 버튼 클릭
+      }
+    });
+
   });
 
   let isChekeEmail = false;
