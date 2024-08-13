@@ -526,10 +526,38 @@
       updateCartTotals()
     }
 
+    $('.flex-c-m.stext-101').on('click', function () {
+
+      // 주문 요청 데이터 준비
+      const orderRequestDto = {
+        cost: totalCost,
+        discount: couponDiscount,
+        usedMileage: mileageUsed,
+        address: "주문페이지에서 작성"
+      };
+
+      // 주문 생성 API 호출
+      $.ajax({
+        type: 'POST',
+        url: '/orders', // 주문 생성 API 엔드포인트
+        contentType: 'application/json',
+        data: JSON.stringify(orderRequestDto),
+        success: function(response) {
+          // 주문 성공 시 처리
+          console.log('주문이 성공적으로 생성되었습니다:', response);
+          alert('주문이 완료되었습니다.');
+          // window.location.href = '/order-success';
+        },
+        error: function(error) {
+          console.error('주문 생성 실패:', error);
+          alert('주문 생성에 실패했습니다. 다시 시도해 주세요.');
+        }
+      });
+    });
+
     fetchMileage();
     fetchCoupons();
     updateCartTotals()
-
   });
 
 
