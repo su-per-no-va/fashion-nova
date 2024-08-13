@@ -123,7 +123,7 @@ public class CartService {
         ProductDetail newProductDetail = productDetailRepository.findByProductAndSizeAndColor(
                 currentProductDetail.getProduct(),
                 dto.getSize(), dto.getColor())
-            .orElseThrow(() -> new CustomException(ErrorType.CART_NOT_FOUND_COLOR_SIZE));
+            .orElse(currentProductDetail);
 
         if (newProductDetail.getQuantity() == 0) {
             throw new CustomException(ErrorType.OUT_OF_STOCK);
