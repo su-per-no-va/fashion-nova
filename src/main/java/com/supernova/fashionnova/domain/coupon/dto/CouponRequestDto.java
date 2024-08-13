@@ -12,6 +12,9 @@ public class CouponRequestDto {
     private Long userId;
     private String name;
     private Date period;
+
+    @Pattern(regexp = "^\\d{1,2}$",
+        message = "1 ~ 99 사이의 숫자만 입력할 수 있습니다.")
     private String sale;
 
     @Pattern(regexp = "WELCOME|GRADE_UP|REGULAR",

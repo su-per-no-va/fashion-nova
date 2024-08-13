@@ -8,8 +8,6 @@ import com.supernova.fashionnova.domain.mileage.Mileage;
 import com.supernova.fashionnova.domain.mileage.MileageRepository;
 import com.supernova.fashionnova.domain.mileage.MileageService;
 import com.supernova.fashionnova.domain.mileage.dto.MileageResponseDto;
-import com.supernova.fashionnova.domain.order.Order;
-import com.supernova.fashionnova.domain.order.OrdersRepository;
 import com.supernova.fashionnova.domain.user.User;
 import java.util.Collections;
 import java.util.List;
