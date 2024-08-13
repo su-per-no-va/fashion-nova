@@ -53,7 +53,7 @@ public class ProductRepositoryQueryImpl implements ProductRepositoryQuery {
                 orderSpecifier = product.price.desc();
                 break;
 
-            case "row_price", "all":
+            case "row_price":
                 orderSpecifier = product.price.asc();
                 break;
 
@@ -61,7 +61,7 @@ public class ProductRepositoryQueryImpl implements ProductRepositoryQuery {
                 orderSpecifier = product.reviewCount.desc();
                 break;
 
-            case "new_item":
+            case "new_item", "all":
                 orderSpecifier = product.createdAt.desc();
                 break;
             case "wish_count" :
