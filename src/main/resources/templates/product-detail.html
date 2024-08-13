@@ -50,7 +50,7 @@
         </div>
 
         <div class="right-top-bar flex-w h-full">
-          <a href="login.html" class="flex-c-m trans-04 p-lr-25">
+          <a href="login.html" id="auth-btn" class="flex-c-m trans-04 p-lr-25">
             Login
           </a>
 
@@ -589,7 +589,8 @@
           }),
           success: function (response) {
             alert("장바구니 추가 완료!!")
-          },
+            window.location.reload();
+            },
           error: function () {
             swal("장바구니 추가 실패", '요청 처리에 실패했습니다.', "error");
           }
@@ -639,6 +640,10 @@
         const product = response;
         let productDetails = response.productDetails;
         let productReview = response.reviews;
+
+        const reviewCount = productReview.length;
+        $('.nav-link[href="#reviews"]').text(`리뷰 (${reviewCount})`);
+
         if (product) {
           $('#productImage').attr('src', product.imageUrl);
           $('#productImageLink').attr('href', product.imageUrl);
@@ -714,7 +719,7 @@
                 // 리뷰 등록 후 새로고침 또는 등록된 리뷰를 동적으로 추가하는 로직
               },
               error: function () {
-                swal("리뷰 등록 실패", '요청 처리에 실패했습니다.', "error");
+                swal("리뷰 등록 실패", '구매하지 않은 상품에는 리뷰를 등록할 수 없습니다.', "error");
               }
             });
           });
