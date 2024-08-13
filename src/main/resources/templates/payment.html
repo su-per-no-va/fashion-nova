@@ -405,6 +405,12 @@
     window.common.getShoppingCart()
     .done(function (response) {
       if (response) {
+        // 장바구니가 비어있는 경우 처리
+        if (response.cartItemDtoList.length === 0) {
+          alert("결제할 상품이 없습니다.");
+          window.location.href = 'shoping-cart.html';
+          return;  // 이후 코드 실행을 중단합니다.
+        }
         // 장바구니 아이콘에 아이템 수 표시
         $('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
 
