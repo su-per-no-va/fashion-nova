@@ -13,7 +13,6 @@ import com.supernova.fashionnova.payment.dto.KakaoPayApproveResponseDto;
 import com.supernova.fashionnova.payment.dto.KakaoPayCancelResponseDto;
 import com.supernova.fashionnova.payment.dto.KakaoPayReadyResponseDto;
 import com.supernova.fashionnova.payment.dto.KakaoPayRefundRequestDto;
-import jakarta.transaction.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +23,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor

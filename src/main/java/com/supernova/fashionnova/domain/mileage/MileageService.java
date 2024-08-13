@@ -4,7 +4,6 @@ import com.supernova.fashionnova.domain.mileage.dto.MileageResponseDto;
 import com.supernova.fashionnova.domain.order.Order;
 import com.supernova.fashionnova.domain.user.User;
 import com.supernova.fashionnova.payment.PayAction;
-import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
