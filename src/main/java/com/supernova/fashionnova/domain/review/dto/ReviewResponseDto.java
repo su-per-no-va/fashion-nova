@@ -1,9 +1,7 @@
 package com.supernova.fashionnova.domain.review.dto;
 
 import com.supernova.fashionnova.domain.review.Review;
-import com.supernova.fashionnova.domain.review.ReviewImage;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.Getter;
 
 @Getter

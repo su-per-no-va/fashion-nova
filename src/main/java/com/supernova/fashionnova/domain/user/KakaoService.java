@@ -9,6 +9,8 @@ import static com.supernova.fashionnova.global.security.JwtConstants.REFRESH_TOK
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.supernova.fashionnova.global.exception.CustomException;
+import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.global.security.JwtUtil;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -51,7 +53,13 @@ public class KakaoService {
         // 3. 필요시에 회원가입
         User kakaoUser = registerKakaoUserIfNeeded(kakaoUserInfo);
 
-        // 4. JWT 토큰 반환
+        // 4. 블랙리스트 유저 상태 체크
+        if (kakaoUser.getUserStatus() == UserStatus.BLOCKED_MEMBER) {
+            log.info("차단된 회원입니다.");
+            throw new CustomException(ErrorType.BAD_REQUEST_USER_STATUS_BLOCK);
+        }
+
+        // 5. JWT 토큰 반환
         /*String generateToken = jwtUtil.generateToken(kakaoUser.getUserName(), ACCESS_TOKEN_EXPIRATION, ACCESS_TOKEN_TYPE);*/
 
         String accessToken2 =
@@ -86,7 +94,7 @@ public class KakaoService {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id", "6a0a695cf674d71866251ddbfd539f84");
-        body.add("redirect_uri", "http://localhost:8080/users/kakao/callback");
+        body.add("redirect_uri", "https://super-nova.store/users/kakao/callback");
         body.add("code", code);
 
         RequestEntity<MultiValueMap<String, String>> requestEntity = RequestEntity

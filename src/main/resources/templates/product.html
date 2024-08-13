@@ -515,7 +515,7 @@
       e.preventDefault();
       currentPage++; // 페이지 번호 증가
       fetchAndDisplayProducts(currentPage, selectedCategory, selectedSort);
-      loadWishlist();
+      loadWishlist()
     });
   });
 
@@ -589,7 +589,7 @@
 <script>
   $(document).ready(function () {
     // 클릭 이벤트 핸들러
-    loadWishlist();
+    loadWishlist()
     $(document).on('click', '.js-addwish-b2', function (e) {
       e.preventDefault(); // 링크의 기본 동작을 막습니다.
 
@@ -630,30 +630,30 @@
         });
       }else{
 
-        // AJAX 요청
-        $.ajax({
-          url: '/wishlists', // 실제 API URL로 변경해야 합니다.
-          type: 'POST',
-          contentType: 'application/json',
-          data: JSON.stringify(wishRequestDto),
-          success: function (response, textStatus, jqXHR) {
-            if (jqXHR.status >= 200 && jqXHR.status < 300) {
-              // 성공 시 처리
-              swal("Success!", "The product has been added to your wishlist.", "success");
-              $this.addClass('js-addedwish-b2');
-              $this.find('.icon-heart1').attr('src', '../images/icons/icon-heart-02.png'); // 채워진 하트
-              $this.find('.icon-heart2').attr('src', '../images/icons/icon-heart-01.png'); // 빈 하트
-              location.reload()
-            } else {
-              // 실패 시 처리
-              swal("Failed!", "The product could not be added to your wishlist.", "error");
-            }
-          },
-          error: function (xhr, status, error) {
-            // 에러 시 처리
-            swal("Error!", "An error occurred while adding the product to your wishlist.", "error");
+      // AJAX 요청
+      $.ajax({
+        url: '/wishlists', // 실제 API URL로 변경해야 합니다.
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(wishRequestDto),
+        success: function (response, textStatus, jqXHR) {
+          if (jqXHR.status >= 200 && jqXHR.status < 300) {
+            // 성공 시 처리
+            swal("Success!", "The product has been added to your wishlist.", "success");
+            $this.addClass('js-addedwish-b2');
+            $this.find('.icon-heart1').attr('src', '../images/icons/icon-heart-02.png'); // 채워진 하트
+            $this.find('.icon-heart2').attr('src', '../images/icons/icon-heart-01.png'); // 빈 하트
+            location.reload()
+          } else {
+            // 실패 시 처리
+            swal("Failed!", "The product could not be added to your wishlist.", "error");
           }
-        });
+        },
+        error: function (xhr, status, error) {
+          // 에러 시 처리
+          swal("Error!", "An error occurred while adding the product to your wishlist.", "error");
+        }
+      });
       }
     });
   });

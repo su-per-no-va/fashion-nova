@@ -7,7 +7,6 @@ import com.supernova.fashionnova.domain.review.dto.ReviewResponseDto;
 import com.supernova.fashionnova.domain.review.dto.ReviewUpdateRequestDto;
 import com.supernova.fashionnova.global.security.UserDetailsImpl;
 import com.supernova.fashionnova.global.util.ResponseUtil;
-import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

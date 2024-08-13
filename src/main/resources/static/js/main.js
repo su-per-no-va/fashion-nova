@@ -410,6 +410,7 @@
     $('#search-input').keypress(function (event){
         if(event.which == 13){
             $('#searchBtn').click();
+            $('.category-btn').removeClass('how-active1');
             console.log('test');
         }
     })

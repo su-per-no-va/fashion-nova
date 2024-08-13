@@ -1,13 +1,11 @@
 package com.supernova.fashionnova.order;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -29,11 +27,6 @@ import com.supernova.fashionnova.domain.product.ProductCategory;
 import com.supernova.fashionnova.domain.product.ProductDetail;
 import com.supernova.fashionnova.domain.product.ProductStatus;
 import com.supernova.fashionnova.domain.user.User;
-import com.supernova.fashionnova.domain.user.UserGrade;
-import com.supernova.fashionnova.domain.user.UserRole;
-import com.supernova.fashionnova.domain.user.UserStatus;
-import com.supernova.fashionnova.global.exception.CustomException;
-import com.supernova.fashionnova.global.exception.ErrorType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -198,12 +191,109 @@ class OrderServiceTest {
   @Test
   @DisplayName("주문상세 생성 테스트")
   void createOrderDetail() {
+    Product product2 = Product.builder()
+        .category(ProductCategory.TOP)
+        .explanation("explanation")
+        .price(10000L)
+        .productStatus(ProductStatus.ACTIVE)
+        .product("product2")
+        .build();
+
+    ProductDetail productDetail2 = ProductDetail.builder()
+        .color("Black")
+        .quantity(100L)
+        .size("S")
+        .product(product2)
+        .build();
+
+    Cart cart1 = Cart.builder()
+        .count(1)
+        .totalPrice(10000L)
+        .user(user)
+        .productDetail(productDetail)
+        .build();
+
+    Cart cart2 = Cart.builder()
+        .count(2)
+        .totalPrice(10000L)
+        .user(user)
+        .productDetail(productDetail2)
+        .build();
+
+    List<Cart> cartList = new ArrayList<>();
+    cartList.add(cart1);
+    cartList.add(cart2);
+
+    //when
+    List<OrderDetail> result = orderService.createOrderDetail(cartList, user, order);
+
+    // Then
+    assertNotNull(result);
+    assertEquals(2, result.size());
+
+    // 첫 번째 OrderDetail 검증
+    OrderDetail orderDetail1 = result.get(0);
+    assertEquals(10000L, orderDetail1.getPrice());
+    assertEquals(1, orderDetail1.getCount());
+    assertEquals("product", orderDetail1.getProductName());
+    assertEquals(user, orderDetail1.getUser());
+    assertEquals(order, orderDetail1.getOrder());
+    assertEquals(cartList.get(0).getProductDetail(), orderDetail1.getProductDetail());
+    assertEquals(cartList.get(0).getProductDetail().getProduct(), orderDetail1.getProduct());
+
+    // 두 번째 OrderDetail 검증
+    OrderDetail orderDetail2 = result.get(1);
+    assertEquals(10000L, orderDetail2.getPrice());
+    assertEquals(2, orderDetail2.getCount());
+    assertEquals("product2", orderDetail2.getProductName());
+    assertEquals(user, orderDetail2.getUser());
+    assertEquals(order, orderDetail2.getOrder());
+    assertEquals(cartList.get(1).getProductDetail(), orderDetail2.getProductDetail());
+    assertEquals(cartList.get(1).getProductDetail().getProduct(), orderDetail2.getProduct());
 
   }
 
   @Test
   @DisplayName("주문 조회 테스트")
   void getOrder() {
+    //given
+    Order order1 = Order.builder()
+        .user(user)
+        .totalPrice(18000L)
+        .cost(20000L)
+        .address("address1")
+        .orderStatus(OrderStatus.SUCCESS)
+        .discount(1000)
+        .invoice(123L)
+        .usedMileage(1000L)
+        .deliveryStatus(DeliveryStatus.BEFORE)
+        .build();
+
+    Order order2 = Order.builder()
+        .user(user)
+        .totalPrice(18000L)
+        .cost(20000L)
+        .address("address2")
+        .orderStatus(OrderStatus.Progress)
+        .discount(1000)
+        .invoice(124L)
+        .usedMileage(1000L)
+        .deliveryStatus(DeliveryStatus.BEFORE)
+        .build();
+
+    List<Order> orderList = new ArrayList<>();
+    orderList.add(order1);
+    orderList.add(order2);
+    when(ordersRepository.findAllByUserId(user.getId())).thenReturn(orderList);
+
+    // When
+    List<Order> result = orderService.getOrder(user);
+
+    // Then
+    assertNotNull(result);
+    assertEquals(1, result.size());
+    assertEquals(OrderStatus.SUCCESS, result.get(0).getOrderStatus());
+    verify(ordersRepository, times(1)).delete(any(Order.class));
   }
 
 }
