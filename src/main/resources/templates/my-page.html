@@ -98,7 +98,7 @@
 
           <a id="wish-icon" href="wish-list.html"
              class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
-             data-notify="0">
+             data-notify="">
             <i class="zmdi zmdi-favorite-outline"></i>
           </a>
         </div>
@@ -374,6 +374,14 @@
 <!--===============================================================================================-->
 <script>
   $(document).ready(function () {
+
+    let auth = localStorage.getItem('accessToken');
+    //로그인 안되어 있으면 로그인으로 옮기기
+    if (!auth) {
+      alert("로그인 후 이용해 주세요");
+      window.location.href = "login.html";
+    }
+
     /* 장바구니 아이콘 개수 */
     window.common.getShoppingCart()
     .done(function (response) {
