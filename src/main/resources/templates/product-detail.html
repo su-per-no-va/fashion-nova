@@ -50,7 +50,7 @@
         </div>
 
         <div class="right-top-bar flex-w h-full">
-          <a href="login.html" class="flex-c-m trans-04 p-lr-25">
+          <a href="login.html" id="auth-btn" class="flex-c-m trans-04 p-lr-25">
             Login
           </a>
 
@@ -639,6 +639,10 @@
         const product = response;
         let productDetails = response.productDetails;
         let productReview = response.reviews;
+
+        const reviewCount = productReview.length;
+        $('.nav-link[href="#reviews"]').text(`리뷰 (${reviewCount})`);
+
         if (product) {
           $('#productImage').attr('src', product.imageUrl);
           $('#productImageLink').attr('href', product.imageUrl);
