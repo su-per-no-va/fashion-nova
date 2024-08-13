@@ -693,9 +693,10 @@
     });
   }
 
-  // 배송지 선택 박스를 업데이트하는 함수
   function updateAddressSelect(addresses) {
     const $addressSelect = $('#address-select');
+    let defaultAddressId = null;
+    let defaultAddressText = ''; // 기본 주소 텍스트 저장
 
     // 기존 옵션을 비웁니다
     $addressSelect.empty();
@@ -703,14 +704,44 @@
 
     // 각 배송지를 선택 항목으로 추가
     addresses.forEach(address => {
-      $addressSelect.append(`<option value="${address.zipCode}, ${address.address}">
-      [${address.zipCode}] ${address.address}
-    </option>`);
+      const addressValue = `[${address.zipCode}] ${address.address}  (${address.detail}) `;
+      const option = `<option value="${addressValue}">
+      [${address.zipCode}] ${address.name} ,${address.address}
+    </option>`;
+      $addressSelect.append(option);
+
+      // 기본 주소인 경우 해당 옵션을 선택
+      if (address.defaultAddress) {
+        defaultAddressId = address.id;
+        defaultAddressText = addressValue;
+      }
     });
+
+    // 기본 주소가 있는 경우 해당 옵션 선택 및 표시
+    if (defaultAddressId) {
+      $addressSelect.val(defaultAddressText);
+      $('#choiced-address').text(defaultAddressText);
+      address = defaultAddressText; // 주문 요청 데이터에 기본 주소 반영
+    } else {
+      $('#choiced-address').text('My Page에서 배송지를 추가해야합니다');
+      address = "배송지없음"; // 기본 주소가 없을 때 주문 요청 데이터 초기화
+    }
 
     // 드롭다운 새로 고침 (필요에 따라)
     $('.js-select2').select2();
   }
+
+  // 배송지 선택 시 선택된 배송지를 표시하고 주문 데이터에 반영
+  $('#address-select').on('change', function() {
+    const selectedAddress = $(this).val();
+    if (selectedAddress) {
+      $('#choiced-address').text(selectedAddress);
+      address = selectedAddress; // 주문 요청 데이터에 추가
+    } else {
+      $('#choiced-address').text('My Page에서 배송지를 추가해야합니다');
+      address = "배송지없음"; // 주문 요청 데이터 초기화
+    }
+  });
 </script>
 
 </body>
