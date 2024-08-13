@@ -47,7 +47,7 @@
                 </div>
 
                 <div class="right-top-bar flex-w h-full">
-                    <a href="login.html" class="flex-c-m trans-04 p-lr-25">
+                    <a href="login.html" id="auth-btn" class="flex-c-m trans-04 p-lr-25">
                         Login
                     </a>
 
@@ -189,20 +189,21 @@
     <div class="modal-content">
         <span class="close">&times;</span>
         <h4 class="mtext-105 cl2 txt-center p-b-30">취소 신청</h4>
-        <form>
+        <form id="cancel-order-form">
             <div class="form-group">
                 <label for="title">제목</label>
-                <input type="text" id="title" class="form-control" placeholder="제목을 입력하세요">
+                <input type="text" id="title" name="title" class="form-control" placeholder="제목을 입력하세요">
             </div>
             <div class="form-group">
                 <label for="reason">사유</label>
-                <textarea id="reason" class="form-control" rows="5"
-                          placeholder="사유를 입력하세요"></textarea>
+                <textarea id="reason" name="reason" class="form-control" rows="5" placeholder="사유를 입력하세요"></textarea>
             </div>
             <div class="form-group">
                 <label for="file">파일 첨부하기</label>
-                <input type="file" id="file" class="form-control-file">
+                <input type="file" id="file" name="file" class="form-control-file">
             </div>
+            <input type="hidden" id="type" name="type" value="ORDER_PAYMENT">
+            <input type="hidden" id="orderId" name="orderId">
             <div class="text-center">
                 <button type="submit" class="btn btn-primary">등록</button>
                 <button type="button" class="btn btn-secondary close-modal">취소</button>
@@ -210,6 +211,7 @@
         </form>
     </div>
 </div>
+
 
 <!-- Footer -->
 <footer class="bg3 p-t-75 p-b-32">
@@ -350,73 +352,142 @@
 
     // 테이블에 주문 정보를 동적으로 추가하는 함수
     function updateOrderTable(orders) {
-      const orderListElement = $('#order-list');
-      orderListElement.empty(); // 기존 행 삭제
+        const orderListElement = $('#order-list');
+        orderListElement.empty(); // 기존 행 삭제
 
-      orders.forEach(function (order) {
-        const orderRow = $('<tr>').addClass('table_row');
+        orders.forEach(function (order) {
+            const orderRow = $('<tr>').addClass('table_row');
 
-        // 주문 번호
-        const orderIdCell = $('<td>').addClass('column-1').html(
-            `<a href="order-detail.html?orderId=${order.orderId}">${order.orderId}</a>`);
-        // 상품 이름
-        const itemNameCell = $('<td>').addClass('column-2').text('상품명');
+            // 주문 번호
+            const orderIdCell = $('<td>').addClass('column-1').html(
+                `<a href="order-detail.html?orderId=${order.orderId}">${order.orderId}</a>`);
+            // 상품 이름
+            const itemNameCell = $('<td>').addClass('column-2').text('상품명');
 
-        // 주문 날짜
-        const orderDateCell = $('<td>').addClass('column-3').text(
-            new Date(order.createdAt).toISOString().split('T')[0]);
+            // 주문 날짜
+            const orderDateCell = $('<td>').addClass('column-3').text(
+                new Date(order.createdAt).toISOString().split('T')[0]);
 
-        // 가격
-        const priceCell = $('<td>').addClass('column-4').text(`${order.totalPrice}원`);
+            // 가격
+            const priceCell = $('<td>').addClass('column-4').text(`${order.totalPrice}원`);
 
-        // 주문 상태
-        const orderStatusCell = $('<td>').addClass('column-5').text(order.orderStatus); // 실제 상태 값으로 수정 필요
+            // 주문 상태
+            const orderStatusCell = $('<td>').addClass('column-5').text(order.orderStatus); // 실제 상태 값으로 수정 필요
 
-        // 배송 상태
-        const deliveryStatusCell = $('<td>').addClass('column-6').text(order.deliveryStatus); // 실제 배송 상태 값으로 수정 필요
+            // 배송 상태
+            const deliveryStatusCell = $('<td>').addClass('column-6').text(order.deliveryStatus); // 실제 배송 상태 값으로 수정 필요
 
-        // Edit 버튼
-        const editButtonCell = $('<td>').addClass('column-7').html(`
-                <button type="button"
-                        class="btn btn-secondary open-modal flex-c-m stext-101 cl0 size-103 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
-                  주문 취소
-                </button>
-            `);
+            // Edit 버튼
+            const editButtonCell = $('<td>').addClass('column-7').html(`
+            <button type="button"
+                    class="btn btn-secondary open-modal flex-c-m stext-101 cl0 size-103 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer"
+                    data-order-id="${order.orderId}">
+              주문 취소
+            </button>
+        `);
 
-        // 테이블 행에 셀 추가
-        orderRow.append(orderIdCell, itemNameCell, orderDateCell, priceCell, orderStatusCell,
-            deliveryStatusCell, editButtonCell);
+            // 테이블 행에 셀 추가
+            orderRow.append(orderIdCell, itemNameCell, orderDateCell, priceCell, orderStatusCell,
+                deliveryStatusCell, editButtonCell);
 
-        // 테이블에 행 추가
-        orderListElement.append(orderRow);
+            // 테이블에 행 추가
+            orderListElement.append(orderRow);
 
-        // 주문 상세 정보를 가져와서 itemNameCell을 업데이트
-        fetchOrderDetail(order.orderId, itemNameCell);
+            // 주문 상세 정보를 가져와서 itemNameCell을 업데이트
+            fetchOrderDetail(order.orderId, itemNameCell);
       });
     }
+      $(document).on('click', '.open-modal', function () {
+          const orderId = $(this).data('order-id');
+          $('#orderId').val(orderId);
+          $('#reason').val(`주문번호: ${orderId}`);
+          $('#cancelOrderModal').css('display', 'block');
+      });
+
+      $(document).on('click', '.close, .close-modal', function () {
+          $('#cancelOrderModal').css('display', 'none');
+      });
+
+      window.onclick = function (event) {
+          if (event.target == $('#cancelOrderModal')[0]) {
+              $('#cancelOrderModal').css('display', 'none');
+          }
+      };
+
+      // 주문 취소 폼 제출 처리
+      $('#cancel-order-form').on('submit', function (e) {
+          e.preventDefault();
+
+          const form = document.getElementById('cancel-order-form');
+          const formData = new FormData(form);
+
+          // JSON 데이터 생성
+          const requestDto = {
+              title: formData.get('title'),
+              type: formData.get('type'),
+              question: formData.get('reason')
+          };
+
+          // FormData에 QuestionRequestDto requestDto, List<MultipartFile> file 추가
+          const finalFormData = new FormData();
+          finalFormData.append('requestDto', new Blob([JSON.stringify(requestDto)], {type: 'application/json'}));
+
+          // 파일을 FormData에 추가
+          const fileInput = document.getElementById('file');
+          if (fileInput.files.length > 0) {
+              for (let i = 0; i < fileInput.files.length; i++) {
+                  finalFormData.append('file', fileInput.files[i]);
+              }
+          }
+
+          postQuestion(finalFormData);
+      });
+
+      // AJAX 요청
+      function postQuestion(finalFormData) {
+          $.ajax({
+              type: 'POST',
+              url: '/questions',
+              data: finalFormData,
+              processData: false, // FormData를 있는 그대로 전송하도록 설정
+              contentType: false, // multipart/form-data로 전송되도록 설정
+              success: function (response, textStatus, jqXHR) {
+                  if (jqXHR.status >= 200 && jqXHR.status < 300) {
+                      alert("문의 등록 성공");
+                      // 모달 창 닫기
+                      $('#cancelOrderModal').css('display', 'none');
+                  } else {
+                      alert("문의 등록 실패");
+                  }
+              },
+              error: function (error) {
+                  alert(error.message);
+              },
+          });
+      }
   });
 </script>
 <!--===============================================================================================-->
 <script>
     // JavaScript to handle modal
-    $(document).ready(function () {
-
-        // 기존 AJAX 요청 및 테이블 업데이트 코드
-
-        $(document).on('click', '.open-modal', function () {
-            $('#cancelOrderModal').css('display', 'block');
-        });
-
-        $(document).on('click', '.close, .close-modal', function () {
-            $('#cancelOrderModal').css('display', 'none');
-        });
-
-        window.onclick = function (event) {
-            if (event.target == $('#cancelOrderModal')[0]) {
-                $('#cancelOrderModal').css('display', 'none');
-            }
-        };
-    });
+    // $(document).ready(function () {
+    //
+    //     // 기존 AJAX 요청 및 테이블 업데이트 코드
+    //
+    //     $(document).on('click', '.open-modal', function () {
+    //         $('#cancelOrderModal').css('display', 'block');
+    //     });
+    //
+    //     $(document).on('click', '.close, .close-modal', function () {
+    //         $('#cancelOrderModal').css('display', 'none');
+    //     });
+    //
+    //     window.onclick = function (event) {
+    //         if (event.target == $('#cancelOrderModal')[0]) {
+    //             $('#cancelOrderModal').css('display', 'none');
+    //         }
+    //     };
+    // });
 </script>
 <!--===============================================================================================-->
 <script>

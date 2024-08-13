@@ -132,8 +132,7 @@ public class DataGenerator {
             .mapToObj(i -> new ReviewRequestDto(
                 faker.number().randomNumber(5, true),
                 faker.lorem().sentence(),
-                faker.number().numberBetween(1, 5),
-                faker.internet().image()
+                faker.number().numberBetween(1, 5)
             ))
             .collect(Collectors.toList());
 

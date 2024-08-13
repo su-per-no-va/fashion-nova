@@ -36,7 +36,7 @@ public class QuestionService {
      */
     public void addQuestion(User user, QuestionRequestDto requestDto, List<MultipartFile> files) {
 
-        if (requestDto.getType().equals("ORDER_PAYMENT") && requestDto.getOrderDetailId() == null) {
+        if (requestDto.getType().equals("EXCHANGE_RETURN") && requestDto.getOrderDetailId() == null) {
             throw new CustomException(ErrorType.INVALID_QUESTION_REQUEST);
         }
 
@@ -48,7 +48,7 @@ public class QuestionService {
             .question(requestDto.getQuestion())
             .type(questionType);
 
-        if (questionType.equals(QuestionType.ORDER_PAYMENT)) {
+        if (questionType.equals(QuestionType.EXCHANGE_RETURN)) {
             questionBuilder.orderDetail(orderDetailRepository.findById(requestDto.getOrderDetailId()).orElseThrow(
                 () -> new CustomException(ErrorType.NOT_FOUND_ORDER)));
         }
@@ -64,7 +64,7 @@ public class QuestionService {
     }
 
     /**
-     * 내 문의 조회
+     * 내 문의 목록 조회
      *
      * @param user
      * @param page

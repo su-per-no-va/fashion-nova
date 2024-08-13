@@ -62,7 +62,6 @@ public class HomeController {
 
     @GetMapping("/index.html")
     public String index() {
-        System.out.println("--------------------------------------------------------------------------");
         return "index";
     }
 
@@ -131,8 +130,70 @@ public class HomeController {
         return "my-coupon";
     }
 
-    @GetMapping("/payments-completed")
+    @GetMapping("/payments-completed.html")
     public String paymentsCompleted() {
         return "payments-completed";
     }
+
+    // 어드민 페이지
+    @GetMapping("admin/admin-coupon-mileage.html")
+    public String adminCouponMileage() {
+        return "admin/admin-coupon-mileage";
+    }
+
+    @GetMapping("admin/admin-login.html")
+    public String adminLogin() {
+        return "admin/admin-login";
+    }
+
+    @GetMapping("admin/admin-password.html")
+    public String adminPassword() {
+        return "admin/admin-password";
+    }
+
+    @GetMapping("admin/admin-product.html")
+    public String adminProduct() {
+        return "admin/admin-product";
+    }
+
+    @GetMapping("admin/admin-product-create.html")
+    public String adminProductCreate() {
+        return "admin/admin-product-create";
+    }
+
+    @GetMapping("admin/admin-product-update.html")
+    public String adminProductUpdate() {
+        return "admin/admin-product-update";
+    }
+
+    @GetMapping("admin/admin-question.html")
+    public String adminQuestion() {
+        return "admin/admin-question";
+    }
+
+    @GetMapping("admin/admin-review.html")
+    public String adminReview() {
+        return "admin/admin-review";
+    }
+
+    @GetMapping("admin/admin-signup.html")
+    public String adminSignup() {
+        return "admin/admin-signup";
+    }
+
+    @GetMapping("admin/admin-user.html")
+    public String adminUser() {
+        return "admin/admin-user";
+    }
+
+    @GetMapping("admin/index.html")
+    public String adminIndex() {
+        return "admin/index";
+    }
+
+    @GetMapping("kakaopay.html")
+    public String kakaoPay() {
+        return "kakaopay";
+    }
+
 }

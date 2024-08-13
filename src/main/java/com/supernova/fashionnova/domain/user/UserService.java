@@ -1,13 +1,17 @@
 package com.supernova.fashionnova.domain.user;
 
+import com.supernova.fashionnova.admin.AdminService;
+import com.supernova.fashionnova.domain.coupon.dto.CouponRequestDto;
 import com.supernova.fashionnova.domain.user.dto.SignupRequestDto;
 import com.supernova.fashionnova.domain.user.dto.UserResponseDto;
+import com.supernova.fashionnova.domain.user.dto.UserRoleResponseDto;
 import com.supernova.fashionnova.domain.user.dto.UserUpdateRequestDto;
 import com.supernova.fashionnova.domain.warn.Warn;
 import com.supernova.fashionnova.domain.warn.WarnRepository;
 import com.supernova.fashionnova.domain.warn.dto.WarnResponseDto;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final WarnRepository warnRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final AdminService adminService;
 
     /**
      * 유저 회원가입
@@ -45,6 +50,8 @@ public class UserService {
             .build();
 
         userRepository.save(user);
+
+        giveWelcomeCoupon(user);
     }
 
     /**
@@ -83,27 +90,6 @@ public class UserService {
     }
 
     /**
-     * 유저 경고 조회
-     *
-     * @param user
-     * @return List<WarnResponseDto>
-     */
-    @Transactional
-    public List<WarnResponseDto> getCautionList(User user) {
-
-        // 테스트 경고 작성
-//        Warn warn1 = new Warn("님 블랙 컨슈머임", user);
-//         Warn warn2 = new Warn("님 엄청난 블랙 컨슈머임", user);
-//        warnRepository.save(warn1);
-//        warnRepository.save(warn2);
-        List<Warn> warnList = warnRepository.findByUser(user);
-
-        return warnList.stream()
-            .map(WarnResponseDto::new)
-            .collect(Collectors.toList());
-    }
-
-    /**
      * 유저 정보 수정
      *
      * @param requestDto
@@ -123,6 +109,33 @@ public class UserService {
         return new UserResponseDto(user);
     }
 
+    /**
+     * 유저 경고 조회
+     *
+     * @param user
+     * @return List<WarnResponseDto>
+     */
+    @Transactional
+    public List<WarnResponseDto> getCautionList(User user) {
+
+        List<Warn> warnList = warnRepository.findByUser(user);
+
+        return warnList.stream()
+            .map(WarnResponseDto::new)
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * 유저 롤 가져오기
+     *
+     * @param user
+     * @return UserRoleResponseDto
+     */
+    public UserRoleResponseDto getUserRole(User user) {
+
+        return new UserRoleResponseDto(user.getUserRole());
+    }
+
     private void checkDuplicate(SignupRequestDto requestDto) {
 
         // userName 중복체크
@@ -140,6 +153,20 @@ public class UserService {
     public User getUserById(Long userId) {
         return userRepository.findById(userId).orElseThrow(
             ()-> new CustomException(ErrorType.NOT_FOUND_USER));
+    }
+
+    private void giveWelcomeCoupon(User user) {
+
+        CouponRequestDto couponRequest = CouponRequestDto.builder()
+            .userId(user.getId())
+            .name("가입 축하 쿠폰")
+            .period(new Date(System.currentTimeMillis() + 30L * 24 * 60 * 60 * 1000))
+            .sale("10")
+            .type("WELCOME")
+            .build();
+
+
+        adminService.addCoupon(couponRequest);
     }
 
 }

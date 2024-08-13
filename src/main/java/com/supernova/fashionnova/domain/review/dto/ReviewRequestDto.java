@@ -11,13 +11,11 @@ public class ReviewRequestDto {
 
     private int rating;
 
-    private String reviewImageUrl;
 
-    public ReviewRequestDto(Long productId, String review, int rating, String reviewImageUrl) {
+    public ReviewRequestDto(Long productId, String review, int rating) {
         this.productId = productId;
         this.review = review;
         this.rating = rating;
-        this.reviewImageUrl = reviewImageUrl;
     }
 
 }

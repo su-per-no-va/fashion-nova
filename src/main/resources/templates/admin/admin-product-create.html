@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Product Create - Admin</title>
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <link href="../admin/css/admin.css" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- jQuery 라이브러리 추가 -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <!-- 공용 자바스크립트 파일 추가 -->
+        <script src="/admin/js/admin-check.js"></script>
+    </head>
+    <body class="sb-nav-fixed">
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <!-- Navbar Brand-->
+            <a class="navbar-brand ps-3" href="index.html">슈퍼노바 관리자 페이지</a>
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <!-- Search-->
+            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+            </form>
+
+            <!-- Header-->
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#!">설정</a></li>
+                        <li><a class="dropdown-item" href="#!">활동 로그</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="admin-login.html">로그아웃</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Menu-->
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading">통계</div>
+                            <a class="nav-link" href="index.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                판매 통계
+                            </a>
+                            <div class="sb-sidenav-menu-heading">상품</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts1" aria-expanded="false" aria-controls="collapseLayouts1">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                상품 관리
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayouts1" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="admin-product-create.html">상품 등록</a>
+                                    <a class="nav-link" href="admin-product.html">상품 관리</a>
+                                </nav>
+                            </div>
+
+                            <div class="sb-sidenav-menu-heading">회원</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts2" aria-expanded="false" aria-controls="collapseLayouts2">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                회원 관리
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayouts2" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="admin-user.html">회원 조회</a>
+                                    <a class="nav-link" href="admin-coupon-mileage.html">회원 쿠폰, 마일리지</a>
+                                </nav>
+                            </div>
+
+                            <div class="sb-sidenav-menu-heading">리뷰</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts3" aria-expanded="false" aria-controls="collapseLayouts3">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                리뷰 관리
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayouts3" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="admin-review.html">리뷰 삭제</a>
+                                </nav>
+                            </div>
+
+                            <div class="sb-sidenav-menu-heading">Q&A</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts4" aria-expanded="false" aria-controls="collapseLayouts4">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Q&A 관리
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayouts4" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="admin-question.html">Q&A 답변 등록</a>
+                                </nav>
+                            </div>
+
+                        </div>
+                    </div>
+                </nav>
+            </div>
+
+            <!-- Product Create Page-->
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">Product Create</h1>
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                상품 등록
+                            </div>
+                        </div>
+
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                Product Table
+                            </div>
+                            <div class="card-body">
+                                <form id="productForm" enctype="multipart/form-data">
+                                    <div class="mb-3">
+                                        <label for="productName" class="form-label">상품 명</label>
+                                        <input type="text" class="form-control" id="productName" name="product" placeholder="상품 명을 입력하세요">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="productPrice" class="form-label">가격</label>
+                                        <input type="number" class="form-control" id="productPrice" name="price" placeholder="가격을 입력하세요">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="productDescription" class="form-label">설명</label>
+                                        <textarea class="form-control" id="productDescription" name="explanation" rows="3" placeholder="설명을 입력하세요"></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="productImage" class="form-label">이미지</label>
+                                        <input class="form-control" type="file" id="productImage" name="files[]" multiple>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">상품 분류</label><br>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" id="category1" name="category" value="TOP">
+                                            <label class="form-check-label" for="category1">TOP</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" id="category2" name="category" value="BOTTOM">
+                                            <label class="form-check-label" for="category2">BOTTOM</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" id="category3" name="category" value="SHOES">
+                                            <label class="form-check-label" for="category3">SHOES</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" id="category4" name="category" value="GOODS">
+                                            <label class="form-check-label" for="category4">GOODS</label>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">사이즈</label><br>
+                                        <select id="sizeSelect" class="form-select">
+                                            <option value="">Select Size</option>
+                                            <option value="S">S</option>
+                                            <option value="M">M</option>
+                                            <option value="L">L</option>
+                                            <option value="XL">XL</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">컬러</label><br>
+                                        <select id="colorSelect" class="form-select">
+                                            <option value="">Select Color</option>
+                                            <option value="Red">Red</option>
+                                            <option value="Blue">Blue</option>
+                                            <option value="Green">Green</option>
+                                            <option value="Black">Black</option>
+                                            <option value="Yellow">Yellow</option>
+                                            <option value="Purple">Purple</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="quantityInput" class="form-label">수량</label>
+                                        <input type="number" class="form-control" id="quantityInput" placeholder="수량을 입력하세요" min="1">
+                                    </div>
+                                    <button type="button" class="btn btn-secondary mt-2" id="addSizeColorButton">추가</button>
+                                    <div class="mb-3" id="sizeColorQuantityContainer"></div>
+                                    <div class="mb-3" id="colorContainer">
+                                    </div>
+                                    <button type="button" class="btn btn-primary" id="submitButton">등록</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+
+                <!-- Footer-->
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">(주)패션노바 2024</div>
+                            <div>
+                                <a href="#">개인정보 보호정책</a>
+                                &middot;
+                                <a href="#">이용약관</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="../admin/js/scripts.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+        <script src="../admin/js/datatables.js"></script>
+        <script src="../admin/js/admin-product-create.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                $('#addSizeColorButton').on('click', addSizeColorQuantity);
+                $('#submitButton').on('click', submitForm);
+            });
+
+            function addSizeColorQuantity() {
+                const size = $('#sizeSelect').val();
+                const color = $('#colorSelect').val();
+                const quantity = $('#quantityInput').val() || 1; // Default quantity if input is not present
+
+                if (size && color && quantity) {
+                    const container = $('#sizeColorQuantityContainer');
+                    const newDiv = $(`
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <input type="hidden" name="sizes[]" value="${size}">
+                    <input type="hidden" name="colors[]" value="${color}">
+                    <input type="hidden" name="quantities[]" value="${quantity}">
+                    <span>Size: ${size}, Color: ${color}, Quantity: ${quantity}</span>
+                </div>
+            </div>
+        `);
+                    container.append(newDiv);
+                } else {
+                    alert('Please enter size, color, and quantity.');
+                }
+            }
+
+            function submitForm() {
+                const formData = new FormData();
+                const productName = $('#productName').val();
+                const productPrice = $('#productPrice').val();
+                const productDescription = $('#productDescription').val();
+
+                const sizes = $('input[name="sizes[]"]').map(function() { return $(this).val(); }).get();
+                const colors = $('input[name="colors[]"]').map(function() { return $(this).val(); }).get();
+                const quantities = $('input[name="quantities[]"]').map(function() { return $(this).val(); }).get();
+
+                const productDetails = sizes.map((size, index) => ({
+                    size: size,
+                    color: colors[index],
+                    quantity: quantities[index]
+                }));
+
+                const selectedCategory = $('input[name="category"]:checked').val();
+
+                const requestDto = {
+                    product: productName,
+                    price: productPrice,
+                    explanation: productDescription,
+                    category: selectedCategory, // Add category to requestDto
+                    productDetailList: productDetails
+                };
+
+                formData.append('requestDto', JSON.stringify(requestDto));
+
+                const files = $('#productImage')[0].files;
+                for (let i = 0; i < files.length; i++) {
+                    formData.append('files', files[i]);
+                }
+
+
+                $.ajax({
+                    url: '/api/admin/products',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        alert('상품이 성공적으로 등록되었습니다.');
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                        alert('상품 등록에 실패하였습니다.');
+                    }
+                });
+            }
+        </script>
+
+    </body>
+</html>

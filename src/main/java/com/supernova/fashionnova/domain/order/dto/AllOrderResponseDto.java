@@ -1,10 +1,12 @@
 package com.supernova.fashionnova.domain.order.dto;
 
 import com.supernova.fashionnova.domain.delivery.DeliveryStatus;
+import com.supernova.fashionnova.domain.order.Order;
 import com.supernova.fashionnova.domain.order.OrderDetail;
 import com.supernova.fashionnova.domain.order.OrderStatus;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -53,10 +55,30 @@ public class AllOrderResponseDto {
             orderDetail.getId(),
             orderDetail.getCount(),
             orderDetail.getProductName(),
-            orderDetail.getPrice()
+            orderDetail.getPrice(),
+            orderDetail.getProductDetail().getSize(),
+            orderDetail.getProductDetail().getColor(),
+            orderDetail.getOrder().getOrderStatus()
         ))
-        .toList();
+        .collect(Collectors.toList());
     this.orderName = orderName;
     this.cartCount = cartCount;
+  }
+
+  public static AllOrderResponseDto fromOrder(Order order, List<OrderDetail> savedOrderDetailList) {
+    return new AllOrderResponseDto(
+        order.getId(),
+        order.getOrderStatus(),
+        order.getAddress(),
+        order.getCost(),
+        order.getDeliveryStatus(),
+        order.getDiscount(),
+        order.getTotalPrice(),
+        order.getUsedMileage(),
+        order.getCreatedAt(),
+        savedOrderDetailList,
+        order.getOrderName(),
+        order.getCount()
+    );
   }
 }

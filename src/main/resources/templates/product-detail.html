@@ -34,6 +34,7 @@
 	<link rel="stylesheet" type="text/css" href="../css/util.css">
 	<link rel="stylesheet" type="text/css" href="../css/main.css">
 <!--===============================================================================================-->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body class="animsition">
 
@@ -96,13 +97,13 @@
             <i class="zmdi zmdi-search"></i>
           </div>
 
-          <a href="shoping-cart.html"
+          <a id="cart-icon" href="shoping-cart.html"
              class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
-             data-notify="2">
+             data-notify="">
             <i class="zmdi zmdi-shopping-cart"></i>
           </a>
 
-          <a href="wish-list.html" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
+          <a id="wish-icon" href="wish-list.html" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
              data-notify="0">
             <i class="zmdi zmdi-favorite-outline"></i>
           </a>
@@ -128,26 +129,6 @@
   </div>
 </header>
 
-<!-- breadcrumb -->
-<div class="container">
-  <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
-    <a href="index.html" class="stext-109 cl8 hov-cl1 trans-04">
-      Home
-      <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
-    </a>
-
-    <a href="product.html" class="stext-109 cl8 hov-cl1 trans-04">
-      Top
-      <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
-    </a>
-
-    <span class="stext-109 cl4">
-				Lightweight Jacket
-			</span>
-  </div>
-</div>
-
-
 <!-- Product Detail -->
 <section class="sec-product-detail bg0 p-t-65 p-b-60">
   <div class="container">
@@ -157,40 +138,7 @@
           <div class="wrap-slick3 flex-sb flex-w">
             <div class="wrap-slick3-dots"></div>
             <div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
-
-            <div class="slick3 gallery-lb">
-              <div class="item-slick3" data-thumb="images/product-detail-01.jpg">
-                <div class="wrap-pic-w pos-relative">
-                  <img src="images/product-detail-01.jpg" alt="IMG-PRODUCT">
-
-                  <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                     href="images/product-detail-01.jpg">
-                    <i class="fa fa-expand"></i>
-                  </a>
-                </div>
-              </div>
-
-              <div class="item-slick3" data-thumb="images/product-detail-02.jpg">
-                <div class="wrap-pic-w pos-relative">
-                  <img src="images/product-detail-02.jpg" alt="IMG-PRODUCT">
-
-                  <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                     href="images/product-detail-02.jpg">
-                    <i class="fa fa-expand"></i>
-                  </a>
-                </div>
-              </div>
-
-              <div class="item-slick3" data-thumb="images/product-detail-03.jpg">
-                <div class="wrap-pic-w pos-relative">
-                  <img src="images/product-detail-03.jpg" alt="IMG-PRODUCT">
-
-                  <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                     href="images/product-detail-03.jpg">
-                    <i class="fa fa-expand"></i>
-                  </a>
-                </div>
-              </div>
+            <div id="my-gallery" class="slick3 gallery-lb">
             </div>
           </div>
         </div>
@@ -199,16 +147,12 @@
       <div class="col-md-6 col-lg-5 p-b-30">
         <div class="p-r-50 p-t-5 p-lr-0-lg">
           <h4 class="mtext-105 cl2 js-name-detail p-b-14">
-            Lightweight Jacket
+
           </h4>
 
           <span class="mtext-106 cl2">
-							$58.79
-						</span>
 
-          <p class="stext-102 cl3 p-t-23">
-            여름이지만 쌀쌀한 에어컨 밑에서 가볍게 걸칠 신상 자켓
-          </p>
+						</span>
 
           <!--  -->
           <div class="p-t-33">
@@ -219,7 +163,7 @@
 
               <div class="size-204 respon6-next">
                 <div class="rs1-select2 bor8 bg0">
-                  <select class="js-select2" name="time">
+                  <select id="sizeSelect" class="js-select2" name="time">
                     <option>Choose an option</option>
                     <option>S</option>
                     <option>M</option>
@@ -237,7 +181,7 @@
 
               <div class="size-204 respon6-next">
                 <div class="rs1-select2 bor8 bg0">
-                  <select class="js-select2" name="time">
+                  <select id="colorSelect" class="js-select2" name="time">
                     <option>Choose an option</option>
                     <option>Black</option>
                     <option>White</option>
@@ -265,22 +209,23 @@
 
                 <div class="block2-txt-child2 flex-r p-t-3">
                   <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                    <img class="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png"
+                    <!--<img class="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png"
                          alt="ICON">
                     <img class="icon-heart2 dis-block trans-04 ab-t-l"
-                         src="images/icons/icon-heart-02.png" alt="ICON">
+                         src="images/icons/icon-heart-02.png" alt="ICON">-->
                   </a>
                 </div>
+
               </div>
               <button
                   class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail"
-                  style="margin: 30px;">
+                  style="margin: 30px;" data-item-id="">
                 Add to cart
               </button>
 
               <button
                   class="flex-c-m stext-101 cl2 size-101 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10">
-                Bye Now
+                Buy Now
               </button>
             </div>
           </div>
@@ -294,9 +239,7 @@
       <div class="tab01">
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
-          <li class="nav-item p-b-10">
-            <a class="nav-link active" data-toggle="tab" href="#description" role="tab">설명</a>
-          </li>
+
 
           <li class="nav-item p-b-10">
             <a class="nav-link" data-toggle="tab" href="#information" role="tab">추가 정보</a>
@@ -310,55 +253,26 @@
         <!-- Tab panes -->
         <div class="tab-content p-t-43">
           <!-- - -->
-          <div class="tab-pane fade show active" id="description" role="tabpanel">
-            <div class="how-pos2 p-lr-15-md">
-              <p class="stext-102 cl6">
-                겁나 멋있는 신상 자켓입니다.
-              </p>
-            </div>
-          </div>
-
           <!-- - -->
-          <div class="tab-pane fade" id="information" role="tabpanel">
+          <div class="tab-pane fade show active" id="information" role="tabpanel">
             <div class="row">
               <div class="col-sm-10 col-md-8 col-lg-6 m-lr-auto">
                 <ul class="p-lr-28 p-lr-15-sm">
                   <li class="flex-w flex-t p-b-7">
 											<span class="stext-102 cl3 size-205">
-												Weight
+												상품 설명 :
 											</span>
 
-                    <span class="stext-102 cl6 size-206">
-												0.79 kg
-											</span>
-                  </li>
-
-                  <li class="flex-w flex-t p-b-7">
-											<span class="stext-102 cl3 size-205">
-												Dimensions
-											</span>
-
-                    <span class="stext-102 cl6 size-206">
-												110 x 33 x 100 cm
+                    <span id="explanation" class="stext-102 cl6 size-206">
 											</span>
                   </li>
 
                   <li class="flex-w flex-t p-b-7">
-											<span class="stext-102 cl3 size-205">
-												Materials
-											</span>
-
-                    <span class="stext-102 cl6 size-206">
-												60% cotton
-											</span>
-                  </li>
-
-                  <li class="flex-w flex-t p-b-7">
-											<span class="stext-102 cl3 size-205">
+											<span  class="stext-102 cl3 size-205">
 												Color
 											</span>
 
-                    <span class="stext-102 cl6 size-206">
+                    <span id="colorText" class="stext-102 cl6 size-206">
 												Black, Grey, White
 											</span>
                   </li>
@@ -368,7 +282,7 @@
 												Size
 											</span>
 
-                    <span class="stext-102 cl6 size-206">
+                    <span id="sizeText" class="stext-102 cl6 size-206">
 												S, M, L
 											</span>
                   </li>
@@ -383,47 +297,47 @@
               <div class="col-sm-10 col-md-8 col-lg-6 m-lr-auto">
                 <div class="p-b-30 m-lr-15-sm">
                   <!-- Review -->
-                  <div class="flex-w flex-t p-b-68">
-                    <div class="wrap-pic-s size-109 bor0 of-hidden m-r-18 m-t-6">
-                      <img src="images/avatar-01.jpg" alt="AVATAR">
-                    </div>
+                  <!-- <div class="flex-w flex-t p-b-68">
+                     <div class="wrap-pic-s size-109 bor0 of-hidden m-r-18 m-t-6">
+                       <img src="images/avatar-01.jpg" alt="AVATAR">
+                     </div>
 
-                    <div class="size-207">
-                      <div class="flex-w flex-sb-m p-b-17">
-													<span class="mtext-107 cl2 p-r-20">
-														아리아나 그란데
-													</span>
+                     <div class="size-207">
+                       <div class="flex-w flex-sb-m p-b-17">
+                           <span id="reviewName" class="mtext-107 cl2 p-r-20">
+                             아리아나 그란데
+                           </span>
 
-                        <span class="fs-18 cl11">
-														<i class="zmdi zmdi-star"></i>
-														<i class="zmdi zmdi-star"></i>
-														<i class="zmdi zmdi-star"></i>
-														<i class="zmdi zmdi-star"></i>
-														<i class="zmdi zmdi-star"></i>
-													</span>
-                        <td class="column-3">2024-08-01</td>
-                      </div>
+                         <span class="fs-18 cl11">
+                             <i class="zmdi zmdi-star"></i>
+                             <i class="zmdi zmdi-star"></i>
+                             <i class="zmdi zmdi-star"></i>
+                             <i class="zmdi zmdi-star"></i>
+                             <i class="zmdi zmdi-star"></i>
+                           </span>
+                         <td class="column-3">2024-08-01</td>
+                       </div>
 
-                      <p class="stext-102 cl6">
-                        이거 입고 남친 생겼어요
-                      </p>
+                       <p class="stext-102 cl6">
+                         이거 입고 남친 생겼어요
+                       </p>
 
-                      <div class="form-group file-upload">
-                        <td class="column-1">
-                          <img src="../images/item-cart-05.jpg" alt="IMG">
-                        </td>
-                        <td class="column-1">
-                          <img src="../images/item-cart-05.jpg" alt="IMG">
-                        </td>
-                        <td class="column-1">
-                          <img src="../images/item-cart-05.jpg" alt="IMG">
-                        </td>
-                        <td class="column-1">
-                          <img src="../images/item-cart-05.jpg" alt="IMG">
-                        </td>
-                      </div>
+                       <div class="form-group file-upload">
+                         <td class="column-1">
+                           <img src="../images/item-cart-05.jpg" alt="IMG">
+                         </td>
+                         <td class="column-1">
+                           <img src="../images/item-cart-05.jpg" alt="IMG">
+                         </td>
+                         <td class="column-1">
+                           <img src="../images/item-cart-05.jpg" alt="IMG">
+                         </td>
+                         <td class="column-1">
+                           <img src="../images/item-cart-05.jpg" alt="IMG">
+                         </td>
+                       </div>
 
-                    </div>
+                     </div>-->
                   </div>
 
                   <!-- Add review -->
@@ -453,7 +367,7 @@
                         <div class="form-group file-upload">
                           <input type="file" id="file-upload" multiple>
                           <p class="file-upload-text">파일 첨부는 최대 4장까지 가능하며, 5MB 이하의 GIF, JPG, JPEG,
-                            PNG, PDF 형탤로 업로드 해주세요.</p>
+                            PNG, PDF 형태로 업로드 해주세요.</p>
                         </div>
                       </div>
                     </div>
@@ -471,281 +385,8 @@
     </div>
   </div>
 
-  <div class="bg6 flex-c-m flex-w size-302 m-t-73 p-tb-15">
-			<span class="stext-107 cl6 p-lr-25">
-				SKU: JAK-01
-			</span>
 
-    <span class="stext-107 cl6 p-lr-25">
-				Categories: Top
-			</span>
-  </div>
 </section>
-
-<!-- Related Products -->
-<section class="sec-relate-product bg0 p-t-45 p-b-105">
-  <div class="container">
-    <div class="p-b-45">
-      <h3 class="ltext-106 cl5 txt-center">
-        Related Products
-      </h3>
-    </div>
-
-    <!-- Slide2 -->
-    <div class="wrap-slick2">
-      <div class="slick2">
-        <div class="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
-          <!-- Block2 -->
-          <div class="block2">
-            <div class="block2-pic hov-img0">
-              <img src="images/product-01.jpg" alt="IMG-PRODUCT">
-            </div>
-
-            <div class="block2-txt flex-w flex-t p-t-14">
-              <div class="block2-txt-child1 flex-col-l ">
-                <a href="product-detail.html"
-                   class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                  Esprit Ruffle Shirt
-                </a>
-
-                <span class="stext-105 cl3">
-										50,000원
-									</span>
-              </div>
-
-              <div class="block2-txt-child2 flex-r p-t-3">
-                <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                  <img class="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png"
-                       alt="ICON">
-                  <img class="icon-heart2 dis-block trans-04 ab-t-l"
-                       src="images/icons/icon-heart-02.png" alt="ICON">
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
-          <!-- Block2 -->
-          <div class="block2">
-            <div class="block2-pic hov-img0">
-              <img src="images/product-02.jpg" alt="IMG-PRODUCT">
-            </div>
-
-            <div class="block2-txt flex-w flex-t p-t-14">
-              <div class="block2-txt-child1 flex-col-l ">
-                <a href="product-detail.html"
-                   class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                  Herschel supply
-                </a>
-
-                <span class="stext-105 cl3">
-										50,000원
-									</span>
-              </div>
-
-              <div class="block2-txt-child2 flex-r p-t-3">
-                <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                  <img class="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png"
-                       alt="ICON">
-                  <img class="icon-heart2 dis-block trans-04 ab-t-l"
-                       src="images/icons/icon-heart-02.png" alt="ICON">
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
-          <!-- Block2 -->
-          <div class="block2">
-            <div class="block2-pic hov-img0">
-              <img src="images/product-03.jpg" alt="IMG-PRODUCT">
-            </div>
-
-            <div class="block2-txt flex-w flex-t p-t-14">
-              <div class="block2-txt-child1 flex-col-l ">
-                <a href="product-detail.html"
-                   class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                  Only Check Trouser
-                </a>
-
-                <span class="stext-105 cl3">
-										50,000원
-									</span>
-              </div>
-
-              <div class="block2-txt-child2 flex-r p-t-3">
-                <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                  <img class="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png"
-                       alt="ICON">
-                  <img class="icon-heart2 dis-block trans-04 ab-t-l"
-                       src="images/icons/icon-heart-02.png" alt="ICON">
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
-          <!-- Block2 -->
-          <div class="block2">
-            <div class="block2-pic hov-img0">
-              <img src="images/product-04.jpg" alt="IMG-PRODUCT">
-            </div>
-
-            <div class="block2-txt flex-w flex-t p-t-14">
-              <div class="block2-txt-child1 flex-col-l ">
-                <a href="product-detail.html"
-                   class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                  Classic Trench Coat
-                </a>
-
-                <span class="stext-105 cl3">
-										50,000원
-									</span>
-              </div>
-
-              <div class="block2-txt-child2 flex-r p-t-3">
-                <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                  <img class="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png"
-                       alt="ICON">
-                  <img class="icon-heart2 dis-block trans-04 ab-t-l"
-                       src="images/icons/icon-heart-02.png" alt="ICON">
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
-          <!-- Block2 -->
-          <div class="block2">
-            <div class="block2-pic hov-img0">
-              <img src="images/product-05.jpg" alt="IMG-PRODUCT">
-            </div>
-
-            <div class="block2-txt flex-w flex-t p-t-14">
-              <div class="block2-txt-child1 flex-col-l ">
-                <a href="product-detail.html"
-                   class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                  Front Pocket Jumper
-                </a>
-
-                <span class="stext-105 cl3">
-										50,000원
-									</span>
-              </div>
-
-              <div class="block2-txt-child2 flex-r p-t-3">
-                <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                  <img class="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png"
-                       alt="ICON">
-                  <img class="icon-heart2 dis-block trans-04 ab-t-l"
-                       src="images/icons/icon-heart-02.png" alt="ICON">
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
-          <!-- Block2 -->
-          <div class="block2">
-            <div class="block2-pic hov-img0">
-              <img src="images/product-06.jpg" alt="IMG-PRODUCT">
-            </div>
-
-            <div class="block2-txt flex-w flex-t p-t-14">
-              <div class="block2-txt-child1 flex-col-l ">
-                <a href="product-detail.html"
-                   class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                  Vintage Inspired Classic
-                </a>
-
-                <span class="stext-105 cl3">
-										50,000원
-									</span>
-              </div>
-
-              <div class="block2-txt-child2 flex-r p-t-3">
-                <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                  <img class="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png"
-                       alt="ICON">
-                  <img class="icon-heart2 dis-block trans-04 ab-t-l"
-                       src="images/icons/icon-heart-02.png" alt="ICON">
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
-          <!-- Block2 -->
-          <div class="block2">
-            <div class="block2-pic hov-img0">
-              <img src="images/product-07.jpg" alt="IMG-PRODUCT">
-            </div>
-
-            <div class="block2-txt flex-w flex-t p-t-14">
-              <div class="block2-txt-child1 flex-col-l ">
-                <a href="product-detail.html"
-                   class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                  Shirt in Stretch Cotton
-                </a>
-
-                <span class="stext-105 cl3">
-										50,000원
-									</span>
-              </div>
-
-              <div class="block2-txt-child2 flex-r p-t-3">
-                <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                  <img class="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png"
-                       alt="ICON">
-                  <img class="icon-heart2 dis-block trans-04 ab-t-l"
-                       src="images/icons/icon-heart-02.png" alt="ICON">
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
-          <!-- Block2 -->
-          <div class="block2">
-            <div class="block2-pic hov-img0">
-              <img src="images/product-08.jpg" alt="IMG-PRODUCT">
-            </div>
-
-            <div class="block2-txt flex-w flex-t p-t-14">
-              <div class="block2-txt-child1 flex-col-l ">
-                <a href="product-detail.html"
-                   class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                  Pieces Metallic Printed
-                </a>
-
-                <span class="stext-105 cl3">
-										50,000원
-									</span>
-              </div>
-
-              <div class="block2-txt-child2 flex-r p-t-3">
-                <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                  <img class="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png"
-                       alt="ICON">
-                  <img class="icon-heart2 dis-block trans-04 ab-t-l"
-                       src="images/icons/icon-heart-02.png" alt="ICON">
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 
 <!-- Footer -->
 <footer class="bg3 p-t-75 p-b-32">
@@ -848,52 +489,10 @@
 <script src="vendor/isotope/isotope.pkgd.min.js"></script>
 <!--===============================================================================================-->
 <script src="vendor/sweetalert/sweetalert.min.js"></script>
-<script>
-  $(document).ready(function () {
-    $('.js-addwish-b2, .js-addwish-detail').on('click', function (e) {
-      e.preventDefault();
-    });
 
-    $('.js-addwish-b2').each(function () {
-      var nameProduct = $(this).parent().parent().find('.js-name-b2').html();
-      $(this).on('click', function () {
-        swal(nameProduct, "위시리스트 담기 완료 !", "success");
-
-        $(this).addClass('js-addedwish-b2');
-        $(this).off('click');
-      });
-    });
-
-    $('.js-addwish-detail').each(function () {
-      var nameProduct = $(this).parent().parent().parent().find('.js-name-detail').html();
-
-      $(this).on('click', function () {
-        swal(nameProduct, "위시리스트 담기 완료 !", "success");
-
-        $(this).addClass('js-addedwish-detail');
-        $(this).off('click');
-      });
-    });
-
-    /*---------------------------------------------*/
-
-    $('.js-addcart-detail').each(function () {
-      var nameProduct = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
-      $(this).on('click', function () {
-        swal(nameProduct, "장바구니 담기 완료 !", "success");
-      });
-    });
-
-    // Add this code for the icon-heart1 click event
-    $('.icon-heart1').on('click', function (e) {
-      e.preventDefault();
-      var nameProduct = $(this).closest('.block2-txt').find('.js-name-b2').html();
-      swal(nameProduct, "위시리스트 담기 완료 !", "success");
-    });
-  });
-</script>
 <!--===============================================================================================-->
 <script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+
 <script>
   $('.js-pscroll').each(function () {
     $(this).css('position', 'relative');
@@ -909,8 +508,345 @@
     })
   });
 </script>
+
+
 <!--===============================================================================================-->
+<script src="/js/common.js"></script>
 <script src="js/main.js"></script>
+
+<script>
+  $(document).ready(function () {
+
+    /* 장바구니 아이콘 개수 */
+    window.common.getShoppingCart()
+    .done(function (response) {
+      if (response) {
+        $('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
+      } else {
+        // no response
+      }
+    })
+    .fail(function (error) {
+      console.log(error.message)
+    });
+
+    /* 찜 아이콘 개수 */
+    window.common.getWishList()
+    .done(function (response) {
+      if (response) {
+        $('a#wish-icon')[0].dataset.notify = response.length;
+      } else {
+        // no response
+      }
+    });
+
+
+
+    const queryString = window.location.search; // 주소 가져오기
+    const urlParams = new URLSearchParams(queryString); // URL 파싱하기
+    const productId = urlParams.get('id');
+    $('.js-addcart-detail').attr('data-item-id', productId);
+    fetchAndDisplayProductImage(productId);
+
+    $('.js-addwish-b2, .js-addwish-detail').on('click', function (e) {
+      e.preventDefault();
+    });
+
+    $('.js-addwish-b2').each(function () {
+      var nameProduct = $(this).parent().parent().find('.js-name-b2').html();
+      $(this).on('click', function () {
+        swal(nameProduct, "위시리스트 담기 완료 !", "success");
+
+        $(this).addClass('js-addedwish-b2');
+        $(this).off('click');
+      });
+
+      $(document).on('click', '.js-addcart-detail', function () {
+        const productId = $(this).data('item-id');
+        const count = $('input[name="num-product"]').val();
+        const size = $('#sizeSelect').val();
+        const color = $('#colorSelect').val();
+
+        if (!size || size === "Choose an option") {
+          alert("사이즈를 선택해주세요.");
+          return;
+        }
+
+        if (!color || color === "Choose an option") {
+          alert("컬러를 선택해주세요.");
+          return;
+        }
+
+        $.ajax({
+          url: '/carts', // 상품을 장바구니에 추가하는 API 엔드포인트
+          type: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({
+            productId: productId,
+            count: count,
+            size : size,
+            color : color
+          }),
+          success: function (response) {
+            alert("장바구니 추가 완료!!")
+          },
+          error: function () {
+            swal("장바구니 추가 실패", '요청 처리에 실패했습니다.', "error");
+          }
+        })
+      });
+
+
+
+    $('.js-addwish-detail').each(function () {
+      var nameProduct = $(this).parent().parent().parent().find('.js-name-detail').html();
+
+      $(this).on('click', function () {
+        swal(nameProduct, "위시리스트 담기 완료 !", "success");
+
+        $(this).addClass('js-addedwish-detail');
+        $(this).off('click');
+
+      });
+    });
+
+    /*---------------------------------------------*/
+
+  /*  $('.js-addcart-detail').each(function () {
+      var nameProduct = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
+      if (size !== null && color !== null) {
+        $(this).on('click', function () {
+          swal(nameProduct, "장바구니 담기 완료 !", "success");
+        });
+      }
+    });*/
+
+
+
+    // Add this code for the icon-heart1 click event
+    $('.icon-heart1').on('click', function (e) {
+      e.preventDefault();
+      var nameProduct = $(this).closest('.block2-txt').find('.js-name-b2').html();
+      swal(nameProduct, "위시리스트 담기 완료 !", "success");
+    });
+  });
+
+  function fetchAndDisplayProductImage(productId) {
+    $.ajax({
+      url: `/products/${productId}`, // 실제 이미지 URL을 제공하는 경로로 변경하세요
+      success: function (response) {
+        console.log(response);
+        const product = response;
+        let productDetails = response.productDetails;
+        let productReview = response.reviews;
+        if (product) {
+          $('#productImage').attr('src', product.imageUrl);
+          $('#productImageLink').attr('href', product.imageUrl);
+
+          $('.js-name-detail').html(product.product);
+          $('.mtext-106.cl2').html(`${product.price.toLocaleString()}원`);
+          $('#explanation').html(`${product.explanation}`);
+
+          $('#sizeSelect').empty();
+          $('#sizeSelect').append('<option>Choose an option</option>');
+          let uniqueSizes = new Set();
+          productDetails.forEach(product => {
+            uniqueSizes.add(product.size);
+          });
+
+          $('.btn-num-product-up').on('click', function() {
+            let numProduct = $(this).siblings('input.num-product');
+            let currentValue = parseInt(numProduct.val());
+            numProduct.val(currentValue + 1);
+          });
+
+          // 마이너스 버튼 클릭 시
+          $('.btn-num-product-down').on('click', function() {
+            let numProduct = $(this).siblings('input.num-product');
+            let currentValue = parseInt(numProduct.val());
+            if (currentValue > 1) {
+              numProduct.val(currentValue - 1);
+            }
+          });
+
+          $('.item-rating').on('click', function () {
+            const index = $(this).index() + 1;
+            $('input[name="rating"]').val(index);
+
+            $(this).siblings('.item-rating').removeClass('zmdi-star').addClass('zmdi-star-outline');
+            $(this).prevAll().addBack().removeClass('zmdi-star-outline').addClass('zmdi-star');
+          });
+
+          $('form.w-full').on('submit', function (e) {
+            e.preventDefault();
+
+            const review = $('#review').val();
+            const rating = $('input[name="rating"]').val();
+            const productId = $('.js-addcart-detail').data('item-id');
+            const formData = new FormData();
+
+            const requestDto = {
+              review: review,
+              rating:rating,
+              productId:productId
+            }
+
+            // formData.append('review', review);
+            // formData.append('rating', rating);
+            // formData.append('productId', productId);
+
+            formData.append('reviewRequestDto',
+            new Blob([JSON.stringify(requestDto)],{type:'application/json'}))
+
+            const files = $('#file-upload')[0].files;
+            for (let i = 0; i < files.length; i++) {
+              formData.append('images', files[i]);
+            }
+
+            $.ajax({
+              url: '/reviews', // 리뷰를 제출할 API 엔드포인트
+              type: 'POST',
+              contentType: false,
+              processData: false,
+              data: formData,
+              success: function (response) {
+                alert("리뷰 등록 완료!!");
+                // 리뷰 등록 후 새로고침 또는 등록된 리뷰를 동적으로 추가하는 로직
+              },
+              error: function () {
+                swal("리뷰 등록 실패", '요청 처리에 실패했습니다.', "error");
+              }
+            });
+          });
+
+          let sizesText = Array.from(uniqueSizes).join(', ');
+
+          uniqueSizes.forEach(size => {
+            $('#sizeSelect').append(`<option value="${size}">${size}</option>`)
+          })
+          $('#sizeText').text(sizesText);
+
+          let uniqueColors = new Set();
+
+
+          $('#sizeSelect').on('change', function () {
+            const selectedSize = $(this).val();
+            const availableColors = productDetails
+            .filter(detail => detail.size === selectedSize)
+            .map(detail => detail.color);
+
+            $('#colorSelect').empty();
+            $('#colorSelect').append('<option>Choose an option</option>');
+
+            availableColors.forEach(color => {
+              $('#colorSelect').append(`<option value="${color}">${color}</option>`);
+            });
+          });
+
+          $('#colorSelect').empty();
+          $('#colorSelect').append('<option>Choose an option</option>');
+          productDetails.forEach(product => {
+            uniqueColors.add(product.color);
+          });
+
+          let colorsArray = Array.from(uniqueColors);
+          let colorsText = '';
+
+          colorsArray.forEach((color, index) => {
+            $('#colorSelect').append(`<option value="${color}">${color}</option>`);
+            colorsText += color;
+            if (index < colorsArray.length - 1) {
+              colorsText += ', ';
+            }
+          });
+
+          $('#colorText').text(colorsText);
+
+          let reviewContainer = $('#reviews .p-b-30'); // 리뷰가 표시될 컨테이너를 선택합니다.
+          console.log(productReview);
+          if (Array.isArray(response.reviews) && productReview.length > 0) {
+            productReview.forEach(review => {
+              let reviewHtml = `
+                        <div class="flex-w flex-t p-b-68">
+                             <div class="wrap-pic-s size-109 bor0 of-hidden m-r-18 m-t-6">
+                                 <img src="${review.imageUrls[0]}" alt="Review Image">
+                             </div>
+
+                            <div class="size-207">
+                                <div class="flex-w flex-sb-m p-b-17">
+                                    <span class="mtext-107 cl2 p-r-20">
+                                        ${review.username}
+                                    </span>
+                                    <span class="fs-18 cl11">
+                                        ${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}
+                                    </span>
+                                </div>
+
+                                <p class="stext-102 cl6">
+                                    ${review.review}
+                                </p>
+                                <div class="form-group file-upload">
+                            </div>
+                        </div>
+                   `;
+
+              reviewContainer.append(reviewHtml);
+
+            });
+          } else {
+            reviewContainer.append('<p>No reviews available.</p>');
+          }
+
+          if (product.imageUrlList.length > 0) {
+            console.log("나뭐있다")
+            console.log(product.imageUrlList)
+            var test = $(".slick3-dots")
+            test.empty();
+
+            for (let i = 0; i < product.imageUrlList.length; i++) {
+              if (i == 0) {
+
+                var photoBlock = `
+              <div id="productDetailArea${i}" class="item-slick3" data-thumb="${product.imageUrlList[i]}">
+                  <div class="wrap-pic-w pos-relative">
+                    <img id="productImage${i}" src="${product.imageUrlList[i]}" alt="IMG-PRODUCT">
+
+                    <a id="productImageLink${i}" class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
+                       href="${product.imageUrlList[i]}">
+                      <i class="fa fa-expand"></i>
+                    </a>
+                  </div>
+                </div>
+              `
+                var photoContainer = document.getElementById('my-gallery');
+                photoContainer.insertAdjacentHTML('beforeend', photoBlock); // append 사용
+              } else {
+
+                var sidePhoto = `
+              <li class="slick-active" role="presentation">
+                <img src="${product.imageUrlList[i]}">
+              <a id="productImageLink${i}" href="${product.imageUrlList[i]}">
+                <div class="slick3-dot-overlay"></div>
+              </li>
+              `;
+                test.append(sidePhoto);
+              }
+              console.log("코드 블록 추가");
+            }
+          }
+        } else {
+          console.error('상품을 찾을 수 없습니다.');
+        }
+      },
+      method: 'GET',
+      error: function (xhr, status, error) {
+        console.error('상품 정보를 불러오는 중 오류 발생:', error);
+      }
+    });
+    }
+  });
+</script>
+
 
 </body>
 </html>

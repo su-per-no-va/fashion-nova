@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Q&A - Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+    <link href="../admin/css/admin.css" rel="stylesheet" />
+    <link href="../admin/css/admin-modal.css" rel="stylesheet" />
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- jQuery 라이브러리 추가 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- 공용 자바스크립트 파일 추가 -->
+    <script src="/admin/js/admin-check.js"></script>
+</head>
+<body class="sb-nav-fixed">
+<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+    <!-- Navbar Brand-->
+    <a class="navbar-brand ps-3" href="index.html">슈퍼노바 관리자 페이지</a>
+    <!-- Sidebar Toggle-->
+    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+    <!-- Navbar Search-->
+    <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"></form>
+    <!-- Header-->
+    <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="#!">설정</a></li>
+                <li><a class="dropdown-item" href="#!">활동 로그</a></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li><a class="dropdown-item" href="admin-login.html">로그아웃</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+
+<!-- Menu-->
+<div id="layoutSidenav">
+    <div id="layoutSidenav_nav">
+        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+            <div class="sb-sidenav-menu">
+                <div class="nav">
+                    <div class="sb-sidenav-menu-heading">통계</div>
+                    <a class="nav-link" href="index.html">
+                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        판매 통계
+                    </a>
+                    <div class="sb-sidenav-menu-heading">상품</div>
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts1" aria-expanded="false" aria-controls="collapseLayouts1">
+                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        상품 관리
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseLayouts1" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="admin-product-create.html">상품 등록</a>
+                            <a class="nav-link" href="admin-product.html">상품 관리</a>
+                        </nav>
+                    </div>
+
+                    <div class="sb-sidenav-menu-heading">회원</div>
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts2" aria-expanded="false" aria-controls="collapseLayouts2">
+                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        회원 관리
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseLayouts2" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="admin-user.html">회원 조회</a>
+                            <a class="nav-link" href="admin-coupon-mileage.html">회원 쿠폰, 마일리지</a>
+                        </nav>
+                    </div>
+
+                    <div class="sb-sidenav-menu-heading">리뷰</div>
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts3" aria-expanded="false" aria-controls="collapseLayouts3">
+                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        리뷰 관리
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseLayouts3" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="admin-review.html">리뷰 삭제</a>
+                        </nav>
+                    </div>
+
+                    <div class="sb-sidenav-menu-heading">Q&A</div>
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts4" aria-expanded="false" aria-controls="collapseLayouts4">
+                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        Q&A 관리
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseLayouts4" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="admin-question.html">Q&A 답변 등록</a>
+                        </nav>
+                    </div>
+
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Q&A Page-->
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">Q&A</h1>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        Q&A 전체 조회, 타입별(답변 완료, 답변 대기)조회, 답변 등록
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                        Q&A Table
+                    </div>
+                    <div class="card-body">
+                        <table id="datatablesSimple">
+                            <thead>
+                            <tr>
+                                <th>Q&A ID</th>
+                                <th>답변상태</th>
+                                <th>회원ID</th>
+                                <th>이름</th>
+                                <th>문의 종류</th>
+                                <th>제목</th>
+                                <th>문의 등록일</th>
+                                <th>답변 등록일</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+                            <tr>
+                                <td>1</td>
+                                <td>답변 완료</td>
+                                <td>1</td>
+                                <td>김나도</td>
+                                <td>시스템문의</td>
+                                <td><a href="#" class="modal-link" data-category="시스템문의" data-author="김나도" data-content="저도 어드민권한 주세요" data-attachment="">저도 어드민권한 주세요</a></td>
+                                <td>2024/08/01 13:01</td>
+                                <td>2011/08/01 13:02</td>
+                            </tr>
+
+                            <tr>
+                                <td>2</td>
+                                <td>답변 대기</td>
+                                <td>1</td>
+                                <td>김나도</td>
+                                <td>상품 문의</td>
+                                <td><a href="#" class="modal-link" data-category="상품 문의" data-author="김나도" data-content="상품 사이즈와 색상에 대해 문의드립니다." data-attachment="">나같은 사람이 입어도 괜찮겠늬</a></td>
+                                <td>2024/08/02 13:01</td>
+                                <td></td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="#" id="prevPage">Previous</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#" id="nextPage">Next</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Footer-->
+        <footer class="py-4 bg-light mt-auto">
+            <div class="container-fluid px-4">
+                <div class="d-flex align-items-center justify-content-between small">
+                    <div class="text-muted">(주)패션노바 2024</div>
+                    <div>
+                        <a href="#">개인정보 보호정책</a>
+                        &middot;
+                        <a href="#">이용약관</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+
+
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>문의 종류: <span class="modal-category"></span></p>
+                <p>작성자: <span class="modal-author"></span></p>
+                <p>문의 내용: <span class="modal-text"></span></p>
+                <p>첨부 파일: <span class="modal-attachment"></span></p>
+                <p>운영자 답변</p>
+                <textarea id="adminReply" rows="4" placeholder="답변을 작성하세요" class="form-control"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button id="submitReply" class="btn btn-primary">등록</button>
+                <button id="cancelReply" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="../admin/js/scripts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+<script src="../admin/js/datatables.js"></script>
+<script src="../admin/js/admin-modal.js"></script>
+<script>
+    var currentPage = 0; // 현재 페이지 번호
+    $(document).ready(function() {
+        // 페이지가 로드될 때 첫 번째 페이지를 로드
+        fetchQuestions(currentPage);
+
+        // 다음 페이지 버튼 클릭 이벤트
+        $('#nextPage').on('click', function(event) {
+            event.preventDefault();
+            currentPage++;
+            fetchQuestions(currentPage);
+        });
+
+        // 이전 페이지 버튼 클릭 이벤트
+        $('#prevPage').on('click', function(event) {
+            event.preventDefault();
+            if (currentPage > 0) {
+                currentPage--;
+                fetchQuestions(currentPage);
+            }
+        });
+        // 답변 등록 버튼 클릭 시
+        $('#submitReply').on('click', function() {
+
+        });
+
+        // 모달에서 취소 버튼 클릭 시
+        $('#cancelReply').on('click', function() {
+            $('#myModal').hide(); // 모달 닫기
+        });
+    });
+
+    function fetchQuestions(page) {
+        $.ajax({
+            url: `/api/admin/answers?page=${page}`,
+            method: 'GET',
+            success: function(response) {
+                renderQuestions(response);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching questions:', error);
+            }
+        });
+    }
+</script>
+
+<script>
+    function renderQuestions(questions) {
+        var $tbody = $('#datatablesSimple tbody');
+        $tbody.empty(); // 기존 내용을 비웁니다.
+
+        $.each(questions, function (index, question) {
+            var $tr = $('<tr></tr>');
+
+            // 상태가 "COMPLETED"일 때 텍스트에 빨간색 스타일 적용
+            var statusText = question.status;
+            if (statusText === 'COMPLETED') {
+                statusText = '<span style="color: red;">' + statusText + '</span>';
+            }
+
+            $tr.append('<td>' + question.id + '</td>');
+            $tr.append('<td>' + statusText + '</td>');
+            $tr.append('<td>' + question.userId + '</td>');
+            $tr.append('<td>' + question.userName + '</td>');
+            $tr.append('<td>' + question.type + '</td>');
+            $tr.append('<td><a href="#" class="modal-link" data-id="' + question.id + '" data-category="' + question.type + '" data-author="' + question.userName +
+                '" data-content="' + question.question + '" data-attachment="' + question.questionUrls.join(', ') + '">' + question.title + '</a></td>');
+            $tr.append('<td>' + formatDate(question.createdAt) + '</td>');
+            $tr.append('<td>' + formatDate(question.answeredDate) + '</td>'); // 답변 등록일 추가
+
+            $tbody.append($tr);
+        });
+    }
+
+    function formatDate(dateString) {
+        if (!dateString) return '';
+        var date = new Date(dateString);
+        return date.getFullYear() + '/' + (date.getMonth() + 1).toString().padStart(2, '0') + '/' + date.getDate().toString().padStart(2, '0') + ' ' + date.getHours().toString().padStart(2, '0') +
+            ':' + date.getMinutes().toString().padStart(2, '0');
+    }
+
+    $(document).on('click', '.modal-link', function (event) {
+        event.preventDefault();
+
+        var questionId = $(this).data('id');
+        var category = $(this).data('category');
+        var author = $(this).data('author');
+        var content = $(this).data('content');
+        var attachment = $(this).data('attachment');
+
+        showModal(questionId, category, author, content, attachment);
+    });
+
+    function showModal(questionId, category, author, content, attachment) {
+        var $modal = $('#myModal'); // 모달 ID
+        $modal.find('.modal-title').text('Q&A ID: ' + questionId);
+        $modal.find('.modal-category').text(category);
+        $modal.find('.modal-author').text(author);
+        $modal.find('.modal-text').text(content);
+        $modal.find('.modal-attachment').text(attachment);
+
+        $modal.data('questionId', questionId); // 모달에 questionId 저장
+        $modal.modal('show');
+    }
+
+    $(document).on('click', '#submitReply', function () {
+        var $modal = $('#myModal');
+        var questionId = $modal.data('questionId');
+        var answer = $('#adminReply').val();
+
+        $.ajax({
+            url: '/api/admin/answers',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ questionId: questionId, answer: answer }),
+            success: function (response) {
+                alert('답변이 성공적으로 등록되었습니다.');
+                $modal.modal('hide');
+                fetchQuestions(0); // 첫 번째 페이지의 질문 목록을 다시 로드
+            },
+            error: function (error) {
+                alert('답변 등록에 실패했습니다.');
+            }
+        });
+    });
+</script>
+
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="#" data-page="0">1</a></li>
+        <li class="page-item"><a class="page-link" href="#" data-page="1">2</a></li>
+        <!-- 추가 페이지 -->
+    </ul>
+</nav>
+</body>
+</html>

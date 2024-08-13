@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>User Coupon Mileage - Admin</title>
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <link href="../admin/css/admin.css" rel="stylesheet" />
+        <link href="../admin/css/admin-modal.css" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- jQuery 라이브러리 추가 -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <!-- 공용 자바스크립트 파일 추가 -->
+        <script src="/admin/js/admin-check.js"></script>
+    </head>
+    <body class="sb-nav-fixed">
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <!-- Navbar Brand-->
+            <a class="navbar-brand ps-3" href="index.html">슈퍼노바 관리자 페이지</a>
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <!-- Navbar Search-->
+            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+            </form>
+
+            <!-- Header-->
+            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#!">설정</a></li>
+                        <li><a class="dropdown-item" href="#!">활동 로그</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="admin-login.html">로그아웃</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Menu-->
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading">통계</div>
+                            <a class="nav-link" href="index.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                판매 통계
+                            </a>
+                            <div class="sb-sidenav-menu-heading">상품</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts1" aria-expanded="false" aria-controls="collapseLayouts1">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                상품 관리
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayouts1" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="admin-product-create.html">상품 등록</a>
+                                    <a class="nav-link" href="admin-product.html">상품 관리</a>
+                                </nav>
+                            </div>
+
+                            <div class="sb-sidenav-menu-heading">회원</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts2" aria-expanded="false" aria-controls="collapseLayouts2">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                회원 관리
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayouts2" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="admin-user.html">회원 조회</a>
+                                    <a class="nav-link" href="admin-coupon-mileage.html">회원 쿠폰, 마일리지</a>
+                                </nav>
+                            </div>
+
+                            <div class="sb-sidenav-menu-heading">리뷰</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts3" aria-expanded="false" aria-controls="collapseLayouts3">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                리뷰 관리
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayouts3" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="admin-review.html">리뷰 삭제</a>
+                                </nav>
+                            </div>
+
+                            <div class="sb-sidenav-menu-heading">Q&A</div>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts4" aria-expanded="false" aria-controls="collapseLayouts4">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Q&A 관리
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayouts4" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="admin-question.html">Q&A 답변 등록</a>
+                                </nav>
+                            </div>
+
+                        </div>
+                    </div>
+                </nav>
+            </div>
+
+            <!-- User Coupon Mileage Page-->
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">User Coupon Mileage</h1>
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                쿠폰 지급, 마일리지 지급
+                            </div>
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                User Table
+                            </div>
+                            <div class="card-body">
+                                <table id="datatablesSimple">
+                                    <thead>
+                                        <tr>
+                                            <th>회원ID</th>
+                                            <th>ID</th>
+                                            <th>이메일</th>
+                                            <th>이름</th>
+                                            <th>회원유형</th>
+                                            <th>상태</th>
+                                            <th>쿠폰명</th>
+                                            <th>쿠폰 발급일</th>
+                                            <th>쿠폰기한</th>
+                                            <th>마일리지</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+
+                                        <tr>
+                                            <td>1</td>
+                                            <td>nado123</td>
+                                            <td>nado123@gmail.com</td>
+                                            <td>김나도</td>
+                                            <td>USER</td>
+                                            <td>MEMBER</td>
+                                            <td><a href="#" class="modal-link">
+                                                <span>브론즈 5% 할인쿠폰</span><br />
+                                                <span>회원가입 축하 10% 할인쿠폰</span>
+                                            </a>
+                                            </td>
+                                            <td>
+                                                <span>2024/08/01</span><br />
+                                                <span>2024/08/01</span>
+                                            </td>
+                                            <td>
+                                                <span>2024/09/01</span><br />
+                                                <span>2024/09/01</span>
+                                            </td>
+                                            <td><a href="#" class="mileage-modal-link">300</a></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>2</td>
+                                            <td>hun123</td>
+                                            <td>hun123@gmail.com</td>
+                                            <td>두승훈</td>
+                                            <td>USER</td>
+                                            <td>MEMBER</td>
+                                            <td><a href="#" class="modal-link">
+                                                <span>브론즈 5% 할인쿠폰</span><br />
+                                                <span>회원가입 축하 10% 할인쿠폰</span>
+                                            </a>
+                                            </td>
+                                            <td>
+                                                <span>2024/08/01</span><br />
+                                                <span>2024/08/01</span>
+                                            </td>
+                                            <td>
+                                                <span>2024/09/01</span><br />
+                                                <span>2024/09/01</span>
+                                            </td>
+                                            <td><a href="#" class="mileage-modal-link">300</a></td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+
+                <!-- Footer-->
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">(주)패션노바 2024</div>
+                            <div>
+                                <a href="#">개인정보 보호정책</a>
+                                &middot;
+                                <a href="#">이용약관</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+
+        <!-- Coupon Modal -->
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h3 class="modal-title">쿠폰 지급</h3>
+                <form id="couponForm">
+                    <div class="form-group">
+                        <label for="couponName">쿠폰명</label>
+                        <select id="couponName" class="form-control">
+                            <option value="브론즈 5% 할인쿠폰">브론즈(5% 할인쿠폰)</option>
+                            <option value="실버 10% 할인쿠폰">실버(10% 할인쿠폰)</option>
+                            <option value="골드 15% 할인쿠폰">골드(15% 할인쿠폰)</option>
+                            <option value="생일 축하 쿠폰">생일 축하 쿠폰</option>
+                            <option value="웰컴 쿠폰">웰컴 쿠폰</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="couponPeriod">기간</label>
+                        <input type="date" id="couponPeriod" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label for="couponRate">할인율</label>
+                        <select id="couponRate" class="form-control">
+                            <option value="5">5%</option>
+                            <option value="10">10%</option>
+                            <option value="15">15%</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="couponType">쿠폰유형</label>
+                        <select id="couponType" class="form-control">
+                            <option value="WELCOME">웰컴쿠폰</option>
+                            <option value="REGULAR">생일쿠폰</option>
+                            <option value="GRADE_UP">등급상승쿠폰</option>
+                        </select>
+                    </div>
+                    <div class="modal-buttons">
+                        <button type="button" id="submitReply" class="btn btn-primary">등록</button>
+                        <button type="button" id="cancelReply" class="btn btn-secondary">취소</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Mileage Modal -->
+        <div id="mileageModal" class="modal">
+            <div class="modal-content">
+                <span class="close-mileage">&times;</span>
+                <h3 class="modal-title">마일리지 지급</h3>
+                <form id="mileageForm">
+                    <div class="form-group">
+                        <label for="mileageAmount">마일리지 금액</label>
+                        <input type="number" id="mileageAmount" class="form-control" placeholder="마일리지 금액 입력" />
+                    </div>
+                    <div class="modal-buttons">
+                        <button type="button" id="submitMileage" class="btn btn-primary">지급</button>
+                        <button type="button" id="cancelMileage" class="btn btn-secondary">취소</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="../admin/js/scripts.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+        <script src="../admin/js/datatables.js"></script>
+<!--        <script src="../admin/js/admin-coupon-modal.js"></script>-->
+    </body>
+</html>
+
+<script>
+    $(document).ready(function() {
+        // 페이지가 처음 로드될 때 데이터 가져오기
+        fetchUserData();
+
+        // 페이지 초기화
+        initializeModals();
+        initializeDataTable();
+    });
+
+    // Ajax를 사용해 서버에서 데이터 가져오기
+    function fetchUserData(page = 0) {
+        $.ajax({
+            url: '/api/admin/users/coupons/mileages',
+            method: 'GET',
+            data: { page: page },
+            success: function(response) {
+                renderUserTable(response);
+            },
+            error: function(error) {
+                console.error('Error fetching user data:', error);
+            }
+        });
+    }
+
+    // 동적 데이터 처리
+    function renderUserTable(data) {
+        const tbody = document.querySelector('#datatablesSimple tbody');
+        tbody.innerHTML = ''; // 기존 데이터를 지우기
+
+        data.forEach((user) => {
+            const couponHtml = user.couponResponseDtoList.length > 0
+                ? user.couponResponseDtoList.map(coupon => `
+                <span>${coupon.name} (${coupon.sale})</span><br />
+            `).join('')
+                : '<span>쿠폰 없음</span>';
+            const couponPeriods = user.couponResponseDtoList.map(coupon => `
+                <span>${formatDate(coupon.period)}</span><br />
+            `).join('');
+
+            const couponCreatedAt = user.couponResponseDtoList.map(coupon => `
+                <span>${formatDate(coupon.createdAt)}</span><br />
+            `).join('');
+
+            const rowHtml = `
+                <tr>
+                    <td>${user.id}</td>
+                    <td>${user.userName}</td>
+                    <td>${user.email}</td>
+                    <td>${user.name}</td>
+                    <td>${user.userRole}</td>
+                    <td>${user.userStatus}</td>
+                    <td><a href="#" class="modal-link" data-userid="${user.id}">
+                        ${couponHtml}
+                    </a></td>
+                    <td>${couponCreatedAt}</td>
+                    <td>${couponPeriods}</td>
+                    <td><a href="#" class="mileage-modal-link" data-userid="${user.id}">${user.mileage}</a></td>
+                </tr>
+            `;
+            tbody.insertAdjacentHTML('beforeend', rowHtml);
+        });
+
+        // 모달 링크에 이벤트 리스너 바인딩
+        bindCouponModalLinks();
+        bindMileageModalLinks();
+    }
+
+    // 날짜 형식 변환 함수
+    function formatDate(date) {
+        const d = new Date(date);
+        let month = '' + (d.getMonth() + 1);
+        let day = '' + d.getDate();
+        const year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('/');
+    }
+
+    // 모달 관련 초기화
+    function initializeModals() {
+        const couponModal = document.getElementById("myModal");
+        const mileageModal = document.getElementById("mileageModal");
+        const spanCoupon = document.getElementsByClassName("close")[0];
+        const spanMileage = document.getElementsByClassName("close-mileage")[0];
+
+        // 쿠폰 모달 링크에 이벤트 리스너 바인딩 함수
+        window.bindCouponModalLinks = function() {
+            document.querySelectorAll('.modal-link').forEach(function(element) {
+                element.onclick = function() {
+                    const userId = this.getAttribute('data-userid');
+                    openCouponModal(userId); // 사용자 ID를 모달에 전달
+                }
+            });
+        }
+
+        // 마일리지 모달 링크에 이벤트 리스너 바인딩 함수
+        window.bindMileageModalLinks = function() {
+            document.querySelectorAll('.mileage-modal-link').forEach(function(element) {
+                element.onclick = function() {
+                    const userId = this.getAttribute('data-userid');
+                    openMileageModal(userId); // 사용자 ID를 모달에 전달
+                }
+            });
+        }
+
+        // 쿠폰 모달 닫기 버튼 이벤트 리스너
+        spanCoupon.onclick = function() {
+            couponModal.style.display = "none";
+        }
+
+        // 마일리지 모달 닫기 버튼 이벤트 리스너
+        spanMileage.onclick = function() {
+            mileageModal.style.display = "none";
+        }
+
+        // 모달 외부 클릭 시 모달 닫기
+        window.onclick = function(event) {
+            if (event.target === couponModal) {
+                couponModal.style.display = "none";
+            }
+            if (event.target === mileageModal) {
+                mileageModal.style.display = "none";
+            }
+        }
+
+        // 쿠폰 모달 취소 버튼 클릭 시 모달 닫기
+        document.getElementById("cancelReply").onclick = function() {
+            couponModal.style.display = "none";
+        }
+
+        // 마일리지 모달 취소 버튼 클릭 시 모달 닫기
+        document.getElementById("cancelMileage").onclick = function() {
+            mileageModal.style.display = "none";
+        }
+
+        // 쿠폰 등록 버튼 클릭 시 요청
+        document.getElementById("submitReply").onclick = function() {
+            const userId = $('#myModal').data('userid');
+            handleCouponSubmission(userId);
+        };
+
+        // 마일리지 지급 버튼 클릭 시 요청
+        document.getElementById("submitMileage").onclick = function() {
+            const userId = $('#mileageModal').data('userid');
+            handleMileageSubmission(userId);
+        };
+    }
+
+    // 쿠폰 모달에서 쿠폰 지급 요청
+    function handleCouponSubmission(userId) {
+        const couponName = document.getElementById('couponName').value;
+        const couponPeriod = document.getElementById('couponPeriod').value;
+        const couponRate = document.getElementById('couponRate').value;
+        const couponType = document.getElementById('couponType').value;
+
+        const requestData = {
+            userId: userId,
+            name: couponName,
+            period: couponPeriod,
+            sale: couponRate,
+            type: couponType
+        };
+
+        $.ajax({
+            url: '/api/admin/coupons',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+            success: function(response) {
+                alert('쿠폰이 지급되었습니다.');
+                $('#myModal').hide();
+                fetchUserData(); // 사용자 데이터 새로고침
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                alert('쿠폰 지급에 실패했습니다.');
+            }
+        });
+    }
+
+    // 마일리지 지급 요청
+    function handleMileageSubmission(userId) {
+        const mileageAmount = document.getElementById('mileageAmount').value;
+
+        const requestData = {
+            userId: userId,
+            mileage: mileageAmount
+        };
+
+        $.ajax({
+            url: '/api/admin/mileages',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+            success: function(response) {
+                alert('마일리지가 지급되었습니다.');
+                $('#mileageModal').hide();
+                fetchUserData(); // 사용자 데이터 새로고침
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                alert('마일리지 지급에 실패했습니다.');
+            }
+        });
+    }
+
+    // 쿠폰 모달 열기 및 사용자 ID 저장
+    function openCouponModal(userId) {
+        $('#myModal').show();
+        $('#myModal').data('userid', userId); // 사용자 ID 저장
+    }
+
+    // 마일리지 모달 열기 및 사용자 ID 저장
+    function openMileageModal(userId) {
+        $('#mileageModal').show();
+        $('#mileageModal').data('userid', userId); // 사용자 ID 저장
+    }
+
+    // DataTable 초기화 및 이벤트 리스너 바인딩
+    function initializeDataTable() {
+        const datatablesSimple = document.getElementById('datatablesSimple');
+        if (datatablesSimple) {
+            const dataTable = new simpleDatatables.DataTable(datatablesSimple);
+
+            // DataTable 이벤트에 바인딩
+            dataTable.on('datatable.page', bindCouponModalLinks);
+            dataTable.on('datatable.sort', bindCouponModalLinks);
+            dataTable.on('datatable.search', bindCouponModalLinks);
+        }
+    }
+</script>

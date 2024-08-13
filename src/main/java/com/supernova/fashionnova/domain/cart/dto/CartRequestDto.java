@@ -1,8 +1,10 @@
 package com.supernova.fashionnova.domain.cart.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor // 기본 생성자 추가
 public class CartRequestDto {
 
     private Long productId;

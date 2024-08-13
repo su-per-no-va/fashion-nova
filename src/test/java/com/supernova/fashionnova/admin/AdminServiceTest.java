@@ -8,7 +8,9 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
+import com.supernova.fashionnova.domain.answer.Answer;
 import com.supernova.fashionnova.domain.answer.AnswerRepository;
+import com.supernova.fashionnova.domain.answer.dto.AnswerRequestDto;
 import com.supernova.fashionnova.domain.coupon.Coupon;
 import com.supernova.fashionnova.domain.coupon.CouponRepository;
 import com.supernova.fashionnova.domain.coupon.dto.CouponRequestDto;
@@ -17,6 +19,7 @@ import com.supernova.fashionnova.domain.product.ProductCategory;
 import com.supernova.fashionnova.domain.product.ProductStatus;
 import com.supernova.fashionnova.domain.question.Question;
 import com.supernova.fashionnova.domain.question.QuestionRepository;
+import com.supernova.fashionnova.domain.question.QuestionStatus;
 import com.supernova.fashionnova.domain.question.dto.QuestionResponseDto;
 import com.supernova.fashionnova.domain.review.Review;
 import com.supernova.fashionnova.domain.review.ReviewRepository;
@@ -161,26 +164,24 @@ class AdminServiceTest {
         }
     }
 
-    /*
     @Test
     @DisplayName("답변 등록 테스트")
     public void addAnswerTest() {
         // given
-        AnswerRequestDto requestDto = Mockito.mock(AnswerRequestDto.class);
-        given(requestDto.getQuestionId()).willReturn(1L);
-        given(requestDto.getAnswer()).willReturn("This is a test answer");
+        AnswerRequestDto requestDto = new AnswerRequestDto(1L, "This is a test answer");
 
         Question question = Mockito.mock(Question.class);
 
-        given(questionRepository.findById(any(Long.class))).willReturn(Optional.of(question));
+        given(questionRepository.findById(requestDto.getQuestionId())).willReturn(Optional.of(question));
+        given(question.getStatus()).willReturn(QuestionStatus.BEFORE);
 
         // when
         adminService.addAnswer(requestDto);
 
         // then
         verify(answerRepository).save(any(Answer.class));
+        verify(question).updateQuestionStatus();
     }
-     */
 
     @Test
     @DisplayName("문의 전체 조회 테스트")

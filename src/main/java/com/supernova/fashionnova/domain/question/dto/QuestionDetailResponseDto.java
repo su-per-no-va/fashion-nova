@@ -29,7 +29,7 @@ public class QuestionDetailResponseDto {
         this.status = question.getStatus();
         this.questionUrls = question.getQuestionImageUrls().stream()
             .map(QuestionImage::getQuestionImageUrl).toList();
-        if (this.type.equals(QuestionType.ORDER_PAYMENT)) {
+        if (this.type.equals(QuestionType.EXCHANGE_RETURN)) {
             this.orderDetail = new OrderDetailResponseDto(question.getOrderDetail());
         }
         if (question.getAnswer() != null) {
