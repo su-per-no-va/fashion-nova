@@ -5,6 +5,7 @@ import com.supernova.fashionnova.domain.user.dto.UserResponseDto;
 import com.supernova.fashionnova.domain.user.dto.UserRoleResponseDto;
 import com.supernova.fashionnova.domain.user.dto.UserUpdateRequestDto;
 import com.supernova.fashionnova.domain.warn.dto.WarnResponseDto;
+import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.security.JwtUtil;
 import com.supernova.fashionnova.global.security.UserDetailsImpl;
 import com.supernova.fashionnova.global.util.ResponseUtil;
@@ -12,6 +13,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -165,15 +167,24 @@ public class UserController {
         @RequestParam String code,
         HttpServletResponse response) throws IOException {
 
-        List<String> token = kakaoService.kakaoLogin(code);
+        try {
+            List<String> token = kakaoService.kakaoLogin(code);
 
-        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, token.get(0).substring(7));
-        Cookie cookie2 = new Cookie(token.get(1), token.get(1).substring(7));
-        cookie.setPath("/");
-        response.addCookie(cookie);
-        response.addCookie(cookie2);
+            Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, token.get(0).substring(7));
+            Cookie cookie2 = new Cookie(token.get(1), token.get(1).substring(7));
+            cookie.setPath("/");
+            response.addCookie(cookie);
+            response.addCookie(cookie2);
 
-        response.sendRedirect("/index.html");
+            response.sendRedirect("/index.html");
+        } catch (CustomException e) {
+            // 블랙리스트 유저 처리
+            response.setContentType("text/html; charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            out.println("<script>alert('차단된 회원입니다. 로그인할 수 없습니다.'); location.href='/login.html';</script>");
+            out.flush();
+        }
+
     }
 
 }
