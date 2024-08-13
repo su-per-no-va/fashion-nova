@@ -715,7 +715,12 @@
         type: 'PUT',
         success: function () {
           alert('회원탈퇴가 완료되었습니다.');
-          // 로그아웃 처리나 메인 페이지로 이동 등의 추가 작업을 수행합니다
+          // 토큰 삭제
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
+
+          // index.html로 이동
+          window.location.href = 'index.html';
         },
         error: function (xhr, status, error) {
           alert('회원탈퇴에 실패했습니다.' + error.message);
