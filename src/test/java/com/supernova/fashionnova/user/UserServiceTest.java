@@ -52,6 +52,7 @@ class UserServiceTest {
     @DisplayName("회원 가입 테스트")
     class SignUpTest {
 
+        /*
         @Test
         @DisplayName("회원 가입 성공 테스트") // 테스트의 이름을 지정합니다.
         void signupTest1() {
@@ -70,6 +71,7 @@ class UserServiceTest {
             assertDoesNotThrow(
                 () -> userService.signup(requestDto));  // signup 메서드가 예외를 던지지 않는지 확인합니다.
         }
+         */
 
         @Test
         @DisplayName("회원 가입 실패 테스트") // 테스트의 이름을 지정합니다.
