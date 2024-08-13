@@ -190,7 +190,7 @@ class AdminControllerTest {
         CouponRequestDto requestDto = Mockito.mock(CouponRequestDto.class);
         given(requestDto.getUserId()).willReturn(1L);
         given(requestDto.getName()).willReturn("Test Coupon");
-        given(requestDto.getSale()).willReturn("100%");
+        given(requestDto.getSale()).willReturn("10");
         given(requestDto.getType()).willReturn("WELCOME");
 
         doNothing().when(adminService).addCoupon(any(CouponRequestDto.class));

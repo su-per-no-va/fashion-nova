@@ -67,4 +67,11 @@ public class Coupon extends Timestamped {
         this.status = CouponStatus.INACTIVE;
     }
 
+    public void updateStatusIfExpired() {
+        Date currentDate = new Date();
+        if (this.period.before(currentDate)) {
+            this.status = CouponStatus.INACTIVE;
+        }
+    }
+
 }
