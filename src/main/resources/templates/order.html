@@ -33,6 +33,25 @@
     <link rel="stylesheet" type="text/css" href="/css/order.css">
     <!--===============================================================================================-->
 </head>
+<style>
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .pagination button {
+        padding: 8px 16px;
+        margin: 0 5px;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        cursor: pointer;
+    }
+    .pagination button.active {
+        background-color: #007bff;
+        color: #fff;
+        border-color: #007bff;
+    }
+</style>
 <body class="animsition">
 
 <!-- Header -->
@@ -182,6 +201,9 @@
       </div>
     </div>
   </div>
+    <div class="pagination" id="pagination">
+        <!-- 페이징 버튼들이 여기에 동적으로 삽입됩니다. -->
+    </div>
 </form>
 
 <!-- Modal -->
@@ -345,66 +367,96 @@
       console.log(error.message)
     });
 
-    // 서버에서 주문 정보를 가져오는 AJAX 요청
-    $.ajax({
-      url: '/orders', // 주문 정보를 가져올 서버 URL
-      type: 'GET',
-      dataType: 'json',
-      success: function (data) {
-        updateOrderTable(data);
-      },
-      error: function (xhr, status, error) {
-        console.error('주문 정보를 가져오는 데 실패했습니다:', error);
-      }
-    });
+      let currentPage = 1;
+      const itemsPerPage = 5;
 
-    // 테이블에 주문 정보를 동적으로 추가하는 함수
-    function updateOrderTable(orders) {
-        const orderListElement = $('#order-list');
-        orderListElement.empty(); // 기존 행 삭제
-
-        orders.forEach(function (order) {
-            const orderRow = $('<tr>').addClass('table_row');
-
-            // 주문 번호
-            const orderIdCell = $('<td>').addClass('column-1').html(
-                `<a href="order-detail.html?orderId=${order.orderId}">${order.orderId}</a>`);
-            // 상품 이름
-            const itemNameCell = $('<td>').addClass('column-2').text('상품명');
-
-            // 주문 날짜
-            const orderDateCell = $('<td>').addClass('column-3').text(
-                new Date(order.createdAt).toISOString().split('T')[0]);
-
-            // 가격
-            const priceCell = $('<td>').addClass('column-4').text(`${order.totalPrice}원`);
-
-            // 주문 상태
-            const orderStatusCell = $('<td>').addClass('column-5').text(order.orderStatus); // 실제 상태 값으로 수정 필요
-
-            // 배송 상태
-            const deliveryStatusCell = $('<td>').addClass('column-6').text(order.deliveryStatus); // 실제 배송 상태 값으로 수정 필요
-
-            // Edit 버튼
-            const editButtonCell = $('<td>').addClass('column-7').html(`
-            <button type="button"
-                    class="btn btn-secondary open-modal flex-c-m stext-101 cl0 size-103 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer"
-                    data-order-id="${order.orderId}">
-              주문 취소
-            </button>
-        `);
-
-            // 테이블 행에 셀 추가
-            orderRow.append(orderIdCell, itemNameCell, orderDateCell, priceCell, orderStatusCell,
-                deliveryStatusCell, editButtonCell);
-
-            // 테이블에 행 추가
-            orderListElement.append(orderRow);
-
-            // 주문 상세 정보를 가져와서 itemNameCell을 업데이트
-            fetchOrderDetail(order.orderId, itemNameCell);
+      // 서버에서 주문 정보를 가져오는 AJAX 요청
+      $.ajax({
+          url: '/orders', // 주문 정보를 가져올 서버 URL
+          type: 'GET',
+          dataType: 'json',
+          success: function (data) {
+              // 전체 데이터를 받아와서 페이지네이션 설정 및 테이블 업데이트
+              orders = data;
+              renderPagination(orders);
+              updateOrderTable(orders.slice(0, itemsPerPage)); // 첫 페이지 데이터만 표시
+          },
+          error: function (xhr, status, error) {
+              console.error('주문 정보를 가져오는 데 실패했습니다:', error);
+          }
       });
-    }
+
+// 테이블에 주문 정보를 동적으로 추가하는 함수
+      function updateOrderTable(orders) {
+          const orderListElement = $('#order-list');
+          orderListElement.empty(); // 기존 행 삭제
+
+          orders.forEach(function (order) {
+              const orderRow = $('<tr>').addClass('table_row');
+
+              // 주문 번호
+              const orderIdCell = $('<td>').addClass('column-1').html(
+                  `<a href="order-detail.html?orderId=${order.orderId}">${order.orderId}</a>`);
+
+              // 상품 이름
+              const itemNameCell = $('<td>').addClass('column-2').text('상품명');
+
+              // 주문 날짜
+              const orderDateCell = $('<td>').addClass('column-3').text(
+                  new Date(order.createdAt).toISOString().split('T')[0]);
+
+              // 가격
+              const priceCell = $('<td>').addClass('column-4').text(`${order.totalPrice}원`);
+
+              // 주문 상태
+              const orderStatusCell = $('<td>').addClass('column-5').text(order.orderStatus);
+
+              // 배송 상태
+              const deliveryStatusCell = $('<td>').addClass('column-6').text(order.deliveryStatus);
+
+              // Edit 버튼
+              const editButtonCell = $('<td>').addClass('column-7').html(`
+      <button type="button"
+              class="btn btn-secondary open-modal flex-c-m stext-101 cl0 size-103 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer"
+              data-order-id="${order.orderId}">
+        주문 취소
+      </button>
+    `);
+
+              // 테이블 행에 셀 추가
+              orderRow.append(orderIdCell, itemNameCell, orderDateCell, priceCell, orderStatusCell,
+                  deliveryStatusCell, editButtonCell);
+
+              // 테이블에 행 추가
+              orderListElement.append(orderRow);
+
+              // 주문 상세 정보를 가져와서 itemNameCell을 업데이트
+              fetchOrderDetail(order.orderId, itemNameCell);
+          });
+      }
+
+// 페이지네이션 버튼을 생성하는 함수
+      function renderPagination(orders) {
+          const pageCount = Math.ceil(orders.length / itemsPerPage);
+          const paginationElement = $('#pagination');
+          paginationElement.empty(); // 기존 페이지네이션 버튼 삭제
+
+          for (let i = 1; i <= pageCount; i++) {
+              const button = $('<button>').text(i);
+              if (i === currentPage) {
+                  button.addClass('active');
+              }
+              button.on('click', function () {
+                  currentPage = i;
+                  const start = (currentPage - 1) * itemsPerPage;
+                  const end = start + itemsPerPage;
+                  updateOrderTable(orders.slice(start, end)); // 클릭된 페이지의 데이터만 표시
+                  renderPagination(orders); // 버튼 상태 업데이트
+              });
+              paginationElement.append(button);
+          }
+      }
+
       $(document).on('click', '.open-modal', function () {
           const orderId = $(this).data('order-id');
           $('#orderId').val(orderId);
