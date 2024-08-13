@@ -266,7 +266,7 @@
     </div>
 
     <!-- Load more -->
-    <div class="flex-c-m flex-w w-full p-t-45">
+    <div id="loadMoreBtn" class="flex-c-m flex-w w-full p-t-45">
       <a href="#" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04">
         Load More
       </a>
@@ -439,6 +439,11 @@
   $(document).ready(function () {
     const auth = localStorage.getItem('accessToken');
 
+    let currentPage = 1;
+    let selectedCategory = "";
+    let selectedSort = "all"; // 기본 정렬 값
+
+
     if (auth) {
       // 로그인 상태일 때
       $('#auth-btn').attr("href", "#").text("Logout");
@@ -448,7 +453,7 @@
       });
 
       $.ajax({
-        type: 'GET',
+        type: 'GET' ,
         url: '/carts',
         success: function (response) {
           if (response) {
@@ -484,22 +489,37 @@
       // 로그인이 안되어 있을 때
       $('#auth-btn').attr("href", "login.html").text("Login");
     }
-    fetchAndDisplayProducts()
+    fetchAndDisplayProducts(currentPage, selectedCategory, selectedSort)
+
+    $('.category-btn').on('click', function (e) {
+      e.preventDefault();
+      selectedCategory = $(this).data('filter');
+      currentPage = 1; // 첫 페이지로 초기화
+      fetchAndDisplayProducts(currentPage, selectedCategory, selectedSort);
+
+      $('.category-btn').removeClass('how-active1');
+      $(this).addClass('how-active1');
+    });
+
+    $('#loadMoreBtn').on('click', function (e) {
+      e.preventDefault();
+      currentPage++; // 페이지 번호 증가
+      fetchAndDisplayProducts(currentPage, selectedCategory, selectedSort);
+    });
   });
 
-  // 서버에서 상품 데이터를 가져와 페이지에 동적으로 추가하는 함수
-  // 서버에서 제품 데이터를 가져와 페이지에 동적으로 추가하는 함수
-  function fetchAndDisplayProducts() {
+  function fetchAndDisplayProducts(page, category, sort) {
     $.ajax({
       url: '/products/product', // 요청을 보낼 URL
       method: 'GET', // 요청 방식
       data: {
         sort: "all",
-        page: 1 // 요청에 포함할 page 파라미터
+        page: page,
+        category: category// 요청에 포함할 page 파라미터
       },
       success: function (response) {
         console.log("상품 조회 성공: " + response.content);
-        updateProductList(response.content);
+        updateProductList(response.content, page);
       },
       error: function (xhr, status, error) {
         console.error('상품 정보를 불러오는 중 오류 발생:', error);
@@ -508,9 +528,11 @@
   }
 
   // 상품 업데이트 함수
-  function updateProductList(productList) {
+  function updateProductList(productList, page) {
     let $productListContainer = $('#productListArea');
-    $productListContainer.empty(); // 기존 내용을 지우고 새로 추가
+    if (page === 1) {
+      $productListContainer.empty(); // 첫 페이지인 경우 기존 내용을 지웁니다.
+    }
 
     productList.forEach(function (item) {
       console.log(item)
