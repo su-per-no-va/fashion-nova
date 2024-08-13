@@ -19,7 +19,7 @@ $(document).ready(function () {
         $('#auth-btn').on('click', function (e) {
           e.preventDefault();
           localStorage.removeItem('accessToken'); // 토큰 삭제
-          window.location.reload(); // 페이지 리로드
+          window.location.href ='/index.html'; // 페이지 리로드
         });
       },
       error: function (error) {

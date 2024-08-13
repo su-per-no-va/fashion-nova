@@ -123,7 +123,7 @@ public class CartService {
         ProductDetail newProductDetail = productDetailRepository.findByProductAndSizeAndColor(
                 currentProductDetail.getProduct(),
                 dto.getSize(), dto.getColor())
-            .orElseThrow(() -> new CustomException(ErrorType.CART_NOT_FOUND_COLOR_SIZE));
+            .orElse(currentProductDetail);
 
         if (newProductDetail.getQuantity() == 0) {
             throw new CustomException(ErrorType.OUT_OF_STOCK);
@@ -140,12 +140,15 @@ public class CartService {
         if (existingCartOptional.isPresent()) {
             // 이미 존재하면 수량 증가
             Cart existingCart = existingCartOptional.get();
-            existingCart.incrementCount(cart.getCount());
-            existingCart.incrementTotalPrice(cart.getTotalPrice());
-            cartRepository.save(existingCart);
 
-            // 기존 장바구니 항목 삭제
-            cartRepository.delete(cart);
+            if (!cart.equals(existingCart)) {
+                existingCart.incrementCount(cart.getCount());
+                existingCart.incrementTotalPrice(cart.getTotalPrice());
+
+                cartRepository.delete(cart);
+            }else{
+                existingCart.updateCountPrice(dto.getCount());
+            }
         } else {
             // 존재하지 않으면 새로 추가
             cart.setProductDetail(newProductDetail);

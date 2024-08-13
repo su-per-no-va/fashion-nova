@@ -11,6 +11,10 @@
     <link href="../admin/css/admin.css" rel="stylesheet" />
     <link href="../admin/css/admin-modal.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- jQuery 라이브러리 추가 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- 공용 자바스크립트 파일 추가 -->
+    <script src="/admin/js/admin-check.js"></script>
 </head>
 <body class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -128,7 +132,7 @@
                                 <th>회원유형</th>
                                 <th>상태</th>
                                 <th>경고</th>
-                                <th>결제금액</th>
+                                <th>휴대폰 번호</th>
                                 <th>등급</th>
                                 <th>가입일</th>
                             </tr>
@@ -137,13 +141,13 @@
                             <tbody>
 
                             <tr>
-                                <td>1</td>
+                                <td>-1</td>
                                 <td>nado123</td>
                                 <td>nado123@gmail.com</td>
                                 <td><a href="#" class="name-link">김나도</a></td>
                                 <td>USER</td>
                                 <td>MEMBER</td>
-                                <td><a href="#" class="modal-link">2</a></td>
+                                <td><a href="#" class="modal-link">-1</a></td>
                                 <td>150,000</td>
                                 <td>BRONZE</td>
                                 <td>2024/08/01 13:01</td>
@@ -224,6 +228,7 @@
             <tr>
                 <th>경고 사유</th>
                 <th>경고 생성일</th>
+                <th>삭제</th> <!-- 삭제 버튼 추가 -->
             </tr>
             </thead>
             <tbody class="warning-body">
@@ -243,7 +248,163 @@
 <script src="../admin/js/scripts.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
 <script src="../admin/js/datatables.js"></script>
-<script src="../admin/js/admin-user-modal.js"></script>
-<script src="../admin/js/admin-warning-modal.js"></script>
+<!--<script src="../admin/js/admin-user-modal.js"></script>-->
+<!--<script src="../admin/js/admin-warning-modal.js"></script>-->
 </body>
 </html>
+
+<script>
+    $(document).ready(function() {
+        const datatablesSimple = document.getElementById('datatablesSimple');
+        if (datatablesSimple) {
+            new simpleDatatables.DataTable(datatablesSimple);
+        }
+
+        // 유저 전체 조회
+        $.ajax({
+            url: '/api/admin/users',
+            type: 'GET',
+            data: { page: 0 },
+            success: function(response) {
+                const userTableBody = $('#datatablesSimple tbody');
+                userTableBody.empty();
+                response.forEach(function(user) {
+                    userTableBody.append(`
+                            <tr>
+                                <td>${user.id}</td> <!-- 회원ID (순번) -->
+                                <td>${user.userName}</td> <!-- ID -->
+                                <td>${user.email}</td> <!-- 이메일 -->
+                                <td><a href="#" class="name-link" data-user-id="${user.id}">${user.name}</a></td> <!-- 이름 -->
+                                <td>${user.status}</td> <!-- 회원유형 -->
+                                <td>${user.grade || 'N/A'}</td> <!-- 등급 -->
+                                <td><a href="#" class="modal-link" data-user-id="${user.id}">${user.warnCount}</a></td> <!-- 경고 -->
+                                <td>${user.phone}</td> <!-- 결제금액 -->
+                                <td>${user.grade || 'N/A'}</td> <!-- 등급 -->
+                                <td>${new Date(user.createdAt).toLocaleString()}</td> <!-- 가입일 -->
+                            </tr>
+                        `);
+                });
+            }
+        });
+
+        // 유저 정보 모달
+        $(document).on('click', '.name-link', function(event) {
+            event.preventDefault();
+            const userId = $(this).data('user-id');
+            $.ajax({
+                url: `/api/admin/users/${userId}`,
+                type: 'GET',
+                success: function(response) {
+                    $('.modal-id').text(response.userName);
+                    $('.modal-name').text(response.name);
+                    $('.modal-email').text(response.email);
+                    $('.modal-type').text(response.status);
+                    $('.modal-join').text(new Date(response.createdAt).toLocaleString());
+                    $('.modal-grade').text(response.userGrade || 'N/A');
+                    $('.modal-total').text(response.totalPrice !== null ? response.totalPrice.toLocaleString() : '정보 없음'); // totalPrice를 천 단위로 구분
+                    $('.modal-address').html(response.addressList ? response.addressList.map(addr => addr.address).join('<br>') : '정보 없음');
+                    $('.modal-restriction').html(response.warnList ? response.warnList.map(warn => `${warn.detail} (${warn.createdAt})`).join('<br>') : '정보 없음');
+                    $('.modal-recent').html(response.recentOrderId ? `최근 주문 번호: ${response.recentOrderId}` : '정보 없음'); // recentOrderId를 표시
+                    $('#userModal').show();
+                }
+            });
+        });
+
+        let currentUserId = null; // 전역 변수 선언
+
+        // 경고 내역 모달
+        $(document).on('click', '.modal-link', function(event) {
+            event.preventDefault();
+            const userId = $(this).data('user-id');
+            currentUserId = userId;
+            $.ajax({
+                url: `/api/admin/users/${userId}`,
+                type: 'GET',
+                success: function(response) {
+                    const warningBody = $('.warning-body');
+                    warningBody.empty();
+                    response.warnList.forEach(function(warn) {
+                        warningBody.append(`
+                                <tr>
+                                    <td>${warn.detail}</td>
+                                    <td>${warn.createdAt}</td>
+                                    <td><button class="btn btn-danger delete-warning" data-warn-id="${warn.id}">삭제</button></td> <!-- 삭제 버튼 추가 -->
+                                </tr>
+                            `);
+                    });
+                    $('#warningModal').show();
+                }
+            });
+        });
+
+        // 모달 닫기
+        $(document).on('click', function(event) {
+            if ($(event.target).is('.user-close, .warning-close, #cancelWarning')) {
+                $('#userModal').hide();
+                $('#warningModal').hide();
+            }
+        });
+
+        $(window).on('click', function(event) {
+            if ($(event.target).is('#userModal')) {
+                $('#userModal').hide();
+            }
+            if ($(event.target).is('#warningModal')) {
+                $('#warningModal').hide();
+            }
+        });
+
+        // 경고 등록
+        $('#submitWarning').on('click', function() {
+            const newWarningReason = $('#newWarningReason').val().trim();
+
+            if (currentUserId && newWarningReason) {
+                $.ajax({
+                    url: '/api/admin/cautions',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        userId: currentUserId,
+                        detail: newWarningReason
+                    }),
+                    success: function() {
+                        alert('경고가 성공적으로 등록되었습니다.');
+                        $('#warningModal').hide();
+                        $('#newWarningReason').val('');
+                        window.location.reload(); // 페이지 새로 고침
+                    },
+                    error: function() {
+                        alert('경고 등록에 실패했습니다.');
+                    }
+                });
+            } else {
+                alert('경고 사유를 입력해 주세요.');
+            }
+        });
+
+        // 경고 삭제
+        $(document).on('click', '.delete-warning', function() {
+            const warnId = $(this).data('warn-id');
+
+            if (confirm('정말로 이 경고를 삭제하시겠습니까?')) {
+                $.ajax({
+                    url: '/api/admin/cautions',
+                    type: 'DELETE',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        warnId: warnId
+                    }),
+                    success: function() {
+                        alert('경고가 성공적으로 삭제되었습니다.');
+                        $('#warningModal').hide();
+                        window.location.reload(); // 페이지 새로 고침
+                    },
+                    error: function() {
+                        alert('경고 삭제에 실패했습니다.');
+                    }
+                });
+            }
+        });
+
+    });
+</script>

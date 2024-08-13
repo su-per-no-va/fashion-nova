@@ -20,7 +20,7 @@ Authorization: {{access_token}}
   "cost": 68000,
   "discount": 6000,
   "usedMileage": 1000,
-  "address": "그만해ㅐㅐㅐ"
+  "address": "주연씨의 멋진 집2"
 }
 
 ### 결제 후 주문내역 조회

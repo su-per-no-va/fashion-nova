@@ -1,6 +1,7 @@
 package com.supernova.fashionnova.domain.mileage;
 
 import com.supernova.fashionnova.domain.user.User;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,5 +11,5 @@ public interface MileageRepository extends JpaRepository<Mileage, Long> {
 
   Page<Mileage> findByUser(User user, Pageable pageable);
 
-  Optional<Mileage> findByUserId(Long userId);
+  List<Mileage> findByUserId(Long userId);
 }

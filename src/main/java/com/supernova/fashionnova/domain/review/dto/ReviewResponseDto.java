@@ -1,7 +1,9 @@
 package com.supernova.fashionnova.domain.review.dto;
 
 import com.supernova.fashionnova.domain.review.Review;
+import com.supernova.fashionnova.domain.review.ReviewImage;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.Getter;
 
 @Getter
@@ -12,6 +14,7 @@ public class ReviewResponseDto {
     private final int rating;
     private final String username;
     private final List<String> imageUrls;
+    private final List<ReviewImageResponseDto> reviewImages;
 
     public ReviewResponseDto(Review review, List<String> imageUrls) {
         this.id = review.getId();
@@ -19,6 +22,9 @@ public class ReviewResponseDto {
         this.rating = review.getRating();
         this.username = review.getUser().getUserName();
         this.imageUrls = imageUrls;
+        this.reviewImages = review.getReviewImageList().stream()
+            .map(ReviewImageResponseDto::new)
+            .toList();
     }
 
 }

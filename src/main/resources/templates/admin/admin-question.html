@@ -11,6 +11,10 @@
     <link href="../admin/css/admin.css" rel="stylesheet" />
     <link href="../admin/css/admin-modal.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- jQuery 라이브러리 추가 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- 공용 자바스크립트 파일 추가 -->
+    <script src="/admin/js/admin-check.js"></script>
 </head>
 <body class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -153,12 +157,24 @@
                                 <td>2024/08/02 13:01</td>
                                 <td></td>
                             </tr>
+
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </main>
+
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="#" id="prevPage">Previous</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#" id="nextPage">Next</a>
+                </li>
+            </ul>
+        </nav>
 
         <!-- Footer-->
         <footer class="py-4 bg-light mt-auto">
@@ -176,19 +192,29 @@
     </div>
 </div>
 
+
+
 <!-- Modal -->
-<div id="myModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <h3 class="modal-title"></h3>
-        <p>문의 종류: <span class="modal-category"></span></p>
-        <p>작성자: <span class="modal-author"></span></p>
-        <p>문의 내용: <span class="modal-text"></span></p>
-        <p>첨부 파일: <span class="modal-attachment"></span></p>
-        <p>운영자 답변</p>
-        <textarea id="adminReply" rows="4" placeholder="답변을 작성하세요"></textarea>
-        <button id="submitReply" class="btn btn-primary">등록</button>
-        <button id="cancelReply" class="btn btn-secondary">취소</button>
+<div id="myModal" class="modal fade" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>문의 종류: <span class="modal-category"></span></p>
+                <p>작성자: <span class="modal-author"></span></p>
+                <p>문의 내용: <span class="modal-text"></span></p>
+                <p>첨부 파일: <span class="modal-attachment"></span></p>
+                <p>운영자 답변</p>
+                <textarea id="adminReply" rows="4" placeholder="답변을 작성하세요" class="form-control"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button id="submitReply" class="btn btn-primary">등록</button>
+                <button id="cancelReply" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -197,5 +223,139 @@
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
 <script src="../admin/js/datatables.js"></script>
 <script src="../admin/js/admin-modal.js"></script>
+<script>
+    var currentPage = 0; // 현재 페이지 번호
+    $(document).ready(function() {
+        // 페이지가 로드될 때 첫 번째 페이지를 로드
+        fetchQuestions(currentPage);
+
+        // 다음 페이지 버튼 클릭 이벤트
+        $('#nextPage').on('click', function(event) {
+            event.preventDefault();
+            currentPage++;
+            fetchQuestions(currentPage);
+        });
+
+        // 이전 페이지 버튼 클릭 이벤트
+        $('#prevPage').on('click', function(event) {
+            event.preventDefault();
+            if (currentPage > 0) {
+                currentPage--;
+                fetchQuestions(currentPage);
+            }
+        });
+        // 답변 등록 버튼 클릭 시
+        $('#submitReply').on('click', function() {
+
+        });
+
+        // 모달에서 취소 버튼 클릭 시
+        $('#cancelReply').on('click', function() {
+            $('#myModal').hide(); // 모달 닫기
+        });
+    });
+
+    function fetchQuestions(page) {
+        $.ajax({
+            url: `/api/admin/answers?page=${page}`,
+            method: 'GET',
+            success: function(response) {
+                renderQuestions(response);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching questions:', error);
+            }
+        });
+    }
+</script>
+
+<script>
+    function renderQuestions(questions) {
+        var $tbody = $('#datatablesSimple tbody');
+        $tbody.empty(); // 기존 내용을 비웁니다.
+
+        $.each(questions, function (index, question) {
+            var $tr = $('<tr></tr>');
+
+            // 상태가 "COMPLETED"일 때 텍스트에 빨간색 스타일 적용
+            var statusText = question.status;
+            if (statusText === 'COMPLETED') {
+                statusText = '<span style="color: red;">' + statusText + '</span>';
+            }
+
+            $tr.append('<td>' + question.id + '</td>');
+            $tr.append('<td>' + statusText + '</td>');
+            $tr.append('<td>' + question.userId + '</td>');
+            $tr.append('<td>' + question.userName + '</td>');
+            $tr.append('<td>' + question.type + '</td>');
+            $tr.append('<td><a href="#" class="modal-link" data-id="' + question.id + '" data-category="' + question.type + '" data-author="' + question.userName +
+                '" data-content="' + question.question + '" data-attachment="' + question.questionUrls.join(', ') + '">' + question.title + '</a></td>');
+            $tr.append('<td>' + formatDate(question.createdAt) + '</td>');
+            $tr.append('<td>' + formatDate(question.answeredDate) + '</td>'); // 답변 등록일 추가
+
+            $tbody.append($tr);
+        });
+    }
+
+    function formatDate(dateString) {
+        if (!dateString) return '';
+        var date = new Date(dateString);
+        return date.getFullYear() + '/' + (date.getMonth() + 1).toString().padStart(2, '0') + '/' + date.getDate().toString().padStart(2, '0') + ' ' + date.getHours().toString().padStart(2, '0') +
+            ':' + date.getMinutes().toString().padStart(2, '0');
+    }
+
+    $(document).on('click', '.modal-link', function (event) {
+        event.preventDefault();
+
+        var questionId = $(this).data('id');
+        var category = $(this).data('category');
+        var author = $(this).data('author');
+        var content = $(this).data('content');
+        var attachment = $(this).data('attachment');
+
+        showModal(questionId, category, author, content, attachment);
+    });
+
+    function showModal(questionId, category, author, content, attachment) {
+        var $modal = $('#myModal'); // 모달 ID
+        $modal.find('.modal-title').text('Q&A ID: ' + questionId);
+        $modal.find('.modal-category').text(category);
+        $modal.find('.modal-author').text(author);
+        $modal.find('.modal-text').text(content);
+        $modal.find('.modal-attachment').text(attachment);
+
+        $modal.data('questionId', questionId); // 모달에 questionId 저장
+        $modal.modal('show');
+    }
+
+    $(document).on('click', '#submitReply', function () {
+        var $modal = $('#myModal');
+        var questionId = $modal.data('questionId');
+        var answer = $('#adminReply').val();
+
+        $.ajax({
+            url: '/api/admin/answers',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ questionId: questionId, answer: answer }),
+            success: function (response) {
+                alert('답변이 성공적으로 등록되었습니다.');
+                $modal.modal('hide');
+                fetchQuestions(0); // 첫 번째 페이지의 질문 목록을 다시 로드
+            },
+            error: function (error) {
+                alert('답변 등록에 실패했습니다.');
+            }
+        });
+    });
+</script>
+
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="#" data-page="0">1</a></li>
+        <li class="page-item"><a class="page-link" href="#" data-page="1">2</a></li>
+        <!-- 추가 페이지 -->
+    </ul>
+</nav>
 </body>
 </html>

@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Payment</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--===============================================================================================-->
+  <link rel="icon" type="image/png" href="../images/icons/favicon.png"/>
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../vendor/bootstrap/css/bootstrap.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../fonts/iconic/css/material-design-iconic-font.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../fonts/linearicons-v1.0.0/icon-font.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../vendor/animate/animate.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../vendor/css-hamburgers/hamburgers.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../vendor/animsition/css/animsition.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../vendor/select2/select2.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../vendor/perfect-scrollbar/perfect-scrollbar.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="../css/util.css">
+  <link rel="stylesheet" type="text/css" href="../css/main.css">
+  <link rel="stylesheet" type="text/css" href="../css/my-info.css">
+  <!--===============================================================================================-->
+  <style>
+    #apply-mileage {
+      padding: 10px 20px;
+      background-color: #007bff; /* 파란색 배경 */
+      color: white;
+      border: 2px solid #000; /* 검은색 테두리 */
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+  </style>
+
+</head>
+<body class="animsition">
+
+<!-- Header -->
+<header class="header-v4">
+  <!-- Header desktop -->
+  <div class="container-menu-desktop">
+    <!-- Topbar -->
+    <div class="top-bar">
+      <div class="content-topbar flex-sb-m h-full container">
+        <div class="left-top-bar">
+          패셔니스타들을 위한, 패셔니스타들에 의한 패션노바
+        </div>
+
+        <div class="right-top-bar flex-w h-full">
+          <a href="login.html" class="flex-c-m trans-04 p-lr-25">
+            Login
+          </a>
+
+          <a href="question.html" class="flex-c-m trans-04 p-lr-25">
+            Q&A
+          </a>
+
+          <a href="my-page.html" class="flex-c-m trans-04 p-lr-25">
+            My Page
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap-menu-desktop how-shadow1">
+      <nav class="limiter-menu-desktop container">
+
+        <!-- Logo desktop -->
+        <a href="index.html" class="logo">
+          <img src="../images/icons/logo-01.png" alt="IMG-LOGO">
+        </a>
+
+        <!-- Menu desktop -->
+        <div class="menu-desktop">
+          <ul class="main-menu">
+            <li>
+              <a href="about.html">About</a>
+            </li>
+
+            <li class="label1" data-label1="hot">
+              <a href="product.html">Shop</a>
+            </li>
+
+            <li>
+              <a href="contact.html">Contact</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Icon header -->
+        <div class="wrap-icon-header flex-w flex-r-m">
+          <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
+            <i class="zmdi zmdi-search"></i>
+          </div>
+
+          <a id="cart-icon" href="shoping-cart.html"
+             class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
+             data-notify="">
+            <i class="zmdi zmdi-shopping-cart"></i>
+          </a>
+
+          <a id="wish-icon" href="wish-list.html"
+             class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
+             data-notify="">
+            <i class="zmdi zmdi-favorite-outline"></i>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Modal Search -->
+  <div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
+    <div class="container-search-header">
+      <button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
+        <img src="/images/icons/icon-close2.png" alt="CLOSE">
+      </button>
+
+      <form class="wrap-search-header flex-w p-l-15">
+        <button class="flex-c-m trans-04">
+          <i class="zmdi zmdi-search"></i>
+        </button>
+        <input class="plh3" type="text" name="search" placeholder="Search...">
+      </form>
+    </div>
+  </div>
+</header>
+
+<!-- breadcrumb -->
+<div class="container">
+  <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+    <a href="index.html" class="stext-109 cl8 hov-cl1 trans-04">
+      Home
+      <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+    </a>
+
+    <a href="shoping-cart.html" class="stext-109 cl8 hov-cl1 trans-04">
+      Cart
+      <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+    </a>
+
+    <span class="stext-109 cl4">
+				Payment
+			</span>
+  </div>
+</div>
+
+<!-- Payment Page -->
+<form class="bg0 p-t-75 p-b-85">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
+        <div class="m-l-25 m-r--38 m-lr-0-xl">
+          <div class="wrap-table-shopping-cart">
+            <table class="table-shopping-cart">
+              <tr class="table_head">
+                <th class="column-1">Product</th>
+                <th class="column-2"></th>
+                <th class="column-3">Price</th>
+                <th class="column-4">Option</th>
+                <th class="column-5">Total</th>
+              </tr>
+
+              <!-- 장바구니 항목이 여기에 동적으로 추가됩니다 -->
+              <tbody>
+              <!-- 예시 항목 삭제 -->
+              </tbody>
+            </table>
+          </div>
+
+          <form class="info-form">
+            <div class="form-group">
+              <div class="member-info">
+                <label for="coupon-select">사용 쿠폰</label>
+                <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
+                  <select class="js-select2" name="coupon" id="coupon-select">
+                    <option value="">Coupon</option>
+                    <!-- 쿠폰이 동적으로 추가됩니다 -->
+                  </select>
+                  <div class="dropDownSelect2"></div>
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <form class="info-form">
+            <div class="form-group">
+              <div class="member-info">
+                <label for="mileage-input">사용 마일리지</label>
+                <input type="text" id="mileage-input" placeholder="사용 금액을 입력하세요." required>
+                <label for="available-mileage">사용 가능 마일리지 : <span id="available-mileage">500원</span></label>
+              </div>
+            </div>
+            <button type="button" id="apply-mileage">마일리지 적용</button>
+          </form>
+          <form class="info-form">
+            <div class="form-group">
+              <div class="member-info">
+                <label for="radio1">결제 수단</label>
+                <label for="radio1"><input type="radio" id="radio1" name="radio1">
+                  <img src="../images/icons/icon-kakaopay.png" alt="ICON-PAY" width="100" height="100">
+                </label>
+              </div>
+            </div>
+          </form>
+
+
+        </div>
+      </div>
+
+      <div class="col-sm-10 col-lg-7 col-xl-5 m-lr-auto m-b-50">
+        <div class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm">
+          <h4 class="mtext-109 cl2 p-b-30">
+            Cart Totals
+          </h4>
+
+          <div class="flex-w flex-t bor12 p-b-13">
+            <div class="size-208">
+								<span class="stext-110 cl2">
+									상품 금액:
+								</span>
+            </div>
+
+            <div class="size-209">
+								<span id="product-total" class="mtext-110 cl2">
+									+ 0원
+								</span>
+            </div>
+          </div>
+
+          <div class="flex-w flex-t bor12 p-t-15 p-b-30">
+            <div class="size-208 w-full-ssm">
+								<span id="coupon-discount" class="stext-110 cl2">
+									쿠폰없음:
+								</span>
+            </div>
+
+            <div class="size-209">
+								<span id="coupon-discount-amount" class="mtext-110 cl2">
+									- 0원
+								</span>
+            </div>
+
+            <div class="size-208 w-full-ssm">
+              <span id="mileage-used-label" class="stext-110 cl2">사용 마일리지:</span>
+            </div>
+            <div class="size-209">
+								<span id="mileage-used" class="mtext-110 cl2">
+									- 0원
+								</span>
+            </div>
+          </div>
+
+          <div class="flex-w flex-t bor12 p-t-15 p-b-30">
+            <div class="size-208 w-full-ssm">
+								<span class="stext-110 cl2">
+									배송비:
+								</span>
+            </div>
+
+            <div class="size-209">
+								<span class="mtext-110 cl2">
+									 + 0원
+								</span>
+            </div>
+          </div>
+
+          <div class="flex-w flex-t p-t-27 p-b-33">
+            <div class="size-208">
+								<span class="mtext-101 cl2">
+									총 금액:
+								</span>
+            </div>
+
+            <div class="size-209 p-t-1">
+								<span id="total-amount" class="mtext-110 cl2">
+									144,700원
+								</span>
+            </div>
+          </div>
+
+          <button
+              class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+            Make payment
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<!-- Footer -->
+<footer class="bg3 p-t-75 p-b-32">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-sm-6 col-lg-3 p-b-50">
+        <h4 class="stext-301 cl0 p-b-30">
+          FEEDBACK
+        </h4>
+
+        <p class="stext-107 cl7 size-201">
+          언제나 고객님들의 피드백을 반영하여 항상 더욱 발전하는 패션 노바가 되겠습니다. - 피드백링크~~
+        </p>
+
+        <div class="p-t-27">
+          <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+            <i class="fa fa-facebook"></i>
+          </a>
+
+          <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+            <i class="fa fa-instagram"></i>
+          </a>
+
+          <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
+            <i class="fa fa-pinterest-p"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="p-t-40">
+        <div class="flex-c-m flex-w p-b-18">
+          <a href="#" class="m-all-1">
+            <img src="../images/icons/icon-pay-01.png" alt="ICON-PAY">
+          </a>
+        </div>
+
+        <p class="stext-107 cl6 txt-center">
+          <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+          이 홈페이지는 상업적으로 이용되지 않습니다.
+          <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Back to top -->
+<div class="btn-back-to-top" id="myBtn">
+		<span class="symbol-btn-back-to-top">
+			<i class="zmdi zmdi-chevron-up"></i>
+		</span>
+</div>
+
+<!--===============================================================================================-->
+<script src="../vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+<script src="../vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+<script src="../vendor/bootstrap/js/popper.js"></script>
+<script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+<script src="../vendor/select2/select2.min.js"></script>
+<script>
+  $(".js-select2").each(function () {
+    $(this).select2({
+      minimumResultsForSearch: 20,
+      dropdownParent: $(this).next('.dropDownSelect2')
+    });
+  })
+</script>
+<!--===============================================================================================-->
+<script src="../vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
+<!--===============================================================================================-->
+<script src="../vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script>
+  $('.js-pscroll').each(function () {
+    $(this).css('position', 'relative');
+    $(this).css('overflow', 'hidden');
+    var ps = new PerfectScrollbar(this, {
+      wheelSpeed: 1,
+      scrollingThreshold: 1000,
+      wheelPropagation: false,
+    });
+
+    $(window).on('resize', function () {
+      ps.update();
+    })
+  });
+</script>
+<!--===============================================================================================-->
+<script src="/js/common.js"></script>
+<script src="../js/main.js"></script>
+<script>
+  let currentPage = 0; // 페이지 0부터 시작
+  let totalMileage = 0; // 총 마일리지를 저장할 변수
+  let productTotal = 0; // 상품 총 금액
+  const shippingCost = 0; // 배송비
+  let couponDiscount = 0; // 쿠폰 할인 금액
+  let mileageUsed = 0; // 사용자가 입력한 마일리지
+  let totalCost = 0;
+
+  $(document).ready(function () {
+    // 장바구니 데이터를 가져오는 함수 호출
+    window.common.getShoppingCart()
+    .done(function (response) {
+      if (response) {
+        // 장바구니 아이콘에 아이템 수 표시
+        $('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
+
+        // 장바구니 항목을 결제 페이지에 렌더링
+        renderCartItems(response.cartItemDtoList);
+      }
+    })
+    .fail(function (error) {
+      console.log(error.message);
+    });
+
+    /* 찜 아이콘 개수 */
+    window.common.getWishList()
+    .done(function (response) {
+      if (response) {
+        $('a#wish-icon')[0].dataset.notify = response.length;
+      }
+    })
+    .fail(function (error) {
+      console.log(error.message)
+    });
+
+    // 총 금액을 계산하고 페이지에 업데이트
+    function updateCartTotals() {
+      totalCost = productTotal - couponDiscount - mileageUsed + shippingCost;
+      $('#total-amount').text(`${totalCost.toLocaleString()}원`);
+      $('#mileage-used').text(`-${mileageUsed.toLocaleString()}원`);
+    }
+
+    // 사용자가 입력한 마일리지 값을 가져와서 검증하고 업데이트하는 함수
+    $('#apply-mileage').on('click', function () {
+      const inputMileage = parseInt($('#mileage-input').val(), 10);
+
+      // 유효성 검사
+      if (isNaN(inputMileage) || inputMileage <= 0) {
+        alert('유효한 마일리지 금액을 입력하세요.');
+        return;
+      }
+
+      if (inputMileage > totalMileage) {
+        alert('사용 가능 마일리지를 초과했습니다. 다시 입력해 주세요.');
+        return;
+      }
+
+      mileageUsed = inputMileage; // 변수에 입력된 값 저장
+
+      updateCartTotals(); // 총 금액을 다시 계산하고 업데이트
+
+    });
+
+    // 쿠폰 선택 시 할인 금액을 계산하고 업데이트하는 함수
+    $('#coupon-select').change(function() {
+      const selectedOption = $(this).find('option:selected');
+
+      const discountRate = parseFloat(selectedOption.data('sale')); // 할인률을 숫자로 변환
+      const couponName = selectedOption.data('name'); // 쿠폰 이름 가져오기
+
+
+      if (!isNaN(discountRate) && discountRate > 0) {
+        // 할인 금액 계산
+        const discountAmount = productTotal * (discountRate / 100);
+        couponDiscount = discountAmount;
+        // 할인 금액을 업데이트
+        $('#coupon-discount').text(`${couponName}:`);
+        $('#coupon-discount-amount').text(`- ${discountAmount.toLocaleString()}원`);
+        updateCartTotals()
+      } else {
+        // 쿠폰 이름과 할인 금액을 초기화
+        $('#coupon-discount').text('쿠폰 선택:');
+        $('#coupon-discount-amount').text(`- 0원`);
+      }
+    });
+    // 장바구니 항목을 렌더링하는 함수
+    function renderCartItems(cartItems) {
+      const $cartTable = $('.table-shopping-cart'); // tbody 선택
+
+      // 테이블 초기화
+      $cartTable.empty();
+
+      // 각 장바구니 항목을 테이블에 추가
+      cartItems.forEach(function (item) {
+        const row = `
+    <tr class="table_row">
+      <td class="column-1">
+        <div class="how-itemcart1">
+          <img src="${item.imageUrl}" alt="IMG">
+        </div>
+      </td>
+      <td class="column-2">${item.product}</td>
+      <td class="column-3">${item.price.toLocaleString()}원</td>
+      <td class="column-4" style="text-align: center;">
+        <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
+          <div class="form-group">
+            <div class="fixed-text">Count : ${item.count}</div>
+          </div>
+        </div>
+        <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
+          <div class="form-group">
+            <div class="fixed-text">Size : ${item.size}</div>
+          </div>
+        </div>
+
+        <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
+          <div class="form-group">
+            <div class="fixed-text">Color : ${item.color}</div>
+          </div>
+        </div>
+      </td>
+      <td class="column-5">${(item.price * item.count).toLocaleString()}원</td>
+    </tr>
+  `;
+
+        // 생성된 행을 테이블에 추가
+        $cartTable.append(row);
+        productTotal += item.price * item.count
+      });
+      // 상품 총 금액을 HTML에 업데이트
+      $('#product-total').text(`+ ${productTotal.toLocaleString()}원`);
+      updateCartTotals()
+    }
+
+    $('.flex-c-m.stext-101').on('click', function (event) {
+      event.preventDefault(); // 기본 동작 방지
+
+      // 주문 요청 데이터 준비
+      const orderRequestDto = {
+        cost: totalCost,
+        discount: couponDiscount,
+        usedMileage: mileageUsed,
+        address: "주문페이지에서 작성"
+      };
+
+      // 주문 생성 API 호출
+      $.ajax({
+        type: 'POST',
+        url: '/orders', // 주문 생성 API 엔드포인트
+        contentType: 'application/json',
+        data: JSON.stringify(orderRequestDto),
+        success: function(response, textStatus, jqXHR) {
+          // 주문 성공 시 처리
+          if (jqXHR.status >= 200 && jqXHR.status < 300) {
+            localStorage.setItem("orderId",response.orderId )
+            console.log('주문이 성공적으로 생성되었습니다:', response);
+            alert('주문이 완료되었습니다.');
+            window.location.href = '/kakaopay.html';
+          }
+        },
+        error: function(error) {
+          console.error('주문 생성 실패:', error);
+          alert('주문 생성에 실패했습니다. 다시 시도해 주세요.');
+        }
+      });
+    });
+
+    fetchMileage();
+    fetchCoupons();
+    updateCartTotals()
+  });
+
+
+
+  function fetchMileage() {
+    $.ajax({
+      type: 'GET',
+      url: `/mileages?page=${currentPage}`,
+      success: function(response) {
+        if (response.length > 0) {
+          // 각 페이지의 마일리지를 합산
+          response.forEach(item => {
+            totalMileage += item.usedMileage;
+          });
+
+          // 다음 페이지 데이터 요청
+          currentPage++;
+          fetchMileage(); // 재귀적으로 호출하여 다음 페이지 데이터 요청
+        } else {
+          // 응답 길이가 0인 경우, 모든 페이지의 데이터를 다 가져온 상태입니다.
+          updateMileageDisplay();
+        }
+      },
+      error: function(error) {
+        console.error('마일리지 불러오기 실패', error);
+      }
+    });
+  }
+
+  // 마일리지 값을 페이지에 업데이트하는 함수
+  function updateMileageDisplay() {
+    $('#available-mileage').text(`사용 가능 마일리지 : ${totalMileage.toLocaleString()}원`);
+  }
+
+  function fetchCoupons() {
+    $.ajax({
+      type: 'GET',
+      url: '/coupons', // 서버에서 쿠폰 데이터를 제공하는 엔드포인트
+      success: function(response) {
+        updateCouponTable(response);
+      },
+      error: function(error) {
+        console.error('쿠폰 불러오기 실패 :', error);
+      }
+    });
+  }
+
+
+  // 쿠폰 테이블을 업데이트하는 함수
+  function updateCouponTable(coupons) {
+
+    const $couponSelect = $('#coupon-select');
+
+    // 기존 옵션을 비웁니다
+    $couponSelect.empty();
+    $couponSelect.append('<option value="">Coupon</option>');
+
+    // 각 쿠폰을 선택 항목으로 추가
+    coupons.forEach(coupon => {
+      $couponSelect.append(`<option value="${coupon.id}" data-sale="${coupon.sale}" data-name="${coupon.name}">${coupon.name}</option>`);
+    });
+
+    // 드롭다운 새로 고침 (필요에 따라)
+    $('.js-select2').select2();
+  }
+</script>
+
+</body>
+</html>

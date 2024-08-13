@@ -40,18 +40,17 @@ public class OrderService {
             throw new CustomException(ErrorType.CART_EMPTY);
         }
 
-        Long totalPrice = cartList.stream().mapToLong(Cart::getTotalPrice).sum();
+        long totalPrice = cartList.stream().mapToLong(Cart::getTotalPrice).sum();
         Long totalAmount = totalPrice - orderRequestDto.getDiscount()
             - orderRequestDto.getUsedMileage();
 
-        // OrderRequestDto -> 주좌길 16-3
         Order order = Order.builder()
             .cost(totalPrice)
             .orderStatus(OrderStatus.Progress)
             .deliveryStatus(DeliveryStatus.BEFORE)
             .address(orderRequestDto.getAddress())
-            .discount(orderRequestDto.getDiscount())
             .user(user)
+            .discount(orderRequestDto.getDiscount())
             .usedMileage(orderRequestDto.getUsedMileage())
             .totalPrice(totalAmount)
             .invoice(invoice)
@@ -77,12 +76,8 @@ public class OrderService {
         // order.setOrderDetailList(orderDetailList); <- cascade 를 이미 했기 때문에 편의메서드 사용 안 해도 됨
         // orderRepository.save() <- 없어도 됨 - dirty checking 을 해주기 때문
 
-        return new AllOrderResponseDto(order.getId(), order.getOrderStatus(), order.getAddress(),
-            order.getCost(), order.getDeliveryStatus(), order.getDiscount(), order.getTotalPrice(),
-            order.getUsedMileage(), order.getCreatedAt(), savedOrderDetailList,
-            order.getOrderName(), cartCount);
+        return AllOrderResponseDto.fromOrder(order, savedOrderDetailList);
     }
-
 
     public List<OrderDetail> createOrderDetail(List<Cart> cartList, User user, Order order) {
 

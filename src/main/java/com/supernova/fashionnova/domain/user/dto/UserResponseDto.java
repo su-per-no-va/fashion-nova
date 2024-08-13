@@ -18,6 +18,7 @@ public class UserResponseDto {
     private final UserGrade grade;
     private final Long mileage;
     private final LocalDateTime createdAt;
+    private final int warnCount;
 
     public UserResponseDto(User user) {
         this.id = user.getId();
@@ -29,6 +30,7 @@ public class UserResponseDto {
         this.grade = user.getUserGrade();
         this.mileage = user.getMileage();
         this.createdAt = user.getCreatedAt();
+        this.warnCount = user.getWarnList().size();
     }
 
 }
