@@ -195,6 +195,21 @@
           <form class="info-form">
             <div class="form-group">
               <div class="member-info">
+                <label for="address-select">배송지</label>
+                <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
+                  <select class="js-select2" name="address" id="address-select">
+                    <option value="">배송지</option>
+                    <!-- 주소가 동적으로 추가됩니다 -->
+                  </select>
+                  <div class="dropDownSelect2"></div>
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <form class="info-form">
+            <div class="form-group">
+              <div class="member-info">
                 <label for="mileage-input">사용 마일리지</label>
                 <input type="text" id="mileage-input" placeholder="사용 금액을 입력하세요." required>
                 <label for="available-mileage">사용 가능 마일리지 : <span id="available-mileage">500원</span></label>
@@ -287,6 +302,21 @@
 								</span>
             </div>
           </div>
+
+          <div class="flex-w flex-t p-t-27 p-b-33">
+            <div class="size-208">
+								<span class="mtext-101 cl2">
+									배송지:
+								</span>
+            </div>
+
+            <div class="size-209 p-t-1">
+								<span id="choiced-address" class="mtext-110 cl2">
+									My Page에서 배송지를 추가해야합니다
+								</span>
+            </div>
+          </div>
+
 
           <button
               class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
@@ -399,7 +429,7 @@
   let couponDiscount = 0; // 쿠폰 할인 금액
   let mileageUsed = 0; // 사용자가 입력한 마일리지
   let totalCost = 0;
-
+  let address = "배송지없음";
   $(document).ready(function () {
     // 장바구니 데이터를 가져오는 함수 호출
     window.common.getShoppingCart()
@@ -534,12 +564,17 @@
     $('.flex-c-m.stext-101').on('click', function (event) {
       event.preventDefault(); // 기본 동작 방지
 
+      if (address === "배송지없음") {
+        alert('배송지 정보가 없습니다. MY_INFO 페이지에서 배송지를 추가해 주세요.');
+        return;
+      }
+
       // 주문 요청 데이터 준비
       const orderRequestDto = {
         cost: totalCost,
         discount: couponDiscount,
         usedMileage: mileageUsed,
-        address: "주문페이지에서 작성"
+        address: address
       };
 
       // 주문 생성 API 호출
@@ -564,6 +599,18 @@
       });
     });
 
+    // 배송지 선택 시 선택된 배송지를 표시하고 주문 데이터에 반영
+    $('#address-select').on('change', function() {
+      const selectedAddress = $(this).val();
+      if (selectedAddress) {
+        $('#choiced-address').text(selectedAddress);
+        address = selectedAddress; // 주문 요청 데이터에 추가
+      } else {
+        $('#choiced-address').text('My Page에서 배송지를 추가해야합니다');
+        address = "배송지없음"; // 주문 요청 데이터 초기화
+      }
+    });
+    fetchAddresses();
     fetchMileage();
     fetchCoupons();
     updateCartTotals()
@@ -614,7 +661,6 @@
     });
   }
 
-
   // 쿠폰 테이블을 업데이트하는 함수
   function updateCouponTable(coupons) {
 
@@ -627,6 +673,39 @@
     // 각 쿠폰을 선택 항목으로 추가
     coupons.forEach(coupon => {
       $couponSelect.append(`<option value="${coupon.id}" data-sale="${coupon.sale}" data-name="${coupon.name}">${coupon.name}</option>`);
+    });
+
+    // 드롭다운 새로 고침 (필요에 따라)
+    $('.js-select2').select2();
+  }
+
+  // 배송지 정보를 가져오는 AJAX 요청
+  function fetchAddresses() {
+    $.ajax({
+      type: 'GET',
+      url: '/addresses', // 서버에서 배송지 데이터를 제공하는 엔드포인트
+      success: function(response) {
+        updateAddressSelect(response);
+      },
+      error: function(error) {
+        console.error('배송지 불러오기 실패 :', error);
+      }
+    });
+  }
+
+  // 배송지 선택 박스를 업데이트하는 함수
+  function updateAddressSelect(addresses) {
+    const $addressSelect = $('#address-select');
+
+    // 기존 옵션을 비웁니다
+    $addressSelect.empty();
+    $addressSelect.append('<option value="">배송지 선택</option>');
+
+    // 각 배송지를 선택 항목으로 추가
+    addresses.forEach(address => {
+      $addressSelect.append(`<option value="${address.zipCode}, ${address.address}">
+      [${address.zipCode}] ${address.address}
+    </option>`);
     });
 
     // 드롭다운 새로 고침 (필요에 따라)
