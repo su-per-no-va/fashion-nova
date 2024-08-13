@@ -1,13 +1,10 @@
 package com.supernova.fashionnova.domain.coupon;
 
 import com.supernova.fashionnova.domain.coupon.dto.CouponResponseDto;
-import com.supernova.fashionnova.domain.order.Order;
 import com.supernova.fashionnova.domain.user.User;
-import com.supernova.fashionnova.domain.user.UserGrade;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.payment.PayAction;
-import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -65,16 +62,18 @@ public class CouponService {
             .map(CouponResponseDto::new)
             .collect(Collectors.toList());
     }
-@Transactional
-  public void calculateCoupon(PayAction action, Long couponId) {
-        Coupon coupon = couponRepository.findById(couponId).orElseThrow(
-          ()-> new CustomException(ErrorType.NOT_FOUND_COUPON));
 
-        if(PayAction.BUY.equals(action)){
+    @Transactional
+    public void calculateCoupon(PayAction action, Long couponId) {
+        Coupon coupon = couponRepository.findById(couponId).orElseThrow(
+            () -> new CustomException(ErrorType.NOT_FOUND_COUPON));
+
+        if (PayAction.BUY.equals(action)) {
+            coupon.useCoupon();
+        } else {
             coupon.useCoupon();
         }
-        else{
-          coupon.useCoupon();
-        }
-  }
+
+    }
+
 }
