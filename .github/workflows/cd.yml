@@ -82,5 +82,3 @@ jobs:
                 -e GOOGLE_EMAIL=${{secrets.GOOGLE_EMAIL}} \
                 -e GOOGLE_APP_PW=${{secrets.GOOGLE_APP_PW}} \
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_TAG_NAME }}:latest
-
-            sudo systemctl reload nginx
