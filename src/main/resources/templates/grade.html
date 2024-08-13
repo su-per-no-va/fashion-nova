@@ -337,6 +337,7 @@
 			url: '/users',
 			success: function(response) {
 				updateUserInfo(response);
+				console.log(response);
 				fetchOrderInfo()
 			},
 			error: function(error) {
