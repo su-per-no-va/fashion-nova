@@ -444,12 +444,11 @@
     $('#apply-mileage').on('click', function () {
       const inputMileage = parseInt($('#mileage-input').val(), 10);
 
-      // 유효성 검사
-      if (isNaN(inputMileage) || inputMileage <= 0) {
-        alert('유효한 마일리지 금액을 입력하세요.');
+      // 유효성 검사: 숫자, 0보다 큰 값, 10원 단위인지 확인
+      if (isNaN(inputMileage) || inputMileage <= 0 || inputMileage % 10 !== 0) {
+        alert('유효한 10원 단위의 마일리지 금액을 입력하세요.');
         return;
       }
-
       if (inputMileage > totalMileage) {
         alert('사용 가능 마일리지를 초과했습니다. 다시 입력해 주세요.');
         return;
