@@ -40,6 +40,9 @@
       <input type="text" name="email" id="email" autocomplete="off" required>
       <label for="email">E-MAIL</label>
     </div>
+      <div class="btn-area">
+          <button id="email_btn" type="button" onclick="submitForm()">EMAIL AUTHENTICATE</button>
+      </div>
     <div class="btn-area">
       <button id="btn" type="button" onclick="submitForm()">CREATE ACCOUNT</button>
     </div>
@@ -114,7 +117,7 @@
       console.log(response);
     })
     .catch(error => {
-      alert("오류 발생: " + error.message);
+      alert(error.message);
     });
   }
 </script>
