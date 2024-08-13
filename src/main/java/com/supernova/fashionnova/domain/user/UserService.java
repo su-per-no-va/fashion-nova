@@ -1,5 +1,7 @@
 package com.supernova.fashionnova.domain.user;
 
+import com.supernova.fashionnova.admin.AdminService;
+import com.supernova.fashionnova.domain.coupon.dto.CouponRequestDto;
 import com.supernova.fashionnova.domain.user.dto.SignupRequestDto;
 import com.supernova.fashionnova.domain.user.dto.UserResponseDto;
 import com.supernova.fashionnova.domain.user.dto.UserRoleResponseDto;
@@ -9,6 +11,7 @@ import com.supernova.fashionnova.domain.warn.WarnRepository;
 import com.supernova.fashionnova.domain.warn.dto.WarnResponseDto;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final WarnRepository warnRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final AdminService adminService;
 
     /**
      * 유저 회원가입
@@ -46,6 +50,8 @@ public class UserService {
             .build();
 
         userRepository.save(user);
+
+        giveWelcomeCoupon(user);
     }
 
     /**
@@ -149,5 +155,18 @@ public class UserService {
             ()-> new CustomException(ErrorType.NOT_FOUND_USER));
     }
 
+    private void giveWelcomeCoupon(User user) {
+
+        CouponRequestDto couponRequest = CouponRequestDto.builder()
+            .userId(user.getId())
+            .name("가입 축하 쿠폰")
+            .period(new Date(System.currentTimeMillis() + 30L * 24 * 60 * 60 * 1000))
+            .sale("10")
+            .type("WELCOME")
+            .build();
+
+
+        adminService.addCoupon(couponRequest);
+    }
 
 }

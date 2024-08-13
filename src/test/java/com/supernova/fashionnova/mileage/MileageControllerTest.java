@@ -14,7 +14,6 @@ import com.supernova.fashionnova.domain.mileage.Mileage;
 import com.supernova.fashionnova.domain.mileage.MileageController;
 import com.supernova.fashionnova.domain.mileage.MileageService;
 import com.supernova.fashionnova.domain.mileage.dto.MileageResponseDto;
-import com.supernova.fashionnova.domain.order.Order;
 import com.supernova.fashionnova.domain.user.User;
 import com.supernova.fashionnova.global.security.UserDetailsImpl;
 import java.util.List;

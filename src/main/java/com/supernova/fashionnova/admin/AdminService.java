@@ -34,6 +34,7 @@ import com.supernova.fashionnova.domain.review.dto.ReviewResponseDto;
 import com.supernova.fashionnova.domain.user.User;
 import com.supernova.fashionnova.domain.user.UserRepository;
 import com.supernova.fashionnova.domain.user.UserRole;
+import com.supernova.fashionnova.domain.user.UserStatus;
 import com.supernova.fashionnova.domain.user.dto.UserResponseDto;
 import com.supernova.fashionnova.domain.warn.Warn;
 import com.supernova.fashionnova.domain.warn.WarnRepository;
@@ -205,12 +206,20 @@ public class AdminService {
      * @param requestDto
      * @throws CustomException NOT_FOUND_USER 유저Id로 유저를 찾을 수 없을 때
      */
+    @Transactional
     public void addCaution(WarnRequestDto requestDto) {
 
         User user = getUser(requestDto.getUserId());
         Warn warn = new Warn(requestDto.getDetail(), user);
 
         warnRepository.save(warn);
+
+        int warnCount = warnRepository.countByUser(user);
+
+        if (warnCount == 3) {
+            user.updateStatus(UserStatus.BLOCKED_MEMBER);
+        }
+
     }
 
     /**

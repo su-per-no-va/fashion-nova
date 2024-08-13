@@ -8,4 +8,6 @@ public interface CouponRepository extends JpaRepository<Coupon, Long> {
 
     List<Coupon> findByUserAndStatus(User user, CouponStatus couponStatus);
 
+    List<Coupon> findByUser(User user);
+
 }

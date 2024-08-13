@@ -100,8 +100,7 @@ class ReviewServiceTest {
         this.reviewRequestDto = new ReviewRequestDto(
             1L,
             "너무 좋아요",
-            5,
-            "ImageUrl");
+            5);
 
         this.review = new Review(
             user,

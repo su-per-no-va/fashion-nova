@@ -13,7 +13,6 @@ import com.supernova.fashionnova.payment.dto.KakaoPayApproveResponseDto;
 import com.supernova.fashionnova.payment.dto.KakaoPayCancelResponseDto;
 import com.supernova.fashionnova.payment.dto.KakaoPayReadyResponseDto;
 import com.supernova.fashionnova.payment.dto.KakaoPayRefundRequestDto;
-import jakarta.transaction.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +23,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +37,7 @@ public class KakaoPayService {
   private final CartRepository cartRepository;
 
   //카카오페이 요청 양식
-  public KakaoPayReadyResponseDto kakaoPayReady(User user, Long orderId) {
+  public KakaoPayReadyResponseDto kakaoPayReady(User user, Long orderId, Long couponId) {
     //장바구니가 비워져있으면 결제 시도를 막음(개발자가 이런 짓을 할 수 있음)
     List<Cart> cartList = cartRepository.findAllByUserId(user.getId());
     if (cartList.isEmpty()) {
@@ -53,8 +53,8 @@ public class KakaoPayService {
     parameters.put("item_name", order.getOrderName());
     parameters.put("quantity", String.valueOf(order.getCount()));
     parameters.put("total_amount", String.valueOf(order.getTotalPrice()));
-    parameters.put("tax_free_amount", String.valueOf(order.getTotalPrice()));
-    parameters.put("approval_url", "http://localhost:8080/payments/success/"+order.getId()+ "/" +user.getId());
+    parameters.put("tax_free_amount",String.valueOf(order.getTotalPrice()));
+    parameters.put("approval_url", "http://localhost:8080/payments/success/"+order.getId()+ "/" +user.getId()+ "/" +couponId);
     parameters.put("cancel_url", "http://localhost:8080/payments/cancel");
     parameters.put("fail_url", "http://localhost:8080/payments/fail");
 
@@ -72,7 +72,6 @@ public class KakaoPayService {
     //order
     order.updateTid(response.getBody().getTid());
 
-    log.info(order.getTid());
     ordersRepository.save(order);
     //카카오페이에서 tid를 응답으로 못 받았을 때
     ordersRepository.findByTid(order.getTid()).orElseThrow(
@@ -116,6 +115,10 @@ public class KakaoPayService {
     //취소하려는 주문이 없음(이미 취소된 주문)
     Order order = ordersRepository.findById(orderId).orElseThrow(
         ()-> new CustomException(ErrorType.NOT_FOUND_ORDER));
+    //본인의 주문만 환불 가능
+    if(!order.getUser().getId().equals(user.getId())){
+      throw new CustomException(ErrorType.DENIED_PERMISSION);
+    }
     Map<String, String> parameters = new HashMap<>();
     parameters.put("cid", kakaoPayConfig.cid);
     parameters.put("tid", order.getTid());

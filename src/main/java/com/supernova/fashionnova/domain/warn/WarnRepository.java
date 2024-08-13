@@ -8,4 +8,6 @@ public interface WarnRepository extends JpaRepository<Warn, Long> {
 
     List<Warn> findByUser(User user);
 
+    int countByUser(User user);
+
 }
