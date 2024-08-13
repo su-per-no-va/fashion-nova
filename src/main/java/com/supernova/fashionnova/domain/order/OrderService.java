@@ -40,18 +40,17 @@ public class OrderService {
             throw new CustomException(ErrorType.CART_EMPTY);
         }
 
-        Long totalPrice = cartList.stream().mapToLong(Cart::getTotalPrice).sum();
+        long totalPrice = cartList.stream().mapToLong(Cart::getTotalPrice).sum();
         Long totalAmount = totalPrice - orderRequestDto.getDiscount()
             - orderRequestDto.getUsedMileage();
 
-        // OrderRequestDto -> 주좌길 16-3
         Order order = Order.builder()
             .cost(totalPrice)
             .orderStatus(OrderStatus.Progress)
             .deliveryStatus(DeliveryStatus.BEFORE)
             .address(orderRequestDto.getAddress())
-            .discount(orderRequestDto.getDiscount())
             .user(user)
+            .discount(orderRequestDto.getDiscount())
             .usedMileage(orderRequestDto.getUsedMileage())
             .totalPrice(totalAmount)
             .invoice(invoice)

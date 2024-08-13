@@ -53,7 +53,7 @@ public class AdminController {
      * 판몌통계(월별)
      * */
     @GetMapping("/sold/moth/{month}")
-    public ResponseEntity<String > monthlySoldStatistics(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable int month){
+    public ResponseEntity<String> monthlySoldStatistics(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable int month){
         return ResponseUtil.of(HttpStatus.OK, adminService.monthlySoldStatistics(userDetails.getUser(), month)) ;
     }
     /**

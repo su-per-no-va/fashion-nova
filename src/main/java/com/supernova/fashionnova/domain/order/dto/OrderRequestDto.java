@@ -8,10 +8,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OrderRequestDto {
 
-  private int cost;
+  private Long cost;
   private int discount;
   private Long usedMileage;
   @NotBlank
   private String address;
+
+  public OrderRequestDto(Long cost, int discount, Long usedMileage, String address) {
+    this.cost = cost;
+    this.discount = discount;
+    this.usedMileage = usedMileage;
+    this.address = address;
+  }
 }
 
