@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-  auth = localStorage.getItem('accessToken');
+  let auth = localStorage.getItem('accessToken');
 
   if (auth) {
     $.ajaxPrefilter(function (options, originalOptions, jqXHR) {

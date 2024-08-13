@@ -3,6 +3,7 @@ package com.supernova.fashionnova.domain.mileage;
 import com.supernova.fashionnova.domain.mileage.dto.MileageResponseDto;
 import com.supernova.fashionnova.domain.order.Order;
 import com.supernova.fashionnova.domain.user.User;
+import com.supernova.fashionnova.domain.user.UserGrade;
 import com.supernova.fashionnova.payment.PayAction;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -39,16 +40,37 @@ public class MileageService {
 
     @Transactional
   public void calculateMileage(PayAction action, Order order, User user) {
-      Mileage mileage = mileageRepository.findByUserId(user.getId()).orElseGet(Mileage::new);
+//      Mileage mileage = mileageRepository.findByUserId(user.getId()).stream().map(Mileage::getMileage)
+        Mileage useddMileage = new Mileage(user,0L);
+        Mileage plusMileage = new Mileage(user,0L);
       if(PayAction.BUY.equals(action)){
+        // 사용 마일리지 차감
         user.updateMileage(user.getMileage() - order.getUsedMileage());
-        mileage.updateMileage(-order.getUsedMileage());
-        mileageRepository.save(mileage);
+        useddMileage.updateMileage(-order.getUsedMileage());
+          mileageRepository.save(useddMileage);
+        // 등급 혜택 별로 마일리지 추가하기
+        plusMileage.updateMileage(getMileageByGrade(order,user));
+        mileageRepository.save(plusMileage);
       }
-      else{
-        user.updateMileage(user.getMileage() + order.getUsedMileage());
-        mileage.updateMileage(order.getUsedMileage());
-        mileageRepository.save(mileage);
-      }
+//      else{
+//        user.updateMileage(user.getMileage() + order.getUsedMileage());
+//        mileage.updateMileage(order.getUsedMileage());
+//        mileageRepository.save(mileage);
+//      }
   }
+
+  private Long getMileageByGrade(Order order, User user) {
+      switch (user.getUserGrade()) {
+          case BRONZE -> {
+              return (long) (0.01 * order.getTotalPrice());
+          }
+          case SILVER -> {
+              return (long) (0.03 * order.getTotalPrice());
+          }
+          case GOLD -> {
+              return (long) (0.05 * order.getTotalPrice());
+          }
+      }return null;
+  }
+
 }

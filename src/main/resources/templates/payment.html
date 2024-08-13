@@ -269,7 +269,7 @@
 
             <div class="size-209">
 								<span class="mtext-110 cl2">
-									 + 2,500원
+									 + 0원
 								</span>
             </div>
           </div>
@@ -395,7 +395,7 @@
   let currentPage = 0; // 페이지 0부터 시작
   let totalMileage = 0; // 총 마일리지를 저장할 변수
   let productTotal = 0; // 상품 총 금액
-  const shippingCost = 2500; // 배송비
+  const shippingCost = 0; // 배송비
   let couponDiscount = 0; // 쿠폰 할인 금액
   let mileageUsed = 0; // 사용자가 입력한 마일리지
   let totalCost = 0;
@@ -526,7 +526,8 @@
       updateCartTotals()
     }
 
-    $('.flex-c-m.stext-101').on('click', function () {
+    $('.flex-c-m.stext-101').on('click', function (event) {
+      event.preventDefault(); // 기본 동작 방지
 
       // 주문 요청 데이터 준비
       const orderRequestDto = {
@@ -542,11 +543,14 @@
         url: '/orders', // 주문 생성 API 엔드포인트
         contentType: 'application/json',
         data: JSON.stringify(orderRequestDto),
-        success: function(response) {
+        success: function(response, textStatus, jqXHR) {
           // 주문 성공 시 처리
-          console.log('주문이 성공적으로 생성되었습니다:', response);
-          alert('주문이 완료되었습니다.');
-          // window.location.href = '/order-success';
+          if (jqXHR.status >= 200 && jqXHR.status < 300) {
+            localStorage.setItem("orderId",response.orderId )
+            console.log('주문이 성공적으로 생성되었습니다:', response);
+            alert('주문이 완료되었습니다.');
+            window.location.href = '/kakaopay.html';
+          }
         },
         error: function(error) {
           console.error('주문 생성 실패:', error);
