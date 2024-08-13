@@ -67,7 +67,7 @@ public class KakaoPayController {
     //주문 성공 후 장바구니 비우기 실행
     cartService.clearCart(userId);
     log.info("결제 성공");
-    response.sendRedirect("/payments-completed");
+    response.sendRedirect("/payments-completed.html");
   }
 
   @GetMapping("/fail")
