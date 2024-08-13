@@ -403,7 +403,11 @@
         }
       },
       error: function(xhr, status, error) {
-        alert('수정 실패:  ' + error.message);
+        if (!error || error === "") {
+          alert('재고가 부족합니다');
+        }else{
+          alert('수정 실패:  ' + error.message);
+        }
       }
     });
   });
@@ -494,8 +498,9 @@
     cartResponseDto.cartItemDtoList.forEach(function(item) {
       let total = item.price * item.count;
       subtotal += total;
+      console.log("[[[[[[[[[", JSON.stringify(item));
 
-      // 색상 옵션 동적 생성
+/*      // 색상 옵션 동적 생성
       let colorOptions = item.colors.map(color =>
           `<option value="${color}" ${item.color === color ? 'selected' : ''}>${color}</option>`
       ).join('');
@@ -503,7 +508,7 @@
       // 사이즈 옵션 동적 생성
       let sizeOptions = item.sizes.map(size =>
           `<option value="${size}" ${item.size === size ? 'selected' : ''}>${size}</option>`
-      ).join('');
+      ).join('');*/
 
       let row = `
     <tr class="table_row" data-item-id="${item.productDetailId}">
@@ -526,8 +531,11 @@
         </div>
         <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
           <select class="js-select2" name="size${item.productDetailId}">
-            ${sizeOptions} <!-- 동적으로 생성된 사이즈 옵션 -->
-          </select>
+        ${[...new Set(item.sizes)] /* 중복 제거된 사이즈 목록을 생성 */
+      .map(size =>
+          `<option value="${size}" ${item.size === size ? 'selected' : ''}>${size}</option>`
+      ).join('')}
+      </select>
           <div class="dropDownSelect2"></div>
         </div>
       </td>
@@ -535,8 +543,11 @@
       <td class="column-6">
         <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
           <select class="js-select2" name="color${item.productDetailId}">
-            ${colorOptions} <!-- 동적으로 생성된 색상 옵션 -->
-          </select>
+        ${[...new Set(item.colors)] /* 중복 제거된 색상 목록을 생성 */
+      .map(color =>
+          `<option value="${color}" ${item.color === color ? 'selected' : ''}>${color}</option>`
+      ).join('')}
+      </select>
           <div class="dropDownSelect2"></div>
         </div>
       </td>
@@ -556,6 +567,7 @@
     $('#subtotal').text(subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원');
     $('#total').text((subtotal + 2500).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'); // 배송비 포함 총 금액
   }
+
 
 </script>
 </body>
