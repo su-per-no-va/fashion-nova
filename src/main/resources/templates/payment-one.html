@@ -56,7 +56,7 @@
         </div>
 
         <div class="right-top-bar flex-w h-full">
-          <a href="login.html" id="auth-btn" class="flex-c-m trans-04 p-lr-25">
+          <a href="login.html" class="flex-c-m trans-04 p-lr-25">
             Login
           </a>
 
@@ -263,13 +263,13 @@
           <div class="flex-w flex-t bor12 p-t-15 p-b-30">
             <div class="size-208 w-full-ssm">
 								<span class="stext-110 cl2">
-									배송비
+									배송비:
 								</span>
             </div>
 
             <div class="size-209">
 								<span class="mtext-110 cl2">
-									 + 2500원
+									 + 0원
 								</span>
             </div>
           </div>
@@ -395,7 +395,7 @@
   let currentPage = 0; // 페이지 0부터 시작
   let totalMileage = 0; // 총 마일리지를 저장할 변수
   let productTotal = 0; // 상품 총 금액
-  const shippingCost = 2500; // 배송비
+  const shippingCost = 0; // 배송비
   let couponDiscount = 0; // 쿠폰 할인 금액
   let mileageUsed = 0; // 사용자가 입력한 마일리지
   let totalCost = 0;
@@ -405,12 +405,6 @@
     window.common.getShoppingCart()
     .done(function (response) {
       if (response) {
-        // 장바구니가 비어있는 경우 처리
-        if (response.cartItemDtoList.length === 0) {
-          alert("결제할 상품이 없습니다.");
-          window.location.href = 'shoping-cart.html';
-          return;  // 이후 코드 실행을 중단합니다.
-        }
         // 장바구니 아이콘에 아이템 수 표시
         $('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
 
@@ -444,11 +438,12 @@
     $('#apply-mileage').on('click', function () {
       const inputMileage = parseInt($('#mileage-input').val(), 10);
 
-      // 유효성 검사: 숫자, 0보다 큰 값, 10원 단위인지 확인
-      if (isNaN(inputMileage) || inputMileage <= 0 || inputMileage % 10 !== 0) {
-        alert('유효한 10원 단위의 마일리지 금액을 입력하세요.');
+      // 유효성 검사
+      if (isNaN(inputMileage) || inputMileage <= 0) {
+        alert('유효한 마일리지 금액을 입력하세요.');
         return;
       }
+
       if (inputMileage > totalMileage) {
         alert('사용 가능 마일리지를 초과했습니다. 다시 입력해 주세요.');
         return;
@@ -470,11 +465,11 @@
 
       if (!isNaN(discountRate) && discountRate > 0) {
         // 할인 금액 계산
-        const discountAmount = productTotal * (discountRate / 100) ;
-        couponDiscount =  Math.floor(discountAmount / 10) * 10;
+        const discountAmount = productTotal * (discountRate / 100);
+        couponDiscount = discountAmount;
         // 할인 금액을 업데이트
         $('#coupon-discount').text(`${couponName}:`);
-        $('#coupon-discount-amount').text(`- ${couponDiscount.toLocaleString()}원`);
+        $('#coupon-discount-amount').text(`- ${discountAmount.toLocaleString()}원`);
         updateCartTotals()
       } else {
         // 쿠폰 이름과 할인 금액을 초기화
