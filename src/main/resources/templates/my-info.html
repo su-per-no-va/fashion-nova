@@ -557,16 +557,16 @@
           addressContainer.empty(); // 기존 주소 목록 비우기
 
           addresses.forEach(function (address) {
-            var addressCard = `
-                        <div class="address-card" data-address-id="${address.id}">
-                            <div>
-                                <button class="btn btn-secondary btn-set-default">${address.defaultAddress ? '기본배송지' : '기본배송지로 설정'}</button>
-                                <button class="btn btn-secondary btn-delete-address" data-address-id="${address.id}">삭제</button>
-                                <p>${address.address}</p>
-                                <p>${address.detail}</p>
-                            </div>
-                        </div>
-                    `;
+            var addressCard =  `
+        <div class="address-card" data-address-id="${address.id}" data-is-default="${address.defaultAddress}">
+            <div>
+                <button class="btn btn-secondary btn-set-default">${address.defaultAddress ? '기본배송지' : '기본배송지로 설정'}</button>
+                <button class="btn btn-secondary btn-delete-address" data-address-id="${address.id}">삭제</button>
+                <p>${address.address}</p>
+                <p>${address.detail}</p>
+            </div>
+        </div>
+    `;
             addressContainer.append(addressCard);
           });
         },
@@ -577,10 +577,19 @@
       }
     // 기본 배송지 설정
     $(document).on('click', '.btn-set-default', function () {
-      var addressId = $(this).closest('.address-card').data('address-id');
-      var addressDefaultRequestDto ={
-        addressId : addressId
+      var $addressCard = $(this).closest('.address-card');
+      var addressId = $addressCard.data('address-id');
+      var isDefault = $addressCard.data('is-default');
+
+      // 기본 배송지 여부 확인
+      if (isDefault) {
+        alert('이미 기본 배송지로 설정되어 있습니다.');
+        return;  // 실행 중단
       }
+
+      var addressDefaultRequestDto = {
+        addressId: addressId
+      };
 
       $.ajax({
         url: '/addresses',
