@@ -52,23 +52,27 @@ public class MileageService {
         plusMileage.updateMileage(getMileageByGrade(order,user));
         mileageRepository.save(plusMileage);
       }
-//      else{
-//        user.updateMileage(user.getMileage() + order.getUsedMileage());
-//        mileage.updateMileage(order.getUsedMileage());
-//        mileageRepository.save(mileage);
-//      }
+      else{
+          // 환불했을 때
+        user.updateMileage(user.getMileage() + order.getUsedMileage());
+        useddMileage.updateMileage(order.getUsedMileage());
+        mileageRepository.save(useddMileage);
+          // 등급 혜택 별로 마일리지 추가하기
+          plusMileage.updateMileage(getMileageByGrade(order,user));
+          mileageRepository.save(plusMileage);
+      }
   }
 
   private Long getMileageByGrade(Order order, User user) {
       switch (user.getUserGrade()) {
           case BRONZE -> {
-              return (long) (0.01 * order.getTotalPrice());
+              return (long) (0.01 * order.getTotalPrice())/10 * 10;
           }
           case SILVER -> {
-              return (long) (0.03 * order.getTotalPrice());
+              return (long) (0.03 * order.getTotalPrice())/10 * 10;
           }
           case GOLD -> {
-              return (long) (0.05 * order.getTotalPrice());
+              return (long) (0.05 * order.getTotalPrice())/10 * 10;
           }
       }return null;
   }
