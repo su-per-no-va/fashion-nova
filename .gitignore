@@ -35,5 +35,3 @@ out/
 
 ### VS Code ###
 .vscode/
-/build/generated/**
-/src/main/generated/**
