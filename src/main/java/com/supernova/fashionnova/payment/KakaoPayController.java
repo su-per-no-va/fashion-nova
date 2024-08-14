@@ -51,11 +51,10 @@ public class KakaoPayController {
   }
 
   @Transactional
-  @GetMapping("/success/{orderId}/{userId}/{couponId}")
+  @GetMapping("/success/{orderId}/{userId}")
   public void KakaoRequestSuccess(@RequestParam("pg_token") String pgToken,
       @PathVariable Long orderId,
       @PathVariable Long userId,
-      @PathVariable Long couponId,
       HttpServletResponse response)
       throws IOException {
     User user = userService.getUserById(userId);
@@ -65,8 +64,8 @@ public class KakaoPayController {
     productService.calculateQuantity(PayAction.BUY, order);
     //마일리지 차감
     mileageService.calculateMileage(PayAction.BUY, order, user);
-    //쿠폰 사용
-    couponService.calculateCoupon(PayAction.BUY, couponId);
+    //쿠폰 사용(임시주석)
+//    couponService.calculateCoupon(PayAction.BUY, couponId);
     //주문 상태 바꾸기
     orderService.updateOrderStatus(order);
     //주문 성공 후 장바구니 비우기 실행
@@ -83,13 +82,14 @@ public class KakaoPayController {
   /**
    * 결제 취소(환불)
    * */
-  @PostMapping("/cancel/{orderId}/{couponId}")
-  public KakaoPayCancelResponseDto Cancel(@RequestBody KakaoPayRefundRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long orderId, @PathVariable Long couponId) {
+  @PostMapping("/cancel/{orderId}")
+  public KakaoPayCancelResponseDto Cancel(@RequestBody KakaoPayRefundRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long orderId) {
     KakaoPayCancelResponseDto responseDto = kakaoPayService.kakaoPayCancel(requestDto, userDetails.getUser(), orderId);
     Order order = orderService.getOrderById(orderId);
     productService.calculateQuantity(PayAction.CANCEL, order);
     mileageService.calculateMileage(PayAction.CANCEL, order, userDetails.getUser());
-    couponService.calculateCoupon(PayAction.CANCEL, couponId);
+    // 쿠폰 사용부분 임시 주석
+//    couponService.calculateCoupon(PayAction.CANCEL, couponId);
     return responseDto;
   }
 }
