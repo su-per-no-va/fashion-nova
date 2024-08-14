@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
@@ -15,9 +15,9 @@
 <body>
 
 <section class="login-form" style="text-align: center;">
-    <a href="index.html" class="logo" style="display: inline-block;">
-      <img src="../images/icons/logo-01.png" alt="IMG-LOGO" style="width: 150px; height: auto;">
-    </a>
+  <a href="index.html" class="logo" style="display: inline-block;">
+    <img src="../images/icons/logo-01.png" alt="IMG-LOGO" style="width: 150px; height: auto;">
+  </a>
   <h1>SIGN UP</h1>
   <form id="signupForm" >
     <div class="int-area">
@@ -33,21 +33,134 @@
       <label for="name">NAME</label>
     </div>
     <div class="int-area">
-      <input type="text" name="phone" id="phone" autocomplete="off"  required>
+      <input type="text" name="phone" id="phone" autocomplete="off" required>
       <label for="phone">PHONE NUMBER</label>
     </div>
     <div class="int-area">
       <input type="text" name="email" id="email" autocomplete="off" required>
       <label for="email">E-MAIL</label>
     </div>
+    <div id="authCodeArea" class="int-area" style="display: none;">
+      <input type="text" name="authCode" id="authCode" autocomplete="off" required>
+      <label for="authCode">Number</label>
+      <div class="btn-area">
+        <button id="auth_check" type="button" onclick="checkEmailAuthentication()">CHECK NUMBER</button>
+      </div>
+    </div>
+    <div class="btn-area">
+      <button id="auth_check_btn" type="button" onclick="sendEmailAuthentication()">CHECK E-MAIL</button>
+    </div>
+
     <div class="btn-area">
       <button id="btn" type="button" onclick="submitForm()">CREATE ACCOUNT</button>
     </div>
+
   </form>
 </section>
 </body>
 <!--============================================================================================-->
 <script>
+  // 인풋박스 css 복원 js
+  document.addEventListener("DOMContentLoaded", function () {
+    const inputs = document.querySelectorAll('.int-area input');
+
+    inputs.forEach(input => {
+      const parentDiv = input.closest('.int-area');
+      const originalDisplay = parentDiv.style.display;
+
+      // style="display: none;" 일 때도 css 유지
+      parentDiv.style.display = 'block';
+
+      // 페이지를 불러올 때 이미 값이 입력되어있는지 확인
+      if (input.value.trim() !== "") {
+        input.classList.add('has-value');
+      }
+
+      // 원래 css 복원
+      parentDiv.style.display = originalDisplay;
+
+      input.addEventListener('input', function () {
+        if (this.value.trim() !== "") {
+          this.classList.add('has-value');
+        } else {
+          this.classList.remove('has-value');
+        }
+      });
+    });
+
+    // 이메일 입력 필드에서 엔터키를 누르면 CHECK E-MAIL 버튼 클릭
+    document.getElementById('email').addEventListener('keypress', function (event) {
+      if (event.which === 13) {  // event.which == 13 엔터키를 눌렀을 때
+        event.preventDefault();  // 기본 엔터키 동작 막기
+        document.getElementById('auth_check_btn').click();  // CHECK E-MAIL 버튼 클릭
+      }
+    });
+
+    // 인증번호 입력 필드에서 엔터키를 누르면 CHECK NUMBER 버튼 클릭
+    document.getElementById('authCode').addEventListener('keypress', function (event) {
+      if (event.which === 13) {  // event.which == 13 엔터키를 눌렀을 때
+        event.preventDefault();  // 기본 엔터키 동작 막기
+        document.getElementById('auth_check').click();  // CHECK NUMBER 버튼 클릭
+      }
+    });
+
+  });
+
+  let isChekeEmail = false;
+
+  function sendEmailAuthentication() {
+    const email = document.getElementById('email').value.trim();
+
+    if (!email) {
+      alert("이메일을 입력해주세요.");
+      return;
+    }
+
+    fetch(`/mails/send?email=${encodeURIComponent(email)}`, {
+      method: 'GET',
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        alert("인증 이메일이 발송되었습니다. 이메일을 확인해주세요.");
+        $('#authCodeArea').show();
+        $('#email').prop('readonly','true');
+      } else {
+        alert("이메일 발송에 실패했습니다: " + data.error);
+      }
+    })
+    .catch(error => {
+      alert("오류 발생: " + error.message);
+    });
+  }
+
+  function checkEmailAuthentication() {
+
+    const authCode = document.getElementById('authCode').value.trim();
+
+    if (!authCode) {
+      alert("인증 코드를 입력해주세요.");
+      return;
+    }
+
+    fetch(`/mails/check?check=${encodeURIComponent(authCode)}`, {
+      method: 'GET',
+    })
+    .then(response => response.text())
+    .then(isMatch => {
+      if (isMatch === 'true') {
+        alert("이메일 인증이 완료되었습니다.");
+        isChekeEmail = true;
+        $('#authCodeArea').hide();
+      } else {
+        alert("인증 코드가 일치하지 않습니다. 다시 시도해주세요.");
+      }
+    })
+    .catch(error => {
+      alert("오류 발생: " + error.message);
+    });
+  }
+
   function submitForm() {
     const userName = document.getElementById('userName').value.trim();
     const password = document.getElementById('password').value.trim();
@@ -81,6 +194,11 @@
       return;
     }
 
+    if (!isChekeEmail) {
+      alert("이메일 인증을 진행해주세요.");
+      return;
+    }
+
     // 휴대폰 번호 검증
     const phonePattern = /^010-\d{4}-\d{4}$/;
     if (!phonePattern.test(phone)) {
@@ -105,13 +223,14 @@
       body: JSON.stringify(jsonData)
     })
     .then(response => {
-      if (response.status === 200) {
+      if (response.ok) {
         alert("회원가입 성공");
         window.location.href = "login.html"; // 로그인 페이지로 이동
       } else {
-          alert(data.message || "회원가입에 실패했습니다.");
+        return response.json().then(data => {
+          throw new Error(data.message || "회원가입에 실패했습니다.");
+        });
       }
-      console.log(response);
     })
     .catch(error => {
       alert("오류 발생: " + error.message);
@@ -120,4 +239,3 @@
 </script>
 <!--============================================================================================-->
 </html>
-

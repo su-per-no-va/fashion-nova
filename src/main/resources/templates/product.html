@@ -131,14 +131,14 @@
   </div>
 </header>
 
-	<!-- Product -->
-	<div class="bg0 m-t-23 p-b-140">
-		<div class="container">
-			<div class="flex-w flex-sb-m p-b-52">
-				<div class="flex-w flex-l-m filter-tope-group m-tb-10">
-					<button id="ALL" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1 category-btn" data-filter="">
-						All Products
-					</button>
+<!-- Product -->
+<div class="bg0 m-t-23 p-b-140">
+  <div class="container">
+    <div class="flex-w flex-sb-m p-b-52">
+      <div class="flex-w flex-l-m filter-tope-group m-tb-10">
+        <button id="ALL" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1 category-btn" data-filter="">
+          All Products
+        </button>
 
         <button id="TOP" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 category-btn"
                 data-filter="TOP">
@@ -211,13 +211,13 @@
               </li>
 
               <li class="p-b-6">
-                <a href="#" class="filter-link stext-106 trans-04 " data-sort="new_item">
+                <a href="#" class="filter-link stext-106 trans-04 filter-link-active" data-sort="new_item">
                   Newness
                 </a>
               </li>
 
               <li class="p-b-6">
-                <a href="#" class="filter-link stext-106 trans-04 filter-link-active"
+                <a href="#" class="filter-link stext-106 trans-04"
                    data-sort="row_price">
                   Price: Low to High
                 </a>
@@ -439,8 +439,9 @@
   $(document).ready(function () {
     const auth = localStorage.getItem('accessToken');
 
+    const urlParams = new URLSearchParams(window.location.search);
+    let selectedCategory = urlParams.get('category') || "";
     let currentPage = 1;
-    let selectedCategory = "";
     let selectedSort = "all"; // 기본 정렬 값
 
 
@@ -489,6 +490,15 @@
       // 로그인이 안되어 있을 때
       $('#auth-btn').attr("href", "login.html").text("Login");
     }
+
+    if (selectedCategory) {
+      // 해당 카테고리 버튼을 활성화합니다.
+      $('.category-btn').removeClass('how-active1');
+      $(`.category-btn[data-filter="${selectedCategory}"]`).addClass('how-active1');
+
+      history.replaceState({}, null, location.pathname);
+    }
+
     fetchAndDisplayProducts(currentPage, selectedCategory, selectedSort)
 
     $('.category-btn').on('click', function (e) {
@@ -505,6 +515,7 @@
       e.preventDefault();
       currentPage++; // 페이지 번호 증가
       fetchAndDisplayProducts(currentPage, selectedCategory, selectedSort);
+      loadWishlist()
     });
   });
 
@@ -513,7 +524,7 @@
       url: '/products/product', // 요청을 보낼 URL
       method: 'GET', // 요청 방식
       data: {
-        sort: "all",
+        sort: sort,
         page: page,
         category: category// 요청에 포함할 page 파라미터
       },
@@ -578,6 +589,7 @@
 <script>
   $(document).ready(function () {
     // 클릭 이벤트 핸들러
+    loadWishlist()
     $(document).on('click', '.js-addwish-b2', function (e) {
       e.preventDefault(); // 링크의 기본 동작을 막습니다.
 
@@ -588,6 +600,35 @@
       var wishRequestDto = {
         productId: productId
       };
+
+      if ($this.hasClass('js-addedwish-b2')) {
+        // 이미 위시리스트에 추가된 상태 (하트가 채워진 상태)
+        // 위시리스트에서 제거하는 요청을 보냅니다.
+        var wishId = $this.data('wish-id'); // loadWishlist에서 저장된 wishId를 가져옵니다.
+
+        $.ajax({
+          url: '/wishlists', // 실제 API URL로 변경해야 합니다.
+          type: 'DELETE',
+          contentType: 'application/json',
+          data: JSON.stringify({ wishId: wishId }),
+          success: function (response, textStatus, jqXHR) {
+            if (jqXHR.status >= 200 && jqXHR.status < 300) {
+              // 성공 시 처리
+              swal("Success!", "The product has been removed from your wishlist.", "success");
+              $this.removeClass('js-addedwish-b2');
+              $this.find('.icon-heart1').show(); // 빈 하트 표시
+              $this.find('.icon-heart2').hide(); // 채워진 하트 숨기기
+            } else {
+              // 실패 시 처리
+              swal("Failed!", "The product could not be removed from your wishlist.", "error");
+            }
+          },
+          error: function (xhr, status, error) {
+            // 에러 시 처리
+            swal("Error!", "An error occurred while removing the product from your wishlist.", "error");
+          }
+        });
+      }else{
 
       // AJAX 요청
       $.ajax({
@@ -613,43 +654,40 @@
           swal("Error!", "An error occurred while adding the product to your wishlist.", "error");
         }
       });
+      }
     });
-
-    function loadWishlist() {
-      $.ajax({
-        url: '/wishlists', // 실제 API URL로 변경해야 합니다.
-        type: 'GET',
-        success: function (response) {
-          // 위시리스트에 담긴 제품 ID 목록
-          var wishListProductIds = response.map(wishlist => wishlist.product.id);
-
-          // 2. 제품 카드에 하트 상태 업데이트
-          $('.js-addwish-b2').each(function () {
-            var $this = $(this);
-            var productId = $this.closest('.isotope-item').data('product-id');
-
-            if (wishListProductIds.includes(productId)) {
-              $this.addClass('js-addedwish-b2'); // 하트를 채운 상태로 설정
-              $this.find('.icon-heart1').hide(); // 빈 하트 숨기기
-              $this.find('.icon-heart2').show(); // 채워진 하트 표시
-            } else {
-              $this.removeClass('js-addedwish-b2'); // 하트를 채우지 않은 상태로 설정
-              $this.find('.icon-heart1').show(); // 빈 하트 표시
-              $this.find('.icon-heart2').hide(); // 채워진 하트 숨기기
-            }
-          });
-        },
-        error: function (xhr, status, error) {
-          console.error("Error fetching wishlist:", error);
-        }
-      });
-    }
-
-    loadWishlist()
-
   });
+  function loadWishlist() {
+    $.ajax({
+      url: '/wishlists', // 실제 API URL로 변경해야 합니다.
+      type: 'GET',
+      success: function (response) {
+        // 위시리스트에 담긴 제품 ID 목록
+        var wishListProductIds = response.map(wishlist => wishlist.product.id);
+
+        // 2. 제품 카드에 하트 상태 업데이트
+        $('.js-addwish-b2').each(function () {
+          var $this = $(this);
+          var productId = $this.closest('.isotope-item').data('product-id');
+
+          if (wishListProductIds.includes(productId)) {
+            $this.addClass('js-addedwish-b2'); // 하트를 채운 상태로 설정
+            $this.find('.icon-heart1').hide(); // 빈 하트 숨기기
+            $this.find('.icon-heart2').show(); // 채워진 하트 표시
+            var wishId = response.find(wishlist => wishlist.product.id === productId).id;
+            $this.data('wish-id', wishId); // wishId 저장
+          } else {
+            $this.removeClass('js-addedwish-b2'); // 하트를 채우지 않은 상태로 설정
+            $this.find('.icon-heart1').show(); // 빈 하트 표시
+            $this.find('.icon-heart2').hide(); // 채워진 하트 숨기기
+          }
+        });
+      },
+      error: function (xhr, status, error) {
+        console.error("Error fetching wishlist:", error);
+      }
+    });
+  }
 </script>
-
-
 </body>
 </html>

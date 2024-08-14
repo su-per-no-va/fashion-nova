@@ -50,7 +50,7 @@
         </div>
 
         <div class="right-top-bar flex-w h-full">
-          <a href="login.html" class="flex-c-m trans-04 p-lr-25">
+          <a href="login.html" id="auth-btn" class="flex-c-m trans-04 p-lr-25">
             Login
           </a>
 
@@ -224,7 +224,8 @@
               </button>
 
               <button
-                  class="flex-c-m stext-101 cl2 size-101 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10">
+                  class="flex-c-m stext-101 cl2 size-101 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10"
+                  onclick="alert('아직 미구현입니다. 쇼핑카트를 통해 결제해 주세요');">
                 Buy Now
               </button>
             </div>
@@ -365,9 +366,9 @@
                                   name="review"></textarea>
 
                         <div class="form-group file-upload">
-                          <input type="file" id="file-upload" multiple>
+                          <input type="file" id="file-upload" name="image" multiple accept="image/gif, image/jpeg, image/jpg, image/png">
                           <p class="file-upload-text">파일 첨부는 최대 4장까지 가능하며, 5MB 이하의 GIF, JPG, JPEG,
-                            PNG, PDF 형태로 업로드 해주세요.</p>
+                            PNG 형태로 업로드 해주세요.</p>
                         </div>
                       </div>
                     </div>
@@ -589,7 +590,8 @@
           }),
           success: function (response) {
             alert("장바구니 추가 완료!!")
-          },
+            window.location.reload();
+            },
           error: function () {
             swal("장바구니 추가 실패", '요청 처리에 실패했습니다.', "error");
           }
@@ -639,6 +641,10 @@
         const product = response;
         let productDetails = response.productDetails;
         let productReview = response.reviews;
+
+        const reviewCount = productReview.length;
+        $('.nav-link[href="#reviews"]').text(`리뷰 (${reviewCount})`);
+
         if (product) {
           $('#productImage').attr('src', product.imageUrl);
           $('#productImageLink').attr('href', product.imageUrl);
@@ -714,7 +720,7 @@
                 // 리뷰 등록 후 새로고침 또는 등록된 리뷰를 동적으로 추가하는 로직
               },
               error: function () {
-                swal("리뷰 등록 실패", '요청 처리에 실패했습니다.', "error");
+                swal("리뷰 등록 실패", '구매하지 않은 상품에는 리뷰를 등록할 수 없습니다.', "error");
               }
             });
           });

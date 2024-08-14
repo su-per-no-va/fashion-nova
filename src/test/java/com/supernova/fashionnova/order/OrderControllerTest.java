@@ -1,4 +1,3 @@
-/*
 package com.supernova.fashionnova.order;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -26,6 +25,8 @@ import com.supernova.fashionnova.domain.product.ProductStatus;
 import com.supernova.fashionnova.domain.user.User;
 import com.supernova.fashionnova.domain.user.UserService;
 import com.supernova.fashionnova.global.security.UserDetailsImpl;
+import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,9 +39,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @WebMvcTest(OrderController.class)
 class OrderControllerTest {
@@ -176,4 +174,3 @@ class OrderControllerTest {
         .andExpect(jsonPath("$[1].address").value(order2.getAddress())); // 두 번째 주문의 주소 확인
   }
 }
- */

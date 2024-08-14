@@ -59,7 +59,7 @@ public class WishService {
     public List<WishResponseDto> getWishProductList(User user, int page) {
 
         Pageable pageable = PageRequest.of(page, 10);
-        Page<Wish> wishPage = wishRepository.findByUser(user, pageable);
+        Page<Wish> wishPage = wishRepository.findByUserOrderByCreatedAtDesc(user, pageable);
 
         return wishPage.getContent().stream()
             .map(WishResponseDto::new)

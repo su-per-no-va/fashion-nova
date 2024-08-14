@@ -2,6 +2,7 @@ package com.supernova.fashionnova.domain.wish;
 
 import com.supernova.fashionnova.domain.product.Product;
 import com.supernova.fashionnova.domain.user.User;
+import com.supernova.fashionnova.global.common.Timestamped;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -19,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "wish")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Wish {
+public class Wish extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
