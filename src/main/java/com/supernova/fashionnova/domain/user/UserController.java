@@ -176,6 +176,15 @@ public class UserController {
             response.addCookie(cookie);
             response.addCookie(cookie2);
 
+            response.setContentType("text/html; charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            out.println("<script>");
+            out.println("localStorage.setItem('accessToken', '" + token.get(0).substring(7) + "');");
+            out.println("localStorage.setItem('refreshToken', '" + token.get(1).substring(7) + "');");
+            out.println("location.href='/index.html';");
+            out.println("</script>");
+            out.flush();
+
             response.sendRedirect("/index.html");
         } catch (CustomException e) {
             // 블랙리스트 유저 처리
