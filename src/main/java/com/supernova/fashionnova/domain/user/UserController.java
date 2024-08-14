@@ -170,28 +170,21 @@ public class UserController {
         try {
             List<String> token = kakaoService.kakaoLogin(code);
 
-            // Bearer%20 제거 및 "Bearer " 추가
-            String accessToken = "Bearer " + token.get(0).substring(7);
-            String refreshToken = "Bearer " + token.get(1).substring(7);
-
-            // 쿠키 설정
-            Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, accessToken);
-            Cookie cookie2 = new Cookie(token.get(1), refreshToken);
+            Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, token.get(0).substring(7));
+            Cookie cookie2 = new Cookie(token.get(1), token.get(1).substring(7));
             cookie.setPath("/");
             response.addCookie(cookie);
             response.addCookie(cookie2);
 
-            // HTML 응답 작성
             response.setContentType("text/html; charset=UTF-8");
             PrintWriter out = response.getWriter();
             out.println("<script>");
-            out.println("localStorage.setItem('accessToken', '" + accessToken + "');");
-            out.println("localStorage.setItem('refreshToken', '" + refreshToken + "');");
+            out.println("localStorage.setItem('accessToken', '" + token.get(0).replace("%20", " ") + "');");
+            out.println("localStorage.setItem('refreshToken', '" + token.get(1).replace("%20", " ") + "');");
             out.println("location.href='/index.html';");
             out.println("</script>");
             out.flush();
 
-            // 리다이렉트
             response.sendRedirect("/index.html");
         } catch (CustomException e) {
             // 블랙리스트 유저 처리
