@@ -91,36 +91,19 @@
 
                 <!-- Icon header -->
                 <div class="wrap-icon-header flex-w flex-r-m">
-                    <div
-                        class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
-                        <i class="zmdi zmdi-search"></i>
-                    </div>
+                    <a id="cart-icon" href="shoping-cart.html"
+                       class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
+                       data-notify="">
+                        <i class="zmdi zmdi-shopping-cart"></i>
+                    </a>
 
-          <a id="cart-icon" href="shoping-cart.html" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="">
-            <i class="zmdi zmdi-shopping-cart"></i>
-          </a>
-
-          <a id="wish-icon" href="wish-list.html" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="">
-            <i class="zmdi zmdi-favorite-outline"></i>
-          </a>
-        </div>
-      </nav>
-    </div>
-  </div>
-
-    <!-- Modal Search -->
-    <div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
-        <div class="container-search-header">
-            <button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
-                <img src="../images/icons/icon-close2.png" alt="CLOSE">
-            </button>
-
-            <form class="wrap-search-header flex-w p-l-15">
-                <button class="flex-c-m trans-04">
-                    <i class="zmdi zmdi-search"></i>
-                </button>
-                <input class="plh3" type="text" name="search" placeholder="Search...">
-            </form>
+                    <a id="wish-icon" href="wish-list.html"
+                       class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
+                       data-notify="">
+                        <i class="zmdi zmdi-favorite-outline"></i>
+                    </a>
+                </div>
+            </nav>
         </div>
     </div>
 </header>
@@ -167,90 +150,92 @@
                     <div class="wrap-table-shopping-cart">
                         <table class="table-shopping-cart">
                             <tr class="table_head">
-                              <th class="column-1">Product</th>
-                              <th class="column-2">Product Name</th>
-                              <th class="column-3">Count</th>
-                              <th class="column-4">Price</th>
-                              <th class="column-5">Size</th>
-                              <th class="column-6">Color</th>
-                              <th class="column-7">Order Status</th> <!-- 주문 상태 추가 -->
-                              <th class="column-8">Edit</th>
+                                <th class="column-1">Product</th>
+                                <th class="column-2">Product Name</th>
+                                <th class="column-3">Count</th>
+                                <th class="column-4">Price</th>
+                                <th class="column-5">Size</th>
+                                <th class="column-6">Color</th>
+                                <th class="column-7">Order Status</th> <!-- 주문 상태 추가 -->
+                                <th class="column-8">Edit</th>
                             </tr>
 
-              <!-- Order details will be dynamically inserted here -->
-              <tbody id="order-detail-list">
-              </tbody>
-            </table>
-          </div>
+                            <!-- Order details will be dynamically inserted here -->
+                            <tbody id="order-detail-list">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </form>
 
 <!-- 결제 금액 계산 -->
 
-                    <div class="wrap-table-shopping-cart m-t-30">
-                        <table class="table-shopping-cart-price">
-                            <tr class="table_head">
-                                <th class="column-1">Description</th>
-                                <th class="column-2">Amount</th>
-                            </tr>
+<div class="wrap-table-shopping-cart m-t-30">
+    <table class="table-shopping-cart-price">
+        <tr class="table_head">
+            <th class="column-1">Description</th>
+            <th class="column-2">Amount</th>
+        </tr>
 
-                            <tr class="table_row">
-                                <td class="column-1">총 금액</td>
-                                <td class="column-2">300,000원</td>
-                            </tr>
-                            <tr class="table_row">
-                                <td class="column-1">브론즈 5% 쿠폰</td>
-                                <td class="column-2">-10,000원</td>
-                            </tr>
-                            <tr class="table_row">
-                                <td class="column-1">사용 마일리지</td>
-                                <td class="column-2">-5,000원</td>
-                            </tr>
-                            <tr class="table_row">
-                                <td class="column-1">배송비</td>
-                                <td class="column-2">+2,500원</td>
-                            </tr>
-                            <tr class="table_row">
-                                <td class="column-1"><strong>결제 금액</strong></td>
-                                <td class="column-2"><strong>287,500원</strong></td>
-                            </tr>
-                        </table>
-                    </div>
+        <tr class="table_row">
+            <td class="column-1">총 금액</td>
+            <td class="column-2">300,000원</td>
+        </tr>
+        <tr class="table_row">
+            <td class="column-1">브론즈 5% 쿠폰</td>
+            <td class="column-2">-10,000원</td>
+        </tr>
+        <tr class="table_row">
+            <td class="column-1">사용 마일리지</td>
+            <td class="column-2">-5,000원</td>
+        </tr>
+        <tr class="table_row">
+            <td class="column-1">배송비</td>
+            <td class="column-2">+2,500원</td>
+        </tr>
+        <tr class="table_row">
+            <td class="column-1"><strong>결제 금액</strong></td>
+            <td class="column-2"><strong>287,500원</strong></td>
+        </tr>
+    </table>
+</div>
 <!-- Modal -->
 
 <div id="cancelOrderModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <h4 class="mtext-105 cl2 txt-center p-b-30">환불/교환 신청</h4>
-    <form id="cancel-order-form">
-      <div class="form-group">
-        <label for="title">제목</label>
-        <input type="text" id="title" name="title" class="form-control" placeholder="제목을 입력하세요">
-      </div>
-      <div class="form-group">
-        <label for="reason">사유</label>
-        <textarea id="reason" name="reason" class="form-control" rows="5" placeholder="사유를 입력하세요"></textarea>
-      </div>
-      <div class="form-group">
-        <label for="file">파일 첨부하기</label>
-        <input type="file" id="file" name="file" class="form-control-file">
-      </div>
-      <input type="hidden" id="type" name="type" value="EXCHANGE_RETURN"> <!-- 고정된 문의 타입 -->
-      <input type="hidden" id="orderDetailId" name="orderDetailId"> <!-- 주문 상세 ID -->
-      <div class="text-center">
-        <button type="submit" class="btn btn-primary">등록</button>
-        <button type="button" class="btn btn-secondary close-modal">취소</button>
-      </div>
-    </form>
-  </div>
-</div>
-</div>
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h4 class="mtext-105 cl2 txt-center p-b-30">환불/교환 신청</h4>
+        <form id="cancel-order-form">
+            <div class="form-group">
+                <label for="title">제목</label>
+                <input type="text" id="title" name="title" class="form-control"
+                       placeholder="제목을 입력하세요">
             </div>
-        </div>
+            <div class="form-group">
+                <label for="reason">사유</label>
+                <textarea id="reason" name="reason" class="form-control" rows="5"
+                          placeholder="사유를 입력하세요"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="file">파일 첨부하기</label>
+                <input type="file" id="file" name="file" class="form-control-file">
+            </div>
+            <input type="hidden" id="type" name="type" value="EXCHANGE_RETURN"> <!-- 고정된 문의 타입 -->
+            <input type="hidden" id="orderDetailId" name="orderDetailId"> <!-- 주문 상세 ID -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">등록</button>
+                <button type="button" class="btn btn-secondary close-modal">취소</button>
+            </div>
+        </form>
     </div>
+</div>
+</div>
+</div>
+</div>
+</div>
 </form>
 
 <!-- Footer -->
@@ -348,51 +333,52 @@
 <script src="../js/main.js"></script>
 <!--===============================================================================================-->
 <script>
-  $(document).ready(function () {
+    $(document).ready(function () {
 
-    /* 장바구니 아이콘 개수 */
-    window.common.getShoppingCart()
-    .done(function (response) {
-      if (response) {
-        $('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
-      } else {
-        // no response
-      }
-    })
-    .fail(function (error) {
-      console.log(error.message)
-    });
+        /* 장바구니 아이콘 개수 */
+        window.common.getShoppingCart()
+        .done(function (response) {
+            if (response) {
+                $('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
+            } else {
+                // no response
+            }
+        })
+        .fail(function (error) {
+            console.log(error.message)
+        });
 
-    /* 찜 아이콘 개수 */
-    window.common.getWishList()
-    .done(function (response) {
-      if (response) {
-        $('a#wish-icon')[0].dataset.notify = response.length;
-      } else {
-        // no response
-      }
-    });
-    // URL에서 주문 ID 추출
-    function getOrderIdFromURL() {
-      var urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get('orderId'); // URL에 ?orderId=165473이 포함되어 있다고 가정
-    }
+        /* 찜 아이콘 개수 */
+        window.common.getWishList()
+        .done(function (response) {
+            if (response) {
+                $('a#wish-icon')[0].dataset.notify = response.length;
+            } else {
+                // no response
+            }
+        });
 
-    var orderId = getOrderIdFromURL();
+        // URL에서 주문 ID 추출
+        function getOrderIdFromURL() {
+            var urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('orderId'); // URL에 ?orderId=165473이 포함되어 있다고 가정
+        }
 
-    // 주문 상세 정보 요청
-    $.ajax({
-      url: `/orderDetails/${orderId}`,
-      type: 'GET',
-      dataType: 'json',
-      success: function(response) {
-        var orderDetails = response;
-        var $orderDetailList = $('#order-detail-list');
-        $orderDetailList.empty(); // 기존 데이터 삭제
+        var orderId = getOrderIdFromURL();
 
-        // 주문 상세 정보로 테이블 채우기
-        orderDetails.forEach(function(detail) {
-          var rowHtml =`
+        // 주문 상세 정보 요청
+        $.ajax({
+            url: `/orderDetails/${orderId}`,
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                var orderDetails = response;
+                var $orderDetailList = $('#order-detail-list');
+                $orderDetailList.empty(); // 기존 데이터 삭제
+
+                // 주문 상세 정보로 테이블 채우기
+                orderDetails.forEach(function (detail) {
+                    var rowHtml = `
         <tr class="table_row">
           <td class="column-1">
             <img src="/images/item-cart-05.jpg" alt="IMG"> <!-- 필요에 따라 업데이트 -->
@@ -412,78 +398,79 @@
           </td>
         </tr>
       `;
-          $orderDetailList.append(rowHtml); // 테이블에 행 추가
+                    $orderDetailList.append(rowHtml); // 테이블에 행 추가
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error('주문 상세 정보를 가져오는 데 실패했습니다:', error);
+            }
         });
-      },
-      error: function(xhr, status, error) {
-        console.error('주문 상세 정보를 가져오는 데 실패했습니다:', error);
-      }
-    });
-    // 이벤트 위임을 사용하여 동적으로 추가된 버튼에 이벤트 리스너 연결
-    $(document).on('click', '.open-modal', function () {
-      const orderDetailId = $(this).data('order-detail-id');
+        // 이벤트 위임을 사용하여 동적으로 추가된 버튼에 이벤트 리스너 연결
+        $(document).on('click', '.open-modal', function () {
+            const orderDetailId = $(this).data('order-detail-id');
 
-      // 주문 상세 ID를 hidden input에 설정
-      $('#orderDetailId').val(orderDetailId);
+            // 주문 상세 ID를 hidden input에 설정
+            $('#orderDetailId').val(orderDetailId);
 
-      $('#cancelOrderModal').css('display', 'block');
-    });
+            $('#cancelOrderModal').css('display', 'block');
+        });
 
-    $(document).on('click', '.close, .close-modal', function () {
-      $('#cancelOrderModal').css('display', 'none');
-    });
+        $(document).on('click', '.close, .close-modal', function () {
+            $('#cancelOrderModal').css('display', 'none');
+        });
 
-    $('#cancel-order-form').on('submit', function (e) {
-      e.preventDefault();
+        $('#cancel-order-form').on('submit', function (e) {
+            e.preventDefault();
 
-      const form = document.getElementById('cancel-order-form');
-      const formData = new FormData(form);
+            const form = document.getElementById('cancel-order-form');
+            const formData = new FormData(form);
 
-      // JSON 데이터 생성
-      const requestDto = {
-        title: formData.get('title'),
-        type: formData.get('type'),
-        question: formData.get('reason'),
-        orderDetailId: formData.get('orderDetailId') // 주문 상세 ID 추가
-      };
+            // JSON 데이터 생성
+            const requestDto = {
+                title: formData.get('title'),
+                type: formData.get('type'),
+                question: formData.get('reason'),
+                orderDetailId: formData.get('orderDetailId') // 주문 상세 ID 추가
+            };
 
-      // FormData에 QuestionRequestDto requestDto, List<MultipartFile> file 추가
-      const finalFormData = new FormData();
-      finalFormData.append('requestDto', new Blob([JSON.stringify(requestDto)], {type: 'application/json'}));
+            // FormData에 QuestionRequestDto requestDto, List<MultipartFile> file 추가
+            const finalFormData = new FormData();
+            finalFormData.append('requestDto',
+                new Blob([JSON.stringify(requestDto)], {type: 'application/json'}));
 
-      // 파일을 FormData에 추가
-      const fileInput = document.getElementById('file');
-      if (fileInput.files.length > 0) {
-        for (let i = 0; i < fileInput.files.length; i++) {
-          finalFormData.append('file', fileInput.files[i]);
+            // 파일을 FormData에 추가
+            const fileInput = document.getElementById('file');
+            if (fileInput.files.length > 0) {
+                for (let i = 0; i < fileInput.files.length; i++) {
+                    finalFormData.append('file', fileInput.files[i]);
+                }
+            }
+
+            postQuestion(finalFormData);
+        });
+
+        // AJAX 요청
+        function postQuestion(finalFormData) {
+            $.ajax({
+                type: 'POST',
+                url: '/questions',
+                data: finalFormData,
+                processData: false, // FormData를 있는 그대로 전송하도록 설정
+                contentType: false, // multipart/form-data로 전송되도록 설정
+                success: function (response, textStatus, jqXHR) {
+                    if (jqXHR.status >= 200 && jqXHR.status < 300) {
+                        alert("문의 등록 성공");
+                        location.reload()
+                    } else {
+                        alert("문의 등록 실패");
+                    }
+                },
+                error: function (error) {
+                    alert(error.message);
+                },
+            });
         }
-      }
-
-      postQuestion(finalFormData);
     });
-
-    // AJAX 요청
-    function postQuestion(finalFormData) {
-      $.ajax({
-        type: 'POST',
-        url: '/questions',
-        data: finalFormData,
-        processData: false, // FormData를 있는 그대로 전송하도록 설정
-        contentType: false, // multipart/form-data로 전송되도록 설정
-        success: function (response, textStatus, jqXHR) {
-          if (jqXHR.status >= 200 && jqXHR.status < 300) {
-            alert("문의 등록 성공");
-            location.reload()
-          } else {
-            alert("문의 등록 실패");
-          }
-        },
-        error: function (error) {
-          alert(error.message);
-        },
-      });
-    }
-  });
 </script>
 <!--===============================================================================================-->
 
