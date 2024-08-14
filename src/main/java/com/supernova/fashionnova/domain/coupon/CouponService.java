@@ -65,6 +65,9 @@ public class CouponService {
 
     @Transactional
     public void calculateCoupon(PayAction action, Long couponId) {
+        if(couponId==null){
+            return;
+        }
         Coupon coupon = couponRepository.findById(couponId).orElseThrow(
             () -> new CustomException(ErrorType.NOT_FOUND_COUPON));
 

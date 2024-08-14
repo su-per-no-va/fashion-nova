@@ -76,9 +76,9 @@
       // localStorage에서 토큰과 orderId를 가져옵니다
       const auth = localStorage.getItem('accessToken');
       const orderId = localStorage.getItem('orderId');
-
+      const couponId = localStorage.getItem('selectedCouponId') || "";
       // API 요청을 보낼 URL
-      const url = `/payments/ready/${orderId}`;
+      const url = `/payments/ready/${orderId}?couponId=${couponId}`;
 
       // AJAX 요청
       $.ajax({
@@ -93,6 +93,7 @@
           console.log('KakaoPay 준비 응답:', response);
           // KakaoPay 결제 준비가 완료되면 필요한 후속 작업을 수행합니다.
           // 예: 사용자를 KakaoPay 결제 페이지로 리디렉션하거나, 응답 데이터를 사용하여 결제 진행
+          localStorage.removeItem('selectedCouponId');
           window.location.href = response.next_redirect_pc_url; // 응답 데이터에 리디렉션 URL이 포함되어 있다고 가정
         },
         error: function(jqXHR, textStatus, errorThrown) {
