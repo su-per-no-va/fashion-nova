@@ -37,12 +37,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         throws ServletException, IOException {
 
 
-        log.info("현재주소 : " + req.getRequestURL().toString());
+//        log.info("현재주소 : " + req.getRequestURL().toString());
 
         //AccessToken 가져온후 가공
         String accessToken = req.getHeader(ACCESS_TOKEN_HEADER);
 
-        log.info("Authorization Header : " + req.getHeader(ACCESS_TOKEN_HEADER));
+//        log.info("Authorization Header : " + req.getHeader(ACCESS_TOKEN_HEADER));
 
         if (accessToken == null || accessToken.isBlank() || "null".equals(accessToken)) {
             filterChain.doFilter(req, res);
@@ -113,7 +113,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         //공백 제거
         accessToken = accessToken.replaceAll("\\s", "");
 
-        log.info("====accessToken==== : " + accessToken);
+//        log.info("====accessToken==== : " + accessToken);
         // Access 토큰 유효성 검사
         jwtUtil.validateToken(accessToken);
 
