@@ -48,7 +48,6 @@ public class ReviewController {
         @RequestPart(required = false) List<MultipartFile> images,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        log.info("addReview");
         reviewService.addReview(userDetails.getUser(), reviewRequestDto, images);
 
         return ResponseUtil.of(HttpStatus.CREATED, "리뷰 등록 완료");
