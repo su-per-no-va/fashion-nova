@@ -87,7 +87,8 @@ body::before {
 }
 
 .int-area input:focus+label,
-.int-area input:valid+label {
+.int-area input:valid+label,
+.int-area input.has-value+label {
   top: -2px;
   font-size: 13px;
   color: #009ec1;

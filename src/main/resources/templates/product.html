@@ -131,14 +131,14 @@
   </div>
 </header>
 
-	<!-- Product -->
-	<div class="bg0 m-t-23 p-b-140">
-		<div class="container">
-			<div class="flex-w flex-sb-m p-b-52">
-				<div class="flex-w flex-l-m filter-tope-group m-tb-10">
-					<button id="ALL" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1 category-btn" data-filter="">
-						All Products
-					</button>
+<!-- Product -->
+<div class="bg0 m-t-23 p-b-140">
+  <div class="container">
+    <div class="flex-w flex-sb-m p-b-52">
+      <div class="flex-w flex-l-m filter-tope-group m-tb-10">
+        <button id="ALL" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1 category-btn" data-filter="">
+          All Products
+        </button>
 
         <button id="TOP" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 category-btn"
                 data-filter="TOP">
@@ -439,8 +439,9 @@
   $(document).ready(function () {
     const auth = localStorage.getItem('accessToken');
 
+    const urlParams = new URLSearchParams(window.location.search);
+    let selectedCategory = urlParams.get('category') || "";
     let currentPage = 1;
-    let selectedCategory = "";
     let selectedSort = "all"; // 기본 정렬 값
 
 
@@ -489,6 +490,15 @@
       // 로그인이 안되어 있을 때
       $('#auth-btn').attr("href", "login.html").text("Login");
     }
+
+    if (selectedCategory) {
+      // 해당 카테고리 버튼을 활성화합니다.
+      $('.category-btn').removeClass('how-active1');
+      $(`.category-btn[data-filter="${selectedCategory}"]`).addClass('how-active1');
+
+      history.replaceState({}, null, location.pathname);
+    }
+
     fetchAndDisplayProducts(currentPage, selectedCategory, selectedSort)
 
     $('.category-btn').on('click', function (e) {
@@ -514,7 +524,7 @@
       url: '/products/product', // 요청을 보낼 URL
       method: 'GET', // 요청 방식
       data: {
-        sort: "all",
+        sort: sort,
         page: page,
         category: category// 요청에 포함할 page 파라미터
       },
@@ -679,7 +689,5 @@
     });
   }
 </script>
-
-
 </body>
 </html>
