@@ -37,7 +37,7 @@ public class KakaoPayService {
   private final CartRepository cartRepository;
 
   //카카오페이 요청 양식
-  public KakaoPayReadyResponseDto kakaoPayReady(User user, Long orderId) {
+  public KakaoPayReadyResponseDto kakaoPayReady(User user, Long orderId, Long couponId) {
     //장바구니가 비워져있으면 결제 시도를 막음(개발자가 이런 짓을 할 수 있음)
     List<Cart> cartList = cartRepository.findAllByUserId(user.getId());
     if (cartList.isEmpty()) {
@@ -54,7 +54,9 @@ public class KakaoPayService {
     parameters.put("quantity", String.valueOf(order.getCount()));
     parameters.put("total_amount", String.valueOf(order.getTotalPrice()));
     parameters.put("tax_free_amount",String.valueOf(order.getTotalPrice()));
-    parameters.put("approval_url", "https://super-nova.store/payments/success/"+order.getId()+ "/" +user.getId());
+    String approvalUrl = "https://super-nova.store/payments/success/" + order.getId() + "/" + user.getId() +
+        "?couponId=" + (couponId != null ? String.valueOf(couponId) : "");
+    parameters.put("approval_url", approvalUrl);
     parameters.put("cancel_url", "https://super-nova.store/payments/cancel");
     parameters.put("fail_url", "https://super-nova.store/payments/fail");
 
