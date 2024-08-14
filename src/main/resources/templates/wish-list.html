@@ -463,7 +463,6 @@
 			success: function(response, textStatus, jqXHR) {
 				// 서버 응답에 따라 필요한 작업 수행
 				if (jqXHR.status === 200) {
-					alert("위시리스트 삭제 완료")
 					swal("Removed!", "The item has been removed from your wishlist.", "success");
 					location.reload()
 				} else {

@@ -207,7 +207,7 @@
         </div>
         <div class="text-center">
           <button type="submit" class="btn btn-save">수정</button>
-          <button type="reset" class="btn btn-cancel">취소</button>
+          <button type="reset" class="btn btn-cancel" id="cancelBtn">취소</button>
           <button type="button" id="deleteAccountBtn" class="btn btn-cancel">회원탈퇴</button>
         </div>
       </form>
@@ -557,16 +557,16 @@
           addressContainer.empty(); // 기존 주소 목록 비우기
 
           addresses.forEach(function (address) {
-            var addressCard = `
-                        <div class="address-card" data-address-id="${address.id}">
-                            <div>
-                                <button class="btn btn-secondary btn-set-default">${address.defaultAddress ? '기본배송지' : '기본배송지로 설정'}</button>
-                                <button class="btn btn-secondary btn-delete-address" data-address-id="${address.id}">삭제</button>
-                                <p>${address.address}</p>
-                                <p>${address.detail}</p>
-                            </div>
-                        </div>
-                    `;
+            var addressCard =  `
+        <div class="address-card" data-address-id="${address.id}" data-is-default="${address.defaultAddress}">
+            <div>
+                <button class="btn btn-secondary btn-set-default">${address.defaultAddress ? '기본배송지' : '기본배송지로 설정'}</button>
+                <button class="btn btn-secondary btn-delete-address" data-address-id="${address.id}">삭제</button>
+                <p>${address.address}</p>
+                <p>${address.detail}</p>
+            </div>
+        </div>
+    `;
             addressContainer.append(addressCard);
           });
         },
@@ -577,10 +577,19 @@
       }
     // 기본 배송지 설정
     $(document).on('click', '.btn-set-default', function () {
-      var addressId = $(this).closest('.address-card').data('address-id');
-      var addressDefaultRequestDto ={
-        addressId : addressId
+      var $addressCard = $(this).closest('.address-card');
+      var addressId = $addressCard.data('address-id');
+      var isDefault = $addressCard.data('is-default');
+
+      // 기본 배송지 여부 확인
+      if (isDefault) {
+        alert('이미 기본 배송지로 설정되어 있습니다.');
+        return;  // 실행 중단
       }
+
+      var addressDefaultRequestDto = {
+        addressId: addressId
+      };
 
       $.ajax({
         url: '/addresses',
@@ -705,6 +714,13 @@
         }
       });
     });
+
+    // 취소 버튼을 눌렀을 때 페이지를 리로드하는 이벤트 리스너
+    document.getElementById('cancelBtn').addEventListener('click', function(event) {
+      event.preventDefault(); // 기본 동작 방지
+      window.location.reload(); // 페이지 리로드
+    });
+
   });
 
   // 회원탈퇴
@@ -715,7 +731,12 @@
         type: 'PUT',
         success: function () {
           alert('회원탈퇴가 완료되었습니다.');
-          // 로그아웃 처리나 메인 페이지로 이동 등의 추가 작업을 수행합니다
+          // 토큰 삭제
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
+
+          // index.html로 이동
+          window.location.href = 'index.html';
         },
         error: function (xhr, status, error) {
           alert('회원탈퇴에 실패했습니다.' + error.message);
@@ -723,6 +744,8 @@
       });
     }
   });
+
+
 </script>
 <!--===============================================================================================-->
 
