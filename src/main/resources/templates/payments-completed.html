@@ -34,6 +34,15 @@
   <link rel="stylesheet" type="text/css" href="../css/util.css">
   <link rel="stylesheet" type="text/css" href="../css/main.css">
   <!--===============================================================================================-->
+
+
+<style>
+  .countdown3second{
+    color: #cf1628;
+    font-size: medium;
+  }
+</style>
+
 </head>
 <body class="animsition">
 
@@ -123,6 +132,8 @@
     </div>
   </div>
 </header>
+
+
 
 <!-- Product -->
 <div class="bg0 m-t-23 p-b-140">
@@ -236,6 +247,10 @@
         <h6 class="txt-center">
           주문해 주셔서 감사합니다!
         </h6>
+        <div class="countdown3second">
+          <p>페이지가 <span class="countdown">3</span>초 후에 자동으로 이동합니다...</p>
+        </div>
+
       </form>
 
     </div>
@@ -667,6 +682,28 @@
     .fail(function (error) {
       console.log(error.message)
     });
+
+    function startCountdown(duration, element) {
+      let timer = duration;
+      const countdownElement = document.querySelector(element);
+
+      function updateCountdown() {
+        countdownElement.textContent = timer;
+        if (timer <= 0) {
+          clearInterval(interval);
+          window.location.href = 'index.html';
+        } else {
+          timer--;
+        }
+      }
+
+      const interval = setInterval(updateCountdown, 1000);
+      updateCountdown(); // 초기 업데이트
+    }
+
+    window.onload = function() {
+      startCountdown(3, '.countdown');
+    };
   });
 </script>
 

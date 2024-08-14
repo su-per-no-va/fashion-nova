@@ -38,7 +38,7 @@ public class OrderDetailController {
                 orderDetail.getPrice(),
                 orderDetail.getProductDetail().getSize(),
                 orderDetail.getProductDetail().getColor(),
-                orderDetail.getOrder().getOrderStatus()    ))
+                orderDetail.getOrder().getOrderStatus()))
             .toList());
     }
 }
