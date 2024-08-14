@@ -179,8 +179,8 @@ public class UserController {
             response.setContentType("text/html; charset=UTF-8");
             PrintWriter out = response.getWriter();
             out.println("<script>");
-            out.println("localStorage.setItem('accessToken', '" + token.get(0).substring(7) + "');");
-            out.println("localStorage.setItem('refreshToken', '" + token.get(1).substring(7) + "');");
+            out.println("localStorage.setItem('accessToken', '" + token.get(0) + "');");
+            out.println("localStorage.setItem('refreshToken', '" + token.get(1) + "');");
             out.println("location.href='/index.html';");
             out.println("</script>");
             out.flush();
