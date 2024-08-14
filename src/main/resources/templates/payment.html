@@ -511,7 +511,14 @@
 
       const discountRate = parseFloat(selectedOption.data('sale')); // 할인률을 숫자로 변환
       const couponName = selectedOption.data('name'); // 쿠폰 이름 가져오기
+      const couponId = selectedOption.val(); // 쿠폰 ID 가져오기
 
+      // 쿠폰 ID를 localStorage에 저장
+      if (couponId) {
+        localStorage.setItem('selectedCouponId', couponId);
+      } else {
+        localStorage.removeItem('selectedCouponId');
+      }
 
       if (!isNaN(discountRate) && discountRate > 0) {
         // 할인 금액 계산

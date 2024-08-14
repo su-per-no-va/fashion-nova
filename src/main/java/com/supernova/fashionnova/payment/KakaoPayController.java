@@ -42,11 +42,12 @@ public class KakaoPayController {
   /**
    * 결제 요청
    * */
-  @PostMapping("/ready/{orderId}/{couponId}")
+  @PostMapping("/ready/{orderId}")
   public KakaoPayReadyResponseDto kakaoPayReady(
-      @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long orderId, @PathVariable Long couponId)
+      @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long orderId)
   {
-    return kakaoPayService.kakaoPayReady(userDetails.getUser(), orderId, couponId);
+
+    return kakaoPayService.kakaoPayReady(userDetails.getUser(), orderId);
   }
 
   @Transactional
