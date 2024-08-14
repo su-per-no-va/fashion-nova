@@ -700,6 +700,10 @@
       type: 'GET',
       url: '/addresses', // 서버에서 배송지 데이터를 제공하는 엔드포인트
       success: function(response) {
+        if (response.length === 0) {
+          alert("배송지를 먼저 입력해 주세요");
+          window.location.href="my-info.html"
+        }
         updateAddressSelect(response);
       },
       error: function(error) {
