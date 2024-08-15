@@ -275,6 +275,9 @@
       type: 'GET',
       url: `/mileages?page=${currentPage}`,
       success: function(response) {
+
+        response.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // createdAt 기준 내림차순 정렬
+
         if (response.length > 0) {
           updateMileageTable(response);
 
