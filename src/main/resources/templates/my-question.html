@@ -306,6 +306,9 @@
       type: 'GET',
       url: `/questions?page=${currentPage}`,
       success: function(response) {
+
+        response.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // createdAt 기준 내림차순 정렬
+
         console.log('AJAX 요청 성공:', response);
         updateQuestionTable(response);
         updateButtons(response.length);

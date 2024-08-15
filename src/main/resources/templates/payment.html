@@ -553,7 +553,7 @@
       event.preventDefault(); // 기본 동작 방지
 
       if (address === "배송지없음") {
-        alert('배송지 정보가 없습니다. MY_INFO 페이지에서 배송지를 추가해 주세요.');
+        alert('배송지 정보가 없습니다. 배송지를 설정해 주세요');
         return;
       }
 
@@ -576,7 +576,6 @@
           if (jqXHR.status >= 200 && jqXHR.status < 300) {
             localStorage.setItem("orderId",response.orderId )
             console.log('주문이 성공적으로 생성되었습니다:', response);
-            alert('주문이 완료되었습니다.');
             window.location.href = '/kakaopay.html';
           }
         },

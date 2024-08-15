@@ -514,7 +514,6 @@
           if (jqXHR.status >= 200 && jqXHR.status < 300) {
             localStorage.setItem("orderId",response.orderId )
             console.log('주문이 성공적으로 생성되었습니다:', response);
-            alert('주문이 완료되었습니다.');
             window.location.href = '/kakaopay.html';
           }
         },

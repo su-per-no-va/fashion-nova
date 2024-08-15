@@ -356,6 +356,12 @@
             type: 'GET',
             url: `/reviews?page=${currentPage}`, // 서버에서 페이지와 페이지 크기를 쿼리 파라미터로 받는 경우
             success: function (response) {
+
+                // id 기준으로 내림차순 정렬 (대안으로 사용 가능)
+                response.content.sort(function(a, b) {
+                    return b.id - a.id; // id 기준 내림차순 정렬
+                });
+
                 renderReviews(response.content);
                 updatePagination(response.totalPages);
             },
