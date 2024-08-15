@@ -1,0 +1,15 @@
+###로그인
+POST http://localhost:8080/users/login
+Content-Type: application/json
+
+{
+  "userName": "qwer1324",
+  "password": "Qwer1234!"
+}
+
+> {% client.global.set("access_token", response.headers.valueOf("Authorization")); %}
+
+### 유저 경고 조회
+GET http://localhost:8080/warns
+Content-Type: application/json
+Authorization: {{access_token}}
