@@ -40,7 +40,7 @@ public class ProductService {
         String color, String search, int page) {
         Sort.Direction direction = Sort.Direction.DESC;
         Sort sort = Sort.by(direction, sorted);
-        Pageable pageable = PageRequest.of(page, 10, sort);
+        Pageable pageable = PageRequest.of(page, 4, sort);
 
         return productRepository.findProductByOrdered(sorted, category, size, color, search,
             pageable);
