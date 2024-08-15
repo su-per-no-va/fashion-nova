@@ -295,6 +295,9 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function (response) {
+
+                    response.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // createdAt 기준 내림차순 정렬
+
                     updateWarnTable(response); // 응답받은 전체 데이터를 표시
                 },
                 error: function (xhr, status, error) {
