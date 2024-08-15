@@ -423,7 +423,9 @@
         type: 'GET' ,
         url: '/carts',
         success: function (response) {
-          if (response) {
+          if (response.length === 10) {
+            $('a#cart-icon')[0].dataset.notify = "10+";
+          } else {
             $('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
           }
         },
@@ -436,7 +438,9 @@
         type: 'GET',
         url: '/wishlists',
         success: function (response) {
-          if (response) {
+          if (response.length === 10) {
+            $('a#wish-icon')[0].dataset.notify = "10+";
+          } else {
             $('a#wish-icon')[0].dataset.notify = response.length;
           }
         },

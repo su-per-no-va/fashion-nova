@@ -497,6 +497,10 @@
 <script>
     $(document).ready(function () {
 
+        const auth = localStorage.getItem('accessToken');
+
+        if (auth) {
+
         /* 장바구니 아이콘 개수 */
         window.common.getShoppingCart()
         .done(function (response) {
@@ -519,7 +523,7 @@
                 // no response
             }
         });
-
+        }
         const queryString = window.location.search; // 주소 가져오기
         const urlParams = new URLSearchParams(queryString); // URL 파싱하기
         const productId = urlParams.get('id');
