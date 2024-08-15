@@ -155,7 +155,13 @@
 					</div>
 				</div>
 			</div>
-
+		</div>
+		<!-- 버튼 추가 -->
+		<div class="text-center m-t-30">
+			<!-- 이전 페이지 버튼 -->
+			<button id="prevPageButton" class="btn btn-primary" style="display: none;">이전 페이지</button>
+			<!-- 다음 페이지 버튼 -->
+			<button id="loadMoreButton" class="btn btn-primary">다음 페이지</button>
 		</div>
 	</div>
 </div>
@@ -307,7 +313,10 @@
 <script src="../js/main.js"></script>
 
 <script>
+	let currentPage = 0;
+	let pageSize=10;
 	$(document).ready(function () {
+
 
 		auth = localStorage.getItem('accessToken');
 		let refreshToken = localStorage.getItem('refreshToken');
@@ -343,8 +352,6 @@
 		.done(function (response) {
 			if (response) {
 				$('a#wish-icon')[0].dataset.notify = response.length;
-			} else {
-				// no response
 			}
 		})
 		.fail(function (error) {
@@ -360,13 +367,42 @@
 	// 	})
 	// }
 
+
+
+	// 다음 페이지 버튼 클릭 시
+	$('#loadMoreButton').on('click', () => {
+		currentPage++; // 페이지 증가
+		fetchWishList(); // 새로운 페이지의 데이터 가져오기
+	});
+
+	// 이전 페이지 버튼 클릭 시
+	$('#prevPageButton').on('click', () => {
+		if (currentPage > 0) {
+			currentPage--; // 페이지 감소
+			fetchWishList(); // 이전 페이지의 데이터 가져오기
+		}
+	});
+
 	function fetchWishList() {
 		$.ajax({
 			type: 'GET',
-			url: '/wishlists',
+			url: `/wishlists?page=${currentPage}`,
 			success: function(response) {
 				console.log('위시리스트 가져오기 성공:', response);
 				updateWishList(response);
+
+				// 페이지 버튼 조정
+				if (response.length === pageSize) {
+					$('#loadMoreButton').show(); // 더 많은 페이지가 있을 경우 버튼 보이기
+				} else {
+					$('#loadMoreButton').hide(); // 마지막 페이지일 경우 버튼 숨기기
+				}
+
+				if (currentPage > 0) {
+					$('#prevPageButton').show(); // 현재 페이지가 0보다 크면 이전 페이지 버튼 보이기
+				} else {
+					$('#prevPageButton').hide(); // 첫 페이지일 경우 이전 페이지 버튼 숨기기
+				}
 			},
 			error: function(error) {
 				console.error('위시리스트 가져오기 실패:', error.message);
