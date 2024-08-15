@@ -472,18 +472,18 @@
           success: function (response, textStatus, jqXHR) {
             if (jqXHR.status >= 200 && jqXHR.status < 300) {
               // 성공 시 처리
-              swal("Success!", "The product has been removed from your wishlist.", "success");
+              swal("Success!", "해당 상품이 위시리스트에서 삭제되었습니다..", "success");
               $this.removeClass('js-addedwish-b2');
               $this.find('.icon-heart1').show(); // 빈 하트 표시
               $this.find('.icon-heart2').hide(); // 채워진 하트 숨기기
             } else {
               // 실패 시 처리
-              swal("Failed!", "The product could not be removed from your wishlist.", "error");
+              swal("Failed!", "위시리스트에서 제품을 삭제할 수 없습니다.", "error");
             }
           },
           error: function (xhr, status, error) {
             // 에러 시 처리
-            swal("Error!", "An error occurred while removing the product from your wishlist.", "error");
+            swal("Error!", "위시리스트에서 제품을 삭제하는 중에 오류가 발생했습니다.", "error");
           }
         });
       }else{
@@ -497,19 +497,19 @@
           success: function (response, textStatus, jqXHR) {
             if (jqXHR.status >= 200 && jqXHR.status < 300) {
               // 성공 시 처리
-              swal("Success!", "The product has been added to your wishlist.", "success");
+              swal("Success!", "해당 상품이 위시리스트에 담겼습니다.", "success");
               $this.addClass('js-addedwish-b2');
               $this.find('.icon-heart1').attr('src', '../images/icons/icon-heart-02.png'); // 채워진 하트
               $this.find('.icon-heart2').attr('src', '../images/icons/icon-heart-01.png'); // 빈 하트
               location.reload()
             } else {
               // 실패 시 처리
-              swal("Failed!", "The product could not be added to your wishlist.", "error");
+              swal("Failed!", "제품을 위시리스트에 추가할 수 없습니다.", "error");
             }
           },
           error: function (xhr, status, error) {
             // 에러 시 처리
-            swal("Error!", "An error occurred while adding the product to your wishlist.", "error");
+            swal("Error!", "위시리스트에 제품을 추가하는 중에 오류가 발생했습니다.", "error");
           }
         });
       }
@@ -697,7 +697,7 @@
         });
       },
       error: function (xhr, status, error) {
-        console.error("Error fetching wishlist:", error);
+        console.error("위시리스트를 가져오는 중에 오류가 발생했습니다 :", error);
       }
     });
   }
