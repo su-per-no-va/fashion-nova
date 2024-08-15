@@ -91,10 +91,6 @@
 
 				<!-- Icon header -->
 				<div class="wrap-icon-header flex-w flex-r-m">
-					<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
-						<i class="zmdi zmdi-search"></i>
-					</div>
-
 					<a id="cart-icon" href="shoping-cart.html" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="">
 						<i class="zmdi zmdi-shopping-cart"></i>
 					</a>
@@ -104,22 +100,6 @@
 					</a>
 				</div>
 			</nav>
-		</div>
-	</div>
-
-	<!-- Modal Search -->
-	<div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
-		<div class="container-search-header">
-			<button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
-				<img src="../images/icons/icon-close2.png" alt="CLOSE">
-			</button>
-
-			<form class="wrap-search-header flex-w p-l-15">
-				<button class="flex-c-m trans-04">
-					<i class="zmdi zmdi-search"></i>
-				</button>
-				<input class="plh3" type="text" name="search" placeholder="Search...">
-			</form>
 		</div>
 	</div>
 </header>
@@ -175,7 +155,13 @@
 					</div>
 				</div>
 			</div>
-
+		</div>
+		<!-- 버튼 추가 -->
+		<div class="text-center m-t-30">
+			<!-- 이전 페이지 버튼 -->
+			<button id="prevPageButton" class="btn btn-primary" style="display: none;">이전 페이지</button>
+			<!-- 다음 페이지 버튼 -->
+			<button id="loadMoreButton" class="btn btn-primary">다음 페이지</button>
 		</div>
 	</div>
 </div>
@@ -191,22 +177,8 @@
 				</h4>
 
 				<p class="stext-107 cl7 size-201">
-					언제나 고객님들의 피드백을 반영하여 항상 더욱 발전하는 패션 노바가 되겠습니다. - 피드백링크~~
+					언제나 고객님들의 피드백을 반영하여 항상 더욱 발전하는 패션 노바가 되겠습니다.
 				</p>
-
-				<div class="p-t-27">
-					<a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-						<i class="fa fa-facebook"></i>
-					</a>
-
-					<a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-						<i class="fa fa-instagram"></i>
-					</a>
-
-					<a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-						<i class="fa fa-pinterest-p"></i>
-					</a>
-				</div>
 			</div>
 
 			<div class="p-t-40">
@@ -341,7 +313,10 @@
 <script src="../js/main.js"></script>
 
 <script>
+	let currentPage = 0;
+	let pageSize=10;
 	$(document).ready(function () {
+
 
 		auth = localStorage.getItem('accessToken');
 		let refreshToken = localStorage.getItem('refreshToken');
@@ -359,30 +334,38 @@
 			window.location.href = "login.html";
 		}
 
-		/* 장바구니 아이콘 개수 */
+// 장바구니 아이콘 개수
 		window.common.getShoppingCart()
 		.done(function (response) {
 			if (response) {
-				$('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
+				let itemCount = response.cartItemDtoList.length;
+				if (itemCount === 10) {
+					itemCount = '10+';
+				}
+				$('a#cart-icon')[0].dataset.notify = itemCount;
 			} else {
-				// no response
+				$('a#cart-icon')[0].dataset.notify = '0';
 			}
 		})
 		.fail(function (error) {
-			console.log(error.message)
+			console.log(error.message);
 		});
 
-		/* 찜 아이콘 개수 */
+// 찜 아이콘 개수
 		window.common.getWishList()
 		.done(function (response) {
 			if (response) {
-				$('a#wish-icon')[0].dataset.notify = response.length;
+				let itemCount = response.length;
+				if (itemCount === 10) {
+					itemCount = '10+';
+				}
+				$('a#wish-icon')[0].dataset.notify = itemCount;
 			} else {
-				// no response
+				$('a#wish-icon')[0].dataset.notify = '0';
 			}
 		})
 		.fail(function (error) {
-			console.log(error.message)
+			console.log(error.message);
 		});
 		fetchWishList()
 	});
@@ -394,13 +377,42 @@
 	// 	})
 	// }
 
+
+
+	// 다음 페이지 버튼 클릭 시
+	$('#loadMoreButton').on('click', () => {
+		currentPage++; // 페이지 증가
+		fetchWishList(); // 새로운 페이지의 데이터 가져오기
+	});
+
+	// 이전 페이지 버튼 클릭 시
+	$('#prevPageButton').on('click', () => {
+		if (currentPage > 0) {
+			currentPage--; // 페이지 감소
+			fetchWishList(); // 이전 페이지의 데이터 가져오기
+		}
+	});
+
 	function fetchWishList() {
 		$.ajax({
 			type: 'GET',
-			url: '/wishlists',
+			url: `/wishlists?page=${currentPage}`,
 			success: function(response) {
 				console.log('위시리스트 가져오기 성공:', response);
 				updateWishList(response);
+
+				// 페이지 버튼 조정
+				if (response.length === pageSize) {
+					$('#loadMoreButton').show(); // 더 많은 페이지가 있을 경우 버튼 보이기
+				} else {
+					$('#loadMoreButton').hide(); // 마지막 페이지일 경우 버튼 숨기기
+				}
+
+				if (currentPage > 0) {
+					$('#prevPageButton').show(); // 현재 페이지가 0보다 크면 이전 페이지 버튼 보이기
+				} else {
+					$('#prevPageButton').hide(); // 첫 페이지일 경우 이전 페이지 버튼 숨기기
+				}
 			},
 			error: function(error) {
 				console.error('위시리스트 가져오기 실패:', error.message);
@@ -463,7 +475,6 @@
 			success: function(response, textStatus, jqXHR) {
 				// 서버 응답에 따라 필요한 작업 수행
 				if (jqXHR.status === 200) {
-					alert("위시리스트 삭제 완료")
 					swal("Removed!", "The item has been removed from your wishlist.", "success");
 					location.reload()
 				} else {

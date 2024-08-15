@@ -54,9 +54,11 @@ public class KakaoPayService {
     parameters.put("quantity", String.valueOf(order.getCount()));
     parameters.put("total_amount", String.valueOf(order.getTotalPrice()));
     parameters.put("tax_free_amount",String.valueOf(order.getTotalPrice()));
-    parameters.put("approval_url", "http://localhost:8080/payments/success/"+order.getId()+ "/" +user.getId()+ "/" +couponId);
-    parameters.put("cancel_url", "http://localhost:8080/payments/cancel");
-    parameters.put("fail_url", "http://localhost:8080/payments/fail");
+    String approvalUrl = "https://super-nova.store/payments/success/" + order.getId() + "/" + user.getId() +
+        "?couponId=" + (couponId != null ? String.valueOf(couponId) : "");
+    parameters.put("approval_url", approvalUrl);
+    parameters.put("cancel_url", "https://super-nova.store/payments/cancel");
+    parameters.put("fail_url", "https://super-nova.store/payments/fail");
 
     HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(parameters,
         this.getHeaders());

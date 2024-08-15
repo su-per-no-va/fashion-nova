@@ -34,6 +34,15 @@
   <link rel="stylesheet" type="text/css" href="../css/util.css">
   <link rel="stylesheet" type="text/css" href="../css/main.css">
   <!--===============================================================================================-->
+
+
+<style>
+  .countdown3second{
+    color: #cf1628;
+    font-size: medium;
+  }
+</style>
+
 </head>
 <body class="animsition">
 
@@ -91,10 +100,6 @@
 
         <!-- Icon header -->
         <div class="wrap-icon-header flex-w flex-r-m">
-          <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
-            <i class="zmdi zmdi-search"></i>
-          </div>
-
           <a id="cart-icon" href ="shoping-cart.html" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="">
             <i class="zmdi zmdi-shopping-cart"></i>
           </a>
@@ -106,23 +111,9 @@
       </nav>
     </div>
   </div>
-
-  <!-- Modal Search -->
-  <div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
-    <div class="container-search-header">
-      <button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
-        <img src="../images/icons/icon-close2.png" alt="CLOSE">
-      </button>
-
-      <form class="wrap-search-header flex-w p-l-15">
-        <button class="flex-c-m trans-04">
-          <i class="zmdi zmdi-search"></i>
-        </button>
-        <input class="plh3" type="text" name="search" placeholder="Search...">
-      </form>
-    </div>
-  </div>
 </header>
+
+
 
 <!-- Product -->
 <div class="bg0 m-t-23 p-b-140">
@@ -236,6 +227,10 @@
         <h6 class="txt-center">
           주문해 주셔서 감사합니다!
         </h6>
+        <div class="countdown3second">
+          <p>페이지가 <span class="countdown">3</span>초 후에 자동으로 이동합니다...</p>
+        </div>
+
       </form>
 
     </div>
@@ -498,22 +493,8 @@
         </h4>
 
         <p class="stext-107 cl7 size-201">
-          언제나 고객님들의 피드백을 반영하여 항상 더욱 발전하는 패션 노바가 되겠습니다. - 피드백링크~~
+          언제나 고객님들의 피드백을 반영하여 항상 더욱 발전하는 패션 노바가 되겠습니다.
         </p>
-
-        <div class="p-t-27">
-          <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-            <i class="fa fa-facebook"></i>
-          </a>
-
-          <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-            <i class="fa fa-instagram"></i>
-          </a>
-
-          <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-            <i class="fa fa-pinterest-p"></i>
-          </a>
-        </div>
       </div>
 
       <div class="p-t-40">
@@ -667,6 +648,28 @@
     .fail(function (error) {
       console.log(error.message)
     });
+
+    function startCountdown(duration, element) {
+      let timer = duration;
+      const countdownElement = document.querySelector(element);
+
+      function updateCountdown() {
+        countdownElement.textContent = timer;
+        if (timer <= 0) {
+          clearInterval(interval);
+          window.location.href = 'index.html';
+        } else {
+          timer--;
+        }
+      }
+
+      const interval = setInterval(updateCountdown, 1000);
+      updateCountdown(); // 초기 업데이트
+    }
+
+    window.onload = function() {
+      startCountdown(3, '.countdown');
+    };
   });
 </script>
 

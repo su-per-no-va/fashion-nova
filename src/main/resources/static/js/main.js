@@ -133,9 +133,10 @@
 
     // filter items on button click
     $filter.each(function () {
-        $filter.on('click', 'button', function () {
+        $filter.on('click',  'button, div, a', function () {
             var filterValue = $(this).attr('data-filter');
             $topeContainer.isotope({filter: filterValue});
+            loadWishlist();
         });
         
     });
@@ -171,13 +172,36 @@
         sendRequest("GOODS", sort, 1);
     });
 
-    $(document).ready(function() {
-
+    $(document).ready(function () {
         var currentCategory = "";
         var currentSort = "";
 
+        // 로컬 스토리지에서 선택된 카테고리 값을 가져옴
+        var selectedCategory = localStorage.getItem('selectedCategory');
+        if (selectedCategory) {
+            currentCategory = selectedCategory; // 현재 카테고리에 선택된 카테고리 설정
+            localStorage.removeItem('selectedCategory'); // 사용 후 로컬 스토리지 초기화
+        }
+
+        // Isotope 초기화
+        var $topeContainer = $('.isotope-grid').isotope({
+            itemSelector: '.isotope-item',
+            layoutMode: 'fitRows',
+        });
+
+        // 초기 로드 시, 선택된 카테고리가 있다면 해당 카테고리로 필터링
+        if (currentCategory) {
+            $topeContainer.isotope({ filter: '.' + currentCategory.toLowerCase() });
+
+            // 필터 버튼의 상태를 업데이트
+            $('.filter-tope-group button').removeClass('how-active1');
+            $('.filter-tope-group button[data-filter="' + currentCategory + '"]').addClass('how-active1');
+        } else {
+            $topeContainer.isotope({ filter: '*' });
+        }
+
         // 카테고리 버튼 클릭 이벤트
-        $(".category-btn").on("click", function() {
+        $(".category-btn").on("click", function () {
             currentCategory = $(this).data("filter"); // 클릭한 버튼의 데이터 필터 값 가져오기
 
             // 모든 카테고리 버튼에서 active 클래스 제거
@@ -186,11 +210,12 @@
             // 현재 클릭된 버튼에 active 클래스 추가
             $(this).addClass("category-active");
 
-            // 기존에 선택된 정렬 기준을 사용하여 요청
+            // Isotope 필터링 적용
+            $topeContainer.isotope({ filter: '.' + currentCategory.toLowerCase() });
         });
 
         // 정렬 버튼 클릭 이벤트
-        $('.filter-link').on('click', function(e) {
+        $('.filter-link').on('click', function (e) {
             e.preventDefault(); // 기본 링크 동작을 막음
 
             // 모든 정렬 링크에서 filter-link-active 클래스 제거
@@ -200,8 +225,7 @@
             $(this).addClass('filter-link-active');
 
             currentSort = $(this).data('sort'); // 클릭된 버튼의 data-sort 속성 값 가져오기
-            sendRequest(currentCategory, currentSort, 1);
-            // 기존에 선택된 카테고리를 사용하여 요청
+            sendRequest(currentCategory, currentSort, 1); // 현재 카테고리와 정렬 기준을 사용하여 요청
         });
     });
 
@@ -378,6 +402,7 @@
     });
     $('#searchBtn').on('click', function(event) {
         performSearch();
+
         /*if (event.key === 'Enter') { // 엔터키가 눌렸을 때
             event.preventDefault(); // 기본 폼 제출 방지
             performSearch();

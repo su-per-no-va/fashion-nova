@@ -98,10 +98,6 @@
 
         <!-- Icon header -->
         <div class="wrap-icon-header flex-w flex-r-m">
-          <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
-            <i class="zmdi zmdi-search"></i>
-          </div>
-
           <a id="cart-icon" href="shoping-cart.html"
              class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
              data-notify="">
@@ -115,22 +111,6 @@
           </a>
         </div>
       </nav>
-    </div>
-  </div>
-
-  <!-- Modal Search -->
-  <div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
-    <div class="container-search-header">
-      <button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
-        <img src="/images/icons/icon-close2.png" alt="CLOSE">
-      </button>
-
-      <form class="wrap-search-header flex-w p-l-15">
-        <button class="flex-c-m trans-04">
-          <i class="zmdi zmdi-search"></i>
-        </button>
-        <input class="plh3" type="text" name="search" placeholder="Search...">
-      </form>
     </div>
   </div>
 </header>
@@ -195,6 +175,21 @@
           <form class="info-form">
             <div class="form-group">
               <div class="member-info">
+                <label for="address-select">배송지</label>
+                <div class="rs1-select2 rs2-select2 bor8 bg0 m-b-12 m-t-9">
+                  <select class="js-select2" name="address" id="address-select">
+                    <option value="">배송지</option>
+                    <!-- 주소가 동적으로 추가됩니다 -->
+                  </select>
+                  <div class="dropDownSelect2"></div>
+                </div>
+              </div>
+            </div>
+          </form>
+
+          <form class="info-form">
+            <div class="form-group">
+              <div class="member-info">
                 <label for="mileage-input">사용 마일리지</label>
                 <input type="text" id="mileage-input" placeholder="사용 금액을 입력하세요." required>
                 <label for="available-mileage">사용 가능 마일리지 : <span id="available-mileage">500원</span></label>
@@ -206,7 +201,7 @@
             <div class="form-group">
               <div class="member-info">
                 <label for="radio1">결제 수단</label>
-                <label for="radio1"><input type="radio" id="radio1" name="radio1">
+                <label for="radio1"><input type="radio" id="radio1" name="radio1" checked>
                   <img src="../images/icons/icon-kakaopay.png" alt="ICON-PAY" width="100" height="100">
                 </label>
               </div>
@@ -288,6 +283,21 @@
             </div>
           </div>
 
+          <div class="flex-w flex-t p-t-27 p-b-33">
+            <div class="size-208">
+								<span class="mtext-101 cl2">
+									배송지:
+								</span>
+            </div>
+
+            <div class="size-209 p-t-1">
+								<span id="choiced-address" class="mtext-110 cl2">
+									My Page에서 배송지를 추가해야합니다
+								</span>
+            </div>
+          </div>
+
+
           <button
               class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
             Make payment
@@ -309,22 +319,8 @@
         </h4>
 
         <p class="stext-107 cl7 size-201">
-          언제나 고객님들의 피드백을 반영하여 항상 더욱 발전하는 패션 노바가 되겠습니다. - 피드백링크~~
+          언제나 고객님들의 피드백을 반영하여 항상 더욱 발전하는 패션 노바가 되겠습니다.
         </p>
-
-        <div class="p-t-27">
-          <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-            <i class="fa fa-facebook"></i>
-          </a>
-
-          <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-            <i class="fa fa-instagram"></i>
-          </a>
-
-          <a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-            <i class="fa fa-pinterest-p"></i>
-          </a>
-        </div>
       </div>
 
       <div class="p-t-40">
@@ -399,7 +395,7 @@
   let couponDiscount = 0; // 쿠폰 할인 금액
   let mileageUsed = 0; // 사용자가 입력한 마일리지
   let totalCost = 0;
-
+  let address = "배송지없음";
   $(document).ready(function () {
     // 장바구니 데이터를 가져오는 함수 호출
     window.common.getShoppingCart()
@@ -460,13 +456,35 @@
 
     });
 
+// Enter 키를 눌렀을 때 버튼 클릭 동작 및 기본 동작 방지
+    $('#mileage-input').on('keydown', function (event) {
+      if (event.key === 'Enter') {
+        event.preventDefault(); // 기본 동작(폼 제출)을 막습니다.
+        $('#apply-mileage').click(); // 'apply-mileage' 버튼 클릭
+      }
+    });
+
+// 모든 form에서 Enter 키로 인한 제출 방지
+    $(document).on('keydown', function(event) {
+      if (event.key === 'Enter') {
+        event.preventDefault(); // 모든 form에서 기본 동작 막기
+      }
+    });
+
     // 쿠폰 선택 시 할인 금액을 계산하고 업데이트하는 함수
     $('#coupon-select').change(function() {
       const selectedOption = $(this).find('option:selected');
 
       const discountRate = parseFloat(selectedOption.data('sale')); // 할인률을 숫자로 변환
       const couponName = selectedOption.data('name'); // 쿠폰 이름 가져오기
+      const couponId = selectedOption.val(); // 쿠폰 ID 가져오기
 
+      // 쿠폰 ID를 localStorage에 저장
+      if (couponId) {
+        localStorage.setItem('selectedCouponId', couponId);
+      } else {
+        localStorage.removeItem('selectedCouponId');
+      }
 
       if (!isNaN(discountRate) && discountRate > 0) {
         // 할인 금액 계산
@@ -534,12 +552,17 @@
     $('.flex-c-m.stext-101').on('click', function (event) {
       event.preventDefault(); // 기본 동작 방지
 
+      if (address === "배송지없음") {
+        alert('배송지 정보가 없습니다. MY_INFO 페이지에서 배송지를 추가해 주세요.');
+        return;
+      }
+
       // 주문 요청 데이터 준비
       const orderRequestDto = {
         cost: totalCost,
         discount: couponDiscount,
         usedMileage: mileageUsed,
-        address: "주문페이지에서 작성"
+        address: address
       };
 
       // 주문 생성 API 호출
@@ -564,6 +587,18 @@
       });
     });
 
+    // 배송지 선택 시 선택된 배송지를 표시하고 주문 데이터에 반영
+    $('#address-select').on('change', function() {
+      const selectedAddress = $(this).val();
+      if (selectedAddress) {
+        $('#choiced-address').text(selectedAddress);
+        address = selectedAddress; // 주문 요청 데이터에 추가
+      } else {
+        $('#choiced-address').text('My Page에서 배송지를 추가해야합니다');
+        address = "배송지없음"; // 주문 요청 데이터 초기화
+      }
+    });
+    fetchAddresses();
     fetchMileage();
     fetchCoupons();
     updateCartTotals()
@@ -614,7 +649,6 @@
     });
   }
 
-
   // 쿠폰 테이블을 업데이트하는 함수
   function updateCouponTable(coupons) {
 
@@ -632,6 +666,74 @@
     // 드롭다운 새로 고침 (필요에 따라)
     $('.js-select2').select2();
   }
+
+  // 배송지 정보를 가져오는 AJAX 요청
+  function fetchAddresses() {
+    $.ajax({
+      type: 'GET',
+      url: '/addresses', // 서버에서 배송지 데이터를 제공하는 엔드포인트
+      success: function(response) {
+        if (response.length === 0) {
+          alert("배송지를 먼저 입력해 주세요");
+          window.location.href="my-info.html"
+        }
+        updateAddressSelect(response);
+      },
+      error: function(error) {
+        console.error('배송지 불러오기 실패 :', error);
+      }
+    });
+  }
+
+  function updateAddressSelect(addresses) {
+    const $addressSelect = $('#address-select');
+    let defaultAddressId = null;
+    let defaultAddressText = ''; // 기본 주소 텍스트 저장
+
+    // 기존 옵션을 비웁니다
+    $addressSelect.empty();
+    $addressSelect.append('<option value="">배송지 선택</option>');
+
+    // 각 배송지를 선택 항목으로 추가
+    addresses.forEach(address => {
+      const addressValue = `[${address.zipCode}] ${address.address}  (${address.detail}) `;
+      const option = `<option value="${addressValue}">
+      [${address.zipCode}] ${address.name} ,${address.address}
+    </option>`;
+      $addressSelect.append(option);
+
+      // 기본 주소인 경우 해당 옵션을 선택
+      if (address.defaultAddress) {
+        defaultAddressId = address.id;
+        defaultAddressText = addressValue;
+      }
+    });
+
+    // 기본 주소가 있는 경우 해당 옵션 선택 및 표시
+    if (defaultAddressId) {
+      $addressSelect.val(defaultAddressText);
+      $('#choiced-address').text(defaultAddressText);
+      address = defaultAddressText; // 주문 요청 데이터에 기본 주소 반영
+    } else {
+      $('#choiced-address').text('My Page에서 배송지를 추가해야합니다');
+      address = "배송지없음"; // 기본 주소가 없을 때 주문 요청 데이터 초기화
+    }
+
+    // 드롭다운 새로 고침 (필요에 따라)
+    $('.js-select2').select2();
+  }
+
+  // 배송지 선택 시 선택된 배송지를 표시하고 주문 데이터에 반영
+  $('#address-select').on('change', function() {
+    const selectedAddress = $(this).val();
+    if (selectedAddress) {
+      $('#choiced-address').text(selectedAddress);
+      address = selectedAddress; // 주문 요청 데이터에 추가
+    } else {
+      $('#choiced-address').text('My Page에서 배송지를 추가해야합니다');
+      address = "배송지없음"; // 주문 요청 데이터 초기화
+    }
+  });
 </script>
 
 </body>

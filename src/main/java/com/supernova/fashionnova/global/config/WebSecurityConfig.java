@@ -119,6 +119,7 @@ public class WebSecurityConfig {
                 .requestMatchers("**.html").permitAll()
                 .requestMatchers("/vendor/**").permitAll()
                 .requestMatchers("/fonts/**").permitAll()
+                .requestMatchers("/payments/ready/**").permitAll()
                 .requestMatchers("/payments-completed/**").permitAll()
                 .requestMatchers("/payments/success/**").permitAll()
                 .anyRequest().authenticated() // 그 외 모든 요청 인증처리

@@ -42,18 +42,18 @@ public class UserController {
 	    return "OK";
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<TestResponseDto> test() {
-        log.info("In test");
-
-        return ResponseUtil.of(HttpStatus.OK,
-            TestResponseDto.builder()
-                .testName("으아아아앙")
-                .testCode(15L)
-                .testContent("잠와")
-                .testNaEun("프론트 전문가 킹갓갓킹")
-                .build());
-    }
+//    @GetMapping("/test")
+//    public ResponseEntity<TestResponseDto> test() {
+//        log.info("In test");
+//
+//        return ResponseUtil.of(HttpStatus.OK,
+//            TestResponseDto.builder()
+//                .testName("으아아아앙")
+//                .testCode(15L)
+//                .testContent("잠와")
+//                .testNaEun("프론트 전문가 킹갓갓킹")
+//                .build());
+//    }
 
     /**
      * 유저 회원가입
@@ -175,6 +175,15 @@ public class UserController {
             cookie.setPath("/");
             response.addCookie(cookie);
             response.addCookie(cookie2);
+
+            response.setContentType("text/html; charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            out.println("<script>");
+            out.println("localStorage.setItem('accessToken', '" + token.get(0).replace("%20", " ") + "');");
+            out.println("localStorage.setItem('refreshToken', '" + token.get(1).replace("%20", " ") + "');");
+            out.println("location.href='/index.html';");
+            out.println("</script>");
+            out.flush();
 
             response.sendRedirect("/index.html");
         } catch (CustomException e) {

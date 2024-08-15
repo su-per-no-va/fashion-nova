@@ -42,19 +42,19 @@ public class KakaoPayController {
   /**
    * 결제 요청
    * */
-  @PostMapping("/ready/{orderId}/{couponId}")
+  @PostMapping("/ready/{orderId}")
   public KakaoPayReadyResponseDto kakaoPayReady(
-      @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long orderId, @PathVariable Long couponId)
+      @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long orderId, @RequestParam(required = false) Long couponId)
   {
     return kakaoPayService.kakaoPayReady(userDetails.getUser(), orderId, couponId);
   }
 
   @Transactional
-  @GetMapping("/success/{orderId}/{userId}/{couponId}")
+  @GetMapping("/success/{orderId}/{userId}")
   public void KakaoRequestSuccess(@RequestParam("pg_token") String pgToken,
       @PathVariable Long orderId,
       @PathVariable Long userId,
-      @PathVariable Long couponId,
+      @RequestParam(required = false) Long couponId,
       HttpServletResponse response)
       throws IOException {
     User user = userService.getUserById(userId);

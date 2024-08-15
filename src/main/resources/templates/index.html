@@ -69,7 +69,6 @@
 			</div>
 		</div>
 
-
 		<div class="wrap-menu-desktop">
 			<nav class="limiter-menu-desktop container">
 
@@ -97,10 +96,6 @@
 
 				<!-- Icon header -->
 				<div class="wrap-icon-header flex-w flex-r-m">
-					<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
-						<i class="zmdi zmdi-search"></i>
-					</div>
-
 					<a id="cart-icon" href="shoping-cart.html" class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="">
 						<i class="zmdi zmdi-shopping-cart"></i>
 					</a>
@@ -110,22 +105,6 @@
 					</a>
 				</div>
 			</nav>
-		</div>
-	</div>
-
-	<!-- Modal Search -->
-	<div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
-		<div class="container-search-header">
-			<button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
-				<img src="../images/icons/icon-close2.png" alt="CLOSE">
-			</button>
-
-			<form class="wrap-search-header flex-w p-l-15">
-				<button class="flex-c-m trans-04">
-					<i class="zmdi zmdi-search"></i>
-				</button>
-				<input class="plh3" type="text" name="search" placeholder="Search...">
-			</form>
 		</div>
 	</div>
 </header>
@@ -302,22 +281,8 @@
 				</h4>
 
 				<p class="stext-107 cl7 size-201">
-					언제나 고객님들의 피드백을 반영하여 항상 더욱 발전하는 패션 노바가 되겠습니다. - 피드백링크~~
+					언제나 고객님들의 피드백을 반영하여 항상 더욱 발전하는 패션 노바가 되겠습니다.
 				</p>
-
-				<div class="p-t-27">
-					<a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-						<i class="fa fa-facebook"></i>
-					</a>
-
-					<a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-						<i class="fa fa-instagram"></i>
-					</a>
-
-					<a href="#" class="fs-18 cl7 hov-cl1 trans-04 m-r-16">
-						<i class="fa fa-pinterest-p"></i>
-					</a>
-				</div>
 			</div>
 
 			<div class="p-t-40">
@@ -460,7 +425,9 @@
 				type: 'GET',
 				url: '/carts',
 				success: function (response) {
-					if (response) {
+					if (response.length === 10) {
+						$('a#cart-icon')[0].dataset.notify = "10+";
+					} else {
 						$('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
 					}
 				},
@@ -473,7 +440,9 @@
 				type: 'GET',
 				url: '/wishlists',
 				success: function (response) {
-					if (response) {
+					if (response.length === 10) {
+						$('a#wish-icon')[0].dataset.notify = "10+";
+					} else {
 						$('a#wish-icon')[0].dataset.notify = response.length;
 					}
 				},
@@ -494,7 +463,6 @@
 			$('#auth-btn').attr("href", "login.html").text("Login");
 		}
 	});
-
 
 </script>
 
