@@ -136,6 +136,7 @@
         $filter.on('click',  'button, div, a', function () {
             var filterValue = $(this).attr('data-filter');
             $topeContainer.isotope({filter: filterValue});
+            loadWishlist();
         });
         
     });
@@ -401,6 +402,7 @@
     });
     $('#searchBtn').on('click', function(event) {
         performSearch();
+
         /*if (event.key === 'Enter') { // 엔터키가 눌렸을 때
             event.preventDefault(); // 기본 폼 제출 방지
             performSearch();

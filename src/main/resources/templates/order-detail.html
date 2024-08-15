@@ -185,7 +185,7 @@
             <td class="column-2">300,000원</td>
         </tr>
         <tr class="table_row">
-            <td class="column-1">브론즈 5% 쿠폰</td>
+            <td class="column-1">쿠폰 할인 금액</td>
             <td class="column-2">-10,000원</td>
         </tr>
         <tr class="table_row">
@@ -367,7 +367,7 @@
                     var rowHtml = `
         <tr class="table_row">
           <td class="column-1">
-            <img src="/images/item-cart-05.jpg" alt="IMG"> <!-- 필요에 따라 업데이트 -->
+            <img src="${detail.productImageUrl}" style="height: 60px; cursor: pointer;" alt="IMG"> <!-- 필요에 따라 업데이트 -->
           </td>
           <td class="column-2">${detail.productName}</td>
           <td class="column-3">${detail.count}</td>
@@ -455,6 +455,49 @@
                     alert(error.message);
                 },
             });
+        }
+
+        // 서버에서 주문 정보 가져오기
+        $.ajax({
+            url: `/orders/${orderId}`, // 주문 ID를 포함하여 요청
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                // 응답 데이터에서 주문 정보 추출
+                const { totalPrice, discount, usedMileage, cost } = data;
+
+                // HTML 테이블에 동적으로 값 넣기
+                document.querySelector('.table-shopping-cart-price').innerHTML = `
+                <tr class="table_row">
+                    <td class="column-1">총 금액</td>
+                    <td class="column-2">${formatCurrency(totalPrice)}</td>
+                </tr>
+                <tr class="table_row">
+                    <td class="column-1">쿠폰 할인 금액</td>
+                    <td class="column-2">-${formatCurrency(discount)}</td>
+                </tr>
+                <tr class="table_row">
+                    <td class="column-1">사용 마일리지</td>
+                    <td class="column-2">-${formatCurrency(usedMileage)}</td>
+                </tr>
+                <tr class="table_row">
+                    <td class="column-1">배송비</td>
+                    <td class="column-2">+${formatCurrency(2500)}</td>
+                </tr>
+                <tr class="table_row">
+                    <td class="column-1"><strong>결제 금액</strong></td>
+                    <td class="column-2"><strong>${formatCurrency(cost)}</strong></td>
+                </tr>
+            `;
+            },
+            error: function (xhr, status, error) {
+                console.error('주문 정보를 가져오는 데 실패했습니다:', error);
+            }
+        });
+
+        // 숫자를 통화 형식으로 변환하는 함수
+        function formatCurrency(value) {
+            return value.toLocaleString('ko-KR', { style: 'currency', currency: 'KRW' });
         }
     });
 </script>

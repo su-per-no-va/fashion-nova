@@ -470,6 +470,13 @@
       question: formData.get('question')
     };
 
+    // 입력값이 모두 있는지 확인
+    if (!requestDto.title || !requestDto.type || !requestDto.question) {
+      // 입력값이 부족한 경우 사용자에게 오류 메시지 표시
+      alert('모든 필드를 입력해 주세요.');
+      return; // 함수 종료
+    }
+
     // FormData에 QuestionRequestDto requestDto, List<MultipartFile> file 추가
     const finalFormData = new FormData();
     finalFormData.append('requestDto',
@@ -501,13 +508,11 @@
           alert("문의 등록 성공")
           location.reload()
         } else {
-          // alert("문의 등록 실패");
-          console.log("문의 등록 실패");
           alert("문의 등록 실패")
         }
       },
       error: function (error) {
-        alert(error.message);
+        alert("에러: " + error.responseText);
       },
     });
   }

@@ -14,9 +14,18 @@ public class OrderDetailResponseDto {
     private String size;
     private String color;
     private OrderStatus orderStatus;
+    private String productImageUrl;
 
-    public OrderDetailResponseDto(Long id, int count, String productName, Long price, String size,
-        String color, OrderStatus orderStatus) {
+    public OrderDetailResponseDto(
+        Long id,
+        int count,
+        String productName,
+        Long price,
+        String size,
+        String color,
+        OrderStatus orderStatus,
+        String productImageUrl
+    ) {
         this.id = id;
         this.count = count;
         this.productName = productName;
@@ -24,6 +33,7 @@ public class OrderDetailResponseDto {
         this.size = size;
         this.color = color;
         this.orderStatus = orderStatus;
+        this.productImageUrl = productImageUrl;
     }
 
     public OrderDetailResponseDto(OrderDetail orderDetail) {

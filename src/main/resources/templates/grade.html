@@ -269,27 +269,38 @@
 			alert("로그인 후 이용해 주세요");
 			window.location.href = "login.html";
 		}
-		/* 장바구니 아이콘 개수 */
+// 장바구니 아이콘 개수
 		window.common.getShoppingCart()
 		.done(function (response) {
 			if (response) {
-				$('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
+				let itemCount = response.cartItemDtoList.length;
+				if (itemCount === 10) {
+					itemCount = '10+';
+				}
+				$('a#cart-icon')[0].dataset.notify = itemCount;
 			} else {
-				// no response
+				$('a#cart-icon')[0].dataset.notify = '0';
 			}
 		})
 		.fail(function (error) {
-			console.log(error.message)
+			console.log(error.message);
 		});
 
-		/* 찜 아이콘 개수 */
+// 찜 아이콘 개수
 		window.common.getWishList()
 		.done(function (response) {
 			if (response) {
-				$('a#wish-icon')[0].dataset.notify = response.length;
+				let itemCount = response.length;
+				if (itemCount === 10) {
+					itemCount = '10+';
+				}
+				$('a#wish-icon')[0].dataset.notify = itemCount;
 			} else {
-				// no response
+				$('a#wish-icon')[0].dataset.notify = '0';
 			}
+		})
+		.fail(function (error) {
+			console.log(error.message);
 		});
 		fetchUserInfo()
 	});
