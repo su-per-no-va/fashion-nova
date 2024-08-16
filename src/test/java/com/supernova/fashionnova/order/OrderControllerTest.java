@@ -83,12 +83,13 @@ class OrderControllerTest {
       10000L,
         1000,
         1000L,
-        "address"
+        "address",
+        8000L
     );
     List<OrderDetail> savedOrderDetailList = getOrderDetails();
     AllOrderResponseDto allOrderResponseDto = new AllOrderResponseDto(
       1L,
-      OrderStatus.Progress,
+      OrderStatus.PROGRESS,
       "address",
       10000L,
       DeliveryStatus.BEFORE,
@@ -119,7 +120,7 @@ class OrderControllerTest {
 
   private List<OrderDetail> getOrderDetails() {
     User user = userDetails.getUser();
-    Order order = new Order(user, 8000L, 1000L, 1000, 1000L, "address", 1234L, DeliveryStatus.BEFORE, OrderStatus.Progress);
+    Order order = new Order(user, 8000L, 1000L, 1000, 1000L, "address", 1234L, DeliveryStatus.BEFORE, OrderStatus.PROGRESS);
     Product product = new Product("product", 10000L, "explanation", ProductCategory.TOP,
         ProductStatus.ACTIVE);
     ProductDetail productDetail = new ProductDetail("S", "BLACK", 100L, product);
