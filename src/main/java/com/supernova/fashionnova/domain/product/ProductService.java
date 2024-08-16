@@ -57,7 +57,9 @@ public class ProductService {
         for(OrderDetail orderDetail:orderDetailList){
           ProductDetail productDetail = productDetailRepository.findById(orderDetail.getProductDetail().getId()).orElseThrow(
               ()-> new CustomException(ErrorType.NOT_FOUND_PRODUCT_DETAIL));
-
+          if(productDetail.getQuantity()<orderDetail.getCount()){
+            throw new CustomException(ErrorType.NO_QUANTITY);
+          }
           productDetail.updateQuantity(productDetail.getQuantity() - orderDetail.getCount());
           productDetailRepository.save(productDetail);
         }

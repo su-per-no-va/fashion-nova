@@ -40,19 +40,15 @@ public class OrderService {
             throw new CustomException(ErrorType.CART_EMPTY);
         }
 
-        long totalPrice = cartList.stream().mapToLong(Cart::getTotalPrice).sum();
-        Long totalAmount = totalPrice - orderRequestDto.getDiscount()
-            - orderRequestDto.getUsedMileage();
-
         Order order = Order.builder()
-            .cost(totalPrice)
-            .orderStatus(OrderStatus.Progress)
+            .cost(orderRequestDto.getCost())
+            .orderStatus(OrderStatus.PROGRESS)
             .deliveryStatus(DeliveryStatus.BEFORE)
             .address(orderRequestDto.getAddress())
             .user(user)
             .discount(orderRequestDto.getDiscount())
             .usedMileage(orderRequestDto.getUsedMileage())
-            .totalPrice(totalAmount)
+            .totalPrice(orderRequestDto.getTotalPrice())
             .invoice(invoice)
             .build();
 
@@ -112,16 +108,11 @@ public class OrderService {
         if (order.isEmpty()) {
             throw new CustomException(ErrorType.NOT_FOUND_ORDER);
         }
-
         List<Order> showOrder = new ArrayList<>();
         for (Order filterOrder : order) {
-            if (filterOrder.getOrderStatus().equals(OrderStatus.Progress)) {
-                ordersRepository.delete(filterOrder);
-            } else {
                 showOrder.add(filterOrder);
-            }
-        }
 
+        }
         return showOrder;
     }
 

@@ -13,6 +13,7 @@ import com.supernova.fashionnova.payment.dto.KakaoPayApproveResponseDto;
 import com.supernova.fashionnova.payment.dto.KakaoPayCancelResponseDto;
 import com.supernova.fashionnova.payment.dto.KakaoPayReadyResponseDto;
 import com.supernova.fashionnova.payment.dto.KakaoPayRefundRequestDto;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -140,4 +141,16 @@ public class KakaoPayService {
     order.setOrderStatus(OrderStatus.REFUND);
     return refundResponseDto.getBody();
   }
+
+  public void deleteFail(User user) {
+    List<Order> order = ordersRepository.findAllByUserId(user.getId());
+    if (order.isEmpty()) {
+      throw new CustomException(ErrorType.NOT_FOUND_ORDER);
+    }
+    for (Order filterOrder : order) {
+      if (filterOrder.getOrderStatus().equals(OrderStatus.PROGRESS)) {
+        ordersRepository.delete(filterOrder);
+      }
+      }
+    }
 }
