@@ -470,7 +470,7 @@
                 document.querySelector('.table-shopping-cart-price').innerHTML = `
                 <tr class="table_row">
                     <td class="column-1">총 금액</td>
-                    <td class="column-2">${formatCurrency(totalPrice)}</td>
+                    <td class="column-2">${formatCurrency(cost)}</td>
                 </tr>
                 <tr class="table_row">
                     <td class="column-1">쿠폰 할인 금액</td>
@@ -486,7 +486,7 @@
                 </tr>
                 <tr class="table_row">
                     <td class="column-1"><strong>결제 금액</strong></td>
-                    <td class="column-2"><strong>${formatCurrency(cost)}</strong></td>
+                    <td class="column-2"><strong>${formatCurrency(totalPrice)}</strong></td>
                 </tr>
             `;
             },
