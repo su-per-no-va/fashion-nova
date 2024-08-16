@@ -11,7 +11,6 @@ import com.supernova.fashionnova.domain.product.ProductRepository;
 import com.supernova.fashionnova.domain.user.User;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
-import com.supernova.fashionnova.global.upload.FileUploadUtil;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +26,6 @@ public class CartService {
     private final ProductDetailRepository productDetailRepository;
 
     private final ProductRepository productRepository;
-
-    private final FileUploadUtil fileUploadUtil;
 
     /**
      * 장바구니에 상품 추가
