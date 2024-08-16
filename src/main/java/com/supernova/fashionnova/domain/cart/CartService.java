@@ -149,12 +149,12 @@ public class CartService {
             }else{
                 existingCart.updateCountPrice(dto.getCount());
             }
-        } else {
-            // 존재하지 않으면 새로 추가
-            cart.setProductDetail(newProductDetail);
-            cart.updateCountPrice(dto.getCount());
-            cartRepository.save(cart);
-        }
+           } else {
+        // 존재하지 않으면 새로 추가
+        cart.setProductDetail(newProductDetail);
+        cart.updateCountPrice(dto.getCount());
+        cartRepository.save(cart);
+    }
 
     }
 

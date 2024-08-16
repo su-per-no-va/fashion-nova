@@ -201,4 +201,9 @@ public class HomeController {
         return "kakaopay";
     }
 
+    @GetMapping("/payments-failed.html")
+    public String kakaoFail() {
+        return "payments-failed";
+    }
+
 }

@@ -61,7 +61,7 @@ public class KakaoPayService {
     String approvalUrl = url + "/payments/success/" + order.getId() + "/" + user.getId() +
         "?couponId=" + (couponId != null ? String.valueOf(couponId) : "");
     parameters.put("approval_url", approvalUrl);
-    parameters.put("cancel_url",  url + "/payments/cancel");
+    parameters.put("cancel_url",  url + "/payments/failed");
     parameters.put("fail_url",  url + "/payments/fail");
 
     HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(parameters,

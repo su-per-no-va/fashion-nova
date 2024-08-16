@@ -122,6 +122,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/payments/ready/**").permitAll()
                 .requestMatchers("/payments-completed/**").permitAll()
                 .requestMatchers("/payments/success/**").permitAll()
+                .requestMatchers("/payments/failed").permitAll()
                 .anyRequest().authenticated() // 그 외 모든 요청 인증처리
 
         );

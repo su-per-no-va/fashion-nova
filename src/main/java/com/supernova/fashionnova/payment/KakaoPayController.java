@@ -79,11 +79,11 @@ public class KakaoPayController {
     response.sendRedirect("/payments-completed.html");
   }
 
-  @GetMapping("/fail")
-  public void KakaoRequestFail(@AuthenticationPrincipal UserDetailsImpl userDetails, HttpServletResponse response) throws IOException {
+  @GetMapping("/failed")
+  public void KakaoRequestFail(HttpServletResponse response) throws IOException {
     log.info("결제 요청 실패");
     //실패한 주문 삭제
-    kakaoPayService.deleteFail(userDetails.getUser());
+//    kakaoPayService.deleteFail(userId);
     response.sendRedirect("/payments-failed.html");
   }
 

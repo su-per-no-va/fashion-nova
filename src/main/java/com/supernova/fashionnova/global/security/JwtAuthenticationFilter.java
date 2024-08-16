@@ -130,8 +130,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 //        cookie.setPath("/");
 //        response.addCookie(cookie);
 
-        // 헤더에 userId 전달
-        response.setHeader("userName", user.getUserName());
+//        // 헤더에 userId 전달
+//        response.setHeader("userName", user.getUserName());
 
         // refresh 토큰을 Entity 에 저장
         user.updateRefreshToken(jwtUtil.substringToken(refreshToken));
