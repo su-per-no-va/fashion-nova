@@ -5,6 +5,7 @@ import com.supernova.fashionnova.domain.cart.CartRepository;
 import com.supernova.fashionnova.domain.delivery.DeliveryStatus;
 import com.supernova.fashionnova.domain.order.dto.AllOrderResponseDto;
 import com.supernova.fashionnova.domain.order.dto.OrderRequestDto;
+import com.supernova.fashionnova.domain.order.dto.OrderResponseDto;
 import com.supernova.fashionnova.domain.product.Product;
 import com.supernova.fashionnova.domain.product.ProductDetail;
 import com.supernova.fashionnova.domain.user.User;
@@ -40,19 +41,15 @@ public class OrderService {
             throw new CustomException(ErrorType.CART_EMPTY);
         }
 
-        long totalPrice = cartList.stream().mapToLong(Cart::getTotalPrice).sum();
-        Long totalAmount = totalPrice - orderRequestDto.getDiscount()
-            - orderRequestDto.getUsedMileage();
-
         Order order = Order.builder()
-            .cost(totalPrice)
-            .orderStatus(OrderStatus.Progress)
+            .cost(orderRequestDto.getCost())
+            .orderStatus(OrderStatus.PROGRESS)
             .deliveryStatus(DeliveryStatus.BEFORE)
             .address(orderRequestDto.getAddress())
             .user(user)
             .discount(orderRequestDto.getDiscount())
             .usedMileage(orderRequestDto.getUsedMileage())
-            .totalPrice(totalAmount)
+            .totalPrice(orderRequestDto.getTotalPrice())
             .invoice(invoice)
             .build();
 
@@ -112,16 +109,11 @@ public class OrderService {
         if (order.isEmpty()) {
             throw new CustomException(ErrorType.NOT_FOUND_ORDER);
         }
-
         List<Order> showOrder = new ArrayList<>();
         for (Order filterOrder : order) {
-            if (filterOrder.getOrderStatus().equals(OrderStatus.Progress)) {
-                ordersRepository.delete(filterOrder);
-            } else {
                 showOrder.add(filterOrder);
-            }
-        }
 
+        }
         return showOrder;
     }
 
@@ -133,8 +125,41 @@ public class OrderService {
     order.setOrderStatus(OrderStatus.SUCCESS);
   }
 
+    /**
+     *  주문 내역 단건 조회
+     *
+     * @param orderId
+     * @param user
+     * @throws CustomException NOT_FOUND_USER 본인의 주문이 아닐 때
+     * @throws CustomException NOT_FOUND_ORDER 주문을 찾을 수 없을 때
+     * @return
+     */
+    public OrderResponseDto getOrderResponse(Long orderId, User user) {
+
+        Order order = getOrderById(orderId);
+
+        // 자신의 오더가 아닐 때
+        if (!order.getUser().getId().equals(user.getId())) {
+            throw new CustomException(ErrorType.NOT_FOUND_USER);
+        }
+
+        return new OrderResponseDto(order.getId(),
+            order.getOrderStatus(),
+            order.getAddress(),
+            order.getCost(),
+            order.getDeliveryStatus(),
+            order.getDiscount(),
+            order.getTotalPrice(),
+            order.getUsedMileage(),
+            order.getCreatedAt()
+            );
+
+    }
+
   public Order getOrderById(Long orderId) {
     return ordersRepository.findById(orderId).orElseThrow(
         ()-> new CustomException(ErrorType.NOT_FOUND_ORDER));
   }
+
+
 }

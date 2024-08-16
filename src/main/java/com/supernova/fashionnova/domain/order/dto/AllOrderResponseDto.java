@@ -58,7 +58,8 @@ public class AllOrderResponseDto {
             orderDetail.getPrice(),
             orderDetail.getProductDetail().getSize(),
             orderDetail.getProductDetail().getColor(),
-            orderDetail.getOrder().getOrderStatus()
+            orderDetail.getOrder().getOrderStatus(),
+            orderDetail.getProduct().getImageUrl()
         ))
         .collect(Collectors.toList());
     this.orderName = orderName;

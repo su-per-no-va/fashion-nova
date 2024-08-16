@@ -136,6 +136,7 @@
         $filter.on('click',  'button, div, a', function () {
             var filterValue = $(this).attr('data-filter');
             $topeContainer.isotope({filter: filterValue});
+            loadWishlist();
         });
         
     });
@@ -227,71 +228,6 @@
             sendRequest(currentCategory, currentSort, 1); // 현재 카테고리와 정렬 기준을 사용하여 요청
         });
     });
-
-    function performSearch() {
-        const searchInput = $('#search-input').val().trim(); // 입력값 가져오기
-        console.log(searchInput);
-        // 입력값이 비어 있는지 확인
-        if (searchInput === '') {
-            alert('상품명을 입력해주세요.');
-            return;
-        }
-
-        // GET 요청으로 서버에 검색어 전달
-        $.ajax({
-            url: '/products/product', // 요청을 보낼 URL
-            method: 'GET',
-            data: {
-                search: searchInput,
-                sort: "all",
-                page: 1 // 요청에 포함할 page 파라미터
-            }, // 쿼리 파라미터로 전송
-            success: function(data) {
-                console.log('검색 결과:', data);
-                // 검색 결과를 처리하는 로직 추가
-                searchResult(data.content);
-            },
-            error: function(xhr, status, error) {
-                console.error('검색 중 오류 발생:', error);
-                alert('검색 중 오류가 발생했습니다. 다시 시도해주세요.');
-            }
-        });
-    }
-
-// 검색 결과 표시 함수
-    function searchResult(productList) {
-        let $productListContainer = $('#productListArea');
-        $productListContainer.empty(); // 기존 내용을 지우고 새로 추가
-
-        productList.forEach(function(item) {
-            let productCard = `
-                <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item ${item.productStatus.toLowerCase()}" data-poduct-id="${item.id}">
-                    <div class="block2">
-                        <div class="block2-pic hov-img0">
-                            <img src="${item.imageUrl}" alt="${item.product}">
-                        </div>
-                        <div class="block2-txt flex-w flex-t p-t-14">
-                            <div class="block2-txt-child1 flex-col-l">
-                                <a href="product-detail.html?id=${item.id}" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                                    ${item.product}
-                                </a>
-                                <span class="stext-105 cl3">
-                                    ${item.price.toLocaleString()}원
-                                </span>
-                            </div>
-                            <div class="block2-txt-child2 flex-r p-t-3">
-                                <a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                                    <img class="icon-heart1 dis-block trans-04" src="../images/icons/icon-heart-01.png" alt="ICON">
-                                    <img class="icon-heart2 dis-block trans-04 ab-t-l" src="../images/icons/icon-heart-02.png" alt="ICON">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                `;
-            $productListContainer.append(productCard);
-        });
-    }
 
     function sendRequest(category, sort, page) {
         var xhr = new XMLHttpRequest();
@@ -399,21 +335,6 @@
             $('.panel-filter').slideUp(400);
         }
     });
-    $('#searchBtn').on('click', function(event) {
-        performSearch();
-        /*if (event.key === 'Enter') { // 엔터키가 눌렸을 때
-            event.preventDefault(); // 기본 폼 제출 방지
-            performSearch();
-        }*/
-    });
-
-    $('#search-input').keypress(function (event){
-        if(event.which == 13){
-            $('#searchBtn').click();
-            $('.category-btn').removeClass('how-active1');
-            console.log('test');
-        }
-    })
 
     /*==================================================================
     [ Cart ]*/

@@ -135,6 +135,11 @@ public class HomeController {
         return "payments-completed";
     }
 
+    @GetMapping("/warn.html")
+    public String warn() {
+        return "warn";
+    }
+
     // 어드민 페이지
     @GetMapping("admin/admin-coupon-mileage.html")
     public String adminCouponMileage() {

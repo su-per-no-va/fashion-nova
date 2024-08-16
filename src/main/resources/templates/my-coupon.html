@@ -262,6 +262,9 @@
       type: 'GET',
       url: '/coupons', // 서버에서 쿠폰 데이터를 제공하는 엔드포인트
       success: function(response) {
+
+        response.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // createdAt 기준 내림차순 정렬
+
         updateCouponTable(response);
       },
       error: function(error) {

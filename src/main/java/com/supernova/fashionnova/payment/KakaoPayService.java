@@ -13,10 +13,12 @@ import com.supernova.fashionnova.payment.dto.KakaoPayApproveResponseDto;
 import com.supernova.fashionnova.payment.dto.KakaoPayCancelResponseDto;
 import com.supernova.fashionnova.payment.dto.KakaoPayReadyResponseDto;
 import com.supernova.fashionnova.payment.dto.KakaoPayRefundRequestDto;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -35,6 +37,8 @@ public class KakaoPayService {
   private final UserRepository userRepository;
   private final OrdersRepository ordersRepository;
   private final CartRepository cartRepository;
+  @Value("${URL}")
+  private String url;
 
   //카카오페이 요청 양식
   public KakaoPayReadyResponseDto kakaoPayReady(User user, Long orderId, Long couponId) {
@@ -54,11 +58,11 @@ public class KakaoPayService {
     parameters.put("quantity", String.valueOf(order.getCount()));
     parameters.put("total_amount", String.valueOf(order.getTotalPrice()));
     parameters.put("tax_free_amount",String.valueOf(order.getTotalPrice()));
-    String approvalUrl = "https://super-nova.store/payments/success/" + order.getId() + "/" + user.getId() +
+    String approvalUrl = url + "/payments/success/" + order.getId() + "/" + user.getId() +
         "?couponId=" + (couponId != null ? String.valueOf(couponId) : "");
     parameters.put("approval_url", approvalUrl);
-    parameters.put("cancel_url", "https://super-nova.store/payments/cancel");
-    parameters.put("fail_url", "https://super-nova.store/payments/fail");
+    parameters.put("cancel_url",  url + "/payments/cancel");
+    parameters.put("fail_url",  url + "/payments/fail");
 
     HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(parameters,
         this.getHeaders());
@@ -140,4 +144,16 @@ public class KakaoPayService {
     order.setOrderStatus(OrderStatus.REFUND);
     return refundResponseDto.getBody();
   }
+
+  public void deleteFail(User user) {
+    List<Order> order = ordersRepository.findAllByUserId(user.getId());
+    if (order.isEmpty()) {
+      throw new CustomException(ErrorType.NOT_FOUND_ORDER);
+    }
+    for (Order filterOrder : order) {
+      if (filterOrder.getOrderStatus().equals(OrderStatus.PROGRESS)) {
+        ordersRepository.delete(filterOrder);
+      }
+      }
+    }
 }

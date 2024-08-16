@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Warn</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="../images/icons/favicon.png"/>
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css"
+          href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css"
+          href="../fonts/iconic/css/material-design-iconic-font.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../fonts/linearicons-v1.0.0/icon-font.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../vendor/animsition/css/animsition.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../vendor/perfect-scrollbar/perfect-scrollbar.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="../css/util.css">
+    <link rel="stylesheet" type="text/css" href="../css/main.css">
+    <link rel="stylesheet" type="text/css" href="/css/review.css">
+    <link rel="stylesheet" type="text/css" href="/css/order.css">
+    <!--===============================================================================================-->
+</head>
+<style>
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .pagination button {
+        padding: 8px 16px;
+        margin: 0 5px;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        cursor: pointer;
+    }
+    .pagination button.active {
+        background-color: #007bff;
+        color: #fff;
+        border-color: #007bff;
+    }
+</style>
+<body class="animsition">
+
+<!-- Header -->
+<header>
+    <!-- Header desktop -->
+    <div class="container-menu-desktop">
+        <!-- Topbar -->
+        <div class="top-bar">
+            <div class="content-topbar flex-sb-m h-full container">
+                <div class="left-top-bar">
+                    패셔니스타들을 위한, 패셔니스타들에 의한 패션노바
+                </div>
+
+                <div class="right-top-bar flex-w h-full">
+                    <a href="login.html" id="auth-btn" class="flex-c-m trans-04 p-lr-25">
+                        Login
+                    </a>
+
+                    <a href="question.html" class="flex-c-m trans-04 p-lr-25">
+                        Q&A
+                    </a>
+
+                    <a href="my-page.html" class="flex-c-m trans-04 p-lr-25">
+                        My Page
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="wrap-menu-desktop">
+            <nav class="limiter-menu-desktop container">
+
+                <!-- Logo desktop -->
+                <a href="index.html" class="logo">
+                    <img src="../images/icons/logo-01.png" alt="IMG-LOGO">
+                </a>
+
+                <!-- Menu desktop -->
+                <div class="menu-desktop">
+                    <ul class="main-menu">
+                        <li>
+                            <a href="about.html">About</a>
+                        </li>
+
+                        <li class="label1" data-label1="hot">
+                            <a href="product.html">Shop</a>
+                        </li>
+
+                        <li>
+                            <a href="contact.html">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Icon header -->
+                <div class="wrap-icon-header flex-w flex-r-m">
+                    <a id="cart-icon" href="shoping-cart.html"
+                       class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
+                       data-notify="">
+                        <i class="zmdi zmdi-shopping-cart"></i>
+                    </a>
+
+          <a id="wish-icon" href="wish-list.html"
+             class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"
+             data-notify="">
+            <i class="zmdi zmdi-favorite-outline"></i>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<!-- Title page -->
+<section class="bg-img1 txt-center p-lr-15 p-tb-92"
+         style="background-image: url('/images/bg-01.jpg');">
+    <h2 class="ltext-105 cl0 txt-center">
+        Warn
+    </h2>
+</section>
+
+<!-- breadcrumb -->
+<div class="container">
+    <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+        <a href="index.html" class="stext-109 cl8 hov-cl1 trans-04">
+            Home
+            <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+        </a>
+
+        <a href="my-page.html" class="stext-109 cl8 hov-cl1 trans-04">
+            My Page
+            <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+        </a>
+
+        <span class="stext-109 cl4">
+				Warn
+			</span>
+    </div>
+</div>
+
+<!-- Warn -->
+<form class="bg0 p-t-75 p-b-85">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-10">
+        <div class="m-l-10 m-r--100 m-lr-0-xl">
+          <div class="wrap-table-shopping-cart">
+            <table class="table-shopping-cart">
+              <tr class="table_head">
+                <th class="column-1">경고 생성일</th>
+                <th class="column-2">경고 사유</th>
+              </tr>
+
+              <!-- 경고가 동적으로 추가될 곳  -->
+              <tbody id="warn-list">
+              <!-- 동적으로 추가된 경고 항목들이 여기에 삽입됩니다. -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <div class="pagination" id="pagination">
+        <!-- 페이징 버튼들이 여기에 동적으로 삽입됩니다. -->
+    </div>
+</form>
+
+<!-- Footer -->
+<footer class="bg3 p-t-75 p-b-32">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-sm-6 col-lg-3 p-b-50">
+                <h4 class="stext-301 cl0 p-b-30">
+                    FEEDBACK
+                </h4>
+
+                <p class="stext-107 cl7 size-201">
+                    언제나 고객님들의 피드백을 반영하여 항상 더욱 발전하는 패션 노바가 되겠습니다.
+                </p>
+            </div>
+
+            <div class="p-t-40">
+                <div class="flex-c-m flex-w p-b-18">
+                    <a href="#" class="m-all-1">
+                        <img src="../images/icons/icon-pay-01.png" alt="ICON-PAY">
+                    </a>
+                </div>
+
+                <p class="stext-107 cl6 txt-center">
+                    이 홈페이지는 상업적으로 이용되지 않습니다.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<!-- Back to top -->
+<div class="btn-back-to-top" id="myBtn">
+		<span class="symbol-btn-back-to-top">
+			<i class="zmdi zmdi-chevron-up"></i>
+		</span>
+</div>
+
+<!--===============================================================================================-->
+<script src="../vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+<script src="../vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+<script src="../vendor/bootstrap/js/popper.js"></script>
+<script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+<script src="../vendor/select2/select2.min.js"></script>
+<script>
+    $(".js-select2").each(function () {
+        $(this).select2({
+            minimumResultsForSearch: 20,
+            dropdownParent: $(this).next('.dropDownSelect2')
+        });
+    })
+</script>
+<!--===============================================================================================-->
+<script src="../vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
+<!--===============================================================================================-->
+<script src="../vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script>
+    $('.js-pscroll').each(function () {
+        $(this).css('position', 'relative');
+        $(this).css('overflow', 'hidden');
+        var ps = new PerfectScrollbar(this, {
+            wheelSpeed: 1,
+            scrollingThreshold: 1000,
+            wheelPropagation: false,
+        });
+
+        $(window).on('resize', function () {
+            ps.update();
+        })
+    });
+</script>
+<!--===============================================================================================-->
+<script src="/js/common.js"></script>
+<script src="../js/main.js"></script>
+<!--===============================================================================================-->
+<script>
+    $(document).ready(function () {
+        let auth = localStorage.getItem('accessToken');
+        if (!auth) {
+            alert("로그인 후 이용해 주세요");
+            window.location.href = "login.html";
+        }
+
+        /* 장바구니 아이콘 개수 */
+        window.common.getShoppingCart()
+        .done(function (response) {
+            if (response) {
+                $('a#cart-icon')[0].dataset.notify = response.cartItemDtoList.length;
+            }
+        })
+        .fail(function (error) {
+            console.log(error.message);
+        });
+
+        /* 찜 아이콘 개수 */
+        window.common.getWishList()
+        .done(function (response) {
+            if (response) {
+                $('a#wish-icon')[0].dataset.notify = response.length;
+            }
+        })
+        .fail(function (error) {
+            console.log(error.message);
+        });
+
+        // 현재 로그인한 사용자의 경고 내역을 로드하고 테이블에 표시하는 함수
+        function loadUserWarns() {
+            $.ajax({
+                url: '/warns', // 자신의 경고 내역을 가져오는 API 호출
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+
+                    response.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // createdAt 기준 내림차순 정렬
+
+                    updateWarnTable(response); // 응답받은 전체 데이터를 표시
+                },
+                error: function (xhr, status, error) {
+                    console.error('경고 내역을 가져오는 데 실패했습니다:', error);
+                }
+            });
+        }
+
+        // 테이블에 경고 정보를 동적으로 추가하는 함수
+        function updateWarnTable(warns) {
+            const warnListElement = $('#warn-list');
+            warnListElement.empty(); // 기존 행 삭제
+
+            warns.forEach(function (warn) {
+                const warnRow = $('<tr>').addClass('table_row');
+
+                // 경고 생성일
+                const warnDateCell = $('<td>').addClass('column-1').text(
+                    new Date(warn.createdAt).toISOString().split('T')[0]
+                );
+
+                // 경고 사유
+                const warnDetailCell = $('<td>').addClass('column-2').text(warn.detail);
+
+                // 테이블 행에 셀 추가
+                warnRow.append(warnDateCell, warnDetailCell);
+
+                // 테이블에 행 추가
+                warnListElement.append(warnRow);
+            });
+        }
+        // 경고 내역 로드
+        loadUserWarns();
+    });
+</script>
+<!--===============================================================================================-->
+</body>
+</html>

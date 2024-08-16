@@ -238,10 +238,7 @@
                 </div>
 
                 <p class="stext-107 cl6 txt-center">
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                     이 홈페이지는 상업적으로 이용되지 않습니다.
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-
                 </p>
             </div>
         </div>
@@ -342,6 +339,9 @@
           type: 'GET',
           dataType: 'json',
           success: function (data) {
+
+              data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // createdAt 기준 내림차순 정렬
+
               // 전체 데이터를 받아와서 페이지네이션 설정 및 테이블 업데이트
               orders = data;
               renderPagination(orders);
