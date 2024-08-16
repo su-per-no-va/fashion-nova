@@ -59,11 +59,13 @@ public class Cart {
         this.totalPrice += price;
     }
 
+    // 수량과 총가격 업데이트
     public void updateCountPrice(int newCount) {
         this.count = newCount;
         this.totalPrice = newCount * this.productDetail.getProduct().getPrice();
     }
 
+    // 장바구니 상품 상세 정보 업데이트
     public void setProductDetail(ProductDetail newProductDetail) {
         this.productDetail = newProductDetail;
         this.totalPrice = this.count * newProductDetail.getProduct().getPrice();

@@ -42,11 +42,7 @@ public class CartController {
         @Valid @RequestBody CartRequestDto cartRequestDto,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        try {
-            cartService.addCart(userDetails.getUser(), cartRequestDto);
-        } catch (CustomException e) {
-            throw new CustomException(ErrorType.NOT_FOUND_PRODUCT);
-        }
+        cartService.addCart(userDetails.getUser(), cartRequestDto);
 
         return ResponseUtil.of(HttpStatus.OK, "장바구니 담기 완료");
     }
