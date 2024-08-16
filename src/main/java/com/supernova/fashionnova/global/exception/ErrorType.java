@@ -42,6 +42,9 @@ public enum ErrorType {
     DUPLICATED_DETAIL(HttpStatus.BAD_REQUEST, "중복된 상품 디테일입니다."),
     NOT_FOUND_PRODUCT_DETAIL(HttpStatus.BAD_REQUEST, "상품 상세를 찾을 수 없습니다."),
 
+    // PRODUCT_DETAIL
+    NO_QUANTITY(HttpStatus.BAD_REQUEST, "재고가 없거나 존재하는 수량만큼만 구매 가능합니다"),
+
     // CART
     CART_EMPTY(HttpStatus.BAD_REQUEST, "장바구니에 상품이 존재하지 않습니다."),
     CART_NOT_FOUND_COLOR_SIZE(HttpStatus.BAD_REQUEST,"수정하려는 사이즈나 색상이 존재하지 않습니다"),

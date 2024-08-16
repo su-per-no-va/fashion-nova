@@ -40,13 +40,13 @@ public class MileageService {
     @Transactional
   public void calculateMileage(PayAction action, Order order, User user) {
 //      Mileage mileage = mileageRepository.findByUserId(user.getId()).stream().map(Mileage::getMileage)
-        Mileage useddMileage = new Mileage(user,0L);
+        Mileage usedMileage = new Mileage(user,0L);
         Mileage plusMileage = new Mileage(user,0L);
       if(PayAction.BUY.equals(action)){
         // 사용 마일리지 차감
         user.updateMileage(user.getMileage() - order.getUsedMileage());
-        useddMileage.updateMileage(-order.getUsedMileage());
-          mileageRepository.save(useddMileage);
+        usedMileage.updateMileage(-order.getUsedMileage());
+          mileageRepository.save(usedMileage);
         // 등급 혜택 별로 마일리지 추가하기
         plusMileage.updateMileage(getMileageByGrade(order,user));
         mileageRepository.save(plusMileage);
@@ -54,8 +54,8 @@ public class MileageService {
       else{
           // 환불했을 때
         user.updateMileage(user.getMileage() + order.getUsedMileage());
-        useddMileage.updateMileage(order.getUsedMileage());
-        mileageRepository.save(useddMileage);
+        usedMileage.updateMileage(order.getUsedMileage());
+        mileageRepository.save(usedMileage);
           // 등급 혜택 별로 마일리지 추가하기
           plusMileage.updateMileage(getMileageByGrade(order,user));
           mileageRepository.save(plusMileage);

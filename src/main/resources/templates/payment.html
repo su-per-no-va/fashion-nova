@@ -559,7 +559,8 @@
 
       // 주문 요청 데이터 준비
       const orderRequestDto = {
-        cost: totalCost,
+        totalPrice: totalCost,
+        cost: productTotal,
         discount: couponDiscount,
         usedMileage: mileageUsed,
         address: address
