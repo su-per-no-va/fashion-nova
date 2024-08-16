@@ -35,7 +35,7 @@ public class OrderRepositoryQueryImpl implements OrderRepositoryQuery {
     setStartOfDay(calendar);
     LocalDateTime startDate = LocalDateTime.ofInstant(calendar.toInstant(), ZoneId.systemDefault());
 
-    calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+    calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
     setEndOfDay(calendar);
     LocalDateTime endDate = LocalDateTime.ofInstant(calendar.toInstant(), ZoneId.systemDefault());
 

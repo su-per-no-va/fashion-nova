@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class KakaoPayCancelResponseDto {
+public class KakaoPayRefundResponseDto {
 
   private String aid; //요청 고유번호
   private String tid; //결제 고유번호

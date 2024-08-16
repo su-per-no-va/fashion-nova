@@ -98,13 +98,12 @@
         },
         error: function(jqXHR, textStatus, errorThrown) {
           // API 호출 실패 시 처리
-          console.error('KakaoPay 준비 실패:', textStatus, errorThrown);
-          alert('KakaoPay 준비에 실패했습니다. 다시 시도해 주세요.');
+          console.error(jqXHR.responseJSON.errorType+ " : " +jqXHR.responseJSON.message);
+          alert(jqXHR.responseJSON.message);
         }
       });
     });
   });
 </script>
-
 </body>
 </html>
