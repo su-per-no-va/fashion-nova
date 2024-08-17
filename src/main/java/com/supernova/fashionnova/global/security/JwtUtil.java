@@ -48,7 +48,7 @@ public class JwtUtil {
         key = Keys.hmacShaKeyFor(bytes);
     }
 
-    //토큰 생성 Access, Refresh
+    // 토큰 생성 Access, Refresh
     public String generateToken(String username, Long expires, String tokenType) {
         Date date = new Date();
         return BEARER_PREFIX +
@@ -80,12 +80,12 @@ public class JwtUtil {
     }
 
 
-    //사용자에게서 토큰을 가져오기
+    // 사용자에게서 토큰을 가져오기
     public String getAccessTokenFromRequest(HttpServletRequest req) {
         return getTokenFromRequest(req, AUTHORIZATION_HEADER);
     }
 
-    //리프레시 토큰을 UserName 을통해 가져오기
+    // 리프레시 토큰을 UserName 을통해 가져오기
     public String getRefreshTokenFromRequest(String userName) {
         User user = userRepository.findByUserName(userName)
             .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER)
@@ -94,7 +94,7 @@ public class JwtUtil {
         return user.getRefreshToken();
     }
 
-    //HttpServletRequest 에서 Cookie Value  JWT 가져오기
+    // HttpServletRequest 에서 Cookie Value  JWT 가져오기
     public String getTokenFromRequest(HttpServletRequest req, String headerName) {
         String token = req.getHeader(headerName);
         if (token != null && !token.isEmpty()) {

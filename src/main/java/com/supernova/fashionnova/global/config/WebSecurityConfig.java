@@ -110,11 +110,11 @@ public class WebSecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/mails/**").permitAll() // 이메일 인증 허용
                 .requestMatchers(HttpMethod.POST, "/users/signup").permitAll() // 회원가입 허용
                 .requestMatchers(HttpMethod.POST, "/users/login").permitAll() // 로그인 허용
-                .requestMatchers(HttpMethod.GET, "/products/**").permitAll()// 상품 검색 허용
-                .requestMatchers(HttpMethod.GET, "/reviews/**").permitAll()// 상품별 리뷰 조회 허용
-                .requestMatchers("/users/kakao/callback").permitAll()// 카카오
+                .requestMatchers(HttpMethod.GET, "/products/**").permitAll() // 상품 검색 허용
+                .requestMatchers(HttpMethod.GET, "/reviews/**").permitAll() // 상품별 리뷰 조회 허용
+                .requestMatchers("/users/kakao/callback").permitAll() // 카카오
                 .requestMatchers("/admin/**").permitAll()
-                .requestMatchers("/api/admin/**").hasAuthority(UserRole.ADMIN.getAuthority()) //권한이 Admin 인 유저만 접근가능
+                .requestMatchers("/api/admin/**").hasAuthority(UserRole.ADMIN.getAuthority()) // 권한이 Admin 인 유저만 접근가능
                 .requestMatchers("/").permitAll()
                 .requestMatchers("**.html").permitAll()
                 .requestMatchers("/vendor/**").permitAll()
@@ -123,7 +123,6 @@ public class WebSecurityConfig {
                 .requestMatchers("/payments-completed/**").permitAll()
                 .requestMatchers("/payments/success/**").permitAll()
                 .anyRequest().authenticated() // 그 외 모든 요청 인증처리
-
         );
 
         // 필터관리 (필터 작동 순서 지정)

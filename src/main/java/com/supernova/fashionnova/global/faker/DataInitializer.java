@@ -270,7 +270,9 @@ public class DataInitializer implements CommandLineRunner {
         Collections.shuffle(questions);
 
         for (int i = 0; i < requestDtoList.size(); i++) {
-            if (i >= questions.size()) break;
+            if (i >= questions.size()) {
+                break;
+            }
 
             Question question = questions.get(i);
             AnswerRequestDto dto = requestDtoList.get(i);
