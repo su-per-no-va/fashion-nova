@@ -85,7 +85,7 @@ public class QuestionService {
      *
      * @param user
      * @param questionId
-     * @return responseDto
+     * @return QuestionDetailResponseDto
      */
     public QuestionDetailResponseDto getUserQuestion(User user, Long questionId) {
 

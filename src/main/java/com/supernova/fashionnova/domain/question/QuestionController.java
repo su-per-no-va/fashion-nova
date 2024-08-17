@@ -32,6 +32,7 @@ public class QuestionController {
      *
      * @param userDetails
      * @param requestDto
+     * @param file
      * @return "문의 등록 성공"
      */
     @PostMapping
@@ -50,7 +51,7 @@ public class QuestionController {
      *
      * @param userDetails
      * @param page
-     * @return responseDto
+     * @return List<QuestionResponseDto>
      */
     @GetMapping
     public ResponseEntity<List<QuestionResponseDto>> getUserQuestionList(
@@ -67,7 +68,7 @@ public class QuestionController {
      *
      * @param userDetails
      * @param questionId
-     * @return responseDto
+     * @return QuestionDetailResponseDto
      */
     @GetMapping("/{questionId}")
     public ResponseEntity<QuestionDetailResponseDto> getUserQuestionList(
