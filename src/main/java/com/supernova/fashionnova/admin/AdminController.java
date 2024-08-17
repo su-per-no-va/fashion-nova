@@ -44,6 +44,9 @@ public class AdminController {
 
     /**
      * 판매 통계 (일별)
+     *
+     * @param userDetails
+     * @return message
      */
     @GetMapping("/sold/day")
     public ResponseEntity<String> dailySoldStatistics(
@@ -56,6 +59,9 @@ public class AdminController {
 
     /**
      * 판매 통계 (주별)
+     *
+     * @param userDetails
+     * @return message
      */
     @GetMapping("/sold/week")
     public ResponseEntity<String> weeklySoldStatistics(
@@ -68,6 +74,10 @@ public class AdminController {
 
     /**
      * 판매 통계 (월별)
+     *
+     * @param userDetails
+     * @param month
+     * @return message
      */
     @GetMapping("/sold/month/{month}")
     public ResponseEntity<String> monthlySoldStatistics(
@@ -83,7 +93,7 @@ public class AdminController {
      * 유저 전체 조회
      *
      * @param page
-     * @return size는 30으로 고정했음
+     * @return List<UserResponseDto>
      */
     @GetMapping("/users")
     public ResponseEntity<List<UserResponseDto>> getAllUserList(
@@ -113,7 +123,7 @@ public class AdminController {
      * 유저리스트(마일리지,쿠폰을 기준으로) 조회
      *
      * @param page
-     * @return
+     * @return List<UsersCouponAndMileageResponseDto>
      */
     @GetMapping("/users/coupons/mileages")
     public ResponseEntity<List<UsersCouponAndMileageResponseDto>> getAllUsersCouponAndMileages(
@@ -174,7 +184,7 @@ public class AdminController {
      *
      * @param userId
      * @param page
-     * @return List<MyReviewResponseDto>
+     * @return List<ReviewResponseDto>
      */
     @GetMapping("/reviews/{userId}")
     public ResponseEntity<List<ReviewResponseDto>> getReviewListByUserId(
@@ -190,6 +200,7 @@ public class AdminController {
      * 상품 등록
      *
      * @param requestDtoJson
+     * @param files
      * @return "상품 등록 성공"
      */
     @PostMapping("/products")
