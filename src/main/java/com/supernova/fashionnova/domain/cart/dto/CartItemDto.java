@@ -6,15 +6,15 @@ import lombok.Getter;
 @Getter
 public class CartItemDto {
 
-    private List<String> sizes;
-    private List<String> colors;
-    private String product;
-    private Long price;
-    private int count;
-    private String size;
-    private String color;
-    private String imageUrl;
-    private Long productDetailId;
+    private final List<String> sizes;
+    private final List<String> colors;
+    private final String product;
+    private final Long price;
+    private final int count;
+    private final String size;
+    private final String color;
+    private final String imageUrl;
+    private final Long productDetailId;
 
     public CartItemDto(String product, Long price, int count, String size, String color,
         String imageUrl, Long productDetailId, List<String> colors, List<String> sizes) {

@@ -63,18 +63,18 @@ public class AdminService {
 
     private static final int PAGE_SIZE = 30;
 
-    private final FileUploadUtil fileUploadUtil;
-
-    private final UserRepository userRepository;
-    private final WarnRepository warnRepository;
-    private final ReviewRepository reviewRepository;
-    private final ProductRepository productRepository;
-    private final CouponRepository couponRepository;
+    private final AddressRepository addressRepository;
     private final AnswerRepository answerRepository;
-    private final QuestionRepository questionRepository;
+    private final CouponRepository couponRepository;
     private final MileageRepository mileageRepository;
     private final OrdersRepository ordersRepository;
-    private final AddressRepository addressRepository;
+    private final ProductRepository productRepository;
+    private final QuestionRepository questionRepository;
+    private final ReviewRepository reviewRepository;
+    private final UserRepository userRepository;
+    private final WarnRepository warnRepository;
+
+    private final FileUploadUtil fileUploadUtil;
 
     /**
      * 판매 통계 (일별)
