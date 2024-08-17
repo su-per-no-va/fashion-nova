@@ -21,7 +21,6 @@ public class AddressRepositoryQueryImpl implements AddressRepositoryQuery {
             .where(address.user.eq(user))
             .orderBy(address.defaultAddress.desc())
             .fetch();
-
     }
 
     @Override
@@ -40,7 +39,6 @@ public class AddressRepositoryQueryImpl implements AddressRepositoryQuery {
             .set(address.defaultAddress, true)
             .where(address.user.id.eq(userId), address.id.eq(addressId))
             .execute();
-
     }
 
 }
