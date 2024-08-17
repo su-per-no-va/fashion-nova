@@ -38,7 +38,9 @@ public class Mileage extends Timestamped {
         this.user = user;
         this.mileage = mileage;
     }
+
     public void updateMileage(Long mileage) {
         this.mileage = mileage;
     }
+
 }
