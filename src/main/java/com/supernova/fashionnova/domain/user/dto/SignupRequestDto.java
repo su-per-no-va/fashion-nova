@@ -35,8 +35,8 @@ public class SignupRequestDto {
     private String phone;
 
     public SignupRequestDto() {
-
     }
+
     public SignupRequestDto(String userName, String password, String name, String email,
         String phone) {
         this.userName = userName;
@@ -45,4 +45,5 @@ public class SignupRequestDto {
         this.email = email;
         this.phone = phone;
     }
+
 }

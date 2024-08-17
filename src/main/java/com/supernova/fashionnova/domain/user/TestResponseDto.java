@@ -8,8 +8,10 @@ import lombok.Getter;
 @AllArgsConstructor
 @Builder
 public class TestResponseDto {
+
     private String testName;
     private Long testCode;
     private String testContent;
     private String testNaEun;
+
 }

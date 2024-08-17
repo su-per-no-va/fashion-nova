@@ -101,10 +101,10 @@ public class UserService {
     public UserResponseDto updateUser(UserUpdateRequestDto requestDto, User user) {
 
         User updateUser = userRepository.findByUserName(user.getUserName())
-            .orElseThrow(()-> new CustomException(ErrorType.NOT_FOUND_USER));
+            .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER));
 
         String encodedPassword = passwordEncoder.encode(requestDto.getPassword());
-        updateUser.updateUser(requestDto,encodedPassword);
+        updateUser.updateUser(requestDto, encodedPassword);
 
         return new UserResponseDto(user);
     }
@@ -152,7 +152,7 @@ public class UserService {
 
     public User getUserById(Long userId) {
         return userRepository.findById(userId).orElseThrow(
-            ()-> new CustomException(ErrorType.NOT_FOUND_USER));
+            () -> new CustomException(ErrorType.NOT_FOUND_USER));
     }
 
     private void giveWelcomeCoupon(User user) {
@@ -164,7 +164,6 @@ public class UserService {
             .sale("10")
             .type("WELCOME")
             .build();
-
 
         adminService.addCoupon(couponRequest);
     }

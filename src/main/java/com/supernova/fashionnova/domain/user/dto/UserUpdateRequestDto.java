@@ -33,4 +33,5 @@ public class UserUpdateRequestDto {
         message = "휴대폰 형식에 맞지 않습니다. 휴대폰 형식: 010-****-**** ")
     @NotBlank(message = "휴대폰 입력값이 없습니다.")
     private String phone;
+
 }

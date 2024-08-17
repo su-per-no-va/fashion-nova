@@ -79,7 +79,7 @@ public class User extends Timestamped {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Coupon> couponList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Warn> warnList = new ArrayList<>();
 
     @Builder
@@ -133,7 +133,9 @@ public class User extends Timestamped {
         this.kakaoId = kakaoId;
         return this;
     }
+
     public void updateMileage(Long mileage) {
         this.mileage = mileage;
     }
+
 }
