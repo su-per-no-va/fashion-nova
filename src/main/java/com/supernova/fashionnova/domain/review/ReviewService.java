@@ -28,9 +28,9 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class ReviewService {
 
-    private final ReviewRepository reviewRepository;
-    private final ProductRepository productRepository;
     private final OrdersRepository ordersRepository;
+    private final ProductRepository productRepository;
+    private final ReviewRepository reviewRepository;
 
     private final FileUploadUtil fileUploadUtil;
 
@@ -123,7 +123,7 @@ public class ReviewService {
     /**
      * 리뷰 삭제
      *
-     * @param user       사용자 정보
+     * @param user     사용자 정보
      * @param reviewId 리뷰 삭제 요청 DTO
      * @throws CustomException NOT_FOUND_REVIEW 리뷰가 존재하지 않습니다.
      */
@@ -132,7 +132,7 @@ public class ReviewService {
 
         Review review = getReview(user, reviewId);
         //s3에서 찾아서 삭제
-        fileUploadUtil.deleteImages(ImageType.REVIEW,reviewId);
+        fileUploadUtil.deleteImages(ImageType.REVIEW, reviewId);
 
         reviewRepository.delete(review);
         review.getProduct().decreaseReview();

@@ -40,6 +40,8 @@ public class ReviewController {
      * 리뷰 등록
      *
      * @param reviewRequestDto
+     * @param images
+     * @param userDetails
      * @return "리뷰 등록 완료"
      */
     @PostMapping
@@ -57,6 +59,7 @@ public class ReviewController {
      * 상품별 리뷰 전체 조회
      *
      * @param productId 상품 ID
+     * @param page
      * @return List<ReviewResponseDto>
      */
     @GetMapping("/{productId}")
@@ -74,7 +77,8 @@ public class ReviewController {
      * 내가 작성한 리뷰 조회
      *
      * @param userDetails 로그인된 사용자 정보
-     * @return List<MyReviewResponseDto>
+     * @param page
+     * @return Page<MyReviewResponseDto>
      */
     @GetMapping
     public ResponseEntity<Page<MyReviewResponseDto>> getMyReviews(
@@ -93,7 +97,7 @@ public class ReviewController {
      *
      * @param userDetails 로그인된 사용자 정보
      * @param reviewUpdateRequestDto 리뷰 수정 요청 DTO
-     * @return 리뷰 수정 완료
+     * @return "리뷰 수정 완료"
      */
     @PutMapping
     public ResponseEntity<String> updateReview(
@@ -110,7 +114,7 @@ public class ReviewController {
      *
      * @param userDetails 로그인된 사용자 정보
      * @param reviewDeleteRequestDto 리뷰 삭제 요청 DTO
-     * @return 리뷰 삭제 완료
+     * @return "리뷰 삭제 완료"
      */
     @DeleteMapping
     public ResponseEntity<String> deleteReview(
