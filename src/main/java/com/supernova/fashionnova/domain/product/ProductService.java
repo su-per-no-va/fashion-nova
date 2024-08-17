@@ -36,51 +36,61 @@ public class ProductService {
      * @param page
      * @return 페이징
      */
-    public Page<ProductResponseDto> getProductList(String sorted, String category, String size,
-        String color, String search, int page) {
+    public Page<ProductResponseDto> getProductList(String sorted, String category, String size, String color, String search, int page) {
+
         Sort.Direction direction = Sort.Direction.DESC;
         Sort sort = Sort.by(direction, sorted);
         Pageable pageable = PageRequest.of(page, 4, sort);
 
-        return productRepository.findProductByOrdered(sorted, category, size, color, search,
-            pageable);
+        return productRepository.findProductByOrdered(sorted, category, size, color, search, pageable);
     }
 
     @Transactional
     public void calculateQuantity(PayAction action, Order order) {
-      List<OrderDetail> orderDetailList =orderDetailRepository.findAllByOrderId(order.getId());
-      if(orderDetailList.isEmpty()) {
-          throw new CustomException(ErrorType.NOT_FOUND_ORDER);
-      }
 
-      if(PayAction.BUY.equals(action)) {
-        for(OrderDetail orderDetail:orderDetailList) {
-          ProductDetail productDetail = productDetailRepository.findById(orderDetail.getProductDetail().getId()).orElseThrow(
-              ()-> new CustomException(ErrorType.NOT_FOUND_PRODUCT_DETAIL));
-          if(productDetail.getQuantity()<orderDetail.getCount()) {
-            throw new CustomException(ErrorType.NO_QUANTITY);
-          }
-          productDetail.updateQuantity(productDetail.getQuantity() - orderDetail.getCount());
-          productDetailRepository.save(productDetail);
-        }
-      }
-      else{
-        for(OrderDetail orderDetail:orderDetailList) {
-          ProductDetail productDetail = productDetailRepository.findById(orderDetail.getProductDetail().getId()).orElseThrow(
-              ()-> new CustomException(ErrorType.NOT_FOUND_PRODUCT_DETAIL));
+        List<OrderDetail> orderDetailList = orderDetailRepository.findAllByOrderId(order.getId());
 
-          productDetail.updateQuantity(productDetail.getQuantity() + orderDetail.getCount());
-          productDetailRepository.save(productDetail);
+        if (orderDetailList.isEmpty()) {
+            throw new CustomException(ErrorType.NOT_FOUND_ORDER);
         }
-      }
+
+        if (PayAction.BUY.equals(action)) {
+
+            for (OrderDetail orderDetail : orderDetailList) {
+                ProductDetail productDetail = productDetailRepository.findById(orderDetail.getProductDetail().getId()).orElseThrow(
+                    () -> new CustomException(ErrorType.NOT_FOUND_PRODUCT_DETAIL));
+
+                if (productDetail.getQuantity() < orderDetail.getCount()) {
+                    throw new CustomException(ErrorType.NO_QUANTITY);
+                }
+
+                productDetail.updateQuantity(productDetail.getQuantity() - orderDetail.getCount());
+                productDetailRepository.save(productDetail);
+            }
+
+        } else {
+
+            for (OrderDetail orderDetail : orderDetailList) {
+                ProductDetail productDetail = productDetailRepository.findById(orderDetail.getProductDetail().getId()).orElseThrow(
+                    () -> new CustomException(ErrorType.NOT_FOUND_PRODUCT_DETAIL));
+
+                productDetail.updateQuantity(productDetail.getQuantity() + orderDetail.getCount());
+                productDetailRepository.save(productDetail);
+            }
+
+        }
 
     }
 
     public ProductResponseDto getProduct(Long productId) {
+
         Product product = productRepository.findById(productId).orElseThrow(
-            ()-> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
+            () -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
+
         List<String> imageUrlList = productImageRepository.findAllByProductId(productId).stream()
             .map(ProductImage::getProductImageUrl).toList();
+
         return new ProductResponseDto(product, imageUrlList);
     }
+
 }

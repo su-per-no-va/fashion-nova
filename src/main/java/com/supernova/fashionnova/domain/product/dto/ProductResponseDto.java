@@ -72,4 +72,5 @@ public class ProductResponseDto {
         this.imageUrlList = imageUrlList;
         this.explanation = product.getExplanation();
     }
+
 }

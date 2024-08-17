@@ -62,25 +62,6 @@ public class Product extends Timestamped {
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Review> reviews;
 
-    public void addDetail(ProductDetail detail) {
-        ProductDetail productDetail = productDetailList.stream()
-            .filter(p -> p.getColor().equals(detail.getColor()) && p.getSize().equals(detail.getSize())).findFirst().orElse(null);
-        if(productDetail == null) {
-            productDetailList.add(detail);
-        } else {
-            throw new CustomException(ErrorType.DUPLICATED_DETAIL);
-        }
-
-    }
-
-    public void updateImage(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public void addDetailList(List<ProductDetail> detail) {
-        productDetailList.addAll(detail);
-    }
-
     @Builder
     public Product(String product, Long price, String explanation, ProductCategory category, ProductStatus productStatus) {
         this.product = product;
@@ -98,6 +79,28 @@ public class Product extends Timestamped {
         this.explanation = explanation;
         this.category = category;
         this.productStatus = productStatus;
+    }
+
+    public void addDetail(ProductDetail detail) {
+
+        ProductDetail productDetail = productDetailList.stream()
+            .filter(p -> p.getColor().equals(detail.getColor()) && p.getSize().equals(detail.getSize())).findFirst()
+            .orElse(null);
+
+        if (productDetail == null) {
+            productDetailList.add(detail);
+        } else {
+            throw new CustomException(ErrorType.DUPLICATED_DETAIL);
+        }
+
+    }
+
+    public void updateImage(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public void addDetailList(List<ProductDetail> detail) {
+        productDetailList.addAll(detail);
     }
 
     public void increaseWish() {
