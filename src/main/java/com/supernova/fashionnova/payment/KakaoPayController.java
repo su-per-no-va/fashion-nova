@@ -5,23 +5,19 @@ import com.supernova.fashionnova.domain.coupon.CouponService;
 import com.supernova.fashionnova.domain.mileage.MileageService;
 import com.supernova.fashionnova.domain.order.Order;
 import com.supernova.fashionnova.domain.order.OrderService;
-import com.supernova.fashionnova.domain.order.OrderStatus;
 import com.supernova.fashionnova.domain.product.ProductService;
 import com.supernova.fashionnova.domain.user.User;
 import com.supernova.fashionnova.domain.user.UserService;
-import com.supernova.fashionnova.global.exception.CustomException;
-import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.global.security.UserDetailsImpl;
 import com.supernova.fashionnova.payment.dto.KakaoPayCancelResponseDto;
 import com.supernova.fashionnova.payment.dto.KakaoPayReadyResponseDto;
 import com.supernova.fashionnova.payment.dto.KakaoPayRefundRequestDto;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.transaction.annotation.Transactional;
 
 @RestController
 @RequestMapping("/payments")

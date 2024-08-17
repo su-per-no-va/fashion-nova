@@ -4,8 +4,6 @@ import com.supernova.fashionnova.domain.cart.dto.CartDeleteRequestDto;
 import com.supernova.fashionnova.domain.cart.dto.CartRequestDto;
 import com.supernova.fashionnova.domain.cart.dto.CartResponseDto;
 import com.supernova.fashionnova.domain.cart.dto.CartUpdateRequestDto;
-import com.supernova.fashionnova.global.exception.CustomException;
-import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.global.security.UserDetailsImpl;
 import com.supernova.fashionnova.global.util.ResponseUtil;
 import jakarta.validation.Valid;
