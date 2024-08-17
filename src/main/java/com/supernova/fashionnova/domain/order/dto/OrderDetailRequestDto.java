@@ -7,7 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OrderDetailRequestDto {
 
-  private int count;
-  private String productName;
-  private int price;
+    private int count;
+    private String productName;
+    private int price;
+
 }

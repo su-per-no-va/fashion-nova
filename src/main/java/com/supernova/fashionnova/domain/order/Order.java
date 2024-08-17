@@ -73,17 +73,17 @@ public class Order extends Timestamped {
     private int count;
 
     @Builder
-    public Order (
-            User user,
-            Long totalPrice,
-            Long cost,
-            int discount,
-            Long usedMileage,
-            String address,
-            Long invoice,
-            DeliveryStatus deliveryStatus,
-            OrderStatus orderStatus
-        ) {
+    public Order(
+        User user,
+        Long totalPrice,
+        Long cost,
+        int discount,
+        Long usedMileage,
+        String address,
+        Long invoice,
+        DeliveryStatus deliveryStatus,
+        OrderStatus orderStatus) {
+
         this.user = user;
         this.totalPrice = totalPrice;
         this.cost = cost;
@@ -106,7 +106,7 @@ public class Order extends Timestamped {
         this.count = count;
     }
 
-  public void updateTid(String tid) {
+    public void updateTid(String tid) {
         this.tid = tid;
     }
 

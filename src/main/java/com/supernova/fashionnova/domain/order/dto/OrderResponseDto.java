@@ -10,25 +10,26 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OrderResponseDto {
 
-  private Long orderId;
-  private Long totalPrice;
-  private Long cost;
-  private int discount;
-  private Long usedMileage;
-  private String address;
-  private LocalDateTime createdAt;
-  private DeliveryStatus deliveryStatus;
-  private OrderStatus orderStatus;
+    private Long orderId;
+    private Long totalPrice;
+    private Long cost;
+    private int discount;
+    private Long usedMileage;
+    private String address;
+    private LocalDateTime createdAt;
+    private DeliveryStatus deliveryStatus;
+    private OrderStatus orderStatus;
 
-  public OrderResponseDto(Long orderId, OrderStatus orderStatus, String address, Long cost, DeliveryStatus deliveryStatus, int discount, Long totalPrice, Long usedMileage, LocalDateTime createdAt) {
-    this.orderId = orderId;
-    this.orderStatus = orderStatus;
-    this.address = address;
-    this.cost = cost;
-    this.deliveryStatus = deliveryStatus;
-    this.discount = discount;
-    this.totalPrice = totalPrice;
-    this.usedMileage = usedMileage;
-    this.createdAt = createdAt;
-  }
+    public OrderResponseDto(Long orderId, OrderStatus orderStatus, String address, Long cost, DeliveryStatus deliveryStatus, int discount, Long totalPrice, Long usedMileage, LocalDateTime createdAt) {
+        this.orderId = orderId;
+        this.orderStatus = orderStatus;
+        this.address = address;
+        this.cost = cost;
+        this.deliveryStatus = deliveryStatus;
+        this.discount = discount;
+        this.totalPrice = totalPrice;
+        this.usedMileage = usedMileage;
+        this.createdAt = createdAt;
+    }
+
 }

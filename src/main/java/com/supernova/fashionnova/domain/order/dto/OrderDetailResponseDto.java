@@ -24,8 +24,8 @@ public class OrderDetailResponseDto {
         String size,
         String color,
         OrderStatus orderStatus,
-        String productImageUrl
-    ) {
+        String productImageUrl) {
+
         this.id = id;
         this.count = count;
         this.productName = productName;
@@ -37,6 +37,7 @@ public class OrderDetailResponseDto {
     }
 
     public OrderDetailResponseDto(OrderDetail orderDetail) {
+
         if (orderDetail != null) {
             this.id = orderDetail.getId();
             this.count = orderDetail.getCount();
@@ -45,6 +46,7 @@ public class OrderDetailResponseDto {
         } else {
             this.id = null;
         }
+
     }
 
 }
