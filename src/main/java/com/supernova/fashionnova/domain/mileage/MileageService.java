@@ -42,7 +42,7 @@ public class MileageService {
 //      Mileage mileage = mileageRepository.findByUserId(user.getId()).stream().map(Mileage::getMileage)
         Mileage usedMileage = new Mileage(user,0L);
         Mileage plusMileage = new Mileage(user,0L);
-      if(PayAction.BUY.equals(action)){
+      if(PayAction.BUY.equals(action)) {
         // 사용 마일리지 차감
         user.updateMileage(user.getMileage() - order.getUsedMileage());
         usedMileage.updateMileage(-order.getUsedMileage());

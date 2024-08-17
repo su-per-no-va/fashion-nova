@@ -19,7 +19,7 @@ public class ProductRepositoryQueryImpl implements ProductRepositoryQuery {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<ProductResponseDto> findProductByOrdered(String sort, String category, String size, String color, String search, Pageable pageable){
+    public Page<ProductResponseDto> findProductByOrdered(String sort, String category, String size, String color, String search, Pageable pageable) {
 
         QProduct product = QProduct.product1;
         QProductDetail productDetail = QProductDetail.productDetail;

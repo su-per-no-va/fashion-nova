@@ -49,15 +49,15 @@ public class ProductService {
     @Transactional
     public void calculateQuantity(PayAction action, Order order) {
       List<OrderDetail> orderDetailList =orderDetailRepository.findAllByOrderId(order.getId());
-      if(orderDetailList.isEmpty()){
+      if(orderDetailList.isEmpty()) {
           throw new CustomException(ErrorType.NOT_FOUND_ORDER);
       }
 
-      if(PayAction.BUY.equals(action)){
-        for(OrderDetail orderDetail:orderDetailList){
+      if(PayAction.BUY.equals(action)) {
+        for(OrderDetail orderDetail:orderDetailList) {
           ProductDetail productDetail = productDetailRepository.findById(orderDetail.getProductDetail().getId()).orElseThrow(
               ()-> new CustomException(ErrorType.NOT_FOUND_PRODUCT_DETAIL));
-          if(productDetail.getQuantity()<orderDetail.getCount()){
+          if(productDetail.getQuantity()<orderDetail.getCount()) {
             throw new CustomException(ErrorType.NO_QUANTITY);
           }
           productDetail.updateQuantity(productDetail.getQuantity() - orderDetail.getCount());
@@ -65,7 +65,7 @@ public class ProductService {
         }
       }
       else{
-        for(OrderDetail orderDetail:orderDetailList){
+        for(OrderDetail orderDetail:orderDetailList) {
           ProductDetail productDetail = productDetailRepository.findById(orderDetail.getProductDetail().getId()).orElseThrow(
               ()-> new CustomException(ErrorType.NOT_FOUND_PRODUCT_DETAIL));
 

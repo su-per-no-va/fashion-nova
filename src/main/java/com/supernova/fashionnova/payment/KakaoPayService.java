@@ -121,7 +121,7 @@ public class KakaoPayService {
     Order order = ordersRepository.findById(orderId).orElseThrow(
         ()-> new CustomException(ErrorType.NOT_FOUND_ORDER));
     //본인의 주문만 환불 가능
-    if(!order.getUser().getId().equals(user.getId())){
+    if(!order.getUser().getId().equals(user.getId())) {
       throw new CustomException(ErrorType.DENIED_PERMISSION);
     }
     Map<String, String> parameters = new HashMap<>();

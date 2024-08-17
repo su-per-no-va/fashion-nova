@@ -83,7 +83,7 @@ public class Order extends Timestamped {
             Long invoice,
             DeliveryStatus deliveryStatus,
             OrderStatus orderStatus
-        ){
+        ) {
         this.user = user;
         this.totalPrice = totalPrice;
         this.cost = cost;
