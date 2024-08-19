@@ -20,77 +20,87 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ProductService {
 
-    private final ProductRepository productRepository;
-    private final OrderDetailRepository orderDetailRepository;
-    private final ProductDetailRepository productDetailRepository;
-    private final ProductImageRepository productImageRepository;
+  private final ProductRepository productRepository;
+  private final OrderDetailRepository orderDetailRepository;
+  private final ProductDetailRepository productDetailRepository;
+  private final ProductImageRepository productImageRepository;
 
-    /**
-     * 조건별 상품 검색
-     *
-     * @param sorted
-     * @param category
-     * @param size
-     * @param color
-     * @param search
-     * @param page
-     * @return 페이징
-     */
-    public Page<ProductResponseDto> getProductList(String sorted, String category, String size, String color, String search, int page) {
+  /**
+   * 조건별 상품 검색
+   *
+   * @param sorted
+   * @param category
+   * @param size
+   * @param color
+   * @param search
+   * @param page
+   * @return 페이징
+   */
+  public Page<ProductResponseDto> getProductList(String sorted, String category, String size,
+      String color, String search, int page) {
+    Sort.Direction direction = Sort.Direction.DESC;
+    Sort sort = Sort.by(direction, sorted);
+    Pageable pageable = PageRequest.of(page, 10, sort);
 
-        Sort.Direction direction = Sort.Direction.DESC;
-        Sort sort = Sort.by(direction, sorted);
-        Pageable pageable = PageRequest.of(page, 4, sort);
+    return productRepository.findProductByOrdered(sorted, category, size, color, search,
+        pageable);
+  }
 
-        return productRepository.findProductByOrdered(sorted, category, size, color, search, pageable);
-    }
+  @Transactional
+  public void calculateQuantity(PayAction action, Order order) {
 
-    @Transactional
-    public void calculateQuantity(PayAction action, Order order) {
-
-        List<OrderDetail> orderDetailList = orderDetailRepository.findAllByOrderId(order.getId());
-
-        if (orderDetailList.isEmpty()) {
-            throw new CustomException(ErrorType.NOT_FOUND_ORDER);
+    List<OrderDetail> orderDetailList = fetchQuantity(order.getId());
+    if (PayAction.BUY.equals(action)) {
+        for(OrderDetail orderDetail:orderDetailList) {
+          ProductDetail productDetail = productDetailRepository.findById(
+              orderDetail.getProductDetail().getId()).orElseThrow(
+              () -> new CustomException(ErrorType.NOT_FOUND_PRODUCT_DETAIL));
+          productDetail.updateQuantity(productDetail.getQuantity() - orderDetail.getCount());
+          productDetailRepository.save(productDetail);
         }
+    } else {
+      for (OrderDetail orderDetail : orderDetailList) {
+        ProductDetail productDetail = productDetailRepository.findById(
+            orderDetail.getProductDetail().getId()).orElseThrow(
+            () -> new CustomException(ErrorType.NOT_FOUND_PRODUCT_DETAIL));
 
-        if (PayAction.BUY.equals(action)) {
-
-            for (OrderDetail orderDetail : orderDetailList) {
-                ProductDetail productDetail = productDetailRepository.findById(orderDetail.getProductDetail().getId()).orElseThrow(
-                    () -> new CustomException(ErrorType.NOT_FOUND_PRODUCT_DETAIL));
-
-                if (productDetail.getQuantity() < orderDetail.getCount()) {
-                    throw new CustomException(ErrorType.NO_QUANTITY);
-                }
-
-                productDetail.updateQuantity(productDetail.getQuantity() - orderDetail.getCount());
-                productDetailRepository.save(productDetail);
-            }
-
-        } else {
-
-            for (OrderDetail orderDetail : orderDetailList) {
-                ProductDetail productDetail = productDetailRepository.findById(orderDetail.getProductDetail().getId()).orElseThrow(
-                    () -> new CustomException(ErrorType.NOT_FOUND_PRODUCT_DETAIL));
-
-                productDetail.updateQuantity(productDetail.getQuantity() + orderDetail.getCount());
-                productDetailRepository.save(productDetail);
-            }
-
-        }
-
+        productDetail.updateQuantity(productDetail.getQuantity() + orderDetail.getCount());
+        productDetailRepository.save(productDetail);
+      }
     }
 
-    public ProductResponseDto getProduct(Long productId) {
+  }
 
-        Product product = productRepository.findById(productId).orElseThrow(
-            () -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
+  public List<OrderDetail> fetchQuantity(Long orderId) {
 
-        List<String> imageUrlList = productImageRepository.findAllByProductId(productId).stream()
-            .map(ProductImage::getProductImageUrl).toList();
-
-        return new ProductResponseDto(product, imageUrlList);
+    List<OrderDetail> orderDetailList = orderDetailRepository.findAllByOrderId(orderId);
+    if (orderDetailList.isEmpty()) {
+      throw new CustomException(ErrorType.NOT_FOUND_ORDER);
     }
+    return orderDetailList;
+  }
 
+  public ProductResponseDto getProduct(Long productId) {
+    Product product = productRepository.findById(productId).orElseThrow(
+        () -> new CustomException(ErrorType.NOT_FOUND_PRODUCT));
+    List<String> imageUrlList = productImageRepository.findAllByProductId(productId).stream()
+        .map(ProductImage::getProductImageUrl).toList();
+    return new ProductResponseDto(product, imageUrlList);
+  }
+
+  //수량 이상의 주문 막기
+  @Transactional
+  public void checkQuantity(Long orderId) {
+
+    List<OrderDetail> orderDetailList = fetchQuantity(orderId);
+    for(OrderDetail orderDetail:orderDetailList) {
+      ProductDetail productDetail = productDetailRepository.findById(
+          orderDetail.getProductDetail().getId()).orElseThrow(
+          () -> new CustomException(ErrorType.NOT_FOUND_PRODUCT_DETAIL));
+      if (productDetail.getQuantity() < orderDetail.getCount()) {
+        throw new CustomException(ErrorType.NO_QUANTITY);
+      }
+      productDetailRepository.save(productDetail);
+    }
+  }
 }

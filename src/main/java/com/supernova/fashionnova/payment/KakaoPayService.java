@@ -10,7 +10,7 @@ import com.supernova.fashionnova.domain.user.UserRepository;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.payment.dto.KakaoPayApproveResponseDto;
-import com.supernova.fashionnova.payment.dto.KakaoPayCancelResponseDto;
+import com.supernova.fashionnova.payment.dto.KakaoPayRefundResponseDto;
 import com.supernova.fashionnova.payment.dto.KakaoPayReadyResponseDto;
 import com.supernova.fashionnova.payment.dto.KakaoPayRefundRequestDto;
 import java.util.HashMap;
@@ -60,7 +60,7 @@ public class KakaoPayService {
     String approvalUrl = url + "/payments/success/" + order.getId() + "/" + user.getId() +
         "?couponId=" + (couponId != null ? String.valueOf(couponId) : "");
     parameters.put("approval_url", approvalUrl);
-    parameters.put("cancel_url",  url + "/payments/cancel");
+    parameters.put("cancel_url",  url + "/payments/cancel" + "/" + user.getId());
     parameters.put("fail_url",  url + "/payments/fail");
 
     HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(parameters,
@@ -93,6 +93,7 @@ public class KakaoPayService {
     return headers;
   }
 
+  @Transactional
   public KakaoPayApproveResponseDto kakaoPayApprove(String pgToken,
       Long userId, Long orderId) {
     User user=userRepository.findById(userId).orElseThrow();
@@ -116,7 +117,7 @@ public class KakaoPayService {
     return response.getBody();
   }
 
-  public KakaoPayCancelResponseDto kakaoPayCancel(KakaoPayRefundRequestDto requestDto, User user, Long orderId) {
+  public KakaoPayRefundResponseDto kakaoPayRefund(KakaoPayRefundRequestDto requestDto, User user, Long orderId) {
     //취소하려는 주문이 없음(이미 취소된 주문)
     Order order = ordersRepository.findById(orderId).orElseThrow(
         ()-> new CustomException(ErrorType.NOT_FOUND_ORDER));
@@ -135,17 +136,17 @@ public class KakaoPayService {
 
     RestTemplate restTemplate = new RestTemplate();
 
-    ResponseEntity<KakaoPayCancelResponseDto> refundResponseDto = restTemplate.postForEntity(
+    ResponseEntity<KakaoPayRefundResponseDto> refundResponseDto = restTemplate.postForEntity(
         "https://open-api.kakaopay.com/online/v1/payment/cancel",
         requestEntity,
-        KakaoPayCancelResponseDto.class);
+        KakaoPayRefundResponseDto.class);
     //환불 후 주문상태 '환불'로 바꾸기
     order.setOrderStatus(OrderStatus.REFUND);
     return refundResponseDto.getBody();
   }
 
-  public void deleteFail(User user) {
-    List<Order> order = ordersRepository.findAllByUserId(user.getId());
+  public void deleteFail(Long userId) {
+    List<Order> order = ordersRepository.findAllByUserId(userId);
     if (order.isEmpty()) {
       throw new CustomException(ErrorType.NOT_FOUND_ORDER);
     }

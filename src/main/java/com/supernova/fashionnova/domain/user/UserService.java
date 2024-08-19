@@ -11,10 +11,14 @@ import com.supernova.fashionnova.domain.warn.WarnRepository;
 import com.supernova.fashionnova.domain.warn.dto.WarnResponseDto;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
+import com.supernova.fashionnova.global.security.JwtUtil;
+import com.supernova.fashionnova.global.security.RefreshToken;
+import com.supernova.fashionnova.global.security.RefreshTokenRepository;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +31,8 @@ public class UserService {
     private final WarnRepository warnRepository;
     private final PasswordEncoder passwordEncoder;
     private final AdminService adminService;
+    private final JwtUtil jwtUtil;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     /**
      * 유저 회원가입
@@ -57,24 +63,27 @@ public class UserService {
     /**
      * 유저 로그아웃
      *
-     * @param user
      */
-    public void logout(User user) {
+    public void logout(String accessToken) {
+        // Access Token에서 userName 추출
+        String userName = jwtUtil.getUserInfoFromToken(jwtUtil.substringToken(accessToken)).getSubject();
+        RefreshToken refreshToken = new RefreshToken(userName, accessToken);
+        // Redis에서 Refresh Token 삭제
+        refreshTokenRepository.delete(refreshToken);
 
-        user.updateRefreshToken("");
-        userRepository.save(user);
     }
 
     /**
      * 유저 회원탈퇴
      *
-     * @param user
      */
-    public void withdraw(User user) {
-
+    public void withdraw(String accessToken) {
+        String userName = jwtUtil.getUserInfoFromToken(jwtUtil.substringToken(accessToken)).getSubject();
+        User user = userRepository.findByUserName(userName).orElseThrow(
+            ()-> new CustomException(ErrorType.NOT_FOUND_USER));
         user.updateStatus(UserStatus.NON_MEMBER);
-
-        user.updateRefreshToken("");
+        RefreshToken refreshToken = new RefreshToken(userName, accessToken);
+        refreshTokenRepository.delete(refreshToken);
         userRepository.save(user);
     }
 

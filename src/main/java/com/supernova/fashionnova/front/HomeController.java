@@ -201,4 +201,8 @@ public class HomeController {
         return "kakaopay";
     }
 
+    @GetMapping("/payments-canceled.html")
+    public String paymentsCanceled() {
+        return "/payments-canceled";
+    }
 }

@@ -9,7 +9,7 @@ import com.supernova.fashionnova.domain.product.ProductService;
 import com.supernova.fashionnova.domain.user.User;
 import com.supernova.fashionnova.domain.user.UserService;
 import com.supernova.fashionnova.global.security.UserDetailsImpl;
-import com.supernova.fashionnova.payment.dto.KakaoPayCancelResponseDto;
+import com.supernova.fashionnova.payment.dto.KakaoPayRefundResponseDto;
 import com.supernova.fashionnova.payment.dto.KakaoPayReadyResponseDto;
 import com.supernova.fashionnova.payment.dto.KakaoPayRefundRequestDto;
 import jakarta.servlet.http.HttpServletResponse;
@@ -46,11 +46,15 @@ public class KakaoPayController {
   public KakaoPayReadyResponseDto kakaoPayReady(
       @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long orderId, @RequestParam(required = false) Long couponId)
   {
+    log.info("~~~~~~~~~~~~~");
+    //수량 이상의 주문 막기
+    productService.checkQuantity(orderId);
+    log.info("~~~~~~~~~~~~~1111");
     return kakaoPayService.kakaoPayReady(userDetails.getUser(), orderId, couponId);
   }
 
   @Transactional
-  @GetMapping("/success/{orderId}/{userId}")
+  @GetMapping("/success/{orderId}/{userId}/{couponId}")
   public void KakaoRequestSuccess(@RequestParam("pg_token") String pgToken,
       @PathVariable Long orderId,
       @PathVariable Long userId,
@@ -73,21 +77,23 @@ public class KakaoPayController {
     log.info("결제 성공");
     response.sendRedirect("/payments-completed.html");
   }
-
-  @GetMapping("/fail")
-  public void KakaoRequestFail(@AuthenticationPrincipal UserDetailsImpl userDetails, HttpServletResponse response) throws IOException {
+/**
+ * 결제 취소(사용자가 중단)
+ * */
+  @GetMapping("/cancel/{userId}")
+  public void KakaoPayCanceled(@PathVariable Long userId, HttpServletResponse response) throws IOException {
     log.info("결제 요청 실패");
     //실패한 주문 삭제
-    kakaoPayService.deleteFail(userDetails.getUser());
-    response.sendRedirect("/payments-failed.html");
+    kakaoPayService.deleteFail(userId);
+    response.sendRedirect("/payments-canceled.html");
   }
 
   /**
    * 결제 취소(환불)
    * */
-  @PostMapping("/cancel/{orderId}/{couponId}")
-  public KakaoPayCancelResponseDto Cancel(@RequestBody KakaoPayRefundRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long orderId, @PathVariable Long couponId) {
-    KakaoPayCancelResponseDto responseDto = kakaoPayService.kakaoPayCancel(requestDto, userDetails.getUser(), orderId);
+  @PostMapping("/refund/{orderId}/{couponId}")
+  public KakaoPayRefundResponseDto Refund(@RequestBody KakaoPayRefundRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long orderId, @PathVariable Long couponId) {
+    KakaoPayRefundResponseDto responseDto = kakaoPayService.kakaoPayRefund(requestDto, userDetails.getUser(), orderId);
     Order order = orderService.getOrderById(orderId);
     productService.calculateQuantity(PayAction.CANCEL, order);
     mileageService.calculateMileage(PayAction.CANCEL, order, userDetails.getUser());

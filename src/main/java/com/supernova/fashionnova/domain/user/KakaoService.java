@@ -12,6 +12,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.supernova.fashionnova.global.exception.CustomException;
 import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.global.security.JwtUtil;
+import com.supernova.fashionnova.global.security.RefreshToken;
+import com.supernova.fashionnova.global.security.RefreshTokenRepository;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -39,6 +41,7 @@ public class KakaoService {
     private final UserRepository userRepository;
     private final RestTemplate restTemplate;
     private final JwtUtil jwtUtil;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     public List<String> kakaoLogin(String code)
         throws JsonProcessingException, UnsupportedEncodingException {
@@ -63,15 +66,15 @@ public class KakaoService {
         /*String generateToken = jwtUtil.generateToken(kakaoUser.getUserName(), ACCESS_TOKEN_EXPIRATION, ACCESS_TOKEN_TYPE);*/
 
         String accessToken2 =
-            jwtUtil.generateToken(kakaoUser.getUserName(), ACCESS_TOKEN_EXPIRATION, ACCESS_TOKEN_TYPE);
+            jwtUtil.createAccessToken(kakaoUser.getUserName(), ACCESS_TOKEN_EXPIRATION, ACCESS_TOKEN_TYPE);
         String refreshToken2 =
-            jwtUtil.generateToken(kakaoUser.getUserName(), REFRESH_TOKEN_EXPIRATION, REFRESH_TOKEN_TYPE);
+            jwtUtil.createRefreshToken(kakaoUser.getUserName(),REFRESH_TOKEN_TYPE);
         List<String> tokens = new ArrayList<>();
         tokens.add(URLEncoder.encode(accessToken2, "utf-8").replaceAll("\\+", "%20"));
         tokens.add(URLEncoder.encode(refreshToken2, "utf-8").replaceAll("\\+", "%20"));
+        RefreshToken refreshToken = new RefreshToken(kakaoUser.getUserName(), refreshToken2);
 
-        kakaoUser.updateRefreshToken(jwtUtil.substringToken(refreshToken2));
-        userRepository.save(kakaoUser);
+        refreshTokenRepository.save(refreshToken);
 
         return tokens;
     }
