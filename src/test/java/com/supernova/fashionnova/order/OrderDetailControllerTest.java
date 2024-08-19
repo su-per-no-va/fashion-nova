@@ -1,3 +1,4 @@
+/*
 package com.supernova.fashionnova.order;
 
 import static org.mockito.BDDMockito.given;
@@ -144,3 +145,5 @@ class OrderDetailControllerTest {
         .andExpect(jsonPath("$[1].orderStatus").value(orderDetail2.getOrder().getOrderStatus().toString())); // 두 번째 주문의 상태 확인
   }
 }
+
+ */

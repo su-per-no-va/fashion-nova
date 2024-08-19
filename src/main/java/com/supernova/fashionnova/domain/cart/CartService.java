@@ -22,10 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class CartService {
 
     private final CartRepository cartRepository;
-
-    private final ProductDetailRepository productDetailRepository;
-
     private final ProductRepository productRepository;
+    private final ProductDetailRepository productDetailRepository;
 
     /**
      * 장바구니에 상품 추가

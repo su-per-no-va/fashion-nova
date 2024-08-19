@@ -24,9 +24,9 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class OrderService {
 
-  private final CartRepository cartRepository;
-  private final OrdersRepository ordersRepository;
-  private final OrderDetailRepository orderDetailRepository;
+    private final CartRepository cartRepository;
+    private final OrdersRepository ordersRepository;
+    private final OrderDetailRepository orderDetailRepository;
 
     @Transactional
     public AllOrderResponseDto createOrder(OrderRequestDto orderRequestDto, User user) {
@@ -53,16 +53,16 @@ public class OrderService {
             .invoice(invoice)
             .build();
 
-        //영속성 컨텍스트 사용
+        // 영속성 컨텍스트 사용
         order = ordersRepository.save(order);
-        //주문상세 생성
+        // 주문 상세 생성
         List<OrderDetail> orderDetailList = createOrderDetail(cartList, user, order);
 
         List<OrderDetail> savedOrderDetailList = orderDetailRepository.saveAll(orderDetailList);
 
         OrderDetail orderName =
             orderDetailRepository.findFirstByOrderIdOrderByProductNameAsc(order.getId()).orElseThrow(
-            () -> new CustomException(ErrorType.NOT_FOUND_ORDER));
+                    () -> new CustomException(ErrorType.NOT_FOUND_ORDER));
 
         int cartCount = cartRepository.countByUserId(user.getId());
 
@@ -111,27 +111,27 @@ public class OrderService {
         }
         List<Order> showOrder = new ArrayList<>();
         for (Order filterOrder : order) {
-                showOrder.add(filterOrder);
+            showOrder.add(filterOrder);
         }
         return showOrder;
     }
 
-  /**
-   * 결제 성공 후 주문 상태 변경
-   */
-  @Transactional
-  public void updateOrderStatus(Order order) {
-    order.setOrderStatus(OrderStatus.SUCCESS);
-  }
+    /**
+     * 결제 성공 후 주문 상태 변경
+     */
+    @Transactional
+    public void updateOrderStatus(Order order) {
+        order.setOrderStatus(OrderStatus.SUCCESS);
+    }
 
     /**
-     *  주문 내역 단건 조회
+     * 주문 내역 단건 조회
      *
      * @param orderId
      * @param user
+     * @return OrderResponseDto
      * @throws CustomException NOT_FOUND_USER 본인의 주문이 아닐 때
      * @throws CustomException NOT_FOUND_ORDER 주문을 찾을 수 없을 때
-     * @return
      */
     public OrderResponseDto getOrderResponse(Long orderId, User user) {
 
@@ -151,14 +151,13 @@ public class OrderService {
             order.getTotalPrice(),
             order.getUsedMileage(),
             order.getCreatedAt()
-            );
+        );
 
     }
 
-  public Order getOrderById(Long orderId) {
-    return ordersRepository.findById(orderId).orElseThrow(
-        ()-> new CustomException(ErrorType.NOT_FOUND_ORDER));
-  }
-
+    public Order getOrderById(Long orderId) {
+        return ordersRepository.findById(orderId).orElseThrow(
+            () -> new CustomException(ErrorType.NOT_FOUND_ORDER));
+    }
 
 }

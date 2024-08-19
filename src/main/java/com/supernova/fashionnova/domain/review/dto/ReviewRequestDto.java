@@ -6,11 +6,8 @@ import lombok.Getter;
 public class ReviewRequestDto {
 
     private Long productId;
-
     private String review;
-
     private int rating;
-
 
     public ReviewRequestDto(Long productId, String review, int rating) {
         this.productId = productId;

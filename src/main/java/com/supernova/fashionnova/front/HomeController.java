@@ -21,7 +21,7 @@ public class HomeController {
 
     @GetMapping("/signup.html")
     public String signup(Model model) {
-        model.addAttribute("SignupRequestDto",new SignupRequestDto());
+        model.addAttribute("SignupRequestDto", new SignupRequestDto());
         return "signup";
     }
 

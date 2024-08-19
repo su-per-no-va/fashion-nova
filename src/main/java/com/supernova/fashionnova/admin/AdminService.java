@@ -63,21 +63,25 @@ public class AdminService {
 
     private static final int PAGE_SIZE = 30;
 
-    private final FileUploadUtil fileUploadUtil;
-
-    private final UserRepository userRepository;
-    private final WarnRepository warnRepository;
-    private final ReviewRepository reviewRepository;
-    private final ProductRepository productRepository;
-    private final CouponRepository couponRepository;
+    private final AddressRepository addressRepository;
     private final AnswerRepository answerRepository;
-    private final QuestionRepository questionRepository;
+    private final CouponRepository couponRepository;
     private final MileageRepository mileageRepository;
     private final OrdersRepository ordersRepository;
-    private final AddressRepository addressRepository;
+    private final ProductRepository productRepository;
+    private final QuestionRepository questionRepository;
+    private final ReviewRepository reviewRepository;
+    private final UserRepository userRepository;
+    private final WarnRepository warnRepository;
+
+    private final FileUploadUtil fileUploadUtil;
 
     /**
      * 판매 통계 (일별)
+     *
+     * @param user
+     * @return total + " 원 입니다."
+     * @throws CustomException DENIED_PERMISSION
      */
     public String dailySoldStatistics(User user) {
 
@@ -85,12 +89,16 @@ public class AdminService {
             throw new CustomException(ErrorType.DENIED_PERMISSION);
         }
 
-        return ordersRepository.findTodayOrderTotalPriceSum().map(total -> total + " 원 입니다")
+        return ordersRepository.findTodayOrderTotalPriceSum().map(total -> total + " 원 입니다.")
             .orElse("0원 입니다.");
     }
 
     /**
      * 판매 통계 (주별)
+     *
+     * @param user
+     * @return total + " 원 입니다."
+     * @throws CustomException DENIED_PERMISSION
      */
     public String weeklySoldStatistics(User user) {
 
@@ -98,12 +106,16 @@ public class AdminService {
             throw new CustomException(ErrorType.DENIED_PERMISSION);
         }
 
-        return ordersRepository.findWeekOrderTotalPriceSum().map(total -> total + " 원 입니다")
+        return ordersRepository.findWeekOrderTotalPriceSum().map(total -> total + " 원 입니다.")
             .orElse("0원 입니다.");
     }
 
     /**
      * 판매 통계 (월별)
+     *
+     * @param user
+     * @param month
+     * @return total + " 원 입니다."
      */
     public String monthlySoldStatistics(User user, int month) {
 
@@ -115,7 +127,7 @@ public class AdminService {
             throw new CustomException(ErrorType.WRONG_MONTH);
         }
 
-        return ordersRepository.findMonthOrderTotalPriceSum(month).map(total -> total + " 원 입니다")
+        return ordersRepository.findMonthOrderTotalPriceSum(month).map(total -> total + " 원 입니다.")
             .orElse("0원 입니다.");
     }
 
@@ -123,7 +135,7 @@ public class AdminService {
      * 유저 전체 조회
      *
      * @param page
-     * @return List<UserResponseDto> 사이즈는 30으로 고정해놨음
+     * @return List<UserResponseDto>
      */
     @Transactional(readOnly = true)
     public List<UserResponseDto> getAllUserList(int page) {
@@ -141,6 +153,7 @@ public class AdminService {
      *
      * @param userId
      * @return UserProfileResponseDto
+     * @throws CustomException NOT_FOUND_USER
      */
     public UserProfileResponseDto getUserProfile(Long userId) {
 
@@ -187,7 +200,8 @@ public class AdminService {
     /**
      * 유저 쿠폰 & 마일리지 조회
      *
-     * @return UsersCouponAndMileageResponseDto
+     * @param page
+     * @return List<UsersCouponAndMileageResponseDto>
      */
     public List<UsersCouponAndMileageResponseDto> getAllUsersCouponAndMileages(int page) {
 
@@ -240,7 +254,7 @@ public class AdminService {
      *  전체 리뷰 조회
      *
      * @param page
-     * @return AllReviewResponseDto
+     * @return List<AllReviewResponseDto>
      */
     public List<AllReviewResponseDto> getAllRevivewList(int page) {
 
@@ -285,7 +299,7 @@ public class AdminService {
     }
 
     /**
-     * 상품등록
+     * 상품 등록
      *
      * @param requestDto
      * @param files
@@ -322,6 +336,7 @@ public class AdminService {
     /**
      * 상품 디테일 추가
      *
+     * @param productId
      * @param productDetailRequestDto
      * @throws CustomException NOT_FOUND_PRODUCT 상품 정보가 존재하지 않을 때
      */
@@ -393,6 +408,7 @@ public class AdminService {
      *
      * @param file
      * @param productId
+     * @throws CustomException NOT_FOUND_PRODUCT
      */
     public void updateProductImage(MultipartFile file, Long productId) {
 

@@ -14,4 +14,5 @@ public class ResponseUtil {
     public static ResponseEntity<String> of(HttpStatus httpStatus, String message) {
         return ResponseEntity.status(httpStatus).body(message);
     }
+
 }

@@ -22,6 +22,10 @@ public class OrderDetailController {
 
     /**
      * 주문상세내역 조회
+     *
+     * @param orderId
+     * @param userDetails
+     * @return List<OrderDetailResponseDto>
      */
     @GetMapping("/{orderId}")
     public ResponseEntity<List<OrderDetailResponseDto>> getOrderDetailList(
@@ -43,4 +47,5 @@ public class OrderDetailController {
                 ))
             .toList());
     }
+
 }

@@ -19,7 +19,7 @@ public class ProductRepositoryQueryImpl implements ProductRepositoryQuery {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<ProductResponseDto> findProductByOrdered(String sort, String category, String size, String color, String search, Pageable pageable){
+    public Page<ProductResponseDto> findProductByOrdered(String sort, String category, String size, String color, String search, Pageable pageable) {
 
         QProduct product = QProduct.product1;
         QProductDetail productDetail = QProductDetail.productDetail;
@@ -64,7 +64,7 @@ public class ProductRepositoryQueryImpl implements ProductRepositoryQuery {
             case "new_item", "all":
                 orderSpecifier = product.createdAt.desc();
                 break;
-            case "wish_count" :
+            case "wish_count":
                 orderSpecifier = product.wishCount.desc();
                 break;
 
@@ -92,7 +92,6 @@ public class ProductRepositoryQueryImpl implements ProductRepositoryQuery {
 
         return new PageImpl<>(
             products.stream().map(ProductResponseDto::new).collect(Collectors.toList()), pageable, count);
-
     }
 
 }

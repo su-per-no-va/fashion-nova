@@ -27,16 +27,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Slf4j(topic = "로그인 및 JWT생성")
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
+    @Autowired
     private JwtUtil jwtUtil;
-    UserService userService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
-
+    @Autowired
     private ObjectMapper objectMapper = new ObjectMapper();
 
     public JwtAuthenticationFilter(JwtUtil jwtUtil, UserService userService) {
@@ -54,17 +57,17 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
             try {
 
-                //요청받은 json 을 객체 형태로 변환
+                // 요청받은 json 을 객체 형태로 변환
                 LoginRequestDto loginRequestDto =
                     objectMapper.readValue(request.getInputStream(), LoginRequestDto.class);
 
-                //확인용 로그
+                // 확인용 로그
                 log.info("Received login request: " +
                     loginRequestDto.getUserName() + "     " + loginRequestDto.getPassword());
 
                 // LoginRequestDto 에서 아이디를 통해 유저 찾아오기
                 User user = userRepository.findByUserName(loginRequestDto.getUserName())
-                    .orElseThrow(()-> new CustomException(ErrorType.NOT_FOUND_USER)
+                    .orElseThrow(() -> new CustomException(ErrorType.NOT_FOUND_USER)
                     );
 
                 // 탈퇴한 회원 예외 처리
@@ -123,19 +126,21 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         // 헤더에 전달해야 함
         jwtUtil.addJwtToHeader(response, accessToken, JwtConstants.ACCESS_TOKEN_HEADER);
-        jwtUtil.addJwtToHeader(response,refreshToken, JwtConstants.REFRESH_TOKEN_HEADER);
+        jwtUtil.addJwtToHeader(response, refreshToken, JwtConstants.REFRESH_TOKEN_HEADER);
 
+        /*
         // 쿠키에 전달
-//        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, accessToken.substring(7));
-//        cookie.setPath("/");
-//        response.addCookie(cookie);
+        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, accessToken.substring(7));
+        cookie.setPath("/");
+        response.addCookie(cookie);
+         */
 
         // 헤더에 userId 전달
         response.setHeader("userName", user.getUserName());
 
         // refresh 토큰을 Entity 에 저장
-       // user.updateRefreshToken(jwtUtil.substringToken(refreshToken));
-        jwtUtil.createRefreshToken(user.getUserName(), REFRESH_TOKEN_TYPE);
+        // user.updateRefreshToken(jwtUtil.substringToken(refreshToken));
+        jwtUtil.createRefreshToken(user.getUserName(), JwtConstants.REFRESH_TOKEN_TYPE);
         userRepository.save(user);
 
         // 로그인 메세지 띄우기

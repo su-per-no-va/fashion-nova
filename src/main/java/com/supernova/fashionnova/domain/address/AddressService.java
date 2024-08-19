@@ -72,6 +72,8 @@ public class AddressService {
      *
      * @param user
      * @param requestDto
+     * @throws CustomException NOT_FOUND_ADDRESS
+     * @throws CustomException INVALID_ADDRESS
      */
     @Transactional
     public void deleteAddress(User user, AddressDeleteRequestDto requestDto) {

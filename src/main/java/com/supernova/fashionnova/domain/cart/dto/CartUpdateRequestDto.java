@@ -5,13 +5,10 @@ import lombok.Getter;
 @Getter
 public class CartUpdateRequestDto {
 
-    private Long productDetailId;
-
-    private int count;
-
-    private String size;
-
-    private String color;
+    private final Long productDetailId;
+    private final int count;
+    private final String size;
+    private final String color;
 
     public CartUpdateRequestDto(Long productDetailId, int count, String size, String color) {
         this.productDetailId = productDetailId;

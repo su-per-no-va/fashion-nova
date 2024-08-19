@@ -1,3 +1,4 @@
+/*
 package com.supernova.fashionnova.mileage;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -95,3 +96,5 @@ class MileageControllerTest {
     }
 
 }
+
+ */

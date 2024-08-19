@@ -17,14 +17,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 @RequiredArgsConstructor
@@ -122,7 +122,7 @@ public class KakaoPayService {
     Order order = ordersRepository.findById(orderId).orElseThrow(
         ()-> new CustomException(ErrorType.NOT_FOUND_ORDER));
     //본인의 주문만 환불 가능
-    if(!order.getUser().getId().equals(user.getId())){
+    if(!order.getUser().getId().equals(user.getId())) {
       throw new CustomException(ErrorType.DENIED_PERMISSION);
     }
     Map<String, String> parameters = new HashMap<>();

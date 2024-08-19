@@ -37,10 +37,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         HttpServletRequest req, HttpServletResponse res, FilterChain filterChain)
         throws ServletException, IOException {
 
-
 //        log.info("현재주소 : " + req.getRequestURL().toString());
 
-        //AccessToken 가져온후 가공
+        // AccessToken 가져온후 가공
         String accessToken = req.getHeader(ACCESS_TOKEN_HEADER);
 
 //        log.info("Authorization Header : " + req.getHeader(ACCESS_TOKEN_HEADER));
@@ -54,21 +53,21 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         accessToken = jwtUtil.substringToken(accessToken);
 
         try {
-        // 검사
-        checkAccessToken(res, accessToken);
+            // 검사
+            checkAccessToken(res, accessToken);
 
-        // 유저 정보 가져오기
-        Claims accessTokenClaims = jwtUtil.getUserInfoFromToken(accessToken);
+            // 유저 정보 가져오기
+            Claims accessTokenClaims = jwtUtil.getUserInfoFromToken(accessToken);
 
-        // RefreshToken 검증 (로그 아웃시 리프레쉬 토큰 없음)
-        String refreshToken = jwtUtil.getRefreshTokenFromRequest(accessTokenClaims.getSubject());
-        if (refreshToken.isEmpty()) {
-            jwtExceptionHandler(res, ErrorType.NOT_FOUND_REFRESH_TOKEN);
-            return;
-        }
+            // RefreshToken 검증 (로그 아웃시 리프레쉬 토큰 없음)
+            String refreshToken = jwtUtil.getRefreshTokenFromRequest(accessTokenClaims.getSubject());
+            if (refreshToken.isEmpty()) {
+                jwtExceptionHandler(res, ErrorType.NOT_FOUND_REFRESH_TOKEN);
+                return;
+            }
 
-        // 인증처리
-        setAuthentication(accessTokenClaims.getSubject());
+            // 인증처리
+            setAuthentication(accessTokenClaims.getSubject());
 
         } catch (ExpiredJwtException e) {
             log.info("Access Token이 만료되었습니다. Refresh Token을 사용하여 재발급 시도 중...");
@@ -95,11 +94,10 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(req, res);
-        log.info("AuthorizationFilter End Status: "+String.valueOf(res.getStatus()));
+        log.info("AuthorizationFilter End Status: " + String.valueOf(res.getStatus()));
         log.info("End of filter");
 
     }
-
 
     // 인증 처리
     public void setAuthentication(String userName) {
@@ -131,10 +129,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             return;
         }
 
-        //공백 제거
+        // 공백 제거
         accessToken = accessToken.replaceAll("\\s", "");
 
 //        log.info("====accessToken==== : " + accessToken);
+
         // Access 토큰 유효성 검사
         jwtUtil.validateToken(accessToken);
 

@@ -6,9 +6,10 @@ import lombok.Getter;
 @Getter
 public class UserRoleResponseDto {
 
-    private UserRole userRole;
+    private final UserRole userRole;
 
     public UserRoleResponseDto(UserRole userRole) {
         this.userRole = userRole;
     }
+
 }

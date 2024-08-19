@@ -8,9 +8,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         // 기본적으로 FormHttpMessageConverter가 포함되어 있어야 합니다.
         converters.add(new FormHttpMessageConverter());
     }
+
 }

@@ -30,9 +30,10 @@ public class QuestionImage {
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;
 
-    public QuestionImage(Question question, String fileName ,String questionImageUrl) {
+    public QuestionImage(Question question, String fileName, String questionImageUrl) {
         this.question = question;
         this.questionImageUrl = questionImageUrl;
-        this.fileName =fileName;
+        this.fileName = fileName;
     }
+
 }

@@ -38,23 +38,26 @@ public class UserController {
     private final UserService userService;
     private final KakaoService kakaoService;
 
+    // for https
     @GetMapping("/healthcheck")
     public String healthcheck() {
-	    return "OK";
+        return "OK";
     }
 
-//    @GetMapping("/test")
-//    public ResponseEntity<TestResponseDto> test() {
-//        log.info("In test");
-//
-//        return ResponseUtil.of(HttpStatus.OK,
-//            TestResponseDto.builder()
-//                .testName("으아아아앙")
-//                .testCode(15L)
-//                .testContent("잠와")
-//                .testNaEun("프론트 전문가 킹갓갓킹")
-//                .build());
-//    }
+    /*
+    @GetMapping("/test")
+    public ResponseEntity<TestResponseDto> test() {
+        log.info("In test");
+
+        return ResponseUtil.of(HttpStatus.OK,
+            TestResponseDto.builder()
+                .testName("으아아아앙")
+                .testCode(15L)
+                .testContent("잠와")
+                .testNaEun("프론트 전문가 킹갓갓킹")
+                .build());
+    }
+     */
 
     /**
      * 유저 회원가입
@@ -73,6 +76,7 @@ public class UserController {
     /**
      * 유저 로그아웃
      *
+     * @param accessToken
      * @return "로그아웃 성공"
      */
     @PostMapping("/logout")
@@ -84,6 +88,9 @@ public class UserController {
     }
 
     /**
+     * 유저 회원 탈퇴
+     *
+     * @param accessToken
      * @return "회원탈퇴 성공"
      */
     @PutMapping("/withdraw")
@@ -152,7 +159,7 @@ public class UserController {
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         UserRoleResponseDto responseDto = userService.getUserRole(userDetails.getUser());
-        return ResponseUtil.of(HttpStatus.OK,responseDto);
+        return ResponseUtil.of(HttpStatus.OK, responseDto);
     }
 
     /**

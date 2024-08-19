@@ -93,7 +93,7 @@ public class DataGenerator {
         return IntStream.range(0, count)
             .mapToObj(i -> new MileageRequestDto(
                 faker.number().randomNumber(5, true),
-                (long)faker.number().numberBetween(1, 50) * 10
+                (long) faker.number().numberBetween(1, 50) * 10
             ))
             .collect(Collectors.toList());
 
@@ -166,10 +166,8 @@ public class DataGenerator {
 
     // Cart
 
-
     // Orders
     // address, cost, discount, invoice, orderStatus, totalPrice, usedMileage, userId
-
 
     // OrdersDetails
     // count, price, productName, orderId, productId, productDetailId, userId

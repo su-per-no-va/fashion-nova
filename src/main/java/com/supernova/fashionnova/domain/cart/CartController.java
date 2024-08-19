@@ -4,8 +4,6 @@ import com.supernova.fashionnova.domain.cart.dto.CartDeleteRequestDto;
 import com.supernova.fashionnova.domain.cart.dto.CartRequestDto;
 import com.supernova.fashionnova.domain.cart.dto.CartResponseDto;
 import com.supernova.fashionnova.domain.cart.dto.CartUpdateRequestDto;
-import com.supernova.fashionnova.global.exception.CustomException;
-import com.supernova.fashionnova.global.exception.ErrorType;
 import com.supernova.fashionnova.global.security.UserDetailsImpl;
 import com.supernova.fashionnova.global.util.ResponseUtil;
 import jakarta.validation.Valid;
@@ -64,7 +62,8 @@ public class CartController {
     /**
      * 장바구니 수정
      *
-     * @param cartUpdateRequestDto
+     * @param dto
+     * @param userDetails
      * @return "상품 옵션 수정 완료" 메시지
      */
     @PutMapping
@@ -81,6 +80,7 @@ public class CartController {
      * 장바구니 상품 개별 삭제
      *
      * @param cartDeleteRequestDto
+     * @param userDetails
      * @return "장바구니 상품 삭제 완료" 메시지
      */
     @DeleteMapping

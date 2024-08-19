@@ -30,6 +30,7 @@ public class WishService {
      * @param user
      * @param requestDto
      * @throws CustomException NOT_FOUND_PRODUCT 상품을 찾지 못할 때
+     * @throws CustomException BAD_REQUEST_WISH_EXISTS
      */
     @Transactional
     public void addWish(User user, WishRequestDto requestDto) {
