@@ -41,8 +41,8 @@
 
 
 ## 📖 API 명세서
-- [USER](https://teamsparta.notion.site/454bce9707ea49d59b62cb1f49099f1e?v=ca33dd6f50994cdf9e35fe59e95cf327&pvs=4)<br>
-- [ADMIN](https://teamsparta.notion.site/9e745b4f779443f8954598cec9e2452b?v=db7b5a28c6d84520b38c683bf7168f4b&pvs=4)
+- [USER](https://cooked-carpenter-cc3.notion.site/8914a000a80f4205bee3f251e3e5bc94?v=ca7e9c8b56cf4869a2a4b4da014766cb&pvs=4)<br>
+- [ADMIN](https://cooked-carpenter-cc3.notion.site/770bc9adad3e40d5ba263ff0e1fa7979?v=33b69a0b20274d98905b49ecea3efaf3&pvs=4)
 
 ## 📝 ERD
 ![image](https://github.com/user-attachments/assets/300c9d02-45e8-4fcb-8db6-3e0185cfc94f)
