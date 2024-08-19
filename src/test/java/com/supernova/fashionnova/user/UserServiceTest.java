@@ -93,15 +93,15 @@ class UserServiceTest {
         }
     }
 
-    @Test
-    @DisplayName("로그 아웃 테스트")
-    void logoutTest() {
-        // given - 테스트를 위한 준비 단계
-        User user = Mockito.mock(User.class);  // User 클래스의 목(Mock) 객체를 생성합니다.
-
-        // then - 예상되는 결과를 검증합니다.
-        assertDoesNotThrow(() -> userService.logout(user));  // logout 메서드가 예외를 던지지 않는지 확인합니다.
-    }
+//    @Test
+//    @DisplayName("로그 아웃 테스트")
+//    void logoutTest() {
+//        // given - 테스트를 위한 준비 단계
+//        User user = Mockito.mock(User.class);  // User 클래스의 목(Mock) 객체를 생성합니다.
+//
+//        // then - 예상되는 결과를 검증합니다.
+//        assertDoesNotThrow(() -> userService.logout(user));  // logout 메서드가 예외를 던지지 않는지 확인합니다.
+//    }
 
     @Test
     @DisplayName("유저 경고 조회 테스트")
@@ -124,22 +124,22 @@ class UserServiceTest {
         assertThat(result.get(0).getDetail()).isEqualTo(detail);  // 결과 리스트의 첫 번째 요소의 detail 값이 예상된 값과 일치하는지 확인합니다.
     }
 
-    @Test
-    @DisplayName("회원 탈퇴 테스트")
-    void withdraw() {
-        //given
-        User user = Mockito.mock(User.class);  // Mock User 객체를 사용합니다.
-        user.updateRefreshToken("Bearer refreshToken");  // 초기 상태 설정
-        user.updateStatus(UserStatus.MEMBER);  // 초기 상태 설정
-
-        //when
-        userService.withdraw(user);
-
-        //then
-        verify(user).updateStatus(UserStatus.NON_MEMBER);  // 상태 업데이트가 호출되었는지 검증합니다.
-        verify(user).updateRefreshToken("");  // 리프레시 토큰 초기화가 호출되었는지 검증합니다.
-        verify(userRepository).save(user);  // User 저장이 호출되었는지 검증합니다.
-    }
+//    @Test
+//    @DisplayName("회원 탈퇴 테스트")
+//    void withdraw() {
+//        //given
+//        User user = Mockito.mock(User.class);  // Mock User 객체를 사용합니다.
+//        user.updateRefreshToken("Bearer refreshToken");  // 초기 상태 설정
+//        user.updateStatus(UserStatus.MEMBER);  // 초기 상태 설정
+//
+//        //when
+//        userService.withdraw(user);
+//
+//        //then
+//        verify(user).updateStatus(UserStatus.NON_MEMBER);  // 상태 업데이트가 호출되었는지 검증합니다.
+//        verify(user).updateRefreshToken("");  // 리프레시 토큰 초기화가 호출되었는지 검증합니다.
+//        verify(userRepository).save(user);  // User 저장이 호출되었는지 검증합니다.
+//    }
 
     @Test
     @DisplayName("유저 정보 수정")

@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -72,25 +73,23 @@ public class UserController {
     /**
      * 유저 로그아웃
      *
-     * @param userDetails
      * @return "로그아웃 성공"
      */
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<String> logout(@RequestHeader("Authorization") String accessToken) {
 
-        userService.logout(userDetails.getUser());
+        userService.logout(accessToken);
 
         return ResponseUtil.of(HttpStatus.OK, "로그아웃 성공");
     }
 
     /**
-     * @param userDetails
      * @return "회원탈퇴 성공"
      */
     @PutMapping("/withdraw")
-    public ResponseEntity<String> withdraw(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<String> withdraw(@RequestHeader("Authorization") String accessToken) {
 
-        userService.withdraw(userDetails.getUser());
+        userService.withdraw(accessToken);
 
         return ResponseUtil.of(HttpStatus.OK, "회원 탈퇴 성공");
     }

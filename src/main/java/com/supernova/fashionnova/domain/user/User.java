@@ -68,7 +68,6 @@ public class User extends Timestamped {
     @Column(nullable = false)
     private Long mileage = 0L;
 
-    private String refreshToken;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Address> addressList = new ArrayList<>();
@@ -114,10 +113,6 @@ public class User extends Timestamped {
         this.name = requestDto.getName();
         this.email = requestDto.getEmail();
         this.phone = requestDto.getPhone();
-    }
-
-    public void updateRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
     }
 
     public void updateStatus(UserStatus status) {
