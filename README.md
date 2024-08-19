@@ -22,6 +22,7 @@
 - EC2
 - S3
 - Route53
+- Redis
 - NGINX - 1.18.0 (Web Server, SSL, Reverse Proxy)
 - Github
 - Git Actions
@@ -36,7 +37,8 @@
 - JavaScript
 
 ## 🏗 아키텍쳐
-![image](https://github.com/user-attachments/assets/3b4acc08-f6ab-459f-b15d-729078eb2341)
+![image](https://github.com/user-attachments/assets/04e73410-2519-4911-9644-b5f9000f8eb8)
+
 
 ## 📖 API 명세서
 - [USER](https://teamsparta.notion.site/454bce9707ea49d59b62cb1f49099f1e?v=ca33dd6f50994cdf9e35fe59e95cf327&pvs=4)<br>
