@@ -5,6 +5,7 @@ import static com.supernova.fashionnova.global.security.JwtConstants.ACCESS_TOKE
 
 import com.supernova.fashionnova.global.exception.ErrorType;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -52,6 +53,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         // JWT 토큰 substring
         accessToken = jwtUtil.substringToken(accessToken);
 
+        try {
         // 검사
         checkAccessToken(res, accessToken);
 
@@ -66,11 +68,30 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
 
         // 인증처리
-        try {
-            setAuthentication(accessTokenClaims.getSubject());
+        setAuthentication(accessTokenClaims.getSubject());
+
+        } catch (ExpiredJwtException e) {
+            log.info("Access Token이 만료되었습니다. Refresh Token을 사용하여 재발급 시도 중...");
+            String username = e.getClaims().getSubject();
+            String refreshToken = jwtUtil.getRefreshTokenFromRequest(username);
+
+            if (refreshToken != null && jwtUtil.validateToken(refreshToken)) {
+                String newAccessToken = jwtUtil.createAccessToken(username, JwtConstants.ACCESS_TOKEN_EXPIRATION, JwtConstants.ACCESS_TOKEN_TYPE);
+                res.setHeader(ACCESS_TOKEN_HEADER, "Bearer " + newAccessToken);
+
+                // 인증 처리
+                setAuthentication(username);
+
+            } else {
+                log.error("Refresh Token이 유효하지 않거나 만료되었습니다.");
+                jwtExceptionHandler(res, ErrorType.NOT_FOUND_REFRESH_TOKEN);
+                return;
+            }
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("JWT 인증 과정에서 오류 발생: " + e.getMessage());
+            jwtExceptionHandler(res, ErrorType.NOT_FOUND_TOKEN);
             return;
+
         }
 
         filterChain.doFilter(req, res);

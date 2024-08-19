@@ -117,9 +117,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         User user = ((UserDetailsImpl) authResult.getPrincipal()).getUser();
 
         String accessToken =
-            jwtUtil.generateToken(user.getUserName(), JwtConstants.ACCESS_TOKEN_EXPIRATION, JwtConstants.ACCESS_TOKEN_TYPE);
+            jwtUtil.createAccessToken(user.getUserName(), JwtConstants.ACCESS_TOKEN_EXPIRATION, JwtConstants.ACCESS_TOKEN_TYPE);
         String refreshToken =
-            jwtUtil.generateToken(user.getUserName(), JwtConstants.REFRESH_TOKEN_EXPIRATION, JwtConstants.REFRESH_TOKEN_TYPE);
+            jwtUtil.createAccessToken(user.getUserName(), JwtConstants.REFRESH_TOKEN_EXPIRATION, JwtConstants.REFRESH_TOKEN_TYPE);
 
         // 헤더에 전달해야 함
         jwtUtil.addJwtToHeader(response, accessToken, JwtConstants.ACCESS_TOKEN_HEADER);
@@ -134,7 +134,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setHeader("userName", user.getUserName());
 
         // refresh 토큰을 Entity 에 저장
-        user.updateRefreshToken(jwtUtil.substringToken(refreshToken));
+       // user.updateRefreshToken(jwtUtil.substringToken(refreshToken));
+        jwtUtil.createRefreshToken(user.getUserName(), REFRESH_TOKEN_TYPE);
         userRepository.save(user);
 
         // 로그인 메세지 띄우기

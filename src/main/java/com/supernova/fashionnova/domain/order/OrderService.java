@@ -53,9 +53,9 @@ public class OrderService {
             .invoice(invoice)
             .build();
 
-        // 영속성 컨텍스트 사용
+        //영속성 컨텍스트 사용
         order = ordersRepository.save(order);
-
+        //주문상세 생성
         List<OrderDetail> orderDetailList = createOrderDetail(cartList, user, order);
 
         List<OrderDetail> savedOrderDetailList = orderDetailRepository.saveAll(orderDetailList);
@@ -112,7 +112,6 @@ public class OrderService {
         List<Order> showOrder = new ArrayList<>();
         for (Order filterOrder : order) {
                 showOrder.add(filterOrder);
-
         }
         return showOrder;
     }
