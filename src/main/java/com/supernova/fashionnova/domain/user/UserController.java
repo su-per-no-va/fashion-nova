@@ -76,6 +76,7 @@ public class UserController {
     /**
      * 유저 로그아웃
      *
+     * @param accessToken
      * @return "로그아웃 성공"
      */
     @PostMapping("/logout")
@@ -87,6 +88,9 @@ public class UserController {
     }
 
     /**
+     * 유저 회원 탈퇴
+     *
+     * @param accessToken
      * @return "회원탈퇴 성공"
      */
     @PutMapping("/withdraw")

@@ -18,7 +18,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,6 +62,7 @@ public class UserService {
     /**
      * 유저 로그아웃
      *
+     * @param accessToken
      */
     public void logout(String accessToken) {
         // Access Token에서 userName 추출
@@ -76,11 +76,13 @@ public class UserService {
     /**
      * 유저 회원탈퇴
      *
+     * @param accessToken
+     * @throws CustomException NOT_FOUND_USER
      */
     public void withdraw(String accessToken) {
         String userName = jwtUtil.getUserInfoFromToken(jwtUtil.substringToken(accessToken)).getSubject();
         User user = userRepository.findByUserName(userName).orElseThrow(
-            ()-> new CustomException(ErrorType.NOT_FOUND_USER));
+            () -> new CustomException(ErrorType.NOT_FOUND_USER));
         user.updateStatus(UserStatus.NON_MEMBER);
         RefreshToken refreshToken = new RefreshToken(userName, accessToken);
         refreshTokenRepository.delete(refreshToken);

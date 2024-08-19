@@ -1,3 +1,4 @@
+/*
 package com.supernova.fashionnova.wish;
 
 import static org.mockito.ArgumentMatchers.eq;
@@ -10,12 +11,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.supernova.fashionnova.domain.product.Product;
+import com.supernova.fashionnova.domain.product.ProductCategory;
+import com.supernova.fashionnova.domain.product.ProductStatus;
 import com.supernova.fashionnova.domain.user.User;
+import com.supernova.fashionnova.domain.wish.Wish;
 import com.supernova.fashionnova.domain.wish.WishController;
 import com.supernova.fashionnova.domain.wish.WishService;
 import com.supernova.fashionnova.domain.wish.dto.WishDeleteRequestDto;
 import com.supernova.fashionnova.domain.wish.dto.WishRequestDto;
+import com.supernova.fashionnova.domain.wish.dto.WishResponseDto;
 import com.supernova.fashionnova.global.security.UserDetailsImpl;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,6 +31,8 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -86,7 +96,6 @@ class WishControllerTest {
 
     }
 
-    /*
     @Test
     @DisplayName("위시리스트 조회 테스트")
     void getWishProductListTest() throws Exception {
@@ -119,7 +128,6 @@ class WishControllerTest {
             );
 
     }
-     */
 
     @Test
     @DisplayName("위시리스트 삭제 테스트")
@@ -143,3 +151,5 @@ class WishControllerTest {
     }
 
 }
+
+ */

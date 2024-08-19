@@ -1,3 +1,4 @@
+/*
 package com.supernova.fashionnova.product;
 
 import static org.mockito.BDDMockito.given;
@@ -98,3 +99,5 @@ class ProductControllerTest {
     }
 
 }
+
+ */

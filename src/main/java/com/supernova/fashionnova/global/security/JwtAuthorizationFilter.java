@@ -53,21 +53,21 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         accessToken = jwtUtil.substringToken(accessToken);
 
         try {
-        // 검사
-        checkAccessToken(res, accessToken);
+            // 검사
+            checkAccessToken(res, accessToken);
 
-        // 유저 정보 가져오기
-        Claims accessTokenClaims = jwtUtil.getUserInfoFromToken(accessToken);
+            // 유저 정보 가져오기
+            Claims accessTokenClaims = jwtUtil.getUserInfoFromToken(accessToken);
 
-        // RefreshToken 검증 (로그 아웃시 리프레쉬 토큰 없음)
-        String refreshToken = jwtUtil.getRefreshTokenFromRequest(accessTokenClaims.getSubject());
-        if (refreshToken.isEmpty()) {
-            jwtExceptionHandler(res, ErrorType.NOT_FOUND_REFRESH_TOKEN);
-            return;
-        }
+            // RefreshToken 검증 (로그 아웃시 리프레쉬 토큰 없음)
+            String refreshToken = jwtUtil.getRefreshTokenFromRequest(accessTokenClaims.getSubject());
+            if (refreshToken.isEmpty()) {
+                jwtExceptionHandler(res, ErrorType.NOT_FOUND_REFRESH_TOKEN);
+                return;
+            }
 
-        // 인증처리
-        setAuthentication(accessTokenClaims.getSubject());
+            // 인증처리
+            setAuthentication(accessTokenClaims.getSubject());
 
         } catch (ExpiredJwtException e) {
             log.info("Access Token이 만료되었습니다. Refresh Token을 사용하여 재발급 시도 중...");
