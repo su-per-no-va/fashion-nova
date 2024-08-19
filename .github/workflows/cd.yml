@@ -82,4 +82,7 @@ jobs:
                 -e GOOGLE_EMAIL=${{secrets.GOOGLE_EMAIL}} \
                 -e GOOGLE_APP_PW=${{secrets.GOOGLE_APP_PW}} \
                 -e URL=${{secrets.URL}} \
+                -e REDIS_HOST=${{secrets.REDIS_HOST}} \
+                -e REDIS_PASSWD=${{secrets.REDIS_PASSWD}} \
+                -e REDIS_PORT=${{secrets.REDIS_PORT}} \
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_TAG_NAME }}:latest
